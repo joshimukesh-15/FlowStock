@@ -18,7 +18,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   ShieldCheck,
-  Landmark,
+  Package,
 } from "lucide-react";
 import { useTenant } from "@/context/TenantContext";
 import { useRealtime } from "@/context/WebSocketContext";
@@ -123,7 +123,7 @@ export const Sidebar: React.FC = () => {
           title={collapsed ? "Expand sidebar — click logo to open" : "Collapse sidebar — click logo to collapse"}
         >
           <span className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm shrink-0 group-hover/logo:bg-zinc-100 transition-colors">
-            <Landmark className="w-4 h-4 text-black" strokeWidth={2.25} />
+            <Package className="w-4 h-4 text-black" strokeWidth={2.25} />
           </span>
           {!collapsed && (
             <span className="flex flex-col min-w-0 text-left">
