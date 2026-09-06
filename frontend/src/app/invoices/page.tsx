@@ -44,6 +44,7 @@ import { motion } from "framer-motion";
 import { createStaggerContainer, slideUpVariants, useReducedMotion } from "@/motion";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Modal } from "@/components/ui/Modal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 const PAYMENT_METHODS = [
   { label: "Bank Transfer (NEFT / RTGS / IMPS)", value: "BANK_TRANSFER" },
@@ -65,6 +66,7 @@ export default function InvoicesPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [invoiceIdToVoid, setInvoiceIdToVoid] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -287,20 +289,8 @@ export default function InvoicesPage() {
     }
   };
 
-  const handleVoidInvoice = async (invoiceId: string) => {
-    if (!confirm("Are you sure you want to void this invoice?")) return;
-    setActionLoading(invoiceId);
-    try {
-      const updated = await voidInvoiceApi(invoiceId);
-      setInvoices((prev) => prev.map((i) => (i.id === updated.id ? updated : i)));
-      if (viewInvoice && viewInvoice.id === updated.id) {
-        setViewInvoice(updated);
-      }
-    } catch (err: any) {
-      alert(`Void failed: ${err.message}`);
-    } finally {
-      setActionLoading(null);
-    }
+  const handleVoidInvoice = (invoiceId: string) => {
+    setInvoiceIdToVoid(invoiceId);
   };
 
   // Status Badge UI
@@ -1420,6 +1410,31 @@ export default function InvoicesPage() {
             </div>
           )}
         </Modal>
+
+        <ConfirmModal
+          isOpen={!!invoiceIdToVoid}
+          onClose={() => setInvoiceIdToVoid(null)}
+          onConfirm={async () => {
+            if (!invoiceIdToVoid) return;
+            setActionLoading(invoiceIdToVoid);
+            try {
+              const updated = await voidInvoiceApi(invoiceIdToVoid);
+              setInvoices((prev) => prev.map((i) => (i.id === updated.id ? updated : i)));
+              if (viewInvoice && viewInvoice.id === updated.id) {
+                setViewInvoice(updated);
+              }
+              setInvoiceIdToVoid(null);
+            } catch (err: any) {
+              alert(`Void failed: ${err.message}`);
+            } finally {
+              setActionLoading(null);
+            }
+          }}
+          title="Void Tax Invoice"
+          description="Are you sure you want to void this invoice? Voided invoices cannot accept payments and are retained solely for audit compliance."
+          confirmText="Void Invoice"
+          variant="danger"
+        />
       </motion.div>
     
   );

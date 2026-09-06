@@ -33,6 +33,7 @@ import { Warehouse, StockTransfer, Product } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
 import { WarehouseTransferVisualizer } from "@/components/ui/WarehouseTransferVisualizer";
 import { Modal } from "@/components/ui/Modal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { motion } from "framer-motion";
@@ -49,6 +50,7 @@ export default function WarehousesPage() {
   const [selectedVisualizerTransfer, setSelectedVisualizerTransfer] = useState<StockTransfer | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [transferIdToCancel, setTransferIdToCancel] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
 
   // New Warehouse Modal State
@@ -190,17 +192,8 @@ export default function WarehousesPage() {
     }
   };
 
-  const handleCancel = async (transferId: string) => {
-    if (!confirm("Are you sure you want to cancel this transfer?")) return;
-    setActionLoading(transferId);
-    try {
-      await cancelTransferApi(transferId);
-      await loadData();
-    } catch (err: any) {
-      alert(`Cancel failed: ${err.message || "Unknown error"}`);
-    } finally {
-      setActionLoading(null);
-    }
+  const handleCancel = (transferId: string) => {
+    setTransferIdToCancel(transferId);
   };
 
   const filteredTransfers = transfers.filter((t) => {
@@ -807,6 +800,28 @@ export default function WarehousesPage() {
             </div>
           )}
         </Modal>
+
+        <ConfirmModal
+          isOpen={!!transferIdToCancel}
+          onClose={() => setTransferIdToCancel(null)}
+          onConfirm={async () => {
+            if (!transferIdToCancel) return;
+            setActionLoading(transferIdToCancel);
+            try {
+              await cancelTransferApi(transferIdToCancel);
+              setTransferIdToCancel(null);
+              await loadData();
+            } catch (err: any) {
+              alert(`Cancel failed: ${err.message || "Unknown error"}`);
+            } finally {
+              setActionLoading(null);
+            }
+          }}
+          title="Cancel Stock Transfer"
+          description="Are you sure you want to cancel this stock transfer? The transfer between facilities will be terminated and marked cancelled."
+          confirmText="Cancel Transfer"
+          variant="danger"
+        />
       </motion.div>
     );
   }

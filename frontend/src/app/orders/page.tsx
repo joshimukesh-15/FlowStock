@@ -39,6 +39,7 @@ import { useTenant } from "@/context/TenantContext";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { OrderLifecycleStepper } from "@/components/ui/OrderLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { motion } from "framer-motion";
@@ -55,6 +56,7 @@ export default function OrdersPage() {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [orderIdToCancel, setOrderIdToCancel] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -266,18 +268,8 @@ export default function OrdersPage() {
     }
   };
 
-  const handleCancelOrder = async (orderId: string) => {
-    if (!confirm("Are you sure you want to cancel this order? Any reserved stock will be released.")) return;
-    setActionLoading(orderId);
-    try {
-      const updated = await cancelOrderApi(orderId);
-      if (detailOrder?.id === orderId) setDetailOrder(updated);
-      await loadData();
-    } catch (err: any) {
-      alert(`Cancellation error: ${err.message || "Unable to cancel order"}`);
-    } finally {
-      setActionLoading(null);
-    }
+  const handleCancelOrder = (orderId: string) => {
+    setOrderIdToCancel(orderId);
   };
 
   // KPIs
@@ -1149,6 +1141,29 @@ export default function OrdersPage() {
             </>
           )}
         </Modal>
+
+        <ConfirmModal
+          isOpen={!!orderIdToCancel}
+          onClose={() => setOrderIdToCancel(null)}
+          onConfirm={async () => {
+            if (!orderIdToCancel) return;
+            setActionLoading(orderIdToCancel);
+            try {
+              const updated = await cancelOrderApi(orderIdToCancel);
+              if (detailOrder?.id === orderIdToCancel) setDetailOrder(updated);
+              setOrderIdToCancel(null);
+              await loadData();
+            } catch (err: any) {
+              alert(`Cancellation error: ${err.message || "Unable to cancel order"}`);
+            } finally {
+              setActionLoading(null);
+            }
+          }}
+          title="Cancel Sales Order"
+          description="Are you sure you want to cancel this order? Any reserved inventory will be automatically released back to available stock."
+          confirmText="Cancel Order"
+          variant="danger"
+        />
       </motion.div>
     
   );

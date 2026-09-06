@@ -39,6 +39,7 @@ import { formatINR } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ShipmentLifecycleStepper } from "@/components/ui/ShipmentLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { motion } from "framer-motion";
@@ -64,6 +65,7 @@ export default function ShipmentsPage() {
   const [orders, setOrders] = useState<SalesOrder[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [shipmentIdToCancel, setShipmentIdToCancel] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -233,20 +235,8 @@ export default function ShipmentsPage() {
     }
   };
 
-  const handleCancel = async (shipmentId: string) => {
-    if (!confirm("Are you sure you want to cancel this consignment?")) return;
-    setActionLoading(shipmentId);
-    try {
-      const updated = await cancelShipmentApi(shipmentId, {
-        location: "Logistics Operations Desk",
-        description: "Shipment cancelled by system operator",
-      });
-      updateLocalShipment(updated);
-    } catch (err: any) {
-      alert(`Cancellation failed: ${err.message}`);
-    } finally {
-      setActionLoading(null);
-    }
+  const handleCancel = (shipmentId: string) => {
+    setShipmentIdToCancel(shipmentId);
   };
 
   const handleAddCheckpoint = async (e: React.FormEvent) => {
@@ -1043,6 +1033,31 @@ export default function ShipmentsPage() {
             </>
           )}
         </Modal>
+
+        <ConfirmModal
+          isOpen={!!shipmentIdToCancel}
+          onClose={() => setShipmentIdToCancel(null)}
+          onConfirm={async () => {
+            if (!shipmentIdToCancel) return;
+            setActionLoading(shipmentIdToCancel);
+            try {
+              const updated = await cancelShipmentApi(shipmentIdToCancel, {
+                location: "Logistics Operations Desk",
+                description: "Shipment cancelled by system operator",
+              });
+              updateLocalShipment(updated);
+              setShipmentIdToCancel(null);
+            } catch (err: any) {
+              alert(`Cancellation failed: ${err.message}`);
+            } finally {
+              setActionLoading(null);
+            }
+          }}
+          title="Cancel Consignment"
+          description="Are you sure you want to cancel this consignment? The shipment status will be set to CANCELLED and logged in the tracking checkpoint timeline."
+          confirmText="Cancel Consignment"
+          variant="danger"
+        />
       </motion.div>
     
   );

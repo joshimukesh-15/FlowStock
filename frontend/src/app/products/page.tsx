@@ -30,6 +30,7 @@ import { useTenant } from "@/context/TenantContext";
 import { motion } from "framer-motion";
 import { fadeInVariants, useReducedMotion } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 
@@ -41,6 +42,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
 
   // Product Modal State
   const [productModalOpen, setProductModalOpen] = useState(false);
@@ -152,14 +154,8 @@ export default function ProductsPage() {
     }
   };
 
-  const handleDeleteProduct = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete product '${name}'?`)) return;
-    try {
-      await deleteProductApi(id);
-      await loadData();
-    } catch (err: any) {
-      alert("Failed to delete: " + err.message);
-    }
+  const handleDeleteProduct = (id: string, name: string) => {
+    setDeleteTarget({ id, name });
   };
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
@@ -488,6 +484,31 @@ export default function ProductsPage() {
               </form>
             </div>
           </Modal>
+
+          <ConfirmModal
+            isOpen={!!deleteTarget}
+            onClose={() => setDeleteTarget(null)}
+            onConfirm={async () => {
+              if (!deleteTarget) return;
+              try {
+                await deleteProductApi(deleteTarget.id);
+                setDeleteTarget(null);
+                await loadData();
+              } catch (err: any) {
+                alert("Failed to delete: " + err.message);
+              }
+            }}
+            title="Delete Product"
+            description={
+              <>
+                Are you sure you want to delete{" "}
+                <strong className="text-zinc-900 font-semibold">{deleteTarget?.name}</strong>?
+                This will permanently remove the product and its SKU tracking from this organization.
+              </>
+            }
+            confirmText="Delete Product"
+            variant="danger"
+          />
       </motion.div>
     
   );

@@ -38,6 +38,7 @@ import { useTenant } from "@/context/TenantContext";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { POLifecycleStepper } from "@/components/ui/POLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { motion } from "framer-motion";
@@ -54,6 +55,7 @@ export default function PurchasingPage() {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [poIdToCancel, setPoIdToCancel] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -269,18 +271,8 @@ export default function PurchasingPage() {
     }
   };
 
-  const handleCancelPO = async (poId: string) => {
-    if (!confirm("Are you sure you want to cancel this purchase order?")) return;
-    setActionLoading(poId);
-    try {
-      const updated = await cancelPurchaseOrderApi(poId);
-      if (detailPO?.id === poId) setDetailPO(updated);
-      await loadData();
-    } catch (err: any) {
-      alert(`Cancellation error: ${err.message || "Unable to cancel PO"}`);
-    } finally {
-      setActionLoading(null);
-    }
+  const handleCancelPO = (poId: string) => {
+    setPoIdToCancel(poId);
   };
 
   // KPIs
@@ -1177,6 +1169,29 @@ export default function PurchasingPage() {
             </>
           )}
         </Modal>
+
+        <ConfirmModal
+          isOpen={!!poIdToCancel}
+          onClose={() => setPoIdToCancel(null)}
+          onConfirm={async () => {
+            if (!poIdToCancel) return;
+            setActionLoading(poIdToCancel);
+            try {
+              const updated = await cancelPurchaseOrderApi(poIdToCancel);
+              if (detailPO?.id === poIdToCancel) setDetailPO(updated);
+              setPoIdToCancel(null);
+              await loadData();
+            } catch (err: any) {
+              alert(`Cancellation error: ${err.message || "Unable to cancel PO"}`);
+            } finally {
+              setActionLoading(null);
+            }
+          }}
+          title="Cancel Purchase Order"
+          description="Are you sure you want to cancel this purchase order? This inbound procurement request will be marked cancelled."
+          confirmText="Cancel PO"
+          variant="danger"
+        />
       </motion.div>
     
   );
