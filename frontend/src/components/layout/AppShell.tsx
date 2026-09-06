@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { WebSocketProvider } from "@/context/WebSocketContext";
@@ -13,6 +14,14 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children, isHealthy: propHealthy }) => {
   const [internalHealthy, setInternalHealthy] = useState(true);
+  const location = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     if (propHealthy !== undefined) return;
@@ -37,7 +46,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children, isHealthy: propHea
         <Sidebar />
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           <Header isHealthy={healthy} />
-          <main className="app-canvas flex-1 overflow-y-auto p-6 md:p-8 bg-zinc-50">
+          <main ref={mainRef} className="app-canvas flex-1 overflow-y-auto p-6 md:p-8 bg-zinc-50">
             {children}
           </main>
         </div>
