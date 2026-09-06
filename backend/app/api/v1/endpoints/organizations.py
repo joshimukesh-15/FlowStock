@@ -55,3 +55,11 @@ async def add_user_to_organization(
             detail="Cannot add users to a different organization tenant.",
         )
     return await organization_service.add_user_to_org(db, id, user_in)
+
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_organization(id: UUID, db: AsyncSession = Depends(get_db)):
+    """Delete an organization tenant and cascade delete all associated data."""
+    await organization_service.delete_organization(db, id)
+    return None
+

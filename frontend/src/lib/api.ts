@@ -156,6 +156,18 @@ clearApiCache();
   return await res.json();
 }
 
+export async function deleteOrganizationApi(id: string): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/organizations/${id}`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || "Failed to delete organization");
+  }
+  clearApiCache();
+}
+
 export async function fetchCategories(): Promise<Category[]> {
   return cachedGet<Category[]>(`${API_BASE_URL}/categories`);
 }

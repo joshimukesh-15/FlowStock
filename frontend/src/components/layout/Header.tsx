@@ -16,6 +16,7 @@ import {
   Info,
   CheckCircle2,
   AlertCircle,
+  Trash2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -29,7 +30,7 @@ import {
   markNotificationRead,
   markAllNotificationsRead,
 } from "@/lib/api";
-import { NotificationItem } from "@/types/api";
+import { NotificationItem, Organization } from "@/types/api";
 import { useRealtime } from "@/context/WebSocketContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { popoverVariants, useReducedMotion } from "@/motion";
@@ -39,13 +40,27 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ isHealthy }) => {
-  const { organizations, currentOrg, currentUser, switchOrganization, switchUser, createOrganization } = useTenant();
+  const {
+    organizations,
+    currentOrg,
+    currentUser,
+    switchOrganization,
+    switchUser,
+    createOrganization,
+    deleteOrganization,
+  } = useTenant();
   const prefersReducedMotion = useReducedMotion();
   const tenantMenuVariants = popoverVariants(prefersReducedMotion);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const { isConnected, subscribe } = useRealtime();
+
+  // Delete Organization state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [orgToDelete, setOrgToDelete] = useState<Organization | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   // Notifications state
   const [unreadCount, setUnreadCount] = useState<number>(0);
@@ -164,6 +179,22 @@ export const Header: React.FC<HeaderProps> = ({ isHealthy }) => {
     }
   };
 
+  const handleConfirmDelete = async () => {
+    if (!orgToDelete) return;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      await deleteOrganization(orgToDelete.id);
+      setDeleteModalOpen(false);
+      setOrgToDelete(null);
+      setDropdownOpen(false);
+    } catch (err: any) {
+      setDeleteError(err.message || "Failed to delete organization");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const getNotifIcon = (type: string) => {
     switch (type) {
       case "WARNING":
@@ -206,30 +237,55 @@ export const Header: React.FC<HeaderProps> = ({ isHealthy }) => {
                 animate="visible"
                 exit="exit"
                 variants={tenantMenuVariants}
-                className="absolute top-full left-0 mt-1.5 w-64 bg-white border border-zinc-200 rounded-lg shadow-xl py-1 z-50 origin-top-left"
+                className="absolute top-full left-0 mt-1.5 w-72 bg-white border border-zinc-200 rounded-lg shadow-xl py-1 z-50 origin-top-left"
               >
               <div className="px-3 py-1.5 border-b border-zinc-100 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
                 Select Active Organization
               </div>
-              <div className="max-h-48 overflow-y-auto">
-                {organizations.map((org) => (
-                  <button
-                    key={org.id}
-                    onClick={() => {
-                      switchOrganization(org.id);
-                      setDropdownOpen(false);
-                    }}
-                    className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-zinc-50 transition-colors ${
-                      currentOrg?.id === org.id ? "bg-zinc-50 text-zinc-900 font-semibold" : "text-zinc-700"
-                    }`}
-                  >
-                    <div>
-                      <p className="truncate">{org.name}</p>
-                      <p className="text-[10px] text-zinc-400 font-mono">{org.slug} ({org.currency})</p>
+              <div className="max-h-56 overflow-y-auto divide-y divide-zinc-100">
+                {organizations.map((org) => {
+                  const isActive = currentOrg?.id === org.id;
+                  const canDelete = organizations.length > 1;
+
+                  return (
+                    <div
+                      key={org.id}
+                      onClick={() => {
+                        switchOrganization(org.id);
+                        setDropdownOpen(false);
+                      }}
+                      className={`group w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-zinc-50 transition-colors cursor-pointer ${
+                        isActive ? "bg-zinc-50 text-zinc-900 font-semibold" : "text-zinc-700"
+                      }`}
+                    >
+                      <div className="min-w-0 pr-2 flex-1">
+                        <p className="truncate">{org.name}</p>
+                        <p className="text-[10px] text-zinc-400 font-mono">
+                          {org.slug} ({org.currency})
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {isActive && <Check className="w-3.5 h-3.5 text-zinc-950" />}
+                        {canDelete && (
+                          <button
+                            type="button"
+                            title={`Delete ${org.name}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOrgToDelete(org);
+                              setDeleteError("");
+                              setDeleteModalOpen(true);
+                              setDropdownOpen(false);
+                            }}
+                            className="p-1 rounded text-zinc-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                    {currentOrg?.id === org.id && <Check className="w-3.5 h-3.5 text-zinc-950" />}
-                  </button>
-                ))}
+                  );
+                })}
               </div>
               <div className="border-t border-zinc-100 p-1.5">
                 <Button
@@ -531,6 +587,73 @@ export const Header: React.FC<HeaderProps> = ({ isHealthy }) => {
               </div>
             </form>
           </div>
+      </Modal>
+
+      {/* Delete Organization Confirmation Modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          if (!deleting) {
+            setDeleteModalOpen(false);
+            setOrgToDelete(null);
+            setDeleteError("");
+          }
+        }}
+        maxWidth="sm"
+      >
+        <div className="p-6">
+          <div className="flex items-center gap-3 text-red-600 mb-3">
+            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+              <AlertTriangle className="w-5 h-5 text-red-600" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-zinc-900">Delete Organization</h3>
+              <p className="text-xs text-zinc-500 font-mono">{orgToDelete?.slug}</p>
+            </div>
+          </div>
+
+          <p className="text-sm text-zinc-600 mb-4 leading-relaxed">
+            Are you sure you want to permanently delete{" "}
+            <strong className="text-zinc-900 font-semibold">{orgToDelete?.name}</strong>?
+            This will permanently erase all associated products, warehouses, orders, invoices, payments, and data from the database.
+          </p>
+
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 mb-5 flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+            <span>This action is destructive and cannot be undone.</span>
+          </div>
+
+          {deleteError && (
+            <div className="p-3 bg-red-100 border border-red-300 text-red-700 text-xs rounded-lg mb-4">
+              {deleteError}
+            </div>
+          )}
+
+          <div className="flex justify-end gap-2.5">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={deleting}
+              onClick={() => {
+                setDeleteModalOpen(false);
+                setOrgToDelete(null);
+                setDeleteError("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              disabled={deleting}
+              onClick={handleConfirmDelete}
+              className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
+            >
+              {deleting ? "Deleting..." : "Delete Permanently"}
+            </Button>
+          </div>
+        </div>
       </Modal>
     </>
   );

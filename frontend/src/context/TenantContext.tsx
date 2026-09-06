@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Organization, User } from "@/types/api";
-import { fetchOrganizations, createOrganizationApi } from "@/lib/api";
+import { fetchOrganizations, createOrganizationApi, deleteOrganizationApi, clearApiCache } from "@/lib/api";
 
 interface TenantContextType {
   organizations: Organization[];
@@ -12,6 +12,7 @@ interface TenantContextType {
   switchOrganization: (orgId: string) => void;
   switchUser: (userId: string) => void;
   createOrganization: (name: string, slug: string, currency: string) => Promise<Organization>;
+  deleteOrganization: (orgId: string) => Promise<void>;
   refreshOrganizations: () => Promise<void>;
 }
 
@@ -113,6 +114,45 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return newOrg;
   };
 
+  const deleteOrganization = async (orgId: string) => {
+    await deleteOrganizationApi(orgId);
+    clearApiCache();
+
+    // Check if the active organization was deleted
+    const remaining = organizations.filter((o) => o.id !== orgId);
+    setOrganizations(remaining);
+
+    if (currentOrg?.id === orgId) {
+      const nextOrg = remaining[0] || null;
+      setCurrentOrg(nextOrg);
+      const nextUser = nextOrg?.users?.[0] || null;
+      setCurrentUser(nextUser);
+
+      if (typeof window !== "undefined") {
+        if (nextOrg) {
+          localStorage.setItem("flowstock_org_id", nextOrg.id);
+          localStorage.setItem("flowstock_org_slug", nextOrg.slug);
+          localStorage.setItem("flowstock_org_name", nextOrg.name);
+        } else {
+          localStorage.removeItem("flowstock_org_id");
+          localStorage.removeItem("flowstock_org_slug");
+          localStorage.removeItem("flowstock_org_name");
+        }
+        if (nextUser) {
+          localStorage.setItem("flowstock_user_id", nextUser.id);
+          localStorage.setItem("flowstock_user_name", nextUser.name);
+          localStorage.setItem("flowstock_user_role", nextUser.role);
+        } else {
+          localStorage.removeItem("flowstock_user_id");
+          localStorage.removeItem("flowstock_user_name");
+          localStorage.removeItem("flowstock_user_role");
+        }
+      }
+    }
+
+    await loadOrganizations();
+  };
+
   return (
     <TenantContext.Provider
       value={{
@@ -123,6 +163,7 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         switchOrganization,
         switchUser,
         createOrganization,
+        deleteOrganization,
         refreshOrganizations: loadOrganizations,
       }}
     >

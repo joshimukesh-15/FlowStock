@@ -53,5 +53,19 @@ class OrganizationService:
     async def list_users(self, db: AsyncSession, organization_id: UUID) -> List[User]:
         return await user_repo.list_by_organization(db, organization_id)
 
+    async def delete_organization(self, db: AsyncSession, id: UUID) -> None:
+        orgs = await organization_repo.list_all(db)
+        if len(orgs) <= 1:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Cannot delete the last remaining organization.",
+            )
+        deleted = await organization_repo.delete_cascade(db, id)
+        if not deleted:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Organization with id '{id}' not found.",
+            )
+
 
 organization_service = OrganizationService()
