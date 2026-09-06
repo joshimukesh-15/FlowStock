@@ -1,0 +1,537 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Building2,
+  ChevronDown,
+  Plus,
+  User,
+  Check,
+  X,
+  Bell,
+  CheckCheck,
+  ExternalLink,
+  AlertTriangle,
+  Info,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Modal } from "@/components/ui/Modal";
+import { GlobalSearch } from "@/components/layout/GlobalSearch";
+import { useTenant } from "@/context/TenantContext";
+import {
+  fetchNotifications,
+  fetchUnreadNotificationCount,
+  markNotificationRead,
+  markAllNotificationsRead,
+} from "@/lib/api";
+import { NotificationItem } from "@/types/api";
+import { useRealtime } from "@/context/WebSocketContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { popoverVariants, useReducedMotion } from "@/motion";
+
+interface HeaderProps {
+  isHealthy: boolean;
+}
+
+export const Header: React.FC<HeaderProps> = ({ isHealthy }) => {
+  const { organizations, currentOrg, currentUser, switchOrganization, switchUser, createOrganization } = useTenant();
+  const prefersReducedMotion = useReducedMotion();
+  const tenantMenuVariants = popoverVariants(prefersReducedMotion);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { isConnected, subscribe } = useRealtime();
+
+  // Notifications state
+  const [unreadCount, setUnreadCount] = useState<number>(0);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [notifOpen, setNotifOpen] = useState<boolean>(false);
+  const [loadingNotifs, setLoadingNotifs] = useState<boolean>(false);
+
+  const [newOrgName, setNewOrgName] = useState("");
+  const [newOrgSlug, setNewOrgSlug] = useState("");
+  const [newOrgCurrency, setNewOrgCurrency] = useState("INR");
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
+
+  const loadUnreadCount = async () => {
+    if (!currentOrg?.id) return;
+    try {
+      const count = await fetchUnreadNotificationCount();
+      setUnreadCount(count);
+    } catch {
+      // Ignore count fetch errors
+    }
+  };
+
+  const loadNotifications = async () => {
+    if (!currentOrg?.id) return;
+    setLoadingNotifs(true);
+    try {
+      const list = await fetchNotifications({ limit: 15 });
+      setNotifications(list);
+      const count = list.filter((n) => !n.is_read).length;
+      setUnreadCount(count);
+    } catch {
+      // Ignore
+    } finally {
+      setLoadingNotifs(false);
+    }
+  };
+
+  useEffect(() => {
+    loadUnreadCount();
+  }, [currentOrg?.id]);
+
+  useEffect(() => {
+    const unsubscribe = subscribe("NOTIFICATION_CREATED", (data: any) => {
+      setUnreadCount((c) => c + 1);
+      setNotifications((prev) => [
+        {
+          id: data.id || Math.random().toString(),
+          organization_id: currentOrg?.id || "",
+          title: data.title || "Notification",
+          message: data.message || "",
+          type: data.type || "INFO",
+          link: data.link,
+          is_read: false,
+          created_at: data.created_at || new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
+    });
+
+    return () => unsubscribe();
+  }, [subscribe, currentOrg?.id]);
+
+  const toggleNotifDrawer = () => {
+    if (!notifOpen) {
+      loadNotifications();
+    }
+    setNotifOpen(!notifOpen);
+  };
+
+  const handleMarkAsRead = async (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    try {
+      await markNotificationRead(id);
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, is_read: true, read_at: new Date().toISOString() } : n))
+      );
+      setUnreadCount((c) => Math.max(0, c - 1));
+    } catch {
+      // Ignore
+    }
+  };
+
+  const handleMarkAllRead = async () => {
+    try {
+      await markAllNotificationsRead();
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+      setUnreadCount(0);
+    } catch {
+      // Ignore
+    }
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    setNewOrgName(name);
+    setNewOrgSlug(name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""));
+  };
+
+  const handleCreateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newOrgName || !newOrgSlug) return;
+    setCreating(true);
+    setCreateError("");
+    try {
+      await createOrganization(newOrgName, newOrgSlug, newOrgCurrency);
+      setModalOpen(false);
+      setNewOrgName("");
+      setNewOrgSlug("");
+      setDropdownOpen(false);
+    } catch (err: any) {
+      setCreateError(err.message || "Failed to create organization");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const getNotifIcon = (type: string) => {
+    switch (type) {
+      case "WARNING":
+        return <AlertTriangle className="w-3.5 h-3.5 text-zinc-700 shrink-0" />;
+      case "SUCCESS":
+        return <CheckCircle2 className="w-3.5 h-3.5 text-zinc-950 shrink-0" />;
+      case "DANGER":
+        return <AlertCircle className="w-3.5 h-3.5 text-zinc-800 shrink-0" />;
+      default:
+        return <Info className="w-3.5 h-3.5 text-zinc-600 shrink-0" />;
+    }
+  };
+
+  return (
+    <>
+      <header className="h-16 bg-white border-b border-zinc-200 px-6 flex items-center justify-between shrink-0 relative z-30">
+        {/* Tenant Selector */}
+        <div className="relative">
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center gap-2.5 text-xs text-zinc-700 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 px-3 py-1.5 rounded-md transition-colors"
+          >
+            <Building2 className="w-3.5 h-3.5 text-zinc-500" />
+            <div className="flex flex-col text-left">
+              <span suppressHydrationWarning className="font-semibold text-zinc-900 leading-tight">
+                {currentOrg ? currentOrg.name : "Select Tenant..."}
+              </span>
+              <span suppressHydrationWarning className="text-[10px] text-zinc-500 font-mono">
+                {currentOrg ? `${currentOrg.slug} · ${currentOrg.currency}` : "Loading"}
+              </span>
+            </div>
+            <ChevronDown className="w-3.5 h-3.5 text-zinc-400 ml-1" />
+          </button>
+
+          {/* Dropdown Menu */}
+          <AnimatePresence>
+            {dropdownOpen && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={tenantMenuVariants}
+                className="absolute top-full left-0 mt-1.5 w-64 bg-white border border-zinc-200 rounded-lg shadow-xl py-1 z-50 origin-top-left"
+              >
+              <div className="px-3 py-1.5 border-b border-zinc-100 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+                Select Active Organization
+              </div>
+              <div className="max-h-48 overflow-y-auto">
+                {organizations.map((org) => (
+                  <button
+                    key={org.id}
+                    onClick={() => {
+                      switchOrganization(org.id);
+                      setDropdownOpen(false);
+                    }}
+                    className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-zinc-50 transition-colors ${
+                      currentOrg?.id === org.id ? "bg-zinc-50 text-zinc-900 font-semibold" : "text-zinc-700"
+                    }`}
+                  >
+                    <div>
+                      <p className="truncate">{org.name}</p>
+                      <p className="text-[10px] text-zinc-400 font-mono">{org.slug} ({org.currency})</p>
+                    </div>
+                    {currentOrg?.id === org.id && <Check className="w-3.5 h-3.5 text-zinc-950" />}
+                  </button>
+                ))}
+              </div>
+              <div className="border-t border-zinc-100 p-1.5">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setModalOpen(true);
+                    setDropdownOpen(false);
+                  }}
+                  className="w-full text-xs gap-1 py-1 h-auto"
+                >
+                  <Plus className="w-3 h-3" />
+                  Add Organization
+                </Button>
+              </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* System & User Controls */}
+        <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="text-xs text-zinc-500 font-medium">System:</span>
+            {isHealthy ? (
+              <Badge variant="success">Operational</Badge>
+            ) : (
+              <Badge variant="danger">Disconnected</Badge>
+            )}
+          </div>
+
+          <GlobalSearch />
+
+          <div
+            className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border transition-colors ${
+              isConnected
+                ? "bg-zinc-100 text-zinc-900 border-zinc-200"
+                : "bg-zinc-50 text-zinc-500 border-zinc-200"
+            }`}
+            title={isConnected ? "Real-time WebSocket stream active" : "Attempting WebSocket connection..."}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isConnected ? "bg-zinc-950" : "bg-zinc-400"
+              }`}
+            />
+            <span>{isConnected ? "Live Stream" : "Connecting..."}</span>
+          </div>
+
+          <div className="h-4 w-px bg-zinc-200" />
+
+          {/* Notifications Bell Dropdown */}
+          <div className="relative">
+            <button
+              onClick={toggleNotifDrawer}
+              className="relative p-2 rounded-lg text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 transition-colors"
+              title="Notifications"
+            >
+              <Bell className="w-4 h-4" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-zinc-950 text-[10px] font-bold text-white shadow-xs">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </button>
+
+            {/* Notifications Popover */}
+            <AnimatePresence>
+              {notifOpen && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={tenantMenuVariants}
+                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-xl border border-zinc-200 shadow-xl py-2 z-50 text-xs origin-top-right"
+                >
+                <div className="px-4 py-2 border-b border-zinc-100 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-zinc-900 text-sm">Notifications</span>
+                    {unreadCount > 0 && (
+                      <Badge variant="danger" className="text-[10px] py-0 px-1.5">
+                        {unreadCount} unread
+                      </Badge>
+                    )}
+                  </div>
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={handleMarkAllRead}
+                      className="text-[11px] text-zinc-900 hover:text-black font-semibold flex items-center gap-1"
+                    >
+                      <CheckCheck className="w-3 h-3" />
+                      Mark all read
+                    </button>
+                  )}
+                </div>
+
+                {/* Notifications List */}
+                <div className="max-h-80 overflow-y-auto divide-y divide-zinc-100">
+                  {loadingNotifs ? (
+                    <div className="p-4 text-center text-zinc-400">Loading notifications...</div>
+                  ) : notifications.length > 0 ? (
+                    notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        onClick={() => {
+                          if (!notif.is_read) handleMarkAsRead(notif.id);
+                        }}
+                        className={`p-3 hover:bg-zinc-50 transition-colors flex items-start gap-2.5 cursor-pointer ${
+                          !notif.is_read ? "bg-zinc-100/70" : ""
+                        }`}
+                      >
+                        {getNotifIcon(notif.type)}
+                        <div className="flex-1 min-w-0 space-y-0.5">
+                          <div className="flex items-center justify-between gap-1">
+                            <p className={`font-semibold truncate ${!notif.is_read ? "text-zinc-900" : "text-zinc-700"}`}>
+                              {notif.title}
+                            </p>
+                            {!notif.is_read && (
+                              <span className="w-2 h-2 rounded-full bg-zinc-950 shrink-0" />
+                            )}
+                          </div>
+                          <p className="text-zinc-600 line-clamp-2 leading-relaxed text-[11px]">{notif.message}</p>
+                          <div className="flex items-center justify-between pt-1 text-[10px] text-zinc-400">
+                            <span>{new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            {notif.link && (
+                              <Link
+                                to={notif.link}
+                                onClick={() => setNotifOpen(false)}
+                                className="text-zinc-950 hover:underline flex items-center gap-0.5 font-medium"
+                              >
+                                View Details <ExternalLink className="w-2.5 h-2.5" />
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-6 text-center text-zinc-500">
+                      <Bell className="w-6 h-6 mx-auto mb-1.5 text-zinc-300" />
+                      <p className="font-medium text-zinc-700">No notifications</p>
+                      <p className="text-[11px] text-zinc-400 mt-0.5">You are all caught up!</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-2 border-t border-zinc-100 bg-zinc-50 text-center">
+                  <Link
+                    to="/audit"
+                    onClick={() => setNotifOpen(false)}
+                    className="text-xs text-zinc-600 hover:text-zinc-900 font-medium"
+                  >
+                    View Full Audit Trails & System Logs →
+                  </Link>
+                </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+<div className="h-4 w-px bg-zinc-200" />
+
+          {/* Active Operator & Live Role Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setUserMenuOpen(!userMenuOpen)}
+              className="flex items-center gap-2 text-sm text-zinc-700 hover:bg-zinc-50 p-1.5 rounded-lg border border-transparent hover:border-zinc-200 transition-[transform,opacity,background-color,border-color,color] cursor-pointer text-left"
+              title="Click to switch active user / role"
+            >
+              <div className="w-7 h-7 rounded-full bg-zinc-100 border border-zinc-300 flex items-center justify-center">
+                <User className="w-4 h-4 text-zinc-600" />
+              </div>
+              <div>
+                <p suppressHydrationWarning className="text-xs font-semibold leading-none text-zinc-900 flex items-center gap-1">
+                  {currentUser?.name || "Admin Operator"}
+                  <ChevronDown className="w-3 h-3 text-zinc-400" />
+                </p>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-900 border border-zinc-200 uppercase tracking-wider">
+                    {currentUser?.role?.replace("_", " ") || "Operator"}
+                  </span>
+                </div>
+              </div>
+            </button>
+
+            <AnimatePresence>
+              {userMenuOpen && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={tenantMenuVariants}
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-lg border border-zinc-200 shadow-xl py-2 z-50 origin-top-right"
+                >
+                  <div className="px-3 py-1.5 border-b border-zinc-100 flex items-center justify-between">
+                    <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+                      Switch Active User (RBAC)
+                    </span>
+                    <span className="text-[10px] text-zinc-400">
+                      {currentOrg?.slug}
+                    </span>
+                  </div>
+                  <div className="max-h-60 overflow-y-auto py-1">
+                    {(currentOrg?.users || []).map((u) => {
+                      const isSelected = u.id === currentUser?.id;
+                      return (
+                        <button
+                          key={u.id}
+                          onClick={() => {
+                            switchUser(u.id);
+                            setUserMenuOpen(false);
+                          }}
+                          className={`w-full px-3 py-2 text-left flex items-start justify-between gap-2 hover:bg-zinc-50 transition-colors ${
+                            isSelected ? "bg-zinc-50/80 font-medium" : ""
+                          }`}
+                        >
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs font-semibold text-zinc-900 truncate">
+                              {u.name}
+                            </p>
+                            <p className="text-[10px] text-zinc-500 truncate">{u.email}</p>
+                          </div>
+                          <span className={`text-[10px] shrink-0 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${u.role === "admin" ? "bg-zinc-950 text-white" : "bg-zinc-100 text-zinc-800 border border-zinc-200"}`}>
+                            {u.role?.replace("_", " ") || u.role}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+</div>
+        </div>
+      </header>
+
+      {/* Add Organization Modal */}
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} maxWidth="md">
+          <div className="p-5 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
+              <h3 className="font-semibold text-zinc-900 text-sm">Create New Organization</h3>
+              <button
+                onClick={() => setModalOpen(false)}
+                className="text-zinc-400 hover:text-zinc-600 p-1"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {createError && (
+              <p className="text-xs text-zinc-950 bg-zinc-100 border border-zinc-300 p-2.5 rounded font-medium">
+                {createError}
+              </p>
+            )}
+
+            <form onSubmit={handleCreateSubmit} className="space-y-3">
+              <Input
+                label="Organization Name"
+                placeholder="e.g. Apex Industrial Supplies"
+                value={newOrgName}
+                onChange={handleNameChange}
+                required
+              />
+              <Input
+                label="Identifier Slug"
+                placeholder="e.g. apex-industrial"
+                value={newOrgSlug}
+                onChange={(e) => setNewOrgSlug(e.target.value)}
+                required
+              />
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 mb-1">
+                  Default Currency
+                </label>
+                <select
+                  value={newOrgCurrency}
+                  onChange={(e) => setNewOrgCurrency(e.target.value)}
+                  className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
+                >
+                  <option value="INR">INR (₹)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" size="sm" disabled={creating}>
+                  {creating ? "Creating..." : "Create Tenant"}
+                </Button>
+              </div>
+            </form>
+          </div>
+      </Modal>
+    </>
+  );
+};

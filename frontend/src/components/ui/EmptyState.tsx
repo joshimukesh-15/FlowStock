@@ -1,0 +1,68 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import {
+  emptyStateContentVariants,
+  emptyStateIconVariants,
+  useReducedMotion,
+} from "@/motion";
+
+interface EmptyStateProps {
+  icon: React.ElementType;
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+  className?: string;
+  /** Compact variant for in-table empty cells. */
+  compact?: boolean;
+}
+
+/**
+ * Empty state — FLOWSTOCK_MOTION_SPEC.md (Section 6).
+ *
+ * Very subtle motion: the icon settles into place with a soft rise.
+ * No looping, no cartoon-style animation. Instant when reduced motion is on.
+ * Color + text carry the message independently of any motion.
+ */
+export const EmptyState: React.FC<EmptyStateProps> = ({
+  icon: Icon,
+  title,
+  description,
+  action,
+  className,
+  compact = false,
+}) => {
+  const prefersReducedMotion = useReducedMotion();
+  const iconVariants = emptyStateIconVariants(prefersReducedMotion);
+  const contentVariants = emptyStateContentVariants(prefersReducedMotion);
+
+  return (
+    <motion.div
+      variants={contentVariants}
+      initial="hidden"
+      animate="visible"
+      className={cn(
+        "flex flex-col items-center justify-center text-center",
+        compact ? "px-4 py-8" : "px-4 py-12",
+        className
+      )}
+    >
+      <motion.div
+        variants={iconVariants}
+        initial="hidden"
+        animate="visible"
+        className="flex items-center justify-center"
+      >
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-400 shadow-xs">
+          <Icon className="h-7 w-7" strokeWidth={1.5} />
+        </span>
+      </motion.div>
+
+      <motion.div variants={contentVariants} initial="hidden" animate="visible" className="mt-4 space-y-1">
+        <p className="text-sm font-semibold text-zinc-800">{title}</p>
+        {description && <p className="text-xs text-zinc-500 max-w-sm leading-relaxed">{description}</p>}
+        {action && <div className="pt-3">{action}</div>}
+      </motion.div>
+    </motion.div>
+  );
+};

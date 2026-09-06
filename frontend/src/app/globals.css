@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --motion-micro: 150ms;
+    --motion-normal: 250ms;
+    --motion-complex: 350ms;
+    --motion-standard: cubic-bezier(0.2, 0, 0, 1);
+    --motion-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body {
+    @apply bg-zinc-50 text-zinc-950 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* CSS counterparts to the TypeScript motion tokens. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+@layer utilities {
+  .app-canvas {
+    background-image: radial-gradient(circle at 10% -10%, rgba(24, 24, 27, 0.04), transparent 28rem);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Dense table preference (toggled from Settings) — reduces row padding app-wide. */
+html.tables-dense table tbody tr > td,
+html.tables-dense table tbody tr > th {
+  padding-top: 0.375rem !important;
+  padding-bottom: 0.375rem !important;
+}

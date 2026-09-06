@@ -1,0 +1,64 @@
+# ==============================================================================
+# FLOWSTOCK GITIGNORE
+# Prevents secrets, runtime databases, caches, and build artifacts from leaking
+# ==============================================================================
+
+# Secrets and environment files (strictly exclude all live environment configs)
+.env
+.env.*
+*.env
+*.env.*
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# SQLite & Runtime databases
+*.db
+*.db-journal
+*.db-wal
+*.sqlite
+*.sqlite3
+flowstock.db
+backend/flowstock.db
+
+# Python & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+
+# Node & Next.js
+frontend/node_modules/
+node_modules/
+frontend/.next/
+.next/
+out/
+build/
+dist/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# File Storage & Uploads
+uploads/
+backend/app/storage/uploads/*
+!backend/app/storage/uploads/.gitkeep
+
+# Operating system & Editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
