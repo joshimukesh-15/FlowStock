@@ -31,6 +31,7 @@ import {
 } from "@/lib/api";
 import { Warehouse, StockTransfer, Product } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
+import { useToast } from "@/context/ToastContext";
 import { WarehouseTransferVisualizer } from "@/components/ui/WarehouseTransferVisualizer";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
@@ -41,6 +42,7 @@ import { DURATION, EASING, SCALE, useReducedMotion, createStaggerContainer, slid
 
 export default function WarehousesPage() {
   const { currentOrg } = useTenant();
+  const { toast } = useToast();
   const prefersReducedMotion = useReducedMotion();
   const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
   const itemVariants = slideUpVariants(prefersReducedMotion);
@@ -124,6 +126,7 @@ export default function WarehousesPage() {
       setWarehouseCode("");
       setWarehouseLocation("");
       setWarehouseIsDefault(false);
+      toast.success("Warehouse added", "Facility successfully registered.");
       await loadData();
     } catch (err: any) {
       setWarehouseError(err.message || "Failed to create warehouse");
@@ -160,6 +163,7 @@ export default function WarehousesPage() {
       setTransferModalOpen(false);
       setTransferNotes("");
       setTransferQuantity(5);
+      toast.success("Transfer initiated", "Stock transfer logged.");
       await loadData();
     } catch (err: any) {
       setTransferError(err.message || "Failed to create transfer");
@@ -172,9 +176,10 @@ export default function WarehousesPage() {
     setActionLoading(transferId);
     try {
       await dispatchTransferApi(transferId);
+      toast.success("Transfer dispatched", "Transit movement initiated.");
       await loadData();
     } catch (err: any) {
-      alert(`Dispatch failed: ${err.message || "Unknown error"}`);
+      toast.error("Dispatch failed", err.message || "Unknown error");
     } finally {
       setActionLoading(null);
     }
@@ -184,9 +189,10 @@ export default function WarehousesPage() {
     setActionLoading(transferId);
     try {
       await receiveTransferApi(transferId);
+      toast.success("Transfer received", "Destination facility stock replenished.");
       await loadData();
     } catch (err: any) {
-      alert(`Receive failed: ${err.message || "Unknown error"}`);
+      toast.error("Receive failed", err.message || "Unknown error");
     } finally {
       setActionLoading(null);
     }
@@ -810,9 +816,10 @@ export default function WarehousesPage() {
             try {
               await cancelTransferApi(transferIdToCancel);
               setTransferIdToCancel(null);
+              toast.success("Transfer cancelled", "Stock transfer marked as cancelled.");
               await loadData();
             } catch (err: any) {
-              alert(`Cancel failed: ${err.message || "Unknown error"}`);
+              toast.error("Cancel failed", err.message || "Unknown error");
             } finally {
               setActionLoading(null);
             }

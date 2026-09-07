@@ -38,6 +38,7 @@ import {
 } from "@/lib/api";
 import { Invoice, SalesOrder, Customer, Product } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
+import { useToast } from "@/context/ToastContext";
 import { formatINR } from "@/lib/utils";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -57,6 +58,7 @@ const PAYMENT_METHODS = [
 
 export default function InvoicesPage() {
   const { currentOrg } = useTenant();
+  const { toast } = useToast();
   const prefersReducedMotion = useReducedMotion();
   const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
   const itemVariants = slideUpVariants(prefersReducedMotion);
@@ -231,6 +233,7 @@ export default function InvoicesPage() {
       setCreateModalOpen(false);
       setCustomItems([]);
       setCustomNotes("");
+      toast.success("Invoice created", `Tax invoice ${newInv.invoice_number} generated.`);
       await loadData();
       setViewInvoice(newInv);
     } catch (err: any) {
@@ -279,6 +282,7 @@ export default function InvoicesPage() {
         notes: payNotes.trim() || undefined,
       });
       setPaymentModalOpen(false);
+      toast.success("Payment recorded", `₹${payAmount} logged for ${paymentInvoice.invoice_number}.`);
       await loadData();
       if (viewInvoice && viewInvoice.id === updatedInv.id) {
         setViewInvoice(updatedInv);
@@ -1439,8 +1443,9 @@ export default function InvoicesPage() {
                 setViewInvoice(updated);
               }
               setInvoiceIdToVoid(null);
+              toast.success("Invoice voided", `Invoice ${updated.invoice_number} has been voided.`);
             } catch (err: any) {
-              alert(`Void failed: ${err.message}`);
+              toast.error("Void failed", err.message || "Unable to void invoice");
             } finally {
               setActionLoading(null);
             }

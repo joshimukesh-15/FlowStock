@@ -36,6 +36,7 @@ import {
 } from "@/lib/api";
 import { PurchaseOrder, Supplier, Product, Warehouse } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
+import { useToast } from "@/context/ToastContext";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { POLifecycleStepper } from "@/components/ui/POLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
@@ -47,6 +48,7 @@ import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/mot
 
 export default function PurchasingPage() {
   const { currentOrg } = useTenant();
+  const { toast } = useToast();
   const prefersReducedMotion = useReducedMotion();
   const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
   const itemVariants = slideUpVariants(prefersReducedMotion);
@@ -118,11 +120,11 @@ export default function PurchasingPage() {
 
   const handleOpenCreatePO = () => {
     if (products.length === 0) {
-      alert("Please add products to catalog first before creating purchase orders.");
+      toast.warning("Catalog empty", "Please add products to catalog first before creating purchase orders.");
       return;
     }
     if (warehouses.length === 0) {
-      alert("Please add at least one warehouse before creating purchase orders.");
+      toast.warning("No warehouse found", "Please add at least one warehouse before creating purchase orders.");
       return;
     }
     if (suppliers.length === 0) {
@@ -205,6 +207,7 @@ export default function PurchasingPage() {
         })),
       });
       setPoModalOpen(false);
+      toast.success("Purchase order created", "PO registered in draft state.");
       await loadData();
     } catch (err: any) {
       setPoError(err.message || "Failed to create purchase order");
@@ -230,6 +233,7 @@ export default function PurchasingPage() {
         address: supAddress.trim() || undefined,
         payment_terms: supTerms || "Net 30",
       });
+      toast.success("Supplier created", `${newSup.name} added to vendor directory.`);
       setSupplierModalOpen(false);
       setSupName("");
       setSupEmail("");
@@ -251,9 +255,10 @@ export default function PurchasingPage() {
     try {
       const updated = await issuePurchaseOrderApi(poId);
       if (detailPO?.id === poId) setDetailPO(updated);
+      toast.success("PO issued", `Purchase order ${updated.po_number} issued to supplier.`);
       await loadData();
     } catch (err: any) {
-      alert(`Issue PO error: ${err.message || "Unable to issue PO"}`);
+      toast.error("Issue PO error", err.message || "Unable to issue PO");
     } finally {
       setActionLoading(null);
     }
@@ -264,9 +269,10 @@ export default function PurchasingPage() {
     try {
       const updated = await receivePurchaseOrderApi(poId);
       if (detailPO?.id === poId) setDetailPO(updated);
+      toast.success("Goods received", `Inventory updated for PO ${updated.po_number}.`);
       await loadData();
     } catch (err: any) {
-      alert(`Receiving error: ${err.message || "Unable to receive goods"}`);
+      toast.error("Receiving error", err.message || "Unable to receive goods");
     } finally {
       setActionLoading(null);
     }
@@ -1192,9 +1198,10 @@ export default function PurchasingPage() {
               const updated = await cancelPurchaseOrderApi(poIdToCancel);
               if (detailPO?.id === poIdToCancel) setDetailPO(updated);
               setPoIdToCancel(null);
+              toast.success("PO cancelled", `Purchase order ${updated.po_number} was cancelled.`);
               await loadData();
             } catch (err: any) {
-              alert(`Cancellation error: ${err.message || "Unable to cancel PO"}`);
+              toast.error("Cancellation error", err.message || "Unable to cancel PO");
             } finally {
               setActionLoading(null);
             }

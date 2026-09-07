@@ -37,6 +37,7 @@ import {
 } from "@/lib/api";
 import { SalesOrder, Customer, Product, Warehouse } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
+import { useToast } from "@/context/ToastContext";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { OrderLifecycleStepper } from "@/components/ui/OrderLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
@@ -48,6 +49,7 @@ import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/mot
 
 export default function OrdersPage() {
   const { currentOrg } = useTenant();
+  const { toast } = useToast();
   const prefersReducedMotion = useReducedMotion();
   const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
   const itemVariants = slideUpVariants(prefersReducedMotion);
@@ -119,7 +121,7 @@ export default function OrdersPage() {
 
   const handleOpenCreateOrder = () => {
     if (products.length === 0) {
-      alert("Please add products to catalog first before creating sales orders.");
+      toast.warning("No products available", "Please add products to catalog first before creating sales orders.");
       return;
     }
     if (customers.length === 0) {
@@ -202,6 +204,7 @@ export default function OrdersPage() {
         })),
       });
       setOrderModalOpen(false);
+      toast.success("Sales order created", "Order has been registered in draft state.");
       await loadData();
     } catch (err: any) {
       setOrderError(err.message || "Failed to create sales order");
@@ -227,6 +230,7 @@ export default function OrdersPage() {
         billing_address: custBilling.trim() || undefined,
         shipping_address: custShipping.trim() || undefined,
       });
+      toast.success("Customer created", `${newCust.name} added.`);
       setCustomerModalOpen(false);
       setCustName("");
       setCustEmail("");
@@ -248,9 +252,10 @@ export default function OrdersPage() {
     try {
       const updated = await confirmOrderApi(orderId);
       if (detailOrder?.id === orderId) setDetailOrder(updated);
+      toast.success("Order confirmed", `Stock reserved for ${updated.order_number}.`);
       await loadData();
     } catch (err: any) {
-      alert(`Stock reservation error: ${err.message || "Unable to confirm order"}`);
+      toast.error("Stock reservation error", err.message || "Unable to confirm order");
     } finally {
       setActionLoading(null);
     }
@@ -261,9 +266,10 @@ export default function OrdersPage() {
     try {
       const updated = await fulfillOrderApi(orderId);
       if (detailOrder?.id === orderId) setDetailOrder(updated);
+      toast.success("Order fulfilled", `${updated.order_number} marked as fulfilled.`);
       await loadData();
     } catch (err: any) {
-      alert(`Fulfillment error: ${err.message || "Unable to fulfill order"}`);
+      toast.error("Fulfillment error", err.message || "Unable to fulfill order");
     } finally {
       setActionLoading(null);
     }
@@ -1164,9 +1170,10 @@ export default function OrdersPage() {
               const updated = await cancelOrderApi(orderIdToCancel);
               if (detailOrder?.id === orderIdToCancel) setDetailOrder(updated);
               setOrderIdToCancel(null);
+              toast.success("Order cancelled", `Order ${updated.order_number} has been cancelled.`);
               await loadData();
             } catch (err: any) {
-              alert(`Cancellation error: ${err.message || "Unable to cancel order"}`);
+              toast.error("Cancellation error", err.message || "Unable to cancel order");
             } finally {
               setActionLoading(null);
             }

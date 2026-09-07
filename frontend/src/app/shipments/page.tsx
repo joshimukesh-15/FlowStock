@@ -36,6 +36,7 @@ import {
 } from "@/lib/api";
 import { Shipment, SalesOrder } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
+import { useToast } from "@/context/ToastContext";
 import { formatINR } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ShipmentLifecycleStepper } from "@/components/ui/ShipmentLifecycleStepper";
@@ -59,6 +60,7 @@ const CARRIERS = [
 
 export default function ShipmentsPage() {
   const { currentOrg } = useTenant();
+  const { toast } = useToast();
   const prefersReducedMotion = useReducedMotion();
   const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
   const itemVariants = slideUpVariants(prefersReducedMotion);
@@ -182,6 +184,7 @@ export default function ShipmentsPage() {
       setCreateModalOpen(false);
       setNotes("");
       setTrackingNumber("");
+      toast.success("Shipment created", "Consignment generated and ready for pickup.");
       await loadData();
     } catch (err: any) {
       setFormError(err.message || "Failed to create shipment");
@@ -199,8 +202,9 @@ export default function ShipmentsPage() {
         description: "Handed over to carrier linehaul vehicle",
       });
       updateLocalShipment(updated);
+      toast.success("Shipment dispatched", `Shipment ${updated.tracking_number} is in transit.`);
     } catch (err: any) {
-      alert(`Dispatch failed: ${err.message}`);
+      toast.error("Dispatch failed", err.message || "Unable to dispatch");
     } finally {
       setActionLoading(null);
     }
@@ -214,8 +218,9 @@ export default function ShipmentsPage() {
         description: "Dispatched with local delivery agent for doorstep handover",
       });
       updateLocalShipment(updated);
+      toast.success("Out for delivery", `Shipment ${updated.tracking_number} is out with local agent.`);
     } catch (err: any) {
-      alert(`Out for delivery update failed: ${err.message}`);
+      toast.error("Out for delivery failed", err.message || "Unable to update status");
     } finally {
       setActionLoading(null);
     }
@@ -229,8 +234,9 @@ export default function ShipmentsPage() {
         description: "Package delivered and electronic proof of delivery signed",
       });
       updateLocalShipment(updated);
+      toast.success("Shipment delivered", `Proof of delivery confirmed for ${updated.tracking_number}.`);
     } catch (err: any) {
-      alert(`Delivery confirmation failed: ${err.message}`);
+      toast.error("Delivery confirmation failed", err.message || "Unable to confirm delivery");
     } finally {
       setActionLoading(null);
     }
@@ -259,8 +265,9 @@ export default function ShipmentsPage() {
       );
       setNewCheckpointLocation("");
       setNewCheckpointDesc("");
+      toast.success("Checkpoint logged", "Milestone recorded to tracking timeline.");
     } catch (err: any) {
-      alert(`Failed to add checkpoint: ${err.message}`);
+      toast.error("Failed to add checkpoint", err.message || "Unable to record event");
     } finally {
       setLoggingCheckpoint(false);
     }
@@ -1060,8 +1067,9 @@ export default function ShipmentsPage() {
               });
               updateLocalShipment(updated);
               setShipmentIdToCancel(null);
+              toast.success("Shipment cancelled", `Consignment ${updated.tracking_number} was cancelled.`);
             } catch (err: any) {
-              alert(`Cancellation failed: ${err.message}`);
+              toast.error("Cancellation failed", err.message || "Unable to cancel shipment");
             } finally {
               setActionLoading(null);
             }

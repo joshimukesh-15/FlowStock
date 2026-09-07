@@ -74,3 +74,14 @@ table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:fir
   box-shadow: inset 3px 0 0 0 #09090b;
 }
 
+/* Toast shrinking progress bar animation */
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+

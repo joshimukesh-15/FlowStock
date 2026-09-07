@@ -9,9 +9,7 @@ import React, {
   useCallback,
 } from "react";
 import { useTenant } from "./TenantContext";
-import { X, Bell, CheckCircle2, AlertTriangle, AlertCircle, Info } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useReducedMotion, toastVariants } from "../motion";
+import { useToast } from "./ToastContext";
 
 export interface RealtimeEvent {
   event: string;
@@ -47,39 +45,32 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { currentOrg } = useTenant();
+  const { toast } = useToast();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [lastEvent, setLastEvent] = useState<RealtimeEvent | null>(null);
-  const [toasts, setToasts] = useState<ToastItem[]>([]);
-  const prefersReducedMotion = useReducedMotion();
-  const toastAnimVariants = toastVariants(prefersReducedMotion);
 
   const wsRef = useRef<WebSocket | null>(null);
   const listenersRef = useRef<Map<string, Set<(data: any) => void>>>(new Map());
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const dismissToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  }, []);
-
-  const addToast = useCallback((toast: Omit<ToastItem, "id" | "timestamp">) => {
-    // Respect the live-toast preference stored from Settings (off = no floating toasts)
-    if (typeof window !== "undefined" && localStorage.getItem("flowstock_live_toasts") === "off") {
-      return;
-    }
-    const id = Math.random().toString(36).substring(2, 9);
-    const newToast: ToastItem = {
-      ...toast,
-      id,
-      timestamp: new Date().toLocaleTimeString(),
-    };
-    setToasts((prev) => [newToast, ...prev].slice(0, 5));
-
-    // Auto-dismiss after 5 seconds
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 5000);
-  }, []);
+  const addToast = useCallback(
+    (item: Omit<ToastItem, "id" | "timestamp">) => {
+      // Respect the live-toast preference stored from Settings (off = no floating toasts)
+      if (typeof window !== "undefined" && localStorage.getItem("flowstock_live_toasts") === "off") {
+        return;
+      }
+      const typeMap: Record<string, "success" | "error" | "warning" | "info"> = {
+        SUCCESS: "success",
+        DANGER: "error",
+        WARNING: "warning",
+        INFO: "info",
+      };
+      const toastType = typeMap[item.type] || "info";
+      toast[toastType](item.title, item.message, { link: item.link });
+    },
+    [toast]
+  );
 
   const subscribe = useCallback(
     (event: string, callback: (data: any) => void) => {
@@ -217,55 +208,11 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
         isConnected,
         lastEvent,
         subscribe,
-        toasts,
-        dismissToast,
+        toasts: [],
+        dismissToast: () => {},
       }}
     >
       {children}
-
-      {/* Real-Time Floating Toast Stack */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none">
-        <AnimatePresence>
-          {toasts.map((toast) => (
-            <motion.div
-              key={toast.id}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={toastAnimVariants}
-              className="pointer-events-auto bg-zinc-950 text-white p-3.5 rounded-lg shadow-xl border border-zinc-700/80 backdrop-blur-sm flex items-start gap-3"
-            >
-              <div className="mt-0.5 shrink-0">
-                {toast.type === "SUCCESS" && <CheckCircle2 className="w-4 h-4 text-white" />}
-                {toast.type === "WARNING" && <AlertTriangle className="w-4 h-4 text-zinc-300" />}
-                {toast.type === "DANGER" && <AlertCircle className="w-4 h-4 text-zinc-400" />}
-                {toast.type === "INFO" && <Info className="w-4 h-4 text-zinc-300" />}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-semibold text-white truncate">{toast.title}</span>
-                  <span className="text-[10px] text-zinc-400 shrink-0 font-mono">{toast.timestamp}</span>
-                </div>
-                <p className="text-[11px] text-zinc-300 mt-0.5 line-clamp-2">{toast.message}</p>
-                {toast.link && (
-                  <a
-                    href={toast.link}
-                    className="text-[10px] text-white hover:text-white font-medium inline-block mt-1 underline"
-                  >
-                    View details &rarr;
-                  </a>
-                )}
-              </div>
-              <button
-                onClick={() => dismissToast(toast.id)}
-                className="text-zinc-400 hover:text-white p-0.5 -mr-1 -mt-1 rounded"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
     </WebSocketContext.Provider>
   );
 };

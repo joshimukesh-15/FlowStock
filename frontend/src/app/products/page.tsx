@@ -27,6 +27,7 @@ import {
 } from "@/lib/api";
 import { Product, Category } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
+import { useToast } from "@/context/ToastContext";
 import { motion } from "framer-motion";
 import { fadeInVariants, useReducedMotion } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
@@ -36,6 +37,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function ProductsPage() {
   const { currentOrg } = useTenant();
+  const { toast } = useToast();
   const prefersReducedMotion = useReducedMotion();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -145,8 +147,10 @@ export default function ProductsPage() {
 
       if (editingProduct) {
         await updateProductApi(editingProduct.id, payload);
+        toast.success("Product updated", `${formData.name} was successfully updated.`);
       } else {
         await createProductApi(payload);
+        toast.success("Product created", `${formData.name} was successfully added to catalog.`);
       }
       setProductModalOpen(false);
       await loadData();
@@ -168,6 +172,7 @@ export default function ProductsPage() {
     setCatError("");
     try {
       await createCategoryApi({ name: catName, description: catDesc });
+      toast.success("Category created", `Category "${catName}" is ready.`);
       setCategoryModalOpen(false);
       setCatName("");
       setCatDesc("");
@@ -503,11 +508,13 @@ export default function ProductsPage() {
             onConfirm={async () => {
               if (!deleteTarget) return;
               try {
+                const targetName = deleteTarget.name;
                 await deleteProductApi(deleteTarget.id);
                 setDeleteTarget(null);
+                toast.success("Product deleted", `${targetName} was successfully removed.`);
                 await loadData();
               } catch (err: any) {
-                alert("Failed to delete: " + err.message);
+                toast.error("Failed to delete", err.message || "An error occurred");
               }
             }}
             title="Delete Product"
