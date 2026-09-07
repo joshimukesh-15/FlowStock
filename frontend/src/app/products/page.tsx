@@ -87,8 +87,11 @@ export default function ProductsPage() {
   };
 
   useEffect(() => {
-    loadData();
-  }, [currentOrg?.id, selectedCategory]);
+    const timer = setTimeout(() => {
+      loadData();
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [currentOrg?.id, selectedCategory, searchTerm]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -215,16 +218,25 @@ export default function ProductsPage() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <form onSubmit={handleSearchSubmit} className="flex-1 flex gap-2">
               <div className="relative flex-1">
-                <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-2.5" />
+                <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-2.5 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search products by name or SKU..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-sm rounded-md border border-zinc-300 bg-white focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
+                  className="w-full pl-9 pr-8 py-1.5 text-sm rounded-md border border-zinc-300 bg-white focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
                 />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-2.5 top-2.5 text-zinc-400 hover:text-zinc-700 p-0.5"
+                    title="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
-              <Button type="submit" variant="secondary" size="sm">Search</Button>
             </form>
 
             <div className="flex items-center gap-2">

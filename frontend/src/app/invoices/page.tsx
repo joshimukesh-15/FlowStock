@@ -23,6 +23,7 @@ import {
   Calendar,
   AlertCircle,
   Percent,
+  Search,
 } from "lucide-react";
 import {
   fetchInvoices,
@@ -545,13 +546,24 @@ export default function InvoicesPage() {
               </div>
 
               {/* Search Bar */}
-              <div className="w-full md:w-72">
+              <div className="w-full md:w-72 relative">
+                <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-3 pointer-events-none" />
                 <Input
                   placeholder="Search invoice #, customer, or UTR..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-zinc-50 border-zinc-800 text-xs h-9"
+                  className="bg-zinc-50 border-zinc-300 text-xs h-9 pl-8 pr-7"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-2.5 text-zinc-400 hover:text-zinc-700 p-0.5"
+                    title="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
             </div>
           </CardHeader>

@@ -17,6 +17,7 @@ import {
   DollarSign,
   Package,
   X,
+  Search,
 } from "lucide-react";
 import {
   fetchInventorySummaries,
@@ -40,6 +41,16 @@ export default function InventoryPage() {
 
   const [summaries, setSummaries] = useState<ProductStockSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const filteredSummaries = summaries.filter((s) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    const matchName = s.product.name.toLowerCase().includes(q);
+    const matchSku = s.product.sku.toLowerCase().includes(q);
+    const matchCat = (s.product.category?.name || "").toLowerCase().includes(q);
+    return matchName || matchSku || matchCat;
+  });
 
   // Record Movement Modal State
   const [movementModalOpen, setMovementModalOpen] = useState(false);
@@ -266,10 +277,30 @@ export default function InventoryPage() {
       {/* Inventory Table */}
       <motion.div variants={itemVariants}>
         <Card className="overflow-hidden bg-white border-zinc-200 shadow-sm">
-          <CardHeader className="py-3 px-4 bg-zinc-50 border-b border-zinc-200">
+          <CardHeader className="py-3 px-4 bg-zinc-50 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <CardTitle className="text-sm font-semibold text-zinc-700">
               Live On-Hand Stock Levels & Reorder Thresholds
             </CardTitle>
+            <div className="relative w-full sm:w-64">
+              <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search by SKU, product, category..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-8 pr-7 py-1 text-xs rounded-md border border-zinc-300 bg-white focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2 top-1 text-zinc-400 hover:text-zinc-700 p-0.5"
+                  title="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </CardHeader>
 
           <div className="overflow-x-auto">
@@ -295,19 +326,19 @@ export default function InventoryPage() {
                       <SkeletonAnnouncer label="Calculating current ledger balances" />
                     </td>
                   </tr>
-                ) : summaries.length === 0 ? (
+                ) : filteredSummaries.length === 0 ? (
                   <tr>
                     <td colSpan={9}>
                       <EmptyState
                         compact
                         icon={Boxes}
-                        title="No inventory data available"
-                        description="Create products or record an incoming stock movement to begin tracking."
+                        title={searchQuery ? "No matching inventory records" : "No inventory data available"}
+                        description={searchQuery ? "Try refining your search keyword." : "Create products or record an incoming stock movement to begin tracking."}
                       />
                     </td>
                   </tr>
                 ) : (
-                  summaries.map((s) => (
+                  filteredSummaries.map((s) => (
                     <tr
                       key={s.product.id}
                       className={`hover:bg-zinc-50/80 transition-colors ${

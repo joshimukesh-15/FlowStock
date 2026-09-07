@@ -21,6 +21,7 @@ import {
   Warehouse as WarehouseIcon,
   PackagePlus,
   Boxes,
+  Search,
 } from "lucide-react";
 import {
   fetchPurchaseOrders,
@@ -460,12 +461,23 @@ export default function PurchasingPage() {
           <CardHeader className="border-b border-zinc-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <div className="relative">
+                <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-2.5 pointer-events-none" />
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by PO # or vendor..."
-                  className="w-64 text-xs h-8"
+                  className="w-64 text-xs h-8 pl-8 pr-7"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2 top-2 text-zinc-400 hover:text-zinc-700 p-0.5"
+                    title="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
 
               {/* Status Filter Tabs */}

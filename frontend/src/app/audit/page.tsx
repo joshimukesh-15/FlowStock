@@ -21,6 +21,7 @@ import {
   Boxes,
   ShoppingCart,
   Building2,
+  X,
 } from "lucide-react";
 import { fetchHealth, fetchAuditLogs } from "@/lib/api";
 import { HealthResponse, AuditLog } from "@/types/api";
@@ -60,8 +61,11 @@ export default function AuditPage() {
   };
 
   useEffect(() => {
-    loadAudits();
-  }, [currentOrg?.id, selectedEntity]);
+    const timer = setTimeout(() => {
+      loadAudits();
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [currentOrg?.id, selectedEntity, searchTerm]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -215,32 +219,28 @@ export default function AuditPage() {
             {/* Search Input */}
             <form onSubmit={handleSearch} className="flex gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400" />
+                <Search className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400 pointer-events-none" />
                 <Input
                   placeholder="Search by action, entity name (e.g. SO-3F2383, INV-ACME-01), operator, or details..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 text-xs"
+                  className="pl-9 pr-8 text-xs"
                 />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-2.5 top-2.5 text-zinc-400 hover:text-zinc-700 p-0.5"
+                    title="Clear search"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
               <Button type="submit" size="sm" variant="secondary" className="text-xs gap-1.5">
                 <Filter className="w-3.5 h-3.5" />
                 Filter
               </Button>
-              {searchTerm && (
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    setSearchTerm("");
-                    loadAudits();
-                  }}
-                  className="text-xs"
-                >
-                  Clear
-                </Button>
-              )}
             </form>
           </CardContent>
         </Card>
