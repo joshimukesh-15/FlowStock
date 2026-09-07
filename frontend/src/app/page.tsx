@@ -51,6 +51,7 @@ import { AnimatedProgressBar } from "@/components/ui/AnimatedProgressBar";
 import { CardSkeleton, ListSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { RevenueVelocityMatrix } from "@/components/dashboard/RevenueVelocityMatrix";
+import { OrderStatusDistribution } from "@/components/dashboard/OrderStatusDistribution";
 
 export default function HomePage() {
   const [health, setHealth] = useState<HealthResponse | null>(null);
@@ -490,90 +491,8 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          {/* Right Column: Order Pipeline Velocity (5 cols) */}
-          <Card className="lg:col-span-5 flex flex-col">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-zinc-900 flex items-center gap-2">
-                <ShoppingCart className="w-4 h-4 text-zinc-600" />
-                Sales Order Fulfillment Funnel
-              </CardTitle>
-              <p className="text-xs text-zinc-500">
-                Order flow distribution across lifecycle stages
-              </p>
-            </CardHeader>
-            <CardContent className="p-4 pt-0 flex-1 flex flex-col justify-between space-y-4">
-              {/* Pipeline Bars */}
-              <div className="space-y-3">
-                {/* Draft Stage */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="font-medium text-zinc-700 flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-zinc-400" />
-                      Draft Inquiries
-                    </span>
-                    <span className="font-semibold text-zinc-900">
-                      {summary?.orders.draft_count || 0} orders ({summary ? formatINR(summary.orders.draft_value) : "₹0"})
-                    </span>
-                  </div>
-                  <AnimatedProgressBar
-                    value={summary?.orders.total_orders ? ((summary.orders.draft_count || 0) / summary.orders.total_orders) * 100 : 0}
-                    label="Draft inquiries share of all orders"
-                    className="bg-zinc-400"
-                  />
-                </div>
-
-                {/* Confirmed Stage */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="font-medium text-zinc-700 flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-zinc-600" />
-                      Confirmed & Reserved
-                    </span>
-                    <span className="font-semibold text-zinc-900 font-bold">
-                      {summary?.orders.confirmed_count || 0} orders ({summary ? formatINR(summary.orders.confirmed_value) : "₹0"})
-                    </span>
-                  </div>
-                  <AnimatedProgressBar
-                    value={summary?.orders.total_orders ? ((summary.orders.confirmed_count || 0) / summary.orders.total_orders) * 100 : 0}
-                    label="Confirmed orders share of all orders"
-                    className="bg-zinc-600"
-                  />
-                </div>
-
-                {/* Fulfilled Stage */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="font-medium text-zinc-900 flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-zinc-900" />
-                      Fulfilled & Dispatched
-                    </span>
-                    <span className="font-semibold text-zinc-900 font-bold">
-                      {summary?.orders.fulfilled_count || 0} orders ({summary ? formatINR(summary.orders.fulfilled_value) : "₹0"})
-                    </span>
-                  </div>
-                  <AnimatedProgressBar
-                    value={summary?.orders.total_orders ? ((summary.orders.fulfilled_count || 0) / summary.orders.total_orders) * 100 : 0}
-                    label="Fulfilled orders share of all orders"
-                    className="bg-zinc-900"
-                  />
-                </div>
-              </div>
-
-              {/* Order Funnel Summary Footer */}
-              <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-200 flex items-center justify-between text-xs">
-                <div>
-                  <span className="text-zinc-500">Active Pipeline Value:</span>
-                  <p className="font-bold text-zinc-900 text-sm">{summary ? formatINR(summary.orders.active_order_book_value) : "₹0.00"}</p>
-                </div>
-                <Link to="/orders">
-                  <Button variant="outline" size="sm" className="gap-1 text-xs">
-                    Orders Console
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Right Column: Order Status Distribution (5 cols) */}
+          <OrderStatusDistribution summary={summary} className="lg:col-span-5" />
         </div>
 
         {/* ROW 3: Warehouse Stock Distribution & Top Selling SKUs */}
