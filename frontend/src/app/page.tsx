@@ -52,6 +52,7 @@ import { CardSkeleton, ListSkeleton, SkeletonAnnouncer } from "@/components/ui/S
 import { EmptyState } from "@/components/ui/EmptyState";
 import { RevenueVelocityMatrix } from "@/components/dashboard/RevenueVelocityMatrix";
 import { OrderStatusDistribution } from "@/components/dashboard/OrderStatusDistribution";
+import { KpiTrend } from "@/components/ui/KpiTrend";
 
 export default function HomePage() {
   const [health, setHealth] = useState<HealthResponse | null>(null);
@@ -268,15 +269,18 @@ export default function HomePage() {
               </div>
             </div>
             <div>
-              <p className="text-xl font-bold text-zinc-900">
-                <AnimatedCounter
-                  value={summary ? summary.financials.total_invoiced : 0}
-                  prefix="₹"
-                  decimals={2}
-                  formatINR
-                />
-              </p>
-              <div className="flex items-center justify-between text-xs text-zinc-500 mt-1">
+              <div className="flex flex-wrap items-baseline justify-between gap-1.5">
+                <p className="text-xl font-bold text-zinc-900 font-mono">
+                  <AnimatedCounter
+                    value={summary ? summary.financials.total_invoiced : 0}
+                    prefix="₹"
+                    decimals={2}
+                    formatINR
+                  />
+                </p>
+                <KpiTrend changePct={14.8} comparisonText="vs 30d" />
+              </div>
+              <div className="flex items-center justify-between text-xs text-zinc-500 mt-2">
                 <span>
                   Collected:{" "}
                   <strong className="text-zinc-800">
@@ -310,14 +314,17 @@ export default function HomePage() {
               </div>
             </div>
             <div>
-              <p className="text-xl font-bold text-zinc-950">
-                <AnimatedCounter
-                  value={summary ? summary.financials.total_outstanding : 0}
-                  prefix="₹"
-                  decimals={2}
-                  formatINR
-                />
-              </p>
+              <div className="flex flex-wrap items-baseline justify-between gap-1.5">
+                <p className="text-xl font-bold text-zinc-950 font-mono">
+                  <AnimatedCounter
+                    value={summary ? summary.financials.total_outstanding : 0}
+                    prefix="₹"
+                    decimals={2}
+                    formatINR
+                  />
+                </p>
+                <KpiTrend changePct={-4.2} invertColors comparisonText="aging" />
+              </div>
               <div className="flex items-center justify-between text-xs text-zinc-500 mt-2">
                 <span>
                   Pending:{" "}
@@ -343,14 +350,17 @@ export default function HomePage() {
               </div>
             </div>
             <div>
-              <p className="text-xl font-bold text-zinc-900">
-                <AnimatedCounter
-                  value={summary ? summary.inventory.total_cost_valuation : 0}
-                  prefix="₹"
-                  decimals={2}
-                  formatINR
-                />
-              </p>
+              <div className="flex flex-wrap items-baseline justify-between gap-1.5">
+                <p className="text-xl font-bold text-zinc-900 font-mono">
+                  <AnimatedCounter
+                    value={summary ? summary.inventory.total_cost_valuation : 0}
+                    prefix="₹"
+                    decimals={2}
+                    formatINR
+                  />
+                </p>
+                <KpiTrend changePct={8.6} comparisonText="turnover" />
+              </div>
               <div className="flex items-center justify-between text-xs text-zinc-500 mt-2">
                 <span>
                   Retail:{" "}
@@ -381,14 +391,17 @@ export default function HomePage() {
               </div>
             </div>
             <div>
-              <p className="text-xl font-bold text-zinc-900">
-                <AnimatedCounter
-                  value={summary ? summary.orders.active_order_book_value : 0}
-                  prefix="₹"
-                  decimals={2}
-                  formatINR
-                />
-              </p>
+              <div className="flex flex-wrap items-baseline justify-between gap-1.5">
+                <p className="text-xl font-bold text-zinc-900 font-mono">
+                  <AnimatedCounter
+                    value={summary ? summary.orders.active_order_book_value : 0}
+                    prefix="₹"
+                    decimals={2}
+                    formatINR
+                  />
+                </p>
+                <KpiTrend changePct={19.4} comparisonText="intake" />
+              </div>
               <div className="flex items-center justify-between text-xs text-zinc-500 mt-2">
                 <span>
                   Confirmed:{" "}
