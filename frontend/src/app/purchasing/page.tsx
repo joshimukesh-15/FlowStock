@@ -44,6 +44,7 @@ import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
+import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { motion } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 
@@ -309,31 +310,27 @@ export default function PurchasingPage() {
     switch (status) {
       case "DRAFT":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-zinc-800 text-zinc-700 border border-zinc-700">
-            <Clock className="w-3 h-3" />
+          <AnimatedBadge statusKey={status} variant="default" icon={Clock}>
             DRAFT
-          </span>
+          </AnimatedBadge>
         );
       case "ISSUED":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-zinc-100 text-zinc-900 border border-zinc-300">
-            <Send className="w-3 h-3" />
+          <AnimatedBadge statusKey={status} variant="warning" icon={Send} pulse>
             ISSUED TO VENDOR
-          </span>
+          </AnimatedBadge>
         );
       case "RECEIVED":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-zinc-900/10 text-zinc-900 border border-zinc-900/20">
-            <CheckCircle2 className="w-3 h-3" />
+          <AnimatedBadge statusKey={status} variant="success" icon={CheckCircle2}>
             GOODS RECEIVED
-          </span>
+          </AnimatedBadge>
         );
       case "CANCELLED":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-zinc-200 text-zinc-700 border border-zinc-300">
-            <Ban className="w-3 h-3" />
+          <AnimatedBadge statusKey={status} variant="danger" icon={Ban}>
             CANCELLED
-          </span>
+          </AnimatedBadge>
         );
     }
   };

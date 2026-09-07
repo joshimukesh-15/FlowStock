@@ -43,6 +43,7 @@ import { formatINR } from "@/lib/utils";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
+import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { motion } from "framer-motion";
 import { createStaggerContainer, slideUpVariants, useReducedMotion } from "@/motion";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
@@ -304,42 +305,42 @@ export default function InvoicesPage() {
     switch (status) {
       case "DRAFT":
         return (
-          <Badge className="bg-zinc-500/10 text-zinc-400 border border-zinc-500/20 font-medium">
-            <Clock className="w-3 h-3 mr-1" /> Draft
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="default" icon={Clock}>
+            Draft
+          </AnimatedBadge>
         );
       case "ISSUED":
         return (
-          <Badge className="bg-zinc-100 text-zinc-900 border border-zinc-300 font-medium">
-            <FileText className="w-3 h-3 mr-1" /> Issued (Unpaid)
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="warning" icon={FileText} pulse>
+            Issued (Unpaid)
+          </AnimatedBadge>
         );
       case "PARTIALLY_PAID":
         return (
-          <Badge className="bg-zinc-100 text-zinc-900 border border-zinc-300 font-medium">
-            <Clock className="w-3 h-3 mr-1" /> Partially Paid
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="warning" icon={Clock} pulse>
+            Partially Paid
+          </AnimatedBadge>
         );
       case "PAID":
         return (
-          <Badge className="bg-zinc-900/10 text-zinc-900 border border-zinc-900/20 font-medium">
-            <CheckCircle2 className="w-3 h-3 mr-1" /> Paid in Full
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="success" icon={CheckCircle2}>
+            Paid in Full
+          </AnimatedBadge>
         );
       case "OVERDUE":
         return (
-          <Badge className="bg-zinc-200 text-zinc-700 border border-zinc-300 font-medium">
-            <AlertCircle className="w-3 h-3 mr-1" /> Overdue
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="danger" icon={AlertCircle}>
+            Overdue
+          </AnimatedBadge>
         );
       case "VOID":
         return (
-          <Badge className="bg-zinc-500/10 text-zinc-500 border border-zinc-600/30 font-medium">
-            <Ban className="w-3 h-3 mr-1" /> Void
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="danger" icon={Ban}>
+            Void
+          </AnimatedBadge>
         );
       default:
-        return <Badge variant="default">{status}</Badge>;
+        return <AnimatedBadge statusKey={status} variant="default">{status}</AnimatedBadge>;
     }
   };
 

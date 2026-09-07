@@ -29,6 +29,7 @@ import { useTenant } from "@/context/TenantContext";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
+import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { motion } from "framer-motion";
 import { fadeInVariants, useReducedMotion } from "@/motion";
 
@@ -76,19 +77,21 @@ export default function AuditPage() {
   const isConnected = health?.status === "healthy" || health?.status === "degraded";
 
   const getActionBadge = (action: string) => {
+    let variant: "success" | "danger" | "warning" | "info" | "default" = "default";
     if (action.includes("CONFIRMED") || action.includes("DELIVERED") || action.includes("RECEIVED") || action.includes("PAID") || action.includes("RECORDED")) {
-      return <Badge variant="success">{action}</Badge>;
+      variant = "success";
+    } else if (action.includes("CANCELLED") || action.includes("VOID")) {
+      variant = "danger";
+    } else if (action.includes("ADJUSTMENT") || action.includes("OUT")) {
+      variant = "warning";
+    } else if (action.includes("IN") || action.includes("DISPATCHED") || action.includes("ISSUED")) {
+      variant = "info";
     }
-    if (action.includes("CANCELLED") || action.includes("VOID")) {
-      return <Badge variant="danger">{action}</Badge>;
-    }
-    if (action.includes("ADJUSTMENT") || action.includes("OUT")) {
-      return <Badge variant="warning">{action}</Badge>;
-    }
-    if (action.includes("IN") || action.includes("DISPATCHED") || action.includes("ISSUED")) {
-      return <Badge variant="info">{action}</Badge>;
-    }
-    return <Badge variant="default">{action}</Badge>;
+    return (
+      <AnimatedBadge statusKey={action} variant={variant}>
+        {action}
+      </AnimatedBadge>
+    );
   };
 
   const getEntityIcon = (entity: string) => {

@@ -45,6 +45,7 @@ import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
+import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { motion } from "framer-motion";
 import { DISTANCE, DURATION, STAGGER, useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 
@@ -286,36 +287,36 @@ export default function ShipmentsPage() {
     switch (status) {
       case "PENDING":
         return (
-          <Badge className="bg-zinc-100 text-zinc-900 border border-zinc-300 font-medium">
-            <Clock className="w-3 h-3 mr-1" /> Pending Pickup
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="default" icon={Clock}>
+            Pending Pickup
+          </AnimatedBadge>
         );
       case "IN_TRANSIT":
         return (
-          <Badge className="bg-zinc-100 text-zinc-900 border border-zinc-300 font-medium">
-            <Navigation className="w-3 h-3 mr-1" /> In Transit
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="warning" icon={Navigation} pulse>
+            In Transit
+          </AnimatedBadge>
         );
       case "OUT_FOR_DELIVERY":
         return (
-          <Badge className="bg-zinc-100 text-zinc-900 border border-zinc-300 font-medium">
-            <Truck className="w-3 h-3 mr-1" /> Out for Delivery
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="warning" icon={Truck} pulse>
+            Out for Delivery
+          </AnimatedBadge>
         );
       case "DELIVERED":
         return (
-          <Badge className="bg-zinc-900/10 text-zinc-900 border border-zinc-900/20 font-medium">
-            <CheckCircle2 className="w-3 h-3 mr-1" /> Delivered
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="success" icon={CheckCircle2}>
+            Delivered
+          </AnimatedBadge>
         );
       case "CANCELLED":
         return (
-          <Badge className="bg-zinc-500/10 text-zinc-400 border border-zinc-500/20 font-medium">
-            <Ban className="w-3 h-3 mr-1" /> Cancelled
-          </Badge>
+          <AnimatedBadge statusKey={status} variant="danger" icon={Ban}>
+            Cancelled
+          </AnimatedBadge>
         );
       default:
-        return <Badge variant="default">{status}</Badge>;
+        return <AnimatedBadge statusKey={status} variant="default">{status}</AnimatedBadge>;
     }
   };
 
