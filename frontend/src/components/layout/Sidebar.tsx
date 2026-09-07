@@ -209,13 +209,10 @@ export const Sidebar: React.FC = () => {
           {!collapsed && (
             <button
               onClick={() => setCollapsed(true)}
-              className="p-1.5 rounded-md text-zinc-500 hover:text-white hover:bg-zinc-800/80 transition-colors shrink-0 flex items-center gap-1"
-              aria-label="Collapse sidebar ([)"
-              title="Collapse sidebar ([)"
+              className="p-1.5 rounded-md text-zinc-500 hover:text-white hover:bg-zinc-800/80 transition-colors shrink-0"
+              aria-label="Collapse sidebar"
+              title="Collapse sidebar"
             >
-              <kbd className="hidden sm:inline-block text-[10px] bg-zinc-900 border border-zinc-700/80 text-zinc-400 font-mono px-1 rounded">
-                [
-              </kbd>
               <PanelLeftClose className="w-4 h-4" />
             </button>
           )}
