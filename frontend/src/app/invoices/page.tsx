@@ -812,7 +812,8 @@ export default function InvoicesPage() {
                       </Button>
                       <Button
                         type="submit"
-                        disabled={creating || eligibleOrdersForInvoice.length === 0}
+                        isLoading={creating}
+                        disabled={eligibleOrdersForInvoice.length === 0}
                         className="bg-zinc-950 hover:bg-black text-white font-medium shadow-xs"
                       >
                         {creating ? "Generating..." : "Generate Tax Invoice"}
@@ -983,7 +984,8 @@ export default function InvoicesPage() {
                       </Button>
                       <Button
                         type="submit"
-                        disabled={creating || customItems.length === 0}
+                        isLoading={creating}
+                        disabled={customItems.length === 0}
                         className="bg-zinc-950 hover:bg-black text-white font-medium shadow-xs"
                       >
                         {creating ? "Creating..." : "Create & Post Invoice"}
@@ -1137,7 +1139,8 @@ export default function InvoicesPage() {
                   </Button>
                   <Button
                     type="submit"
-                    disabled={recordingPayment || payAmount <= 0}
+                    isLoading={recordingPayment}
+                    disabled={payAmount <= 0}
                     className="bg-zinc-950 hover:bg-black text-white font-medium text-xs h-8 px-4 shadow-xs"
                   >
                     {recordingPayment ? "Recording..." : "Record & Apply Payment"}

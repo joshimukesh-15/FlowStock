@@ -623,7 +623,7 @@ export default function WarehousesPage() {
               <Button
                 type="submit"
                 size="sm"
-                disabled={warehouseSubmitting}
+                isLoading={warehouseSubmitting}
                 className="bg-zinc-950 hover:bg-black text-white shadow-xs"
               >
                 {warehouseSubmitting ? "Creating..." : "Create Facility"}
@@ -755,7 +755,7 @@ export default function WarehousesPage() {
               <Button
                 type="submit"
                 size="sm"
-                disabled={transferSubmitting}
+                isLoading={transferSubmitting}
                 className="bg-zinc-950 hover:bg-black text-white shadow-xs"
               >
                 {transferSubmitting ? "Initiating..." : "Create Transfer Request"}

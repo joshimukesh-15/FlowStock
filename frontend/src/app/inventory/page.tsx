@@ -534,7 +534,8 @@ export default function InventoryPage() {
                 <Button
                   type="submit"
                   size="sm"
-                  disabled={submitting || previewNewStock < 0}
+                  isLoading={submitting}
+                  disabled={previewNewStock < 0}
                   className="bg-zinc-900 text-white"
                 >
                   {submitting ? "Writing Ledger..." : "Confirm & Post Ledger"}

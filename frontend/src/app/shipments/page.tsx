@@ -796,7 +796,8 @@ export default function ShipmentsPage() {
                   </Button>
                   <Button
                     type="submit"
-                    disabled={submitting || eligibleOrdersForShipping.length === 0}
+                    isLoading={submitting}
+                    disabled={eligibleOrdersForShipping.length === 0}
                     className="bg-zinc-950 hover:bg-black text-white font-medium shadow-xs"
                   >
                     {submitting ? "Manifesting..." : "Create & Manifest Consignment"}
@@ -1021,7 +1022,7 @@ export default function ShipmentsPage() {
                         <Button
                           type="submit"
                           size="sm"
-                          disabled={loggingCheckpoint}
+                          isLoading={loggingCheckpoint}
                           className="bg-zinc-800 hover:bg-zinc-700 text-white text-xs h-8"
                         >
                           {loggingCheckpoint ? "Logging..." : "Log Checkpoint Scan"}

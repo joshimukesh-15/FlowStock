@@ -481,8 +481,8 @@ export default function SettingsPage() {
               <Button type="button" variant="outline" size="sm" onClick={() => setProvisionOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" size="sm" disabled={provisioning || provisionSuccess}>
-                {provisioning ? "Provisioning..." : provisionSuccess ? "Provisioned" : "Provision User"}
+              <Button type="submit" size="sm" isLoading={provisioning} disabled={provisionSuccess}>
+                {provisionSuccess ? "Provisioned" : "Provision User"}
               </Button>
             </div>
           </form>

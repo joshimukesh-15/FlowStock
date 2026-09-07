@@ -581,7 +581,7 @@ export const Header: React.FC<HeaderProps> = ({ isHealthy }) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" disabled={creating}>
+                <Button type="submit" size="sm" isLoading={creating}>
                   {creating ? "Creating..." : "Create Tenant"}
                 </Button>
               </div>
@@ -646,7 +646,7 @@ export const Header: React.FC<HeaderProps> = ({ isHealthy }) => {
             <Button
               type="button"
               size="sm"
-              disabled={deleting}
+              isLoading={deleting}
               onClick={handleConfirmDelete}
               className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
             >

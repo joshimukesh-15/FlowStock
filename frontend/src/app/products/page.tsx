@@ -437,7 +437,7 @@ export default function ProductsPage() {
                   <Button type="button" variant="outline" size="sm" onClick={() => setProductModalOpen(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit" size="sm" disabled={submitting}>
+                  <Button type="submit" size="sm" isLoading={submitting}>
                     {submitting ? "Saving..." : editingProduct ? "Update Product" : "Create Product"}
                   </Button>
                 </div>
@@ -477,7 +477,7 @@ export default function ProductsPage() {
                   <Button type="button" variant="outline" size="sm" onClick={() => setCategoryModalOpen(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit" size="sm" disabled={catSubmitting}>
+                  <Button type="submit" size="sm" isLoading={catSubmitting}>
                     {catSubmitting ? "Creating..." : "Save Category"}
                   </Button>
                 </div>

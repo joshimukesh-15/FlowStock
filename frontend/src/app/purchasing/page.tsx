@@ -819,7 +819,7 @@ export default function PurchasingPage() {
                   <Button
                     type="submit"
                     size="sm"
-                    disabled={poSubmitting}
+                    isLoading={poSubmitting}
                     className="bg-zinc-950 hover:bg-black text-white shadow-xs"
                   >
                     {poSubmitting ? "Generating PO..." : "Save Draft Purchase Order"}
@@ -943,7 +943,7 @@ export default function PurchasingPage() {
               <Button
                 type="submit"
                 size="sm"
-                disabled={supSubmitting}
+                isLoading={supSubmitting}
                 className="bg-zinc-950 hover:bg-black text-white shadow-xs"
               >
                 {supSubmitting ? "Registering..." : "Save Supplier"}

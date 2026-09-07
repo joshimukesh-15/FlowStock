@@ -90,7 +90,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Button
             type="button"
             size="sm"
-            disabled={loading}
+            isLoading={loading}
             onClick={handleConfirm}
             className={
               isDanger
@@ -98,7 +98,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 : ""
             }
           >
-            {loading ? "Processing..." : confirmText}
+            {confirmText}
           </Button>
         </div>
       </div>

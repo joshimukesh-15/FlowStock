@@ -814,7 +814,7 @@ export default function OrdersPage() {
               <Button
                 type="submit"
                 size="sm"
-                disabled={orderSubmitting}
+                isLoading={orderSubmitting}
                 className="bg-zinc-950 hover:bg-black text-white shadow-xs"
               >
                 {orderSubmitting ? "Creating Order..." : "Create Draft Order"}
@@ -917,7 +917,7 @@ export default function OrdersPage() {
               <Button
                 type="submit"
                 size="sm"
-                disabled={custSubmitting}
+                isLoading={custSubmitting}
                 className="bg-zinc-950 hover:bg-black text-white shadow-xs"
               >
                 {custSubmitting ? "Adding..." : "Save Customer"}
