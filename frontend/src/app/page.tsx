@@ -50,6 +50,7 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { AnimatedProgressBar } from "@/components/ui/AnimatedProgressBar";
 import { CardSkeleton, ListSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { RevenueVelocityMatrix } from "@/components/dashboard/RevenueVelocityMatrix";
 
 export default function HomePage() {
   const [health, setHealth] = useState<HealthResponse | null>(null);
@@ -407,7 +408,12 @@ export default function HomePage() {
       </motion.div>
       )}
 
-        {/* ROW 2: Stock Replenishment & Order Pipeline Funnel */}
+      {/* ROW 2: Minimalist Financial Velocity Matrix */}
+      <motion.div variants={itemVariants}>
+        <RevenueVelocityMatrix summary={summary} />
+      </motion.div>
+
+      {/* ROW 3: Stock Replenishment & Order Pipeline Funnel */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Reorder Alerts & Safety Stocks (7 cols) */}
           <Card className="lg:col-span-7 flex flex-col">
