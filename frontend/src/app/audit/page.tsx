@@ -28,6 +28,7 @@ import { HealthResponse, AuditLog } from "@/types/api";
 import { useTenant } from "@/context/TenantContext";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Tabs } from "@/components/ui/Tabs";
 import { motion } from "framer-motion";
 import { fadeInVariants, useReducedMotion } from "@/motion";
 
@@ -199,22 +200,17 @@ export default function AuditPage() {
         {/* Filter & Search Bar */}
         <Card>
           <CardContent className="p-4 space-y-4">
-            {/* Entity Filter Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-zinc-100">
-              {entities.map((ent) => (
-                <button
-                  key={ent.value}
-                  onClick={() => setSelectedEntity(ent.value)}
-                  className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
-                    selectedEntity === ent.value
-                      ? "bg-zinc-900 text-white shadow-xs"
-                      : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100"
-                  }`}
-                >
-                  {ent.label}
-                </button>
-              ))}
-            </div>
+            {/* Entity Filter Tabs with Sliding Underline */}
+            <Tabs
+              tabs={entities.map((ent) => ({
+                id: ent.value,
+                label: ent.label,
+              }))}
+              activeTab={selectedEntity}
+              onChange={setSelectedEntity}
+              layoutId="audit-entity-tabs"
+              variant="underline"
+            />
 
             {/* Search Input */}
             <form onSubmit={handleSearch} className="flex gap-2">

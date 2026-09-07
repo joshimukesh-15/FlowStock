@@ -44,6 +44,7 @@ import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Tabs } from "@/components/ui/Tabs";
 import { motion } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 
@@ -483,22 +484,14 @@ export default function OrdersPage() {
                 )}
               </div>
 
-              {/* Status Filter Tabs */}
-              <div className="flex items-center gap-1 bg-zinc-100 p-1 rounded-lg border border-zinc-200 text-xs">
-                {["ALL", "DRAFT", "CONFIRMED", "FULFILLED", "CANCELLED"].map((st) => (
-                  <button
-                    key={st}
-                    onClick={() => setStatusFilter(st)}
-                    className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                      statusFilter === st
-                        ? "bg-white text-zinc-900 shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-800"
-                    }`}
-                  >
-                    {st}
-                  </button>
-                ))}
-              </div>
+              {/* Status Filter Tabs with Sliding Indicator */}
+              <Tabs
+                tabs={["ALL", "DRAFT", "CONFIRMED", "FULFILLED", "CANCELLED"]}
+                activeTab={statusFilter}
+                onChange={setStatusFilter}
+                layoutId="orders-status-tabs"
+                variant="pill"
+              />
             </div>
 
             <div className="text-xs text-zinc-500">

@@ -44,6 +44,7 @@ import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Tabs } from "@/components/ui/Tabs";
 import { motion } from "framer-motion";
 import { DISTANCE, DURATION, STAGGER, useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 
@@ -476,29 +477,21 @@ export default function ShipmentsPage() {
         <Card className="">
           <CardHeader className="p-5 pb-3 border-b border-zinc-200">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              {/* Status Filter Tabs */}
-              <div className="flex flex-wrap items-center gap-1.5 bg-zinc-100 p-1 rounded-lg border border-zinc-200">
-                {[
-                  { label: "All Consignments", value: "ALL" },
-                  { label: "Pending", value: "PENDING" },
-                  { label: "In Transit", value: "IN_TRANSIT" },
-                  { label: "Out for Delivery", value: "OUT_FOR_DELIVERY" },
-                  { label: "Delivered", value: "DELIVERED" },
-                  { label: "Cancelled", value: "CANCELLED" },
-                ].map((tab) => (
-                  <button
-                    key={tab.value}
-                    onClick={() => setStatusFilter(tab.value)}
-                    className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                      statusFilter === tab.value
-                        ? "bg-white text-zinc-900 shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-800"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+              {/* Status Filter Tabs with Sliding Indicator */}
+              <Tabs
+                tabs={[
+                  { label: "All Consignments", id: "ALL" },
+                  { label: "Pending", id: "PENDING" },
+                  { label: "In Transit", id: "IN_TRANSIT" },
+                  { label: "Out for Delivery", id: "OUT_FOR_DELIVERY" },
+                  { label: "Delivered", id: "DELIVERED" },
+                  { label: "Cancelled", id: "CANCELLED" },
+                ]}
+                activeTab={statusFilter}
+                onChange={setStatusFilter}
+                layoutId="shipments-status-tabs"
+                variant="pill"
+              />
 
               {/* Search Bar */}
               <div className="w-full md:w-72 relative">

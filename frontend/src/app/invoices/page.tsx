@@ -42,6 +42,7 @@ import { useToast } from "@/context/ToastContext";
 import { formatINR } from "@/lib/utils";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Tabs } from "@/components/ui/Tabs";
 import { motion } from "framer-motion";
 import { createStaggerContainer, slideUpVariants, useReducedMotion } from "@/motion";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
@@ -526,28 +527,20 @@ export default function InvoicesPage() {
         <Card className="">
           <CardHeader className="p-5 pb-3 border-b border-zinc-100">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              {/* Filter Tabs */}
-              <div className="flex flex-wrap items-center gap-1.5">
-                {[
-                  { label: "All Invoices", value: "ALL" },
-                  { label: "Issued (Unpaid)", value: "ISSUED" },
-                  { label: "Partially Paid", value: "PARTIALLY_PAID" },
-                  { label: "Paid in Full", value: "PAID" },
-                  { label: "Void", value: "VOID" },
-                ].map((tab) => (
-                  <button
-                    key={tab.value}
-                    onClick={() => setStatusFilter(tab.value)}
-                    className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                      statusFilter === tab.value
-                        ? "bg-white text-zinc-900 shadow-sm shadow-sm"
-                        : "text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+              {/* Status Filter Tabs with Sliding Indicator */}
+              <Tabs
+                tabs={[
+                  { label: "All Invoices", id: "ALL" },
+                  { label: "Issued (Unpaid)", id: "ISSUED" },
+                  { label: "Partially Paid", id: "PARTIALLY_PAID" },
+                  { label: "Paid in Full", id: "PAID" },
+                  { label: "Void", id: "VOID" },
+                ]}
+                activeTab={statusFilter}
+                onChange={setStatusFilter}
+                layoutId="invoices-status-tabs"
+                variant="pill"
+              />
 
               {/* Search Bar */}
               <div className="w-full md:w-72 relative">

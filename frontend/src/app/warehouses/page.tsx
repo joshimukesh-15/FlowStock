@@ -37,6 +37,7 @@ import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Tabs } from "@/components/ui/Tabs";
 import { motion } from "framer-motion";
 import { DURATION, EASING, SCALE, useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 
@@ -369,22 +370,14 @@ export default function WarehousesPage() {
                 </p>
               </div>
 
-              {/* Filter Tabs */}
-              <div className="flex items-center gap-1 bg-zinc-50 p-1 rounded-lg border border-zinc-200 text-xs">
-                {["ALL", "REQUESTED", "IN_TRANSIT", "RECEIVED", "CANCELLED"].map((status) => (
-                  <button
-                    key={status}
-                    onClick={() => setFilterStatus(status)}
-                    className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                      filterStatus === status
-                        ? "bg-white text-zinc-900 shadow-sm"
-                        : "text-zinc-500 hover:text-zinc-800"
-                    }`}
-                  >
-                    {status.replace("_", " ")}
-                  </button>
-                ))}
-              </div>
+              {/* Filter Tabs with Sliding Indicator */}
+              <Tabs
+                tabs={["ALL", "REQUESTED", "IN_TRANSIT", "RECEIVED", "CANCELLED"]}
+                activeTab={filterStatus}
+                onChange={setFilterStatus}
+                layoutId="warehouses-filter-tabs"
+                variant="pill"
+              />
             </CardHeader>
 
             <CardContent className="p-0">
