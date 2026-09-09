@@ -39,6 +39,8 @@ import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Alert } from "@/components/ui/Alert";
 import { motion } from "framer-motion";
 import { DURATION, EASING, SCALE, useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 
@@ -246,50 +248,44 @@ export default function WarehousesPage() {
       variants={containerVariants}
     >
       {/* Top Header */}
-      <motion.div
-        className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-        variants={itemVariants}
-      >
-        <div>
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight flex items-center gap-2.5">
-            <WarehouseIcon className="w-6 h-6 text-zinc-900" />
+      <PageHeader
+        title={
+          <span className="flex items-center gap-2.5">
+            <WarehouseIcon className="w-6 h-6 text-zinc-900 dark:text-zinc-100" />
             Warehouses & Stock Transfers
-          </h1>
-          <p className="text-sm text-zinc-400 mt-1">
-            Multi-facility inventory nodes, physical stock routing, and inter-depot logistics.
-          </p>
-        </div>
-        <div className="flex items-center gap-2.5">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={loadData}
-            disabled={loading}
-            className="border-zinc-200 text-zinc-700 hover:bg-zinc-50"
-          >
-            <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setWarehouseModalOpen(true)}
-            className="border-zinc-200 text-zinc-700 hover:bg-zinc-50"
-          >
-            <Plus className="w-4 h-4 mr-1.5" />
-            New Warehouse
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => setTransferModalOpen(true)}
-            disabled={warehouses.length < 2}
-            className="bg-zinc-950 hover:bg-black text-white shadow-xs shadow-sm"
-          >
-            <Truck className="w-4 h-4 mr-1.5" />
-            Transfer Stock
-          </Button>
-        </div>
-      </motion.div>
+          </span>
+        }
+        subtitle="Multi-facility inventory nodes, physical stock routing, and inter-depot logistics."
+        actions={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadData}
+              disabled={loading}
+            >
+              <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setWarehouseModalOpen(true)}
+            >
+              <Plus className="w-4 h-4 mr-1.5" />
+              New Warehouse
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => setTransferModalOpen(true)}
+              disabled={warehouses.length < 2}
+            >
+              <Truck className="w-4 h-4 mr-1.5" />
+              Transfer Stock
+            </Button>
+          </>
+        }
+      />
 
       {/* Warehouses Grid */}
       <motion.div variants={itemVariants}>
@@ -552,9 +548,9 @@ export default function WarehousesPage() {
           </div>
 
           {warehouseError && (
-            <div className="mt-4 p-3 bg-zinc-100 border border-zinc-300 rounded-lg text-xs text-zinc-950 font-medium">
+            <Alert variant="danger" className="mt-4 text-xs">
               {warehouseError}
-            </div>
+            </Alert>
           )}
 
           <form onSubmit={handleCreateWarehouse} className="mt-4 space-y-4">
@@ -649,9 +645,9 @@ export default function WarehousesPage() {
           </div>
 
           {transferError && (
-            <div className="mt-4 p-3 bg-zinc-100 border border-zinc-300 rounded-lg text-xs text-zinc-950 font-medium">
+            <Alert variant="danger" className="mt-4 text-xs">
               {transferError}
-            </div>
+            </Alert>
           )}
 
           <form onSubmit={handleCreateTransfer} className="mt-4 space-y-4">

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Alert } from "@/components/ui/Alert";
 import {
   ShieldCheck,
   Building2,
@@ -14,7 +16,6 @@ import {
   User as UserIcon,
   Plus,
   X,
-  CheckCircle2,
   AlertCircle,
   Globe,
   RefreshCw,
@@ -166,21 +167,21 @@ export default function SettingsPage() {
       className="max-w-6xl mx-auto space-y-6 pb-12"
     >
       {/* Page header */}
-      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex items-center gap-2.5">
+      <PageHeader
+        title={
+          <span className="flex items-center gap-2.5">
             <ShieldCheck className="w-6 h-6 text-zinc-900 dark:text-zinc-100" />
             Settings & Administration
-          </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Tenant profile, team access roles, workspace preferences, and system diagnostics.
-          </p>
-        </div>
-        <Badge variant="default" className="w-fit px-2.5 py-1">
-          <Globe className="w-3 h-3 mr-1" />
-          {currentOrg?.slug || "tenant"} · {currentOrg?.currency || "INR"}
-        </Badge>
-      </motion.div>
+          </span>
+        }
+        subtitle="Tenant profile, team access roles, workspace preferences, and system diagnostics."
+        actions={
+          <Badge variant="default" className="w-fit px-2.5 py-1">
+            <Globe className="w-3 h-3 mr-1" />
+            {currentOrg?.slug || "tenant"} · {currentOrg?.currency || "INR"}
+          </Badge>
+        }
+      />
 
       {/* ORGANIZATION PROFILE */}
       <motion.div variants={itemVariants}>
@@ -470,17 +471,15 @@ export default function SettingsPage() {
           </div>
 
           {provisionError && (
-            <div className="text-xs text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 p-2.5 rounded flex items-center gap-2 font-medium">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <Alert variant="danger" className="text-xs">
               {provisionError}
-            </div>
+            </Alert>
           )}
 
           {provisionSuccess && (
-            <div className="text-xs text-white dark:text-zinc-950 bg-zinc-950 dark:bg-zinc-100 border border-zinc-900 dark:border-zinc-200 p-2.5 rounded flex items-center gap-2 font-medium">
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <Alert variant="success" className="text-xs">
               User provisioned successfully
-            </div>
+            </Alert>
           )}
 
           <form onSubmit={handleProvision} className="space-y-3">

@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Alert } from "@/components/ui/Alert";
 import {
   RefreshCw,
   TrendingUp,
@@ -153,21 +155,19 @@ export default function HomePage() {
       className="max-w-7xl mx-auto space-y-6 pb-12"
     >
       {/* Header Bar */}
-      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Executive Operations Cockpit</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Real-time enterprise operations cockpit, financial telemetry, and live multi-facility overview.
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono">Updated: {lastChecked || "Loading..."}</span>
-          <Button variant="outline" size="sm" onClick={loadData} disabled={loading} className="gap-1.5">
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
-        </div>
-      </motion.div>
+      <PageHeader
+        title="Executive Operations Cockpit"
+        subtitle="Real-time enterprise operations cockpit, financial telemetry, and live multi-facility overview."
+        actions={
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono">Updated: {lastChecked || "Loading..."}</span>
+            <Button variant="outline" size="sm" onClick={loadData} disabled={loading} className="gap-1.5">
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+          </div>
+        }
+      />
 
       {/* Tenant Context Hero */}
       <motion.div variants={itemVariants}>
@@ -235,9 +235,10 @@ export default function HomePage() {
       </motion.div>
 
       {error && (
-        <motion.div variants={itemVariants} className="p-4 rounded-lg bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 font-medium text-sm flex items-center gap-2">
-          <AlertCircle className="w-5 h-5 shrink-0 text-zinc-900 dark:text-zinc-400" />
-          <span>{error}</span>
+        <motion.div variants={itemVariants}>
+          <Alert variant="danger" onClose={() => setError(null)}>
+            {error}
+          </Alert>
         </motion.div>
       )}
 
@@ -488,18 +489,18 @@ export default function HomePage() {
                   </div>
                 </div>
               ) : (
-                <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-zinc-50 dark:bg-zinc-900/40 rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800">
-                  <CheckCircle2 className="w-8 h-8 text-zinc-900 dark:text-zinc-100 mb-2" />
-                  <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">All Stock Levels Healthy</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-sm">
-                    No SKUs are currently below their designated safety reorder points across {summary?.inventory.total_skus || 0} catalog items.
-                  </p>
-                  <Link to="/inventory" className="mt-3">
-                    <Button variant="outline" size="sm" className="text-xs">
-                      View Inventory Ledger
-                    </Button>
-                  </Link>
-                </div>
+                <EmptyState
+                  icon={CheckCircle2}
+                  title="All Stock Levels Healthy"
+                  description={`No SKUs are currently below their designated safety reorder points across ${summary?.inventory.total_skus || 0} catalog items.`}
+                  action={
+                    <Link to="/inventory">
+                      <Button variant="outline" size="sm" className="text-xs">
+                        View Inventory Ledger
+                      </Button>
+                    </Link>
+                  }
+                />
               )}
             </CardContent>
           </Card>

@@ -22,7 +22,6 @@ import {
   AlertCircle,
   Truck,
   Layers,
-  Search,
 } from "lucide-react";
 import {
   fetchOrders,
@@ -46,6 +45,9 @@ import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { Alert } from "@/components/ui/Alert";
 import { motion } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 
@@ -340,49 +342,43 @@ export default function OrdersPage() {
       variants={containerVariants}
     >
       {/* Top Header */}
-      <motion.div
-        className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-        variants={itemVariants}
-      >
-        <div>
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight flex items-center gap-2.5">
-            <ShoppingCart className="w-6 h-6 text-zinc-900" />
+      <PageHeader
+        title={
+          <span className="flex items-center gap-2.5">
+            <ShoppingCart className="w-6 h-6 text-zinc-900 dark:text-zinc-100" />
             Sales Orders & Stock Allocation
-          </h1>
-          <p className="text-sm text-zinc-500 mt-1">
-            B2B customer order lifecycle, inventory reservation, and dispatch fulfillment.
-          </p>
-        </div>
-        <div className="flex items-center gap-2.5">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={loadData}
-            disabled={loading}
-            className="border-zinc-200 text-zinc-700 hover:bg-zinc-50"
-          >
-            <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setCustomerModalOpen(true)}
-            className="border-zinc-200 text-zinc-700 hover:bg-zinc-50"
-          >
-            <Users className="w-4 h-4 mr-1.5" />
-            New Customer
-          </Button>
-          <Button
-            size="sm"
-            onClick={handleOpenCreateOrder}
-            className="bg-zinc-950 hover:bg-black text-white shadow-xs shadow-sm"
-          >
-            <Plus className="w-4 h-4 mr-1.5" />
-            Create Sales Order
-          </Button>
-        </div>
-      </motion.div>
+          </span>
+        }
+        subtitle="B2B customer order lifecycle, inventory reservation, and dispatch fulfillment."
+        actions={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadData}
+              disabled={loading}
+            >
+              <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCustomerModalOpen(true)}
+            >
+              <Users className="w-4 h-4 mr-1.5" />
+              New Customer
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleOpenCreateOrder}
+            >
+              <Plus className="w-4 h-4 mr-1.5" />
+              Create Sales Order
+            </Button>
+          </>
+        }
+      />
 
       {/* KPI Summary Cards */}
       <motion.div
@@ -461,25 +457,12 @@ export default function OrdersPage() {
         <Card className="">
           <CardHeader className="border-b border-zinc-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-              <div className="relative">
-                <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-2.5 pointer-events-none" />
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by order # or customer..."
-                  className="w-64 text-xs h-8 pl-8 pr-7"
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-2 top-2 text-zinc-400 hover:text-zinc-700 p-0.5"
-                    title="Clear search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
+              <SearchBar
+                value={searchQuery}
+                onChange={setSearchQuery}
+                placeholder="Search by order # or customer..."
+                className="w-64"
+              />
 
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs
@@ -660,9 +643,9 @@ export default function OrdersPage() {
           </div>
 
           {orderError && (
-            <div className="mt-4 p-3 bg-zinc-100 border border-zinc-300 rounded-lg text-xs text-zinc-950 font-medium">
+            <Alert variant="danger" className="mt-4 text-xs">
               {orderError}
-            </div>
+            </Alert>
           )}
 
           <form onSubmit={handleCreateOrderSubmit} className="mt-4 space-y-4 flex-1 overflow-y-auto pr-1">
@@ -847,9 +830,9 @@ export default function OrdersPage() {
           </div>
 
           {custError && (
-            <div className="mt-4 p-3 bg-zinc-100 border border-zinc-300 rounded-lg text-xs text-zinc-950 font-medium">
+            <Alert variant="danger" className="mt-4 text-xs">
               {custError}
-            </div>
+            </Alert>
           )}
 
           <form onSubmit={handleCreateCustomerSubmit} className="mt-4 space-y-3">

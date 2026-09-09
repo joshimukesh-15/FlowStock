@@ -4,10 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import {
   History,
-  Search,
   RefreshCw,
   ShieldCheck,
   Filter,
@@ -21,7 +19,6 @@ import {
   Boxes,
   ShoppingCart,
   Building2,
-  X,
 } from "lucide-react";
 import { fetchHealth, fetchAuditLogs } from "@/lib/api";
 import { HealthResponse, AuditLog } from "@/types/api";
@@ -30,6 +27,8 @@ import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SearchBar } from "@/components/ui/SearchBar";
 import { motion } from "framer-motion";
 import { fadeInVariants, useReducedMotion } from "@/motion";
 
@@ -127,20 +126,16 @@ export default function AuditPage() {
     
       <motion.div className="max-w-7xl mx-auto space-y-6 pb-12" variants={fadeInVariants(prefersReducedMotion)} initial="hidden" animate="visible">
         {/* Header Title */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Audit Trails & Compliance Log</h1>
-            <p className="text-sm text-zinc-500 mt-1">
-              Immutable chronological record of system transactions, operator modifications, and state transitions.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
+        <PageHeader
+          title="Audit Trails & Compliance Log"
+          subtitle="Immutable chronological record of system transactions, operator modifications, and state transitions."
+          actions={
             <Button variant="outline" size="sm" onClick={loadAudits} disabled={loading} className="gap-1.5">
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
               Refresh Logs
             </Button>
-          </div>
-        </div>
+          }
+        />
 
         {/* Metric Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -217,25 +212,12 @@ export default function AuditPage() {
 
             {/* Search Input */}
             <form onSubmit={handleSearch} className="flex gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400 pointer-events-none" />
-                <Input
-                  placeholder="Search by action, entity name (e.g. SO-3F2383, INV-ACME-01), operator, or details..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 pr-8 text-xs"
-                />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchTerm("")}
-                    className="absolute right-2.5 top-2.5 text-zinc-400 hover:text-zinc-700 p-0.5"
-                    title="Clear search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
+              <SearchBar
+                placeholder="Search by action, entity name (e.g. SO-3F2383, INV-ACME-01), operator, or details..."
+                value={searchTerm}
+                onChange={setSearchTerm}
+                className="flex-1"
+              />
               <Button type="submit" size="sm" variant="secondary" className="text-xs gap-1.5">
                 <Filter className="w-3.5 h-3.5" />
                 Filter

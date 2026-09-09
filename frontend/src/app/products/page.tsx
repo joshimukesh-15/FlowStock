@@ -5,6 +5,9 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { Alert } from "@/components/ui/Alert";
 import {
   Layers,
   Plus,
@@ -190,66 +193,45 @@ export default function ProductsPage() {
     
       <motion.div className="max-w-7xl mx-auto space-y-6" variants={fadeInVariants(prefersReducedMotion)} initial="hidden" animate="visible">
         {/* Title Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Products & SKU Catalog</h1>
-              <Badge variant="info" className="capitalize">{currentOrg?.name}</Badge>
-            </div>
-            <p className="text-sm text-zinc-500 mt-0.5">
-              Master catalog of stock items, selling rates, and classification
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCategoryModalOpen(true)}
-              className="gap-1.5"
-            >
-              <Tag className="w-3.5 h-3.5 text-zinc-500" />
-              New Category
-            </Button>
-            <Button size="sm" onClick={handleOpenAdd} className="gap-1.5 bg-zinc-900 text-white hover:bg-zinc-800">
-              <Plus className="w-4 h-4" />
-              Add Product
-            </Button>
-          </div>
-        </div>
+        <PageHeader
+          title="Products & SKU Catalog"
+          badge={currentOrg && <Badge variant="info" className="capitalize">{currentOrg.name}</Badge>}
+          subtitle="Master catalog of stock items, selling rates, and classification"
+          actions={
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCategoryModalOpen(true)}
+                className="gap-1.5"
+              >
+                <Tag className="w-3.5 h-3.5 text-zinc-500" />
+                New Category
+              </Button>
+              <Button size="sm" onClick={handleOpenAdd} className="gap-1.5">
+                <Plus className="w-4 h-4" />
+                Add Product
+              </Button>
+            </>
+          }
+        />
 
         {/* Filter & Search Bar */}
         <Card className="p-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <form onSubmit={handleSearchSubmit} className="flex-1 flex gap-2">
-              <div className="relative flex-1">
-                <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-2.5 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Search products by name or SKU..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-9 pr-8 py-1.5 text-sm rounded-md border border-zinc-300 bg-white focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
-                />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchTerm("")}
-                    className="absolute right-2.5 top-2.5 text-zinc-400 hover:text-zinc-700 p-0.5"
-                    title="Clear search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-            </form>
+            <SearchBar
+              placeholder="Search products by name or SKU..."
+              value={searchTerm}
+              onChange={setSearchTerm}
+              onSubmit={handleSearchSubmit}
+            />
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-zinc-500 font-medium shrink-0">Category:</span>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="text-xs rounded-md border border-zinc-300 bg-white px-2.5 py-1.5 focus:border-zinc-900 focus:outline-none"
+                className="text-xs rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 px-2.5 py-1.5 focus:border-zinc-950 dark:focus:border-zinc-200 focus:outline-none"
               >
                 <option value="">All Categories ({categories.length})</option>
                 {categories.map((c) => (
@@ -370,10 +352,9 @@ export default function ProductsPage() {
               </div>
 
               {formError && (
-                <div className="text-xs text-zinc-950 bg-zinc-100 border border-zinc-300 p-2.5 rounded flex items-center gap-1.5 font-medium">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  <span>{formError}</span>
-                </div>
+                <Alert variant="danger" onClose={() => setFormError("")}>
+                  {formError}
+                </Alert>
               )}
 
               <form onSubmit={handleProductSubmit} className="space-y-3">
@@ -473,7 +454,9 @@ export default function ProductsPage() {
               </div>
 
               {catError && (
-                <p className="text-xs text-zinc-950 bg-zinc-100 border border-zinc-300 p-2 rounded font-medium">{catError}</p>
+                <Alert variant="danger" onClose={() => setCatError("")}>
+                  {catError}
+                </Alert>
               )}
 
               <form onSubmit={handleCategorySubmit} className="space-y-3">

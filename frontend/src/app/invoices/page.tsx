@@ -23,7 +23,6 @@ import {
   Calendar,
   AlertCircle,
   Percent,
-  Search,
 } from "lucide-react";
 import {
   fetchInvoices,
@@ -44,6 +43,9 @@ import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { Alert } from "@/components/ui/Alert";
 import { motion } from "framer-motion";
 import { createStaggerContainer, slideUpVariants, useReducedMotion } from "@/motion";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
@@ -393,44 +395,39 @@ export default function InvoicesPage() {
       animate="visible"
     >
       {/* Top Header */}
-      <motion.div
-        variants={itemVariants}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4"
-      >
-        <div>
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight flex items-center gap-2.5">
-            <ReceiptText className="w-7 h-7 text-zinc-900" />
+      <PageHeader
+        title={
+          <span className="flex items-center gap-2.5">
+            <ReceiptText className="w-7 h-7 text-zinc-900 dark:text-zinc-100" />
             Invoices & Accounts Receivable
-          </h1>
-          <p className="text-sm text-zinc-500 mt-1">
-            B2B GST tax invoices, accounts receivable balances, and payment collections in INR (₹).
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={loadData}
-            disabled={loading}
-            className=""
-          >
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
-          <Button
-            onClick={() => {
-              if (eligibleOrdersForInvoice.length > 0 && !selectedOrderId) {
-                setSelectedOrderId(eligibleOrdersForInvoice[0].id);
-              }
-              setCreateModalOpen(true);
-            }}
-            className="bg-zinc-950 hover:bg-black text-white font-medium shadow-xs"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            + Generate Invoice
-          </Button>
-        </div>
-      </motion.div>
+          </span>
+        }
+        subtitle="B2B GST tax invoices, accounts receivable balances, and payment collections in INR (₹)."
+        actions={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadData}
+              disabled={loading}
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+            <Button
+              onClick={() => {
+                if (eligibleOrdersForInvoice.length > 0 && !selectedOrderId) {
+                  setSelectedOrderId(eligibleOrdersForInvoice[0].id);
+                }
+                setCreateModalOpen(true);
+              }}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Generate Invoice
+            </Button>
+          </>
+        }
+      />
 
       {/* KPI Summary Cards */}
       <motion.div
@@ -544,25 +541,12 @@ export default function InvoicesPage() {
               />
 
               {/* Search Bar */}
-              <div className="w-full md:w-72 relative">
-                <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-3 pointer-events-none" />
-                <Input
-                  placeholder="Search invoice #, customer, or UTR..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-zinc-50 border-zinc-300 text-xs h-9 pl-8 pr-7"
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-2.5 top-2.5 text-zinc-400 hover:text-zinc-700 p-0.5"
-                    title="Clear search"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
+              <SearchBar
+                placeholder="Search invoice #, customer, or UTR..."
+                value={searchQuery}
+                onChange={setSearchQuery}
+                className="w-full md:w-72"
+              />
             </div>
           </CardHeader>
 
@@ -751,9 +735,9 @@ export default function InvoicesPage() {
 
               <div className="p-6 overflow-y-auto flex-1">
                 {createError && (
-                  <div className="mb-4 p-3 text-xs bg-zinc-100 border border-zinc-300 text-zinc-950 rounded-lg font-medium">
+                  <Alert variant="danger" className="mb-4 text-xs">
                     {createError}
-                  </div>
+                  </Alert>
                 )}
 
                 {/* Tab 1: From Sales Order */}
@@ -1032,9 +1016,9 @@ export default function InvoicesPage() {
 
               <form onSubmit={handleRecordPayment} className="p-5 space-y-3.5">
                 {paymentError && (
-                  <div className="p-3 text-xs bg-zinc-100 border border-zinc-300 text-zinc-950 rounded-lg font-medium">
+                  <Alert variant="danger" className="text-xs">
                     {paymentError}
-                  </div>
+                  </Alert>
                 )}
 
                 {/* Summary Banner */}

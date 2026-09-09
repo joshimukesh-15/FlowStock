@@ -5,21 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DURATION, EASING, useReducedMotion } from "@/motion";
 
+import { badgeVariants, BadgeVariant } from "./Badge";
+
 export interface AnimatedBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   statusKey?: string | number;
-  variant?: "default" | "success" | "warning" | "danger" | "info";
+  variant?: BadgeVariant;
   icon?: React.ComponentType<{ className?: string }>;
   pulse?: boolean;
   children: React.ReactNode;
 }
-
-const badgeVariants = {
-  default: "bg-zinc-100 text-zinc-800 border-zinc-200/80",
-  success: "bg-zinc-950 text-white border-zinc-950 font-semibold shadow-2xs",
-  warning: "bg-zinc-100 text-zinc-900 border-zinc-300 font-medium",
-  danger: "bg-zinc-200 text-zinc-900 border-zinc-300 font-medium",
-  info: "bg-zinc-100 text-zinc-800 border-zinc-200",
-};
 
 export const AnimatedBadge: React.FC<AnimatedBadgeProps> = ({
   statusKey,

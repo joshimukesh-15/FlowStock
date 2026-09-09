@@ -17,7 +17,6 @@ import {
   DollarSign,
   Package,
   X,
-  Search,
 } from "lucide-react";
 import {
   fetchInventorySummaries,
@@ -32,6 +31,9 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Modal } from "@/components/ui/Modal";
 import { TableSkeleton, ListSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { Alert } from "@/components/ui/Alert";
 
 export default function InventoryPage() {
   const { currentOrg } = useTenant();
@@ -152,46 +154,34 @@ export default function InventoryPage() {
       variants={containerVariants}
     >
       {/* Title Bar */}
-      <motion.div
-        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        variants={itemVariants}
-      >
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">
-              Inventory Movement Ledger
-            </h1>
-            <Badge variant="info" className="capitalize">
-              {currentOrg?.name}
-            </Badge>
-          </div>
-          <p className="text-sm text-zinc-500 mt-0.5">
-            Append-only transaction ledger with automatic real-time stock computation
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={loadInventory}
-            disabled={loading}
-            className="gap-1.5 border-zinc-200 text-zinc-700 hover:bg-zinc-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => handleOpenMovementModal()}
-            disabled={summaries.length === 0}
-            className="gap-1.5 bg-zinc-900 text-white hover:bg-black shadow-xs"
-          >
-            <Plus className="w-4 h-4" />
-            Record Movement
-          </Button>
-        </div>
-      </motion.div>
+      <PageHeader
+        title="Inventory Movement Ledger"
+        badge={<Badge variant="info" className="capitalize">{currentOrg?.name}</Badge>}
+        subtitle="Append-only transaction ledger with automatic real-time stock computation"
+        actions={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadInventory}
+              disabled={loading}
+              className="gap-1.5"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => handleOpenMovementModal()}
+              disabled={summaries.length === 0}
+              className="gap-1.5"
+            >
+              <Plus className="w-4 h-4" />
+              Record Movement
+            </Button>
+          </>
+        }
+      />
 
       {/* Top KPI Cards */}
       <motion.div
@@ -281,26 +271,12 @@ export default function InventoryPage() {
             <CardTitle className="text-sm font-semibold text-zinc-700">
               Live On-Hand Stock Levels & Reorder Thresholds
             </CardTitle>
-            <div className="relative w-full sm:w-64">
-              <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-2 pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Search by SKU, product, category..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 pr-7 py-1 text-xs rounded-md border border-zinc-300 bg-white focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2 top-1 text-zinc-400 hover:text-zinc-700 p-0.5"
-                  title="Clear search"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
+            <SearchBar
+              placeholder="Search by SKU, product, category..."
+              value={searchQuery}
+              onChange={setSearchQuery}
+              className="w-full sm:w-64"
+            />
           </CardHeader>
 
           <div className="overflow-x-auto">
@@ -443,9 +419,9 @@ export default function InventoryPage() {
             </div>
 
             {movementError && (
-              <div className="text-xs text-zinc-900 bg-zinc-100 border border-zinc-300 p-2.5 rounded font-medium">
+              <Alert variant="danger" className="text-xs py-2">
                 {movementError}
-              </div>
+              </Alert>
             )}
 
             <form onSubmit={handleMovementSubmit} className="space-y-3">
