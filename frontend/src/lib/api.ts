@@ -819,6 +819,11 @@ export async function fetchDashboardSummary(): Promise<DashboardSummaryResponse>
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
+    if (res.status === 404 && typeof err?.detail === "string" && err.detail.includes("User '") && typeof window !== "undefined") {
+      localStorage.removeItem("flowstock_user_id");
+      localStorage.removeItem("flowstock_user_name");
+      localStorage.removeItem("flowstock_user_role");
+    }
     throw new Error(err.detail || "Failed to load dashboard metrics");
   }
   return await res.json();

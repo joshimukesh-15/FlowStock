@@ -28,10 +28,10 @@ export function KpiTrend({
       <span
         className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold tracking-tight border transition-colors ${
           isNeutral
-            ? "bg-zinc-100 text-zinc-600 border-zinc-200"
+            ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700"
             : isGood
-            ? "bg-zinc-950 text-white border-zinc-950 shadow-2xs"
-            : "bg-zinc-100 text-zinc-900 border-zinc-300"
+            ? "bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 border-zinc-950 dark:border-zinc-100 shadow-2xs"
+            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-700"
         }`}
       >
         {isNeutral ? (

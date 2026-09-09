@@ -11,15 +11,16 @@ interface AnimatedProgressBarProps {
 /** A data-bound chart primitive that reveals once when a real value changes. */
 export const AnimatedProgressBar: React.FC<AnimatedProgressBarProps> = ({
   value,
-  className = "bg-zinc-900",
+  className = "bg-zinc-900 dark:bg-zinc-100",
   label,
 }) => {
   const prefersReducedMotion = useReducedMotion();
   const clampedValue = Math.min(100, Math.max(0, value));
+  const barClass = className.includes("dark:bg-") ? className : `${className} dark:bg-zinc-100`;
 
   return (
     <div
-      className="h-2 w-full overflow-hidden rounded-full bg-zinc-100"
+      className="h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800"
       role="progressbar"
       aria-label={label}
       aria-valuemin={0}
@@ -27,7 +28,7 @@ export const AnimatedProgressBar: React.FC<AnimatedProgressBarProps> = ({
       aria-valuenow={Math.round(clampedValue)}
     >
       <motion.div
-        className={`h-full w-full origin-left rounded-full ${className}`}
+        className={`h-full w-full origin-left rounded-full ${barClass}`}
         initial={{ scaleX: SCALE.progressStart }}
         animate={{ scaleX: clampedValue / 100 }}
         transition={getTransition("normal", prefersReducedMotion)}

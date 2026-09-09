@@ -53,14 +53,14 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         animate="visible"
         className="flex items-center justify-center"
       >
-        <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-400 shadow-xs">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/80 text-zinc-400 dark:text-zinc-500 shadow-xs">
           <Icon className="h-7 w-7" strokeWidth={1.5} />
         </span>
       </motion.div>
 
       <motion.div variants={contentVariants} initial="hidden" animate="visible" className="mt-4 space-y-1">
-        <p className="text-sm font-semibold text-zinc-800">{title}</p>
-        {description && <p className="text-xs text-zinc-500 max-w-sm leading-relaxed">{description}</p>}
+        <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">{title}</p>
+        {description && <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm leading-relaxed">{description}</p>}
         {action && <div className="pt-3">{action}</div>}
       </motion.div>
     </motion.div>

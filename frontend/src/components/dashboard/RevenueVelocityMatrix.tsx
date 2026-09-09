@@ -113,17 +113,17 @@ export function RevenueVelocityMatrix({ summary, className = "" }: RevenueVeloci
   const activeHoveredBar = hoveredBarIndex !== null ? sparkbars[hoveredBarIndex] : null;
 
   return (
-    <Card className={`border border-zinc-200/80 bg-white shadow-xs rounded-xl overflow-hidden ${className}`}>
+    <Card className={`border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs rounded-xl overflow-hidden ${className}`}>
       {/* Top Meta Bar */}
-      <CardHeader className="py-3 px-5 border-b border-zinc-100 bg-zinc-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <CardHeader className="py-3 px-5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-md bg-zinc-900 text-white shadow-xs">
+          <div className="p-1.5 rounded-md bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-100 shadow-xs">
             <Zap className="w-3.5 h-3.5" />
           </div>
           <div>
-            <CardTitle className="text-sm font-bold text-zinc-900 tracking-tight flex items-center gap-2">
+            <CardTitle className="text-sm font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex items-center gap-2">
               Financial Velocity & Cash Realization
-              <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-zinc-200/70 text-zinc-700">
+              <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
                 Live Telemetry
               </span>
             </CardTitle>
@@ -149,16 +149,16 @@ export function RevenueVelocityMatrix({ summary, className = "" }: RevenueVeloci
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
           
           {/* Column 1: Gross Invoiced */}
-          <div className="space-y-1.5 border-b sm:border-b-0 sm:border-r border-zinc-100 pb-4 sm:pb-0 pr-0 sm:pr-4">
+          <div className="space-y-1.5 border-b sm:border-b-0 sm:border-r border-zinc-100 dark:border-zinc-800 pb-4 sm:pb-0 pr-0 sm:pr-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                 Gross Invoiced
               </span>
-              <span className="text-[10px] font-mono text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded">
+              <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">
                 {metrics.periodOrders} orders
               </span>
             </div>
-            <div className="text-2xl font-bold text-zinc-950 tracking-tight font-mono">
+            <div className="text-2xl font-bold text-zinc-950 dark:text-zinc-100 tracking-tight font-mono">
               <AnimatedCounter
                 value={metrics.invoiced}
                 prefix="₹"
@@ -166,22 +166,22 @@ export function RevenueVelocityMatrix({ summary, className = "" }: RevenueVeloci
                 formatINR
               />
             </div>
-            <p className="text-xs text-zinc-500 flex items-center gap-1">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
               <span>Billed across active ledger</span>
             </p>
           </div>
 
           {/* Column 2: Cash Realized */}
-          <div className="space-y-1.5 border-b sm:border-b-0 lg:border-r border-zinc-100 pb-4 sm:pb-0 pr-0 lg:pr-4">
+          <div className="space-y-1.5 border-b sm:border-b-0 lg:border-r border-zinc-100 dark:border-zinc-800 pb-4 sm:pb-0 pr-0 lg:pr-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                 Cash Realized
               </span>
-              <span className="text-[10px] font-bold font-mono text-zinc-900 bg-zinc-100 px-1.5 py-0.5 rounded">
+              <span className="text-[10px] font-bold font-mono text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">
                 {metrics.efficiency}% collected
               </span>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 tracking-tight font-mono">
+            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight font-mono">
               <AnimatedCounter
                 value={metrics.collected}
                 prefix="₹"
@@ -190,16 +190,16 @@ export function RevenueVelocityMatrix({ summary, className = "" }: RevenueVeloci
               />
             </div>
             {/* Minimalist 3px Progress Line */}
-            <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+            <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
               <div
-                className="bg-zinc-900 h-full rounded-full transition-all duration-500"
+                className="bg-zinc-900 dark:bg-zinc-100 h-full rounded-full transition-all duration-500"
                 style={{ width: `${metrics.efficiency}%` }}
               />
             </div>
           </div>
 
           {/* Column 3: Daily Run-Rate Velocity */}
-          <div className="space-y-1.5 border-b sm:border-b-0 sm:border-r border-zinc-100 pb-4 sm:pb-0 pr-0 sm:pr-4">
+          <div className="space-y-1.5 border-b sm:border-b-0 sm:border-r border-zinc-100 dark:border-zinc-800 pb-4 sm:pb-0 pr-0 sm:pr-4">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                 Run-Rate Velocity
@@ -216,16 +216,16 @@ export function RevenueVelocityMatrix({ summary, className = "" }: RevenueVeloci
                 {metrics.growth >= 0 ? `+${metrics.growth}%` : `${metrics.growth}%`}
               </Badge>
             </div>
-            <div className="text-2xl font-bold text-zinc-900 tracking-tight font-mono">
+            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight font-mono">
               <AnimatedCounter
                 value={metrics.runRate}
                 prefix="₹"
                 decimals={0}
                 formatINR
               />
-              <span className="text-xs font-normal text-zinc-400 font-sans ml-1">/day</span>
+              <span className="text-xs font-normal text-zinc-400 dark:text-zinc-500 font-sans ml-1">/day</span>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Avg daily sales billing speed
             </p>
           </div>
@@ -259,16 +259,16 @@ export function RevenueVelocityMatrix({ summary, className = "" }: RevenueVeloci
                       transition={{ duration: 0.5, delay: idx * 0.04 }}
                       className={`w-full max-w-[12px] rounded-xs transition-colors duration-150 ${
                         isHovered
-                          ? "bg-zinc-950"
+                          ? "bg-zinc-950 dark:bg-white"
                           : bar.isToday
-                          ? "bg-zinc-800"
-                          : "bg-zinc-300 hover:bg-zinc-400"
+                          ? "bg-zinc-800 dark:bg-zinc-200"
+                          : "bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-500"
                       }`}
                     />
 
                     {/* Micro Day Label */}
                     <span className={`text-[9px] font-mono mt-1 transition-colors ${
-                      isHovered ? "font-bold text-zinc-900" : "text-zinc-400"
+                      isHovered ? "font-bold text-zinc-900 dark:text-zinc-100" : "text-zinc-400 dark:text-zinc-500"
                     }`}>
                       {bar.shortDay[0]}
                     </span>

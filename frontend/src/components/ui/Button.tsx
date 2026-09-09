@@ -22,17 +22,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-[transform,opacity,background-color,border-color,color] rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer active:scale-[0.98] motion-reduce:transform-none";
+      "inline-flex items-center justify-center font-medium transition-[transform,opacity,background-color,border-color,color] rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-950 dark:focus:ring-white focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer active:scale-[0.98] motion-reduce:transform-none";
 
     const variants = {
       primary:
-        "bg-zinc-950 text-white hover:bg-black active:bg-zinc-900 shadow-xs border border-zinc-900",
+        "bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 hover:bg-black dark:hover:bg-zinc-200 active:bg-zinc-900 shadow-xs border border-zinc-900 dark:border-white",
       secondary:
-        "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 border border-zinc-200",
+        "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700",
       outline:
-        "border border-zinc-300 bg-white text-zinc-900 hover:bg-zinc-50 shadow-2xs",
-      danger: "bg-zinc-900 text-white hover:bg-black border border-zinc-800",
-      ghost: "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950",
+        "border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800 shadow-2xs",
+      danger: "bg-zinc-900 dark:bg-zinc-800 text-white hover:bg-black dark:hover:bg-zinc-700 border border-zinc-800 dark:border-zinc-700",
+      ghost: "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-zinc-100",
     };
 
     const sizes = {

@@ -42,11 +42,11 @@ export const AppShell: React.FC<AppShellProps> = ({ children, isHealthy: propHea
 
   return (
     <WebSocketProvider>
-      <div className="flex h-screen bg-zinc-50 text-zinc-950 overflow-hidden font-sans">
+      <div className="flex h-screen bg-zinc-50 dark:bg-[#09090b] text-zinc-950 dark:text-zinc-100 overflow-hidden font-sans">
         <Sidebar />
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           <Header isHealthy={healthy} />
-          <main ref={mainRef} className="app-canvas flex-1 overflow-y-auto p-6 md:p-8 bg-zinc-50">
+          <main ref={mainRef} className="app-canvas flex-1 overflow-y-auto p-6 md:p-8 bg-zinc-50 dark:bg-[#09090b]">
             {children}
           </main>
         </div>

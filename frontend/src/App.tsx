@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { motion, AnimatePresence } from 'framer-motion'
 import { TenantProvider } from './context/TenantContext'
 import { ToastProvider } from './context/ToastContext'
+import { ThemeProvider } from './context/ThemeContext'
 import { AppShell } from './components/layout/AppShell'
 import { DURATION, EASING, useReducedMotion } from './motion'
 import OverviewPage from './app/page'
@@ -61,13 +62,15 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <TenantProvider>
-        <ToastProvider>
-          <AppShell>
-            <AnimatedRoutes />
-          </AppShell>
-        </ToastProvider>
-      </TenantProvider>
+      <ThemeProvider>
+        <TenantProvider>
+          <ToastProvider>
+            <AppShell>
+              <AnimatedRoutes />
+            </AppShell>
+          </ToastProvider>
+        </TenantProvider>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }
