@@ -36,7 +36,7 @@ export const AppShell = ({ children, isHealthy: propHealthy }) => {
         <Sidebar />
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           <Header isHealthy={healthy}/>
-          <main ref={mainRef} className="app-canvas flex-1 overflow-y-auto p-6 md:p-8 bg-zinc-50 dark:bg-[#09090b]">
+          <main ref={mainRef} className="app-canvas flex-1 overflow-y-auto p-4 md:p-6 bg-zinc-50 dark:bg-[#09090b]">
             {children}
           </main>
         </div>

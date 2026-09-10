@@ -171,7 +171,7 @@ export const Header = ({ isHealthy }) => {
         }
     };
     return (<>
-      <header className="h-16 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800/80 px-6 flex items-center justify-between shrink-0 relative z-30">
+      <header className="h-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800/80 px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
         {/* Tenant Selector */}
         <div className="relative">
           <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 rounded-md transition-colors">

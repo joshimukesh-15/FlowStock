@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -9,12 +9,12 @@ import { Alert } from "@/components/ui/Alert";
 import { Tabs } from "@/components/ui/Tabs";
 import { StatCard } from "@/components/ui/StatCard";
 import { StatRow, StatCol } from "@/components/ui/StatRow";
-import { RefreshCw, TrendingUp, AlertTriangle, ArrowRightLeft, Building2, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, } from "lucide-react";
+import { RefreshCw, TrendingUp, AlertTriangle, ArrowRightLeft, Building2, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, ChevronDown, Check, } from "lucide-react";
 import { fetchHealth, fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJobApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useRealtime } from "@/context/WebSocketContext";
 import { formatINR } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
 import { AnimatedProgressBar } from "@/components/ui/AnimatedProgressBar";
 import { CardSkeleton } from "@/components/ui/Skeleton";
@@ -34,8 +34,29 @@ export default function HomePage() {
     const [error, setError] = useState(null);
     const [lastChecked, setLastChecked] = useState("");
     const [activeTab, setActiveTab] = useState("inventory");
+    const [workspaceDropdownOpen, setWorkspaceDropdownOpen] = useState(false);
+    const workspaceRef = useRef(null);
     const { currentOrg, currentUser, organizations, switchOrganization } = useTenant();
     const { subscribe } = useRealtime();
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (workspaceRef.current && !workspaceRef.current.contains(event.target)) {
+                setWorkspaceDropdownOpen(false);
+            }
+        };
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                setWorkspaceDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
     const loadData = async () => {
         setLoading(true);
         setError(null);
@@ -175,14 +196,71 @@ export default function HomePage() {
               </span>
             </div>
 
-            {/* Compact Workspace Switcher */}
-            <div className="flex items-center gap-1.5 pl-2 border-l border-zinc-200 dark:border-zinc-800">
-              <ArrowRightLeft className="w-3.5 h-3.5 text-zinc-400 shrink-0"/>
-              <select value={currentOrg?.id || ""} onChange={(e) => switchOrganization(e.target.value)} aria-label="Switch organization workspace" className="text-xs bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium px-2 py-1 rounded border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-400 cursor-pointer">
-                {organizations.map((org) => (<option key={org.id} value={org.id}>
-                    {org.name}
-                  </option>))}
-              </select>
+            {/* Compact Custom Workspace Switcher */}
+            <div className="relative pl-2 border-l border-zinc-200 dark:border-zinc-800" ref={workspaceRef}>
+              <button
+                type="button"
+                onClick={() => setWorkspaceDropdownOpen((prev) => !prev)}
+                className="inline-flex items-center gap-1.5 text-xs bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700/80 text-zinc-900 dark:text-zinc-100 font-medium px-2.5 py-1 rounded-md border border-zinc-200 dark:border-zinc-700 shadow-none transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-zinc-400"
+                aria-haspopup="listbox"
+                aria-expanded={workspaceDropdownOpen}
+                aria-label="Switch organization workspace"
+              >
+                <ArrowRightLeft className="w-3.5 h-3.5 text-zinc-400 shrink-0"/>
+                <span className="max-w-[130px] sm:max-w-[160px] truncate">
+                  {currentOrg?.name || "Switch Workspace"}
+                </span>
+                <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 transition-transform duration-150 ${workspaceDropdownOpen ? "rotate-180" : ""}`}/>
+              </button>
+
+              <AnimatePresence>
+                {workspaceDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                    transition={{ duration: 0.12 }}
+                    className="absolute right-0 top-full mt-1.5 w-64 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl py-1 z-50 origin-top-right text-xs"
+                    role="listbox"
+                  >
+                    <div className="px-3 py-1.5 border-b border-zinc-100 dark:border-zinc-800 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                      Switch Organization
+                    </div>
+                    <div className="max-h-56 overflow-y-auto py-1 divide-y divide-zinc-100/50 dark:divide-zinc-800/50">
+                      {organizations.map((org) => {
+                        const isSelected = org.id === currentOrg?.id;
+                        return (
+                          <button
+                            key={org.id}
+                            type="button"
+                            role="option"
+                            aria-selected={isSelected}
+                            onClick={() => {
+                              switchOrganization(org.id);
+                              setWorkspaceDropdownOpen(false);
+                            }}
+                            className={`w-full text-left px-3 py-2 flex items-center justify-between gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer ${
+                              isSelected
+                                ? "text-zinc-950 dark:text-zinc-50 font-semibold bg-zinc-50 dark:bg-zinc-800/60"
+                                : "text-zinc-700 dark:text-zinc-300"
+                            }`}
+                          >
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-xs font-medium">{org.name}</p>
+                              <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono">
+                                {org.slug} · {org.currency}
+                              </p>
+                            </div>
+                            {isSelected && (
+                              <Check className="w-3.5 h-3.5 text-zinc-950 dark:text-zinc-100 shrink-0" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

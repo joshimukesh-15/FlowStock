@@ -106,10 +106,10 @@ export const Sidebar = () => {
     return (<>
       <aside className={`${collapsed ? "w-16" : "w-64"} bg-zinc-950 text-zinc-300 flex flex-col shrink-0 border-r border-zinc-800 select-none transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-20`} aria-label="Primary navigation">
         {/* Brand Header */}
-        <div className={`h-16 flex items-center border-b border-zinc-800/80 transition-all ${collapsed ? "justify-center px-2" : "justify-between px-4"}`}>
-          <button onClick={() => setCollapsed(!collapsed)} onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })} onMouseLeave={handleMouseLeave} className="flex items-center gap-3 min-w-0 text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-1" aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}>
-            <span className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm shrink-0 group-hover/logo:bg-zinc-100 transition-colors">
-              <Package className="w-4 h-4 text-black" strokeWidth={2.25}/>
+        <div className={`h-12 flex items-center border-b border-zinc-800/80 transition-all ${collapsed ? "justify-center px-2" : "justify-between px-4"}`}>
+          <button onClick={() => setCollapsed(!collapsed)} onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })} onMouseLeave={handleMouseLeave} className="flex items-center gap-2.5 min-w-0 text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-1" aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}>
+            <span className="w-7 h-7 rounded-md bg-white flex items-center justify-center shadow-sm shrink-0 group-hover/logo:bg-zinc-100 transition-colors">
+              <Package className="w-3.5 h-3.5 text-black" strokeWidth={2.25}/>
             </span>
 
             <AnimatePresence mode="wait">
@@ -117,25 +117,25 @@ export const Sidebar = () => {
                 duration: prefersReducedMotion ? 0 : DURATION.micro,
                 ease: EASING.standard,
             }} className="flex flex-col min-w-0 text-left overflow-hidden whitespace-nowrap">
-                  <span className="font-bold text-sm text-white tracking-tight leading-none">
+                  <span className="font-bold text-[13px] text-white tracking-tight leading-none">
                     FlowStock
                   </span>
-                  <span className="text-[9px] text-zinc-400 font-semibold uppercase tracking-widest mt-0.5">
+                  <span className="text-[8px] text-zinc-400 font-semibold uppercase tracking-widest mt-0.5">
                     Enterprise Core
                   </span>
                 </motion.span>)}
             </AnimatePresence>
           </button>
 
-          {!collapsed && (<button onClick={() => setCollapsed(true)} className="p-1.5 rounded-md text-zinc-500 hover:text-white hover:bg-zinc-800/80 transition-colors shrink-0" aria-label="Collapse sidebar" title="Collapse sidebar">
-              <PanelLeftClose className="w-4 h-4"/>
+          {!collapsed && (<button onClick={() => setCollapsed(true)} className="p-1 rounded-md text-zinc-500 hover:text-white hover:bg-zinc-800/80 transition-colors shrink-0" aria-label="Collapse sidebar" title="Collapse sidebar">
+              <PanelLeftClose className="w-3.5 h-3.5"/>
             </button>)}
         </div>
 
         {/* Navigation Groups */}
-        <nav onScroll={() => setHoveredTooltip(null)} className="flex-1 py-4 px-2 overflow-y-auto no-scrollbar">
-          {NAV_GROUPS.map((group) => (<div key={group.label} className="mb-4 last:mb-0">
-              {collapsed ? (<div className="mx-2 my-2 h-px bg-zinc-800/60"/>) : (<p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
+        <nav onScroll={() => setHoveredTooltip(null)} className="flex-1 py-2.5 px-2 overflow-y-auto no-scrollbar">
+          {NAV_GROUPS.map((group) => (<div key={group.label} className="mb-2.5 last:mb-0">
+              {collapsed ? (<div className="mx-2 my-1.5 h-px bg-zinc-800/60"/>) : (<p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
                   {group.label}
                 </p>)}
 
@@ -145,7 +145,7 @@ export const Sidebar = () => {
                 const active = isActive(item.href);
                 return (<li key={item.label} className="relative">
                       {active && (<motion.span layoutId="active-navigation-item" className="absolute inset-0 rounded-lg border border-zinc-700 bg-zinc-900 shadow-xs" transition={getTransition("normal", prefersReducedMotion)} aria-hidden="true"/>)}
-                      <Link to={item.href} onMouseEnter={(e) => handleMouseEnter(e, item.label, { active })} onMouseLeave={handleMouseLeave} aria-current={active ? "page" : undefined} className={`group relative z-10 flex items-center gap-3 rounded-lg text-[13px] font-medium transition-[transform,opacity,background-color,border-color,color] outline-none focus-visible:ring-2 focus-visible:ring-white ${collapsed ? "justify-center px-0 py-2.5" : "px-3 py-2.5"} ${active
+                      <Link to={item.href} onMouseEnter={(e) => handleMouseEnter(e, item.label, { active })} onMouseLeave={handleMouseLeave} aria-current={active ? "page" : undefined} className={`group relative z-10 flex items-center gap-2.5 rounded-lg text-[13px] font-medium transition-[transform,opacity,background-color,border-color,color] outline-none focus-visible:ring-2 focus-visible:ring-white ${collapsed ? "justify-center px-0 py-1.5" : "px-3 py-1.5"} ${active
                         ? "text-white"
                         : "text-zinc-400 hover:bg-zinc-900/60 hover:text-white"}`}>
                         <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 group-hover:scale-110 ${active
