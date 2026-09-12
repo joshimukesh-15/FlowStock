@@ -11,14 +11,14 @@ import { useToast } from "@/context/ToastContext";
 import { WarehouseTransferVisualizer } from "@/components/ui/WarehouseTransferVisualizer";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
+import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Alert } from "@/components/ui/Alert";
 import { motion } from "framer-motion";
-import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
+import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
 export default function WarehousesPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
@@ -206,7 +206,12 @@ export default function WarehousesPage() {
           </AnimatedBadge>);
         }
     };
-    return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={containerVariants}>
+
+    if (loading && warehouses.length === 0) {
+      return <PageSkeleton hasKpis={false} tableRows={5} />;
+    }
+
+    return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
             <WarehouseIcon className="w-6 h-6 text-zinc-900 dark:text-zinc-100"/>

@@ -6,6 +6,25 @@ import { DURATION, EASING, DISTANCE, SCALE, STAGGER } from "./tokens";
  * All variants animate transform and opacity only.
  * Functions accept reducedMotion flag to provide instant no-motion fallback.
  */
+export const pageEnterVariants = (reducedMotion = false) => ({
+    hidden: {
+        opacity: 0,
+    },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: reducedMotion ? 0 : 0.18,
+            ease: EASING.standard,
+        },
+    },
+    exit: {
+        opacity: 0,
+        transition: {
+            duration: reducedMotion ? 0 : 0.1,
+            ease: EASING.standard,
+        },
+    },
+});
 export const fadeInVariants = (reducedMotion = false) => ({
     hidden: {
         opacity: 0,

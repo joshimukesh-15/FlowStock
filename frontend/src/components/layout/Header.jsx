@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Building2, ChevronDown, Plus, User, Check, X, Bell, CheckCheck, ExternalLink, AlertTriangle, Info, CheckCircle2, AlertCircle, Trash2, } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Building2, ChevronDown, Plus, User, Check, X, Bell, CheckCheck, ExternalLink, AlertTriangle, Info, CheckCircle2, AlertCircle, Trash2, Sparkles, } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -13,7 +13,9 @@ import { fetchNotifications, fetchUnreadNotificationCount, markNotificationRead,
 import { useRealtime } from "@/context/WebSocketContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { popoverVariants, useReducedMotion } from "@/motion";
-export const Header = ({ isHealthy }) => {
+export const Header = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const { organizations, currentOrg, currentUser, switchOrganization, switchUser, createOrganization, deleteOrganization, } = useTenant();
     const prefersReducedMotion = useReducedMotion();
     const tenantMenuVariants = popoverVariants(prefersReducedMotion);
@@ -222,11 +224,28 @@ export const Header = ({ isHealthy }) => {
                     </div>);
             })}
               </div>
-              <div className="border-t border-zinc-100 dark:border-zinc-800 p-1.5">
-                <Button variant="outline" size="sm" onClick={() => {
-                setModalOpen(true);
-                setDropdownOpen(false);
-            }} className="w-full text-xs gap-1 py-1 h-auto">
+              <div className="border-t border-zinc-100 dark:border-zinc-800 p-1.5 space-y-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    navigate("/welcome", { state: { from: location.pathname } });
+                  }}
+                  className="w-full text-xs gap-1.5 py-1.5 h-auto justify-start text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-zinc-500" />
+                  Workspace Launchpad & Portal
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setModalOpen(true);
+                    setDropdownOpen(false);
+                  }}
+                  className="w-full text-xs gap-1 py-1 h-auto justify-center"
+                >
                   <Plus className="w-3 h-3"/>
                   Add Organization
                 </Button>
@@ -237,19 +256,7 @@ export const Header = ({ isHealthy }) => {
 
         {/* System & User Controls */}
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2">
-            <span className="text-xs text-zinc-500 font-medium">System:</span>
-            {isHealthy ? (<Badge variant="success">Operational</Badge>) : (<Badge variant="danger">Disconnected</Badge>)}
-          </div>
-
           <GlobalSearch />
-
-          <div className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border transition-colors ${isConnected
-            ? "bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-800"
-            : "bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800"}`} title={isConnected ? "Real-time WebSocket stream active" : "Attempting WebSocket connection..."}>
-            <span className={`w-1.5 h-1.5 rounded-full ${isConnected ? "bg-zinc-950 dark:bg-zinc-200" : "bg-zinc-400 dark:bg-zinc-600"}`}/>
-            <span>{isConnected ? "Live Stream" : "Connecting..."}</span>
-          </div>
 
           <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800"/>
 

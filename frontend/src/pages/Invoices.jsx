@@ -8,7 +8,7 @@ import { fetchInvoices, fetchOrders, fetchCustomers, fetchProducts, createInvoic
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { formatINR } from "@/lib/utils";
-import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
+import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
@@ -16,7 +16,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { motion } from "framer-motion";
-import { createStaggerContainer, slideUpVariants, useReducedMotion } from "@/motion";
+import { createStaggerContainer, slideUpVariants, pageEnterVariants, useReducedMotion } from "@/motion";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
@@ -312,7 +312,12 @@ export default function InvoicesPage() {
     const customSubtotal = customItems.reduce((sum, item) => sum + (Number(item.quantity) || 0) * (Number(item.unit_price) || 0), 0);
     const customTax = customSubtotal * ((Number(customTaxRate) || 0) / 100);
     const customTotal = customSubtotal + customTax;
-    return (<motion.div className="space-y-6" variants={containerVariants} initial="hidden" animate="visible">
+
+    if (loading && invoices.length === 0) {
+      return <PageSkeleton hasKpis={true} kpiCount={4} tableRows={6} />;
+    }
+
+    return (<motion.div className="space-y-6" variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible">
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
             <ReceiptText className="w-7 h-7 text-zinc-900 dark:text-zinc-100"/>

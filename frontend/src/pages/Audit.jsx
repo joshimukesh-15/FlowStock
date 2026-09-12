@@ -4,18 +4,17 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { History, RefreshCw, ShieldCheck, Filter, User, FileText, CreditCard, Truck, Boxes, ShoppingCart, Building2, } from "lucide-react";
-import { fetchHealth, fetchAuditLogs } from "@/lib/api";
+import { fetchAuditLogs } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
-import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
+import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { motion } from "framer-motion";
-import { fadeInVariants, useReducedMotion } from "@/motion";
+import { fadeInVariants, useReducedMotion, pageEnterVariants } from "@/motion";
 export default function AuditPage() {
-    const [health, setHealth] = useState(null);
     const [audits, setAudits] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
@@ -26,15 +25,11 @@ export default function AuditPage() {
         if (audits.length === 0)
             setLoading(true);
         try {
-            const [healthData, auditData] = await Promise.all([
-                fetchHealth(),
-                fetchAuditLogs({
-                    entity_type: selectedEntity === "ALL" ? undefined : selectedEntity,
-                    search: searchTerm || undefined,
-                    limit: 100,
-                }),
-            ]);
-            setHealth(healthData);
+            const auditData = await fetchAuditLogs({
+                entity_type: selectedEntity === "ALL" ? undefined : selectedEntity,
+                search: searchTerm || undefined,
+                limit: 100,
+            });
             setAudits(auditData);
         }
         catch {
@@ -54,7 +49,6 @@ export default function AuditPage() {
         e.preventDefault();
         loadAudits();
     };
-    const isConnected = health?.status === "healthy" || health?.status === "degraded";
     const getActionBadge = (action) => {
         let variant = "default";
         if (action.includes("CONFIRMED") || action.includes("DELIVERED") || action.includes("RECEIVED") || action.includes("PAID") || action.includes("RECORDED")) {
@@ -100,7 +94,12 @@ export default function AuditPage() {
         { label: "Inventory Ledger", value: "Inventory" },
         { label: "Purchase Orders", value: "PurchaseOrder" },
     ];
-    return (<motion.div className="max-w-7xl mx-auto space-y-6 pb-12" variants={fadeInVariants(prefersReducedMotion)} initial="hidden" animate="visible">
+
+    if (loading && audits.length === 0) {
+      return <PageSkeleton hasKpis={true} kpiCount={4} tableRows={8} />;
+    }
+
+    return (<motion.div className="max-w-7xl mx-auto space-y-6 pb-12" variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible">
         {/* Header Title */}
         <PageHeader title="Audit Trails & Compliance Log" subtitle="Immutable chronological record of system transactions, operator modifications, and state transitions." actions={<Button variant="outline" size="sm" onClick={loadAudits} disabled={loading} className="gap-1.5">
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`}/>

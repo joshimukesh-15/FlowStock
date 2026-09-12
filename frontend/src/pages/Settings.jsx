@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { Tabs } from "@/components/ui/Tabs";
 import { Alert } from "@/components/ui/Alert";
 import { ShieldCheck, Building2, Users, User as UserIcon, Plus, X, AlertCircle, Globe, RefreshCw, Database, Zap, Gauge, Bell, Rows3, BadgeCheck, Sun, Moon, Monitor, } from "lucide-react";
 import { fetchHealth, createOrgUserApi } from "@/lib/api";
@@ -39,6 +40,12 @@ export default function SettingsPage() {
     const containerVariants = createStaggerContainer(0.06, 0, prefersReducedMotion);
     const itemVariants = slideUpVariants(prefersReducedMotion);
     const isAdmin = currentUser?.role === "admin";
+    const [activeTab, setActiveTab] = useState("workspace");
+    const SETTINGS_TABS = [
+        { id: "workspace", label: "Workspace & Team", icon: Building2 },
+        { id: "preferences", label: "Preferences", icon: Rows3 },
+        { id: "system", label: "System Diagnostics", icon: Gauge },
+    ];
     const [provisionOpen, setProvisionOpen] = useState(false);
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
@@ -118,8 +125,16 @@ export default function SettingsPage() {
             {currentOrg?.slug || "tenant"} · {currentOrg?.currency || "INR"}
           </Badge>}/>
 
-      {/* ORGANIZATION PROFILE */}
+      {/* Settings Navigation Tabs */}
       <motion.div variants={itemVariants}>
+        <Tabs tabs={SETTINGS_TABS} activeTab={activeTab} onChange={setActiveTab} />
+      </motion.div>
+
+      {/* WORKSPACE & TEAM TAB */}
+      {activeTab === "workspace" && (
+        <div className="space-y-6">
+          {/* ORGANIZATION PROFILE */}
+          <motion.div variants={itemVariants}>
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
@@ -215,8 +230,11 @@ export default function SettingsPage() {
           </div>
         </Card>
       </motion.div>
+      </div>
+      )}
 
-      {/* PREFERENCES */}
+      {/* PREFERENCES TAB */}
+      {activeTab === "preferences" && (
       <motion.div variants={itemVariants}>
         <Card>
           <CardHeader>
@@ -292,8 +310,10 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       </motion.div>
+      )}
 
-      {/* SYSTEM DIAGNOSTICS */}
+      {/* SYSTEM DIAGNOSTICS TAB */}
+      {activeTab === "system" && (
       <motion.div variants={itemVariants}>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-3">
@@ -351,6 +371,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       </motion.div>
+      )}
 
       {/* PROVISION USER MODAL */}
       <Modal isOpen={provisionOpen} onClose={() => setProvisionOpen(false)} maxWidth="lg">

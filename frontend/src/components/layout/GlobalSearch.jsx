@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { FileText, Package, Search, ShoppingCart, Truck } from "lucide-react";
+import { FileText, Package, Search, ShoppingCart, Truck, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { Modal } from "@/components/ui/Modal";
 import { fetchInvoices, fetchOrders, fetchProducts, fetchPurchaseOrders, fetchShipments } from "@/lib/api";
@@ -11,8 +11,12 @@ const TYPE_ICONS = {
     "Purchase order": FileText,
     Shipment: Truck,
     Invoice: FileText,
+    Navigation: Sparkles,
 };
-/** Searches existing API data only; it does not create a separate search index or demo data. */
+let cachedSearchData = null;
+let lastCacheTime = 0;
+
+/** Searches existing API data with 60s cache; it does not create a separate search index or demo data. */
 export const GlobalSearch = () => {
     const prefersReducedMotion = useReducedMotion();
     const [isOpen, setIsOpen] = useState(false);
@@ -33,19 +37,28 @@ export const GlobalSearch = () => {
     useEffect(() => {
         if (!isOpen)
             return;
+        // Use 60s cache if valid
+        if (cachedSearchData && Date.now() - lastCacheTime < 60000) {
+            setResults(cachedSearchData);
+            return;
+        }
         let active = true;
         setLoading(true);
         Promise.all([fetchProducts(), fetchOrders(), fetchPurchaseOrders(), fetchShipments(), fetchInvoices()])
             .then(([products, orders, purchaseOrders, shipments, invoices]) => {
             if (!active)
                 return;
-            setResults([
+            const mapped = [
+                { id: "nav-welcome", title: "Workspace Launchpad & Portal", detail: "Tenant selector & architecture telemetry (/welcome)", to: "/welcome", type: "Navigation" },
                 ...products.map((item) => ({ id: item.id, title: item.name, detail: item.sku, to: "/products", type: "Product" })),
                 ...orders.map((item) => ({ id: item.id, title: item.order_number, detail: item.customer?.name || item.status, to: "/orders", type: "Order" })),
                 ...purchaseOrders.map((item) => ({ id: item.id, title: item.po_number, detail: item.supplier?.name || item.status, to: "/purchasing", type: "Purchase order" })),
                 ...shipments.map((item) => ({ id: item.id, title: item.tracking_number || item.shipment_number, detail: `${item.carrier} · ${item.status}`, to: "/shipments", type: "Shipment" })),
                 ...invoices.map((item) => ({ id: item.id, title: item.invoice_number, detail: item.customer?.name || item.status, to: "/invoices", type: "Invoice" })),
-            ]);
+            ];
+            cachedSearchData = mapped;
+            lastCacheTime = Date.now();
+            setResults(mapped);
         })
             .catch(() => {
             if (active)

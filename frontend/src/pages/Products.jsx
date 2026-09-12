@@ -12,10 +12,10 @@ import { fetchProducts, fetchCategories, createProductApi, updateProductApi, del
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { motion } from "framer-motion";
-import { fadeInVariants, useReducedMotion } from "@/motion";
+import { fadeInVariants, useReducedMotion, pageEnterVariants } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
+import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 export default function ProductsPage() {
     const { currentOrg } = useTenant();
@@ -164,7 +164,12 @@ export default function ProductsPage() {
         }
     };
     const curr = currentOrg?.currency || "INR";
-    return (<motion.div className="max-w-7xl mx-auto space-y-6" variants={fadeInVariants(prefersReducedMotion)} initial="hidden" animate="visible">
+
+    if (loading && products.length === 0) {
+      return <PageSkeleton hasKpis={false} tableRows={6} />;
+    }
+
+    return (<motion.div className="max-w-7xl mx-auto space-y-6" variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible">
         {/* Title Bar */}
         <PageHeader title="Products & SKU Catalog" badge={currentOrg && <Badge variant="info" className="capitalize">{currentOrg.name}</Badge>} subtitle="Master catalog of stock items, selling rates, and classification" actions={<>
               <Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)} className="gap-1.5">

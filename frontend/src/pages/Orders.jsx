@@ -11,7 +11,7 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { OrderLifecycleStepper } from "@/components/ui/OrderLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
+import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
@@ -19,7 +19,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { motion } from "framer-motion";
-import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
+import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
 export default function OrdersPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
@@ -285,7 +285,12 @@ export default function OrdersPage() {
           </AnimatedBadge>);
         }
     };
-    return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={containerVariants}>
+
+    if (loading && orders.length === 0) {
+      return <PageSkeleton hasKpis={true} kpiCount={4} tableRows={6} />;
+    }
+
+    return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
             <ShoppingCart className="w-6 h-6 text-zinc-900 dark:text-zinc-100"/>

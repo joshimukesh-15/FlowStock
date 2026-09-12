@@ -8,10 +8,10 @@ import { Boxes, Plus, History, AlertTriangle, RefreshCw, TrendingDown, TrendingU
 import { fetchInventorySummaries, recordMovementApi, fetchProductMovements, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { motion } from "framer-motion";
-import { getTransition, useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
+import { getTransition, useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Modal } from "@/components/ui/Modal";
-import { TableSkeleton, ListSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
+import { TableSkeleton, ListSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
@@ -127,7 +127,12 @@ export default function InventoryPage() {
         previewNewStock = previewCurrent - Number(quantity || 0);
     else if (movementType === "ADJUSTMENT")
         previewNewStock = Number(quantity || 0);
-    return (<motion.div className="max-w-7xl mx-auto space-y-6" initial="hidden" animate="visible" variants={containerVariants}>
+
+    if (loading && summaries.length === 0) {
+      return <PageSkeleton hasKpis={true} kpiCount={4} tableRows={6} />;
+    }
+
+    return (<motion.div className="max-w-7xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Title Bar */}
       <PageHeader title="Inventory Movement Ledger" badge={<Badge variant="info" className="capitalize">{currentOrg?.name}</Badge>} subtitle="Append-only transaction ledger with automatic real-time stock computation" actions={<>
             <Button variant="outline" size="sm" onClick={loadInventory} disabled={loading} className="gap-1.5">

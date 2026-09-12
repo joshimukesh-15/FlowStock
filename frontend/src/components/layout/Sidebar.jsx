@@ -3,36 +3,25 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getTransition, useReducedMotion, DURATION, EASING } from "@/motion";
-import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, ShieldCheck, Package, } from "lucide-react";
-import { useTenant } from "@/context/TenantContext";
-import { useRealtime } from "@/context/WebSocketContext";
+import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, Package, } from "lucide-react";
 const NAV_GROUPS = [
     {
-        label: "Workspace",
-        items: [{ label: "Overview", icon: LayoutDashboard, href: "/" }],
-    },
-    {
-        label: "Operations",
+        label: "Core Workspace",
         items: [
+            { label: "Overview", icon: LayoutDashboard, href: "/dashboard" },
             { label: "Products & SKUs", icon: Layers, href: "/products" },
             { label: "Inventory Ledger", icon: Boxes, href: "/inventory" },
             { label: "Warehouses & Stock", icon: Warehouse, href: "/warehouses" },
         ],
     },
     {
-        label: "Procurement",
-        items: [{ label: "Suppliers & Purchasing", icon: Building2, href: "/purchasing" }],
-    },
-    {
-        label: "Fulfillment",
+        label: "Transactions & Supply",
         items: [
             { label: "Orders & Sales", icon: ShoppingCart, href: "/orders" },
+            { label: "Suppliers & Purchasing", icon: Building2, href: "/purchasing" },
             { label: "Shipments & Logistics", icon: Truck, href: "/shipments" },
+            { label: "Invoices & Accounts", icon: ReceiptText, href: "/invoices" },
         ],
-    },
-    {
-        label: "Financials",
-        items: [{ label: "Invoices & Accounts", icon: ReceiptText, href: "/invoices" }],
     },
     {
         label: "Administration",
@@ -42,19 +31,11 @@ const NAV_GROUPS = [
         ],
     },
 ];
-const initialsOf = (name) => (name || "FS")
-    .split(" ")
-    .map((p) => p[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+
 export const Sidebar = () => {
     const location = useLocation();
     const pathname = location.pathname;
     const prefersReducedMotion = useReducedMotion();
-    const { currentOrg, currentUser } = useTenant();
-    const { isConnected } = useRealtime();
     const [collapsed, setCollapsed] = useState(() => {
         if (typeof window === "undefined")
             return false;
@@ -165,46 +146,6 @@ export const Sidebar = () => {
               </ul>
             </div>))}
         </nav>
-
-        {/* Workspace Footer: Tenant, Operator & System State */}
-        <div className="p-2.5 border-t border-zinc-800/80 space-y-2.5 shrink-0">
-          {/* Active tenant / operator card */}
-          <Link to="/settings" onMouseEnter={(e) => handleMouseEnter(e, currentUser?.name || "Settings", {
-            active: false,
-        })} onMouseLeave={handleMouseLeave} className={`flex items-center gap-2.5 rounded-xl bg-zinc-900/70 border border-zinc-800 p-2 transition-colors hover:bg-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-white ${collapsed ? "justify-center" : ""}`}>
-            <div className="w-8 h-8 rounded-lg bg-zinc-700/80 border border-zinc-600 text-white flex items-center justify-center text-[11px] font-bold shrink-0">
-              {initialsOf(currentUser?.name)}
-            </div>
-            <AnimatePresence>
-              {!collapsed && (<motion.div initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: "auto" }} exit={{ opacity: 0, width: 0 }} transition={{
-                duration: prefersReducedMotion ? 0 : DURATION.micro,
-            }} className="min-w-0 flex-1 overflow-hidden whitespace-nowrap">
-                  <p className="text-xs font-semibold text-white truncate">
-                    {currentUser?.name || "Operator"}
-                  </p>
-                  <p className="text-[10px] text-zinc-400 truncate flex items-center gap-1">
-                    <ShieldCheck className="w-2.5 h-2.5 shrink-0"/>
-                    {currentUser?.role?.replace("_", " ") || "viewer"} ·{" "}
-                    {currentOrg?.name || "Tenant"}
-                  </p>
-                </motion.div>)}
-            </AnimatePresence>
-          </Link>
-
-          {/* Version & live stream */}
-          <div className="flex items-center justify-between gap-2 px-1">
-            <AnimatePresence>
-              {!collapsed && (<motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-[10px] text-zinc-500 font-medium whitespace-nowrap">
-                  FlowStock <span className="font-mono">v1.1.0</span>
-                </motion.span>)}
-            </AnimatePresence>
-
-            <span className={`inline-flex items-center gap-1.5 text-[10px] font-medium ${isConnected ? "text-zinc-300" : "text-zinc-500"} ${collapsed ? "mx-auto" : ""}`} onMouseEnter={(e) => handleMouseEnter(e, isConnected ? "Live Stream Active" : "Stream Offline")} onMouseLeave={handleMouseLeave}>
-              <span className={`w-1.5 h-1.5 rounded-full ${isConnected ? "bg-emerald-400" : "bg-zinc-500"}`}/>
-              {!collapsed && <span>{isConnected ? "Live" : "Offline"}</span>}
-            </span>
-          </div>
-        </div>
       </aside>
 
       {/* Floating Hover Tooltip for Collapsed Sidebar */}

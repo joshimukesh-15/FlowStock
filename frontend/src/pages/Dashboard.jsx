@@ -10,18 +10,17 @@ import { Tabs } from "@/components/ui/Tabs";
 import { StatCard } from "@/components/ui/StatCard";
 import { StatRow, StatCol } from "@/components/ui/StatRow";
 import { RefreshCw, TrendingUp, AlertTriangle, ArrowRightLeft, Building2, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, ChevronDown, Check, } from "lucide-react";
-import { fetchHealth, fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJobApi, } from "@/lib/api";
+import { fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJobApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useRealtime } from "@/context/WebSocketContext";
 import { formatINR } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { useReducedMotion, createStaggerContainer, slideUpVariants } from "@/motion";
+import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
 import { AnimatedProgressBar } from "@/components/ui/AnimatedProgressBar";
-import { CardSkeleton } from "@/components/ui/Skeleton";
+import { CardSkeleton, KpiRowSkeleton, FilterBarSkeleton, TableSkeleton, Skeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { RevenueVelocityMatrix } from "@/components/dashboard/RevenueVelocityMatrix";
 import { OrderStatusDistribution } from "@/components/dashboard/OrderStatusDistribution";
 export default function HomePage() {
-    const [health, setHealth] = useState(null);
     const [summary, setSummary] = useState(null);
     const prefersReducedMotion = useReducedMotion();
     const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
@@ -61,13 +60,11 @@ export default function HomePage() {
         setLoading(true);
         setError(null);
         try {
-            const [healthData, summaryData, jobsData, executionsData] = await Promise.all([
-                fetchHealth(),
+            const [summaryData, jobsData, executionsData] = await Promise.all([
                 fetchDashboardSummary(),
                 fetchAvailableJobs().catch(() => []),
                 fetchJobExecutions(10).catch(() => []),
             ]);
-            setHealth(healthData);
             setSummary(summaryData);
             setAvailableJobs(jobsData);
             setJobExecutions(executionsData);
@@ -155,7 +152,40 @@ export default function HomePage() {
             count: summary?.recent_activities.length ? summary.recent_activities.length : undefined,
         },
     ];
-    return (<motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-7xl mx-auto space-y-3 pb-12">
+
+    if (loading && !summary) {
+      return (
+        <div className="max-w-7xl mx-auto space-y-3 pb-12" role="presentation">
+          <SkeletonAnnouncer label="Loading executive operations cockpit" />
+          <div className="flex items-center justify-between pb-1">
+            <div className="space-y-1">
+              <Skeleton className="h-6 w-64" />
+              <Skeleton className="h-3.5 w-96 max-w-full" />
+            </div>
+            <Skeleton className="h-8 w-24 rounded-md" />
+          </div>
+          <div className="flex items-center justify-between px-3.5 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60">
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+          <KpiRowSkeleton count={4} />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+            <div className="lg:col-span-7 h-64 rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 space-y-3 bg-white dark:bg-zinc-900/60">
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-44 w-full rounded-md" />
+            </div>
+            <div className="lg:col-span-5 h-64 rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 space-y-3 bg-white dark:bg-zinc-900/60">
+              <Skeleton className="h-4 w-36" />
+              <Skeleton className="h-44 w-full rounded-md" />
+            </div>
+          </div>
+          <FilterBarSkeleton />
+          <TableSkeleton rows={4} />
+        </div>
+      );
+    }
+
+    return (<motion.div variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible" className="max-w-7xl mx-auto space-y-3 pb-12">
       {/* Header Bar */}
       <PageHeader title="Executive Operations Cockpit" subtitle="Real-time enterprise operations cockpit, financial telemetry, and live multi-facility overview." actions={<div className="flex items-center gap-3">
             <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono">
