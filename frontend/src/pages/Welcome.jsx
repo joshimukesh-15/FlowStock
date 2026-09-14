@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import {
   Boxes,
   Truck,
@@ -19,7 +20,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-/* ── Clean Operational Feature Row Component ── */
+/* ── Professional Scroll-Animated Feature Row ── */
 function FeatureRow({
   tag,
   title,
@@ -30,10 +31,14 @@ function FeatureRow({
   reverse = false,
 }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-16 sm:my-24">
-      {/* Media Column with premium bezel framing */}
-      <div
-        className={`group rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xl hover:shadow-2xl transition-all p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#2A2E39] dark:to-[#181A20] ${
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-20 sm:my-28">
+      {/* Media Column - Elegant Entrance */}
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.97 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className={`group rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xl hover:shadow-2xl transition-shadow p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#2A2E39] dark:to-[#181A20] ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
@@ -41,15 +46,21 @@ function FeatureRow({
           <img
             src={imgSrc}
             alt={imgAlt}
-            className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.03] pointer-events-none" />
         </div>
-      </div>
+      </motion.div>
 
-      {/* Text Column */}
-      <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
+      {/* Text Column - Staggered Entrance */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}
+      >
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200 dark:border-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] text-xs font-mono font-semibold tracking-wider uppercase">
           {tag}
         </div>
@@ -72,6 +83,100 @@ function FeatureRow({
             </li>
           ))}
         </ul>
+      </motion.div>
+    </div>
+  );
+}
+
+/* ── Card Layer for the Stacked 3D Scroll ── */
+function ScrollLayer({ progress, index, total, src }) {
+  // Calculate the exact scroll percentage where this card should be perfectly in focus
+  const peak = index / (total - 1);
+  
+  // Range buffer dictates how long the animation takes to arrive and leave
+  const buffer = 0.25; 
+
+  // Physics:
+  // Before peak: Scale from 0.6 to 1.0 (approaching from deep space)
+  // At peak: Scale 1.0 (perfectly readable)
+  // After peak: Scale to 2.5 (flying past the camera)
+  const scale = useTransform(
+    progress,
+    [peak - buffer, peak, peak + buffer],
+    [0.7, 1, 2.5]
+  );
+
+  // Fade in from deep space, stay solid at peak, fade out rapidly as it flies past
+  const opacity = useTransform(
+    progress,
+    [peak - buffer, peak - 0.05, peak + 0.05, peak + buffer],
+    [0, 1, 1, 0]
+  );
+  
+  // Slight vertical drift to make it feel like floating
+  const y = useTransform(
+    progress,
+    [peak - buffer, peak, peak + buffer],
+    ["15%", "0%", "-15%"]
+  );
+
+  return (
+    <motion.div
+      className="absolute w-full rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/50 shadow-[0_30px_100px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_30px_100px_-15px_rgba(182,255,46,0.1)] overflow-hidden bg-white"
+      style={{
+        scale,
+        opacity,
+        y,
+        zIndex: 100 - index, // Earlier layers render ON TOP, so they can scale past the camera and reveal the next ones
+        transformOrigin: "center center",
+      }}
+    >
+      <div className="relative w-full pt-[54%] overflow-hidden bg-slate-100">
+         <img 
+           src={src} 
+           alt={`App Layer ${index + 1}`} 
+           className="absolute top-0 left-0 w-full h-[106%] object-cover object-top" 
+         />
+      </div>
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/5 to-transparent dark:from-white/5" />
+    </motion.div>
+  );
+}
+
+/* ── The 10-Layer Stacked 3D Scroll Showcase ── */
+function CockpitShowcase3D() {
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Buttery smooth physics applied to the massive 10-layer scroll
+  const smooth = useSpring(scrollYProgress, { stiffness: 40, damping: 20, restDelta: 0.001 });
+
+  // Generate the 10 screenshots we pulled from the user's folder
+  const layers = Array.from({ length: 10 }, (_, i) => `/assets/scroll-layer-${i + 1}.png`);
+
+  return (
+    <div
+      id="cockpit-showcase"
+      ref={containerRef}
+      className="relative w-full h-[400vh]" // 400vh gives plenty of scroll room for 10 layers
+    >
+      {/* Sticky container holds the viewport while the user scrolls down the 400vh parent */}
+      <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden perspective-[2500px]">
+        <div className="relative w-full max-w-5xl px-4 sm:px-6 flex items-center justify-center">
+          {layers.map((src, index) => (
+            <ScrollLayer 
+              key={index} 
+              progress={smooth} 
+              index={index} 
+              total={layers.length} 
+              src={src} 
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -84,6 +189,15 @@ export default function WelcomePage() {
   const [termsOpen, setTermsOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
 
+  const { scrollY } = useScroll();
+  
+  // Smooth the scroll for jitter-free background parallax
+  const smoothScroll = useSpring(scrollY, { stiffness: 60, damping: 20, restDelta: 0.001 });
+  
+  // High-End Website Parallax Distances (Applied only to absolute background elements)
+  const bgParallax1 = useTransform(smoothScroll, [0, 2000], [0, 800]);
+  const bgParallax2 = useTransform(smoothScroll, [0, 2000], [0, -600]);
+
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
@@ -93,8 +207,12 @@ export default function WelcomePage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#14171F] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#B6FF2E] selection:text-[#14171F] relative transition-colors">
-      {/* AMBIENT LIGHTING (Clipped independently to prevent horizontal overflow without breaking position:sticky) */}
+      
+      {/* GLOBAL PARALLAX BACKGROUND ELEMENTS (High-End Studio Feel) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <motion.div style={{ y: bgParallax1 }} className="absolute -top-32 -left-64 w-[800px] h-[800px] bg-[#B6FF2E]/10 dark:bg-[#B6FF2E]/5 rounded-full blur-[140px] pointer-events-none" />
+        <motion.div style={{ y: bgParallax2 }} className="absolute top-[40%] -right-64 w-[1000px] h-[1000px] bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-[160px] pointer-events-none" />
+        
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[700px]" style={{
           background: 'radial-gradient(ellipse 50% 40% at 50% 0%, rgba(182,255,46,0.08), transparent 70%), radial-gradient(ellipse 60% 50% at 30% 10%, rgba(16,185,129,0.06), transparent 60%), radial-gradient(ellipse 60% 50% at 70% 10%, rgba(59,130,246,0.04), transparent 60%)',
         }} />
@@ -194,47 +312,39 @@ export default function WelcomePage() {
       </header>
 
       {/* 2. HERO SECTION WITH MASTERPIECE COCKPIT SHOWCASE */}
-      <section id="hero" className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 overflow-hidden bg-[#0D1420]">
-        {/* Full-bleed Warehouse Background Ambient Atmosphere */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img
-            src="/assets/hero-warehouse.jpg"
-            alt="FlowStock High-Bay Automated Warehouse Racks"
-            className="w-full h-full object-cover brightness-[0.24] saturate-[0.8] opacity-60"
-            loading="eager"
-          />
-          {/* Multi-tier Cinematic Scrims */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0D1420]/95 via-[#0D1420]/60 to-[#0D1420] pointer-events-none" />
+      <section id="hero" className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 bg-transparent">
+        {/* Clean Ambient Atmosphere (No Image) */}
+        <div className="absolute inset-0 pointer-events-none">
           <div
-            className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] pointer-events-none opacity-75"
+            className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] pointer-events-none opacity-80"
             style={{
-              background: 'radial-gradient(ellipse 60% 45% at 50% 25%, rgba(182,255,46,0.18), rgba(16,185,129,0.1), transparent 70%)',
+              background: 'radial-gradient(ellipse 60% 45% at 50% 25%, rgba(182,255,46,0.15), rgba(16,185,129,0.08), transparent 70%)',
             }}
           />
         </div>
 
         {/* Hero Content Header */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white flex flex-col items-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
           {/* Status Pill */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-emerald-400/30 bg-black/80 text-xs mb-6 shadow-lg">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-slate-300 dark:border-emerald-400/30 bg-white/60 dark:bg-black/80 text-xs mb-6 shadow-sm dark:shadow-lg">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B6FF2E] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B6FF2E]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 dark:bg-[#B6FF2E] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 dark:bg-[#B6FF2E]" />
             </span>
-            <span className="font-mono text-[11px] tracking-wider text-[#B6FF2E] font-bold">PRODUCTION CORE v1.1.0</span>
-            <span className="w-px h-3.5 bg-white/20" />
-            <span className="text-[11px] text-slate-300 font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY OS</span>
+            <span className="font-mono text-[11px] tracking-wider text-emerald-700 dark:text-[#B6FF2E] font-bold">PRODUCTION CORE v1.1.0</span>
+            <span className="w-px h-3.5 bg-slate-300 dark:bg-white/20" />
+            <span className="text-[11px] text-slate-600 dark:text-slate-300 font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY OS</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold tracking-[-0.03em] leading-[1.08] mb-6 text-white drop-shadow-md">
+          <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold tracking-[-0.03em] leading-[1.08] mb-6 text-slate-950 dark:text-white drop-shadow-sm dark:drop-shadow-md">
             The financial-grade{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B6FF2E] via-[#a3f01b] to-teal-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-[#B6FF2E] dark:via-[#a3f01b] dark:to-teal-300">
               inventory ledger
             </span>{" "}
             for high-velocity warehouses
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-200/90 max-w-2xl leading-relaxed mb-10 font-normal drop-shadow-sm">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-200/90 max-w-2xl leading-relaxed mb-10 font-normal dark:drop-shadow-sm">
             Zero-drift double-entry stock bookkeeping, real-time multi-carrier logistics orchestration, and automated GST tax invoices — engineered for physical supply chains.
           </p>
 
@@ -244,7 +354,7 @@ export default function WelcomePage() {
               <button
                 type="button"
                 onClick={() => navigate("/dashboard")}
-                className="h-12 px-7 rounded-xl bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="h-12 px-7 rounded-xl bg-slate-900 dark:bg-[#B6FF2E] hover:bg-slate-800 dark:hover:bg-[#a3f01b] text-white dark:text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(15,23,42,0.15)] dark:shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
               >
                 <span>Go to Dashboard</span>
                 <ArrowRight className="w-4 h-4" />
@@ -254,7 +364,7 @@ export default function WelcomePage() {
                 <button
                   type="button"
                   onClick={() => navigate("/login")}
-                  className="h-12 px-7 rounded-xl bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  className="h-12 px-7 rounded-xl bg-slate-900 dark:bg-[#B6FF2E] hover:bg-slate-800 dark:hover:bg-[#a3f01b] text-white dark:text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(15,23,42,0.15)] dark:shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
                   <span>Get Started Free</span>
                   <ArrowRight className="w-4 h-4" />
@@ -262,7 +372,7 @@ export default function WelcomePage() {
                 <button
                   type="button"
                   onClick={() => scrollToSection("cockpit-showcase")}
-                  className="h-12 px-7 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm inline-flex items-center gap-2 border border-white/25 transition-all active:scale-[0.98] cursor-pointer"
+                  className="h-12 px-7 rounded-xl bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-800 dark:text-white font-semibold text-sm inline-flex items-center gap-2 border border-slate-200 dark:border-white/25 transition-all active:scale-[0.98] cursor-pointer shadow-sm dark:shadow-none"
                 >
                   <span>Explore Platform</span>
                 </button>
@@ -271,65 +381,8 @@ export default function WelcomePage() {
           </div>
         </div>
 
-        {/* Grand FlowStock Cockpit Showcase Centerpiece */}
-        <div id="cockpit-showcase" className="mt-14 sm:mt-20 relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          {/* Radial Ambient Glow Behind Image */}
-          <div
-            className="absolute -top-16 sm:-top-24 left-1/2 -translate-x-1/2 w-[90%] h-[380px] pointer-events-none -z-10 opacity-80"
-            style={{
-              background: "radial-gradient(ellipse 60% 45% at 50% 30%, rgba(182, 255, 46, 0.22), rgba(16, 185, 129, 0.12), transparent 75%)",
-            }}
-          />
-
-          <div
-            className="relative rounded-2xl sm:rounded-3xl p-1 sm:p-2.5 bg-gradient-to-b from-white/20 via-white/10 to-white/5 dark:from-white/15 dark:via-[#323744]/60 dark:to-transparent border border-white/25 dark:border-[#545963]/60 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.7),0_0_60px_-10px_rgba(182,255,46,0.22)] group cursor-pointer"
-            onClick={() => navigate(isAuthenticated ? "/dashboard" : "/login")}
-            title="Click to launch FlowStock Operations Cockpit"
-          >
-            {/* Mac-style Window Inner Container */}
-            <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-white dark:bg-[#181A20] border border-slate-200/80 dark:border-[#323744]">
-              <img
-                src="/assets/flowstock-hero.png"
-                alt="FlowStock Real-Time Operations Cockpit"
-                className="w-full h-auto block object-cover scale-[1.22] origin-center"
-                loading="eager"
-              />
-              {/* Subtle glass reflection overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.04] pointer-events-none" />
-            </div>
-
-            {/* Floating Telemetry Callout Badge - Top Right */}
-            <div className="hidden sm:flex absolute -top-3.5 -right-3.5 items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/95 dark:bg-[#181A20]/95 border border-emerald-400/40 text-xs text-white shadow-xl">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B6FF2E] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B6FF2E]" />
-              </span>
-              <span className="font-mono text-[11px] text-[#B6FF2E] font-bold">LIVE TELEMETRY</span>
-              <span className="text-[11px] text-slate-300 font-mono">12ms sync</span>
-            </div>
-
-            {/* Floating Cash Realization Callout - Bottom Left */}
-            <div className="hidden sm:flex absolute -bottom-4 -left-4 items-center gap-2.5 px-4 py-2 rounded-xl bg-slate-900/95 dark:bg-[#181A20]/95 border border-slate-700 dark:border-[#323744] text-xs text-white shadow-2xl">
-              <div className="w-6 h-6 rounded-md bg-[#B6FF2E]/15 border border-[#B6FF2E]/30 flex items-center justify-center text-[#B6FF2E] font-bold text-xs">
-                ₹
-              </div>
-              <div>
-                <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Cash Realization</div>
-                <div className="text-xs font-bold text-white font-mono flex items-center gap-1.5">
-                  ₹22,529.15 <span className="text-[#B6FF2E] text-[10px] font-semibold">100% collected</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating Order Pipeline Callout - Bottom Right */}
-            <div className="hidden sm:flex absolute -bottom-4 -right-4 items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/95 dark:bg-[#181A20]/95 border border-slate-700 dark:border-[#323744] text-xs text-white shadow-2xl">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              <span className="text-[11px] text-slate-300 font-mono">
-                Active Pipeline: <strong className="text-white font-bold">₹17,994.00</strong>
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* Grand FlowStock Cockpit 3D Scroll Showcase Centerpiece */}
+        <CockpitShowcase3D isAuthenticated={isAuthenticated} navigate={navigate} />
       </section>
 
       {/* 3. LOGISTICS CARRIER LOGO STRIP (FULCRUM-STYLE) */}
