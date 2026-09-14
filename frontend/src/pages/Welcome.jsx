@@ -88,95 +88,60 @@ function FeatureRow({
   );
 }
 
-/* ── Card Layer for the Stacked 3D Scroll ── */
-function ScrollLayer({ progress, index, total, src }) {
-  // Calculate the exact scroll percentage where this card should be perfectly in focus
-  const peak = index / (total - 1);
-  
-  // Range buffer dictates how long the animation takes to arrive and leave
-  const buffer = 0.25; 
-
-  // Physics:
-  // Before peak: Scale from 0.6 to 1.0 (approaching from deep space)
-  // At peak: Scale 1.0 (perfectly readable)
-  // After peak: Scale to 2.5 (flying past the camera)
-  const scale = useTransform(
-    progress,
-    [peak - buffer, peak, peak + buffer],
-    [0.7, 1, 2.5]
-  );
-
-  // Fade in from deep space, stay solid at peak, fade out rapidly as it flies past
-  const opacity = useTransform(
-    progress,
-    [peak - buffer, peak - 0.05, peak + 0.05, peak + buffer],
-    [0, 1, 1, 0]
-  );
-  
-  // Slight vertical drift to make it feel like floating
-  const y = useTransform(
-    progress,
-    [peak - buffer, peak, peak + buffer],
-    ["15%", "0%", "-15%"]
-  );
-
-  return (
-    <motion.div
-      className="absolute w-full rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/50 shadow-[0_30px_100px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_30px_100px_-15px_rgba(182,255,46,0.1)] overflow-hidden bg-white"
-      style={{
-        scale,
-        opacity,
-        y,
-        zIndex: 100 - index, // Earlier layers render ON TOP, so they can scale past the camera and reveal the next ones
-        transformOrigin: "center center",
-      }}
-    >
-      <div className="relative w-full pt-[54%] overflow-hidden bg-slate-100">
-         <img 
-           src={src} 
-           alt={`App Layer ${index + 1}`} 
-           className="absolute top-0 left-0 w-full h-[106%] object-cover object-top" 
-         />
-      </div>
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/5 to-transparent dark:from-white/5" />
-    </motion.div>
-  );
-}
-
-/* ── The 10-Layer Stacked 3D Scroll Showcase ── */
+/* ── The Apple-Style Timeline Video Scroll ── */
 function CockpitShowcase3D() {
   const containerRef = useRef(null);
+  const imgRef = useRef(null);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Buttery smooth physics applied to the massive 10-layer scroll
-  const smooth = useSpring(scrollYProgress, { stiffness: 40, damping: 20, restDelta: 0.001 });
+  // Smooth the raw scroll for buttery video-like playback without stuttering
+  const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.001 });
 
-  // Generate the 10 screenshots we pulled from the user's folder
-  const layers = Array.from({ length: 10 }, (_, i) => `/assets/scroll-layer-${i + 1}.png`);
+  const totalFrames = 10;
+  
+  // Directly swap the image source on the GPU without triggering React re-renders.
+  // This completely eliminates the lag and perfectly matches "scroll time" (frame-wise).
+  useMotionValueEvent(smooth, "change", (latest) => {
+    // Map 0-1 progress to 1-10 frame index
+    const frame = Math.max(1, Math.min(totalFrames, Math.ceil(latest * totalFrames)));
+    if (imgRef.current) {
+       imgRef.current.src = `/assets/scroll-layer-${frame}.png`;
+    }
+  });
 
   return (
     <div
       id="cockpit-showcase"
       ref={containerRef}
-      className="relative w-full h-[400vh]" // 400vh gives plenty of scroll room for 10 layers
+      className="relative w-full h-[250vh]" // Height defines how long the scroll takes
     >
-      {/* Sticky container holds the viewport while the user scrolls down the 400vh parent */}
-      <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden perspective-[2500px]">
-        <div className="relative w-full max-w-5xl px-4 sm:px-6 flex items-center justify-center">
-          {layers.map((src, index) => (
-            <ScrollLayer 
-              key={index} 
-              progress={smooth} 
-              index={index} 
-              total={layers.length} 
-              src={src} 
-            />
-          ))}
+      {/* Preload all images to prevent flickering when scrolling fast */}
+      <div className="hidden">
+        {Array.from({ length: totalFrames }).map((_, i) => (
+          <img key={i} src={`/assets/scroll-layer-${i + 1}.png`} alt="preload" />
+        ))}
+      </div>
+
+      <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden">
+        
+        <div className="relative w-full max-w-5xl rounded-xl sm:rounded-2xl border border-slate-200 dark:border-white/10 shadow-[0_30px_100px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_30px_100px_-15px_rgba(182,255,46,0.1)] overflow-hidden bg-white/95 dark:bg-[#14171F]/90 backdrop-blur-md">
+           <div className="relative w-full pt-[54%] overflow-hidden">
+             {/* Single DOM element for zero-lag performance */}
+             <img 
+               ref={imgRef}
+               src="/assets/scroll-layer-1.png" 
+               alt="App Timeline" 
+               className="absolute top-0 left-0 w-full h-[106%] object-cover object-top" 
+             />
+           </div>
+           {/* Premium Edge Glow */}
+           <div className="absolute inset-0 pointer-events-none border border-white/20 rounded-2xl" />
         </div>
+
       </div>
     </div>
   );
