@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getTransition, useReducedMotion, DURATION, EASING } from "@/motion";
-import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, Package, } from "lucide-react";
+import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, LogOut, } from "lucide-react";
+import { Logomark } from "@/components/ui/Logomark";
+import { useAuth } from "@/context/AuthContext";
 const NAV_GROUPS = [
     {
         label: "Core Workspace",
@@ -33,6 +35,8 @@ const NAV_GROUPS = [
 ];
 
 export const Sidebar = () => {
+    const navigate = useNavigate();
+    const { logout } = useAuth();
     const location = useLocation();
     const pathname = location.pathname;
     const prefersReducedMotion = useReducedMotion();
@@ -85,12 +89,12 @@ export const Sidebar = () => {
     }, []);
     const isActive = (href) => href === "/" ? pathname === "/" : pathname.startsWith(href) && href !== "#";
     return (<>
-      <aside className={`${collapsed ? "w-16" : "w-64"} bg-zinc-950 text-zinc-300 flex flex-col shrink-0 border-r border-zinc-800 select-none transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-20`} aria-label="Primary navigation">
+      <aside className={`${collapsed ? "w-16" : "w-64"} bg-white dark:bg-[#181A20] text-slate-700 dark:text-[#9BA3AF] flex flex-col shrink-0 border-r border-slate-200 dark:border-[#323744] select-none transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-20`} aria-label="Primary navigation">
         {/* Brand Header */}
-        <div className={`h-12 flex items-center border-b border-zinc-800/80 transition-all ${collapsed ? "justify-center px-2" : "justify-between px-4"}`}>
-          <button onClick={() => setCollapsed(!collapsed)} onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })} onMouseLeave={handleMouseLeave} className="flex items-center gap-2.5 min-w-0 text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-1" aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}>
-            <span className="w-7 h-7 rounded-md bg-white flex items-center justify-center shadow-sm shrink-0 group-hover/logo:bg-zinc-100 transition-colors">
-              <Package className="w-3.5 h-3.5 text-black" strokeWidth={2.25}/>
+        <div className={`h-12 flex items-center border-b border-slate-200 dark:border-[#323744] transition-all ${collapsed ? "justify-center px-2" : "justify-between px-4"}`}>
+          <button onClick={() => setCollapsed(!collapsed)} onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })} onMouseLeave={handleMouseLeave} className="flex items-center gap-2.5 min-w-0 text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] rounded p-1" aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}>
+            <span className="w-7 h-7 rounded-lg bg-[#3A3E47] border border-[#545963] flex items-center justify-center shadow-xs shrink-0 p-0.5">
+              <Logomark className="w-5 h-5"/>
             </span>
 
             <AnimatePresence mode="wait">
@@ -98,25 +102,25 @@ export const Sidebar = () => {
                 duration: prefersReducedMotion ? 0 : DURATION.micro,
                 ease: EASING.standard,
             }} className="flex flex-col min-w-0 text-left overflow-hidden whitespace-nowrap">
-                  <span className="font-bold text-[13px] text-white tracking-tight leading-none">
+                  <span className="font-semibold text-xs text-slate-900 dark:text-[#F4F5F7] tracking-tight leading-none">
                     FlowStock
                   </span>
-                  <span className="text-[8px] text-zinc-400 font-semibold uppercase tracking-widest mt-0.5">
-                    Enterprise Core
+                  <span className="text-[10px] text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+                    Operations Ledger
                   </span>
                 </motion.span>)}
             </AnimatePresence>
           </button>
 
-          {!collapsed && (<button onClick={() => setCollapsed(true)} className="p-1 rounded-md text-zinc-500 hover:text-white hover:bg-zinc-800/80 transition-colors shrink-0" aria-label="Collapse sidebar" title="Collapse sidebar">
+          {!collapsed && (<button onClick={() => setCollapsed(true)} className="p-1 rounded text-slate-400 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23262F] transition-colors shrink-0" aria-label="Collapse sidebar" title="Collapse sidebar">
               <PanelLeftClose className="w-3.5 h-3.5"/>
             </button>)}
         </div>
 
         {/* Navigation Groups */}
         <nav onScroll={() => setHoveredTooltip(null)} className="flex-1 py-2.5 px-2 overflow-y-auto no-scrollbar">
-          {NAV_GROUPS.map((group) => (<div key={group.label} className="mb-2.5 last:mb-0">
-              {collapsed ? (<div className="mx-2 my-1.5 h-px bg-zinc-800/60"/>) : (<p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
+          {NAV_GROUPS.map((group) => (<div key={group.label} className="mb-3 last:mb-0">
+              {collapsed ? (<div className="mx-2 my-1.5 h-px bg-slate-200 dark:bg-[#323744]"/>) : (<p className="px-3 mb-1 text-[11px] font-medium text-slate-500 dark:text-[#9BA3AF]">
                   {group.label}
                 </p>)}
 
@@ -125,13 +129,13 @@ export const Sidebar = () => {
                 const Icon = item.icon;
                 const active = isActive(item.href);
                 return (<li key={item.label} className="relative">
-                      {active && (<motion.span layoutId="active-navigation-item" className="absolute inset-0 rounded-lg border border-zinc-700 bg-zinc-900 shadow-xs" transition={getTransition("normal", prefersReducedMotion)} aria-hidden="true"/>)}
-                      <Link to={item.href} onMouseEnter={(e) => handleMouseEnter(e, item.label, { active })} onMouseLeave={handleMouseLeave} aria-current={active ? "page" : undefined} className={`group relative z-10 flex items-center gap-2.5 rounded-lg text-[13px] font-medium transition-[transform,opacity,background-color,border-color,color] outline-none focus-visible:ring-2 focus-visible:ring-white ${collapsed ? "justify-center px-0 py-1.5" : "px-3 py-1.5"} ${active
-                        ? "text-white"
-                        : "text-zinc-400 hover:bg-zinc-900/60 hover:text-white"}`}>
-                        <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 group-hover:scale-110 ${active
-                        ? "text-white"
-                        : "text-zinc-400 group-hover:text-zinc-100"}`}/>
+                      {active && (<motion.span layoutId="active-navigation-item" className="absolute inset-0 rounded border border-[#B6FF2E]/30 bg-[#B6FF2E]/10 dark:bg-[#B6FF2E]/15" transition={getTransition("normal", prefersReducedMotion)} aria-hidden="true"/>)}
+                      <Link to={item.href} onMouseEnter={(e) => handleMouseEnter(e, item.label, { active })} onMouseLeave={handleMouseLeave} aria-current={active ? "page" : undefined} className={`btn-tactile group relative z-10 flex items-center gap-2.5 rounded-lg text-[13px] font-medium transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] ${collapsed ? "justify-center px-0 py-1.5" : "px-3 py-1.5"} ${active
+                        ? "text-slate-950 dark:text-[#B6FF2E] font-semibold"
+                        : "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#23262F] hover:text-slate-950 dark:hover:text-[#F4F5F7]"}`}>
+                        <Icon className={`w-4 h-4 shrink-0 transition-colors ${active
+                        ? "text-slate-950 dark:text-[#B6FF2E]"
+                        : "text-slate-400 dark:text-[#9BA3AF] group-hover:text-slate-700 dark:group-hover:text-slate-200"}`}/>
                         <AnimatePresence>
                           {!collapsed && (<motion.span initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: "auto" }} exit={{ opacity: 0, width: 0 }} transition={{
                             duration: prefersReducedMotion ? 0 : DURATION.micro,
@@ -139,13 +143,30 @@ export const Sidebar = () => {
                               {item.label}
                             </motion.span>)}
                         </AnimatePresence>
-                        {active && !collapsed && (<span className="ml-auto w-1.5 h-1.5 rounded-full bg-white shadow-xs"/>)}
+                        {active && !collapsed && (<span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#B6FF2E]"/>)}
                       </Link>
                     </li>);
             })}
               </ul>
             </div>))}
         </nav>
+
+        {/* Bottom Sign Out */}
+        <div className="p-2 border-t border-slate-200 dark:border-[#323744]">
+          <button
+            onClick={() => {
+              logout();
+              navigate("/");
+            }}
+            className={`btn-tactile w-full flex items-center gap-2.5 rounded-lg text-[13px] font-medium text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer ${
+              collapsed ? "justify-center px-0 py-2" : "px-3 py-2"
+            }`}
+            title="Sign Out & Return to Landing Page"
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            {!collapsed && <span className="truncate">Sign Out</span>}
+          </button>
+        </div>
       </aside>
 
       {/* Floating Hover Tooltip for Collapsed Sidebar */}
@@ -154,13 +175,13 @@ export const Sidebar = () => {
                 duration: prefersReducedMotion ? 0 : DURATION.micro,
                 ease: EASING.standard,
             }} style={{ top: hoveredTooltip.top }} className="fixed left-[72px] -translate-y-1/2 z-50 pointer-events-none">
-            <div className="relative bg-zinc-900 text-white text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-zinc-700 whitespace-nowrap flex items-center gap-2">
-              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-zinc-900 border-l border-b border-zinc-700 rotate-45"/>
+            <div className="relative bg-[#23262F] text-[#F4F5F7] text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-[#323744] whitespace-nowrap flex items-center gap-2">
+              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#23262F] border-l border-b border-[#323744] rotate-45"/>
               <span className="relative z-10">{hoveredTooltip.label}</span>
-              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-zinc-800 border border-zinc-700 rounded px-1 text-zinc-400 font-mono">
+              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#14171F] border border-[#323744] rounded px-1 text-[#9BA3AF] font-mono">
                   {hoveredTooltip.shortcut}
                 </kbd>)}
-              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"/>)}
+              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#B6FF2E] shrink-0"/>)}
             </div>
           </motion.div>)}
       </AnimatePresence>

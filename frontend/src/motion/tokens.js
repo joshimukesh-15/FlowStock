@@ -16,12 +16,12 @@ export const DURATION = {
     hero: 0.6,
 };
 export const EASING = {
-    /** Standard enterprise deceleration curve (clean, fast settling) */
-    standard: [0.2, 0, 0, 1],
+    /** Emil Kowalski / Apple UI Deceleration curve (fast start, natural settle) */
+    standard: [0.23, 1, 0.32, 1],
     /** Emphasized deceleration for modals, popovers, and toasts */
     emphasized: [0.16, 1, 0.3, 1],
-    /** Smooth symmetric transition for tab sliders and subtle cross-fades */
-    smooth: [0.4, 0, 0.2, 1],
+    /** Smooth symmetric transition for tab sliders and morphs */
+    smooth: [0.77, 0, 0.175, 1],
     /** Linear progression for progress bars and ticker counters */
     linear: [0, 0, 1, 1],
 };
@@ -41,10 +41,10 @@ export const STAGGER = {
     steps: 0.08,
     timeline: 0.04,
 };
-/** Shared transform values for small, purposeful UI feedback. */
+/** Shared transform values for small, purposeful UI feedback (Emil Kowalski: never scale from 0). */
 export const SCALE = {
-    hidden: 0.9,
-    modal: 0.98,
+    hidden: 0.95,
+    modal: 0.96,
     resting: 1,
     progressStart: 0,
     progressEnd: 1,

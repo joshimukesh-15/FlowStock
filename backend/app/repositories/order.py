@@ -1,7 +1,7 @@
 """Sales Order Repository Layer."""
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from uuid import UUID
-from sqlalchemy import select, func, or_
+from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload, joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.order import SalesOrder, OrderItem

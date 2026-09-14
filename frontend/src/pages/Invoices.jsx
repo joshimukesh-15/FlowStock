@@ -8,10 +8,11 @@ import { fetchInvoices, fetchOrders, fetchCustomers, fetchProducts, createInvoic
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { formatINR } from "@/lib/utils";
+import { StatCard } from "@/components/ui/StatCard";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
-import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
@@ -254,37 +255,7 @@ export default function InvoicesPage() {
     const handleVoidInvoice = (invoiceId) => {
         setInvoiceIdToVoid(invoiceId);
     };
-    // Status Badge UI
-    const getStatusBadge = (status) => {
-        switch (status) {
-            case "DRAFT":
-                return (<AnimatedBadge statusKey={status} variant="default" icon={Clock}>
-            Draft
-          </AnimatedBadge>);
-            case "ISSUED":
-                return (<AnimatedBadge statusKey={status} variant="warning" icon={FileText} pulse>
-            Issued (Unpaid)
-          </AnimatedBadge>);
-            case "PARTIALLY_PAID":
-                return (<AnimatedBadge statusKey={status} variant="warning" icon={Clock} pulse>
-            Partially Paid
-          </AnimatedBadge>);
-            case "PAID":
-                return (<AnimatedBadge statusKey={status} variant="success" icon={CheckCircle2}>
-            Paid in Full
-          </AnimatedBadge>);
-            case "OVERDUE":
-                return (<AnimatedBadge statusKey={status} variant="danger" icon={AlertCircle}>
-            Overdue
-          </AnimatedBadge>);
-            case "VOID":
-                return (<AnimatedBadge statusKey={status} variant="danger" icon={Ban}>
-            Void
-          </AnimatedBadge>);
-            default:
-                return <AnimatedBadge statusKey={status} variant="default">{status}</AnimatedBadge>;
-        }
-    };
+
     // Filtered invoices
     const filteredInvoices = invoices.filter((inv) => {
         const matchesStatus = statusFilter === "ALL" ? true : inv.status === statusFilter;
@@ -339,80 +310,47 @@ export default function InvoicesPage() {
           </>}/>
 
       {/* KPI Summary Cards */}
-      <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Total Invoiced
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-1">
-                <AnimatedCounter value={totalInvoiced} prefix="₹" decimals={2} formatINR={true}/>
-              </h3>
-              <p className="text-xs text-zinc-700 mt-0.5">Gross billable revenue</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900">
-              <FileText className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Total Collected
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-1">
-                <AnimatedCounter value={totalCollected} prefix="₹" decimals={2} formatINR={true}/>
-              </h3>
-              <p className="text-xs text-zinc-900 mt-0.5">Received in bank / UPI</p>
-            </div>
-            <div className="w-11 h-11 rounded-lg bg-zinc-900/10 border border-zinc-900/20 flex items-center justify-center text-zinc-900">
-              <ArrowDownLeft className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Outstanding Receivables
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-700 mt-1">
-                <AnimatedCounter value={totalOutstanding} prefix="₹" decimals={2} formatINR={true}/>
-              </h3>
-              <p className="text-xs text-zinc-800/80 mt-0.5">Balance awaiting payment</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900">
-              <IndianRupee className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Fully Settled
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-1">
-                <AnimatedCounter value={paidCount} suffix={` / ${invoices.filter((i) => i.status !== "VOID").length}`}/>
-              </h3>
-              <p className="text-xs text-zinc-500 mt-0.5">Invoices with 0 balance</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900">
-              <CheckCircle2 className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
+      <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <StatCard
+          title="Total Invoiced"
+          value={totalInvoiced}
+          prefix="₹"
+          decimals={2}
+          formatINR={true}
+          icon={FileText}
+          subText="Gross billable revenue"
+        />
+        <StatCard
+          title="Total Collected"
+          value={totalCollected}
+          prefix="₹"
+          decimals={2}
+          formatINR={true}
+          icon={ArrowDownLeft}
+          subText="Received in bank / UPI"
+        />
+        <StatCard
+          title="Outstanding Receivables"
+          value={totalOutstanding}
+          prefix="₹"
+          decimals={2}
+          formatINR={true}
+          icon={IndianRupee}
+          subText="Balance awaiting payment"
+        />
+        <StatCard
+          title="Fully Settled"
+          value={paidCount}
+          suffix={` / ${invoices.filter((i) => i.status !== "VOID").length}`}
+          icon={CheckCircle2}
+          subText="Invoices with 0 balance"
+        />
       </motion.div>
 
         {/* Table & Controls Card */}
-        <Card className="">
-          <CardHeader className="p-5 pb-3 border-b border-zinc-100">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <Card spotlight={true} className="shadow-2xs">
+          <CardHeader className="p-4 pb-3 border-b border-zinc-100 dark:border-[#262A34]">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={[
             { label: "All Invoices", id: "ALL" },
@@ -435,25 +373,25 @@ export default function InvoicesPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Invoice
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-zinc-700">
-                  <thead className="bg-zinc-50 text-xs text-zinc-400 uppercase tracking-wider border-b border-zinc-100">
+                <table className="w-full text-left text-xs text-zinc-700 dark:text-zinc-300">
+                  <thead className="bg-zinc-50 dark:bg-[#1C1F27] text-[11px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider border-b border-zinc-100 dark:border-[#2A2E39]">
                     <tr>
-                      <th className="py-3 px-4 font-semibold">Invoice #</th>
-                      <th className="py-3 px-4 font-semibold">Customer</th>
-                      <th className="py-3 px-4 font-semibold">Order Ref</th>
-                      <th className="py-3 px-4 font-semibold">Total Amount (₹)</th>
-                      <th className="py-3 px-4 font-semibold">Paid Amount (₹)</th>
-                      <th className="py-3 px-4 font-semibold">Balance Due (₹)</th>
-                      <th className="py-3 px-4 font-semibold">Due Date</th>
-                      <th className="py-3 px-4 font-semibold">Status</th>
-                      <th className="py-3 px-4 font-semibold text-right">Actions</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Invoice #</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Customer</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Order Ref</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Total Amount</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Paid Amount</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Balance Due</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Due Date</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Status</th>
+                      <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100">
-                    {filteredInvoices.map((inv) => (<tr key={inv.id} className="hover:bg-zinc-50 transition-colors group">
-                        <td className="py-3.5 px-4 font-mono font-medium text-zinc-900 whitespace-nowrap">
+                  <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
+                    {filteredInvoices.map((inv) => (<tr key={inv.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors group">
+                        <td className="py-2.5 px-3.5 font-mono font-medium text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
                           {inv.invoice_number}
-                          <div className="text-[11px] text-zinc-500 font-sans">
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-sans mt-0.5">
                             {new Date(inv.issue_date).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
@@ -461,49 +399,49 @@ export default function InvoicesPage() {
                 })}
                           </div>
                         </td>
-                        <td className="py-3.5 px-4">
-                          <span className="font-semibold text-zinc-900">
+                        <td className="py-2.5 px-3.5">
+                          <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                             {inv.customer?.name || "B2B Customer"}
                           </span>
-                          <div className="text-xs text-zinc-500">
+                          <div className="text-[11px] text-zinc-400 dark:text-zinc-500">
                             {inv.customer?.company || "Corporate Account"}
                           </div>
                         </td>
-                        <td className="py-3.5 px-4 whitespace-nowrap">
-                          {inv.order ? (<span className="font-mono text-xs bg-zinc-100 border border-zinc-200 text-zinc-900 px-2.5 py-1 rounded inline-block whitespace-nowrap font-medium">
+                        <td className="py-2.5 px-3.5 whitespace-nowrap">
+                          {inv.order ? (<span className="font-mono text-[11px] bg-zinc-100 dark:bg-[#20242D] border border-zinc-200 dark:border-[#323744] text-zinc-800 dark:text-zinc-200 px-2 py-0.5 rounded inline-block whitespace-nowrap font-medium">
                               {inv.order.order_number}
-                            </span>) : (<span className="text-xs text-zinc-500">Direct Invoice</span>)}
+                            </span>) : (<span className="text-xs text-zinc-400 dark:text-zinc-500">Direct Invoice</span>)}
                         </td>
-                        <td className="py-3.5 px-4 font-semibold text-zinc-900 whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-semibold text-zinc-900 dark:text-zinc-100 font-mono whitespace-nowrap">
                           {formatINR(inv.total_amount)}
-                          <div className="text-[11px] text-zinc-500 font-normal">
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-normal">
                             incl. {inv.tax_rate}% GST
                           </div>
                         </td>
-                        <td className="py-3.5 px-4 font-medium text-zinc-900 whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-medium text-zinc-900 dark:text-zinc-100 font-mono whitespace-nowrap">
                           {formatINR(inv.paid_amount)}
                         </td>
-                        <td className="py-3.5 px-4 whitespace-nowrap">
-                          <span className={`font-semibold ${inv.balance_due > 0 ? "text-zinc-950 font-bold" : "text-zinc-400"}`}>
+                        <td className="py-2.5 px-3.5 whitespace-nowrap font-mono">
+                          <span className={`font-semibold ${inv.balance_due > 0 ? "text-zinc-950 dark:text-white font-bold" : "text-zinc-400 dark:text-zinc-500"}`}>
                             {formatINR(inv.balance_due)}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4 text-xs text-zinc-700 whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 text-xs text-zinc-600 dark:text-zinc-400 whitespace-nowrap">
                           {new Date(inv.due_date).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
                 })}
                         </td>
-                        <td className="py-3.5 px-4 whitespace-nowrap">{getStatusBadge(inv.status)}</td>
-                        <td className="py-3.5 px-4 text-right whitespace-nowrap space-x-1.5">
-                          <Button size="sm" variant="outline" onClick={() => setViewInvoice(inv)} className="h-7 px-2.5 text-xs border-zinc-200 bg-white hover:bg-zinc-100 text-zinc-800">
-                            <Eye className="w-3.5 h-3.5 mr-1"/> View Invoice
+                        <td className="py-2.5 px-3.5 whitespace-nowrap"><StatusBadge status={inv.status} type="invoice" /></td>
+                        <td className="py-2.5 px-3.5 text-right whitespace-nowrap space-x-1">
+                          <Button size="sm" variant="outline" onClick={() => setViewInvoice(inv)} className="h-6.5 px-2 text-xs">
+                            <Eye className="w-3 h-3 mr-1"/> View
                           </Button>
-                          {inv.balance_due > 0 && inv.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(inv)} className="h-7 px-2.5 text-xs bg-zinc-950 hover:bg-black text-white font-medium shadow-xs">
-                              <CreditCard className="w-3.5 h-3.5 mr-1"/> Pay
+                          {inv.balance_due > 0 && inv.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(inv)} className="h-6.5 px-2 text-xs bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 font-medium shadow-xs">
+                              <CreditCard className="w-3 h-3 mr-1"/> Pay
                             </Button>)}
-                          {inv.paid_amount === 0 && inv.status !== "VOID" && (<Button size="sm" variant="outline" onClick={() => handleVoidInvoice(inv.id)} disabled={actionLoading === inv.id} className="h-7 px-2 text-xs border border-zinc-300 text-zinc-500 hover:bg-zinc-100 hover:text-black">
+                          {inv.paid_amount === 0 && inv.status !== "VOID" && (<Button size="sm" variant="outline" onClick={() => handleVoidInvoice(inv.id)} disabled={actionLoading === inv.id} className="h-6.5 px-1.5 text-xs border border-zinc-300 dark:border-zinc-700 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white">
                               <Ban className="w-3 h-3"/>
                             </Button>)}
                         </td>
@@ -813,7 +751,7 @@ export default function InvoicesPage() {
                   <span className="font-mono text-lg font-bold text-zinc-900">
                     {viewInvoice.invoice_number}
                   </span>
-                  {getStatusBadge(viewInvoice.status)}
+                  <StatusBadge status={viewInvoice.status} type="invoice" />
                 </div>
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="outline" onClick={() => window.print()} className="text-xs border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-50">

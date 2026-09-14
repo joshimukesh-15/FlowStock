@@ -1,5 +1,5 @@
 """Organization and Tenant Management Service."""
-from typing import List, Optional
+from typing import List
 from uuid import UUID
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession

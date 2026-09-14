@@ -1,6 +1,5 @@
 """Analytics Database Repository (Tenant-Isolated Real Aggregations)."""
-from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from uuid import UUID
 from sqlalchemy import select, func, desc
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,7 +12,6 @@ from app.models.order import SalesOrder, OrderItem
 from app.models.purchase_order import PurchaseOrder
 from app.models.shipment import Shipment
 from app.models.warehouse import Warehouse
-from app.models.customer import Customer
 
 
 class AnalyticsRepository:

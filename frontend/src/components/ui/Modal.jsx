@@ -38,8 +38,8 @@ export const Modal = ({ isOpen, onClose, children, maxWidth = "md", className = 
           {/* Animated Backdrop */}
           <motion.div className="fixed inset-0 bg-zinc-950/70 backdrop-blur-sm" initial="hidden" animate="visible" exit="exit" variants={backdropVariants} onClick={onClose} aria-hidden="true"/>
 
-          {/* Animated Modal Dialog Content Card */}
-          <motion.div className={`relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-xl w-full ${maxWidthClasses[maxWidth]} shadow-2xl overflow-hidden z-10 ${className}`} initial="hidden" animate="visible" exit="exit" variants={contentVariants} role="dialog" aria-modal="true">
+          {/* Animated Modal Dialog Content Card (Origin-centered, physical glass depth) */}
+          <motion.div style={{ transformOrigin: "center" }} className={`relative bg-white dark:bg-[#181A20] border border-slate-200 dark:border-[#323744] border-t-white/80 dark:border-t-white/15 text-slate-900 dark:text-[#F4F5F7] rounded-2xl w-full ${maxWidthClasses[maxWidth]} shadow-2xl overflow-hidden z-10 ${className}`} initial="hidden" animate="visible" exit="exit" variants={contentVariants} role="dialog" aria-modal="true">
             {children}
           </motion.div>
         </div>)}

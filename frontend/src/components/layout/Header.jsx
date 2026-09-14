@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Building2, ChevronDown, Plus, User, Check, X, Bell, CheckCheck, ExternalLink, AlertTriangle, Info, CheckCircle2, AlertCircle, Trash2, Sparkles, } from "lucide-react";
+import { Building2, ChevronDown, Plus, User, Check, X, Bell, CheckCheck, ExternalLink, AlertTriangle, Info, CheckCircle2, AlertCircle, Trash2, Sparkles, LogOut, } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -9,6 +9,7 @@ import { Modal } from "@/components/ui/Modal";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { GlobalSearch } from "@/components/layout/GlobalSearch";
 import { useTenant } from "@/context/TenantContext";
+import { useAuth } from "@/context/AuthContext";
 import { fetchNotifications, fetchUnreadNotificationCount, markNotificationRead, markAllNotificationsRead, } from "@/lib/api";
 import { useRealtime } from "@/context/WebSocketContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +17,7 @@ import { popoverVariants, useReducedMotion } from "@/motion";
 export const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { logout } = useAuth();
     const { organizations, currentOrg, currentUser, switchOrganization, switchUser, createOrganization, deleteOrganization, } = useTenant();
     const prefersReducedMotion = useReducedMotion();
     const tenantMenuVariants = popoverVariants(prefersReducedMotion);
@@ -173,25 +175,25 @@ export const Header = () => {
         }
     };
     return (<>
-      <header className="h-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800/80 px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
+      <header className="h-12 glass-header px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
         {/* Tenant Selector */}
         <div className="relative">
-          <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 rounded-md transition-colors">
-            <Building2 className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400"/>
+          <button onClick={() => setDropdownOpen(!dropdownOpen)} className="btn-tactile flex items-center gap-2.5 text-xs text-slate-700 dark:text-[#9BA3AF] bg-slate-50/90 dark:bg-[#23262F]/90 hover:bg-slate-100 dark:hover:bg-[#2C303B] border border-slate-200 dark:border-[#323744] border-t-white/80 dark:border-t-white/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs">
+            <Building2 className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
             <div className="flex flex-col text-left">
-              <span suppressHydrationWarning className="font-semibold text-zinc-900 dark:text-zinc-100 leading-tight">
+              <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#F4F5F7] leading-tight">
                 {currentOrg ? currentOrg.name : "Select Tenant..."}
               </span>
-              <span suppressHydrationWarning className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">
-                {currentOrg ? `${currentOrg.slug} · ${currentOrg.currency}` : "Loading"}
+              <span suppressHydrationWarning className="text-[10px] text-slate-500 dark:text-[#9BA3AF] font-mono">
+                {currentOrg ? `${currentOrg.slug} (${currentOrg.currency})` : "Loading"}
               </span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-zinc-400 ml-1"/>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1"/>
           </button>
 
           {/* Dropdown Menu */}
           <AnimatePresence>
-            {dropdownOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute top-full left-0 mt-1.5 w-72 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl py-1 z-50 origin-top-left">
+            {dropdownOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute top-full left-0 mt-1.5 w-72 bg-white/95 dark:bg-[#23262F]/95 backdrop-blur-md border border-slate-200 dark:border-[#323744] border-t-white/90 dark:border-t-white/15 rounded-xl shadow-2xl py-1 z-50 origin-top-left">
               <div className="px-3 py-1.5 border-b border-zinc-100 dark:border-zinc-800 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
                 Select Active Organization
               </div>
@@ -226,18 +228,6 @@ export const Header = () => {
               </div>
               <div className="border-t border-zinc-100 dark:border-zinc-800 p-1.5 space-y-1">
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setDropdownOpen(false);
-                    navigate("/welcome", { state: { from: location.pathname } });
-                  }}
-                  className="w-full text-xs gap-1.5 py-1.5 h-auto justify-start text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-zinc-500" />
-                  Workspace Launchpad & Portal
-                </Button>
-                <Button
                   variant="outline"
                   size="sm"
                   onClick={() => {
@@ -265,16 +255,16 @@ export const Header = () => {
 
           {/* Notifications Bell Dropdown */}
           <div className="relative">
-            <button onClick={toggleNotifDrawer} className="relative p-2 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" title="Notifications">
+            <button onClick={toggleNotifDrawer} className="btn-tactile relative p-2 rounded-xl text-slate-500 dark:text-[#9BA3AF] hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23262F] transition-all cursor-pointer" title="Notifications">
               <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (<span className="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-zinc-950 dark:bg-zinc-100 text-[10px] font-bold text-white dark:text-zinc-950 shadow-xs">
+              {unreadCount > 0 && (<span className="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#B6FF2E] text-[10px] font-bold text-[#14171F] shadow-xs">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>)}
             </button>
 
             {/* Notifications Popover */}
             <AnimatePresence>
-              {notifOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl py-2 z-50 text-xs origin-top-right">
+              {notifOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#323744] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 text-xs origin-top-right">
                 <div className="px-4 py-2 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">Notifications</span>
@@ -330,17 +320,17 @@ export const Header = () => {
 
           {/* Active Operator & Live Role Switcher */}
           <div className="relative">
-            <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 p-1.5 rounded-lg border border-transparent hover:border-zinc-200 dark:hover:border-zinc-800 transition-[transform,opacity,background-color,border-color,color] cursor-pointer text-left" title="Click to switch active user / role">
-              <div className="w-7 h-7 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 flex items-center justify-center">
-                <User className="w-4 h-4 text-zinc-600 dark:text-zinc-300"/>
+            <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="btn-tactile flex items-center gap-2 text-sm text-slate-700 dark:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23262F] p-1.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-[#323744] transition-all cursor-pointer text-left" title="Click to switch active user / role">
+              <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-[#2C303B] border border-slate-300 dark:border-[#545963] flex items-center justify-center">
+                <User className="w-4 h-4 text-slate-600 dark:text-[#F4F5F7]"/>
               </div>
               <div>
-                <p suppressHydrationWarning className="text-xs font-semibold leading-none text-zinc-900 dark:text-zinc-100 flex items-center gap-1">
+                <p suppressHydrationWarning className="text-xs font-semibold leading-none text-slate-900 dark:text-white flex items-center gap-1">
                   {currentUser?.name || "Admin Operator"}
-                  <ChevronDown className="w-3 h-3 text-zinc-400"/>
+                  <ChevronDown className="w-3 h-3 text-slate-400"/>
                 </p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 uppercase tracking-wider">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#23262F] text-slate-800 dark:text-[#B6FF2E] border border-slate-200 dark:border-[#323744] uppercase tracking-wider">
                     {currentUser?.role?.replace("_", " ") || "Operator"}
                   </span>
                 </div>
@@ -348,7 +338,7 @@ export const Header = () => {
             </button>
 
             <AnimatePresence>
-              {userMenuOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 mt-2 w-64 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-xl py-2 z-50 origin-top-right">
+              {userMenuOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 mt-2 w-64 bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#323744] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 origin-top-right">
                   <div className="px-3 py-1.5 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
                     <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                       Switch Active User (RBAC)
@@ -376,9 +366,36 @@ export const Header = () => {
                         </button>);
             })}
                   </div>
+                  <div className="border-t border-zinc-100 dark:border-zinc-800 p-1.5">
+                    <button
+                      onClick={() => {
+                        logout();
+                        setUserMenuOpen(false);
+                        navigate("/");
+                      }}
+                      className="w-full px-3 py-2 text-left flex items-center gap-2 rounded-md hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400 text-xs font-semibold transition-colors cursor-pointer"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      Sign Out
+                    </button>
+                  </div>
                 </motion.div>)}
             </AnimatePresence>
           </div>
+
+          <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800"/>
+
+          {/* Quick Sign Out Action */}
+          <button
+            onClick={() => {
+              logout();
+              navigate("/");
+            }}
+            className="p-2 rounded-lg text-zinc-500 hover:text-red-600 dark:text-zinc-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
+            title="Sign Out & Return to Landing Page"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
       </header>
 

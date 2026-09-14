@@ -51,6 +51,24 @@ async def seed_demo_data():
     engine = await get_active_engine()
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Ensure password_hash column exists on users table in legacy databases
+        from sqlalchemy import text
+        try:
+            if "sqlite" in engine.dialect.name:
+                pragma_res = await conn.execute(text("PRAGMA table_info(users)"))
+                cols = [r[1] for r in pragma_res.fetchall()]
+                if "password_hash" not in cols:
+                    await conn.execute(text("ALTER TABLE users ADD COLUMN password_hash VARCHAR(255)"))
+            elif "postgresql" in engine.dialect.name:
+                await conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255)"))
+            from app.core.security import get_password_hash
+            default_hash = get_password_hash("admin123")
+            await conn.execute(
+                text("UPDATE users SET password_hash = :hash WHERE password_hash IS NULL"),
+                {"hash": default_hash},
+            )
+        except Exception:
+            pass
 
     async with AsyncSessionLocal() as session:
         # --- Seed Acme Logistics Ltd ---

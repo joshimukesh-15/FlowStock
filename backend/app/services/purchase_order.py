@@ -1,5 +1,5 @@
 """Purchase Order Service Layer: Procurement Lifecycle & Inbound Stock Receipt."""
-from typing import List, Optional
+from typing import List
 from uuid import UUID, uuid4
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession

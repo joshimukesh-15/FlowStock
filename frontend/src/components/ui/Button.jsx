@@ -2,13 +2,13 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 export const Button = React.forwardRef(({ className, variant = "primary", size = "md", isLoading = false, children, disabled, ...props }, ref) => {
-    const baseStyles = "inline-flex items-center justify-center font-medium transition-[transform,opacity,background-color,border-color,color] rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-950 dark:focus:ring-white focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer active:scale-[0.98] motion-reduce:transform-none";
+    const baseStyles = "inline-flex items-center justify-center font-medium transition-[transform,opacity,background-color,border-color,color] duration-150 ease-out rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B6FF2E] focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer active:scale-[0.97] hover:scale-[1.01] motion-reduce:transform-none motion-reduce:transition-none";
     const variants = {
-        primary: "bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 hover:bg-black dark:hover:bg-zinc-200 active:bg-zinc-900 shadow-xs border border-zinc-900 dark:border-white",
-        secondary: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700",
-        outline: "border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800 shadow-2xs",
-        danger: "bg-zinc-900 dark:bg-zinc-800 text-white hover:bg-black dark:hover:bg-zinc-700 border border-zinc-800 dark:border-zinc-700",
-        ghost: "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-zinc-100",
+        primary: "bg-[#B6FF2E] hover:bg-[#a3f01b] active:bg-[#92dc12] text-[#14171F] font-semibold border border-[#B6FF2E] shadow-sm",
+        secondary: "bg-slate-100 dark:bg-[#23262F] text-slate-900 dark:text-[#F4F5F7] hover:bg-slate-200 dark:hover:bg-[#2C303B] border border-slate-200 dark:border-[#323744]",
+        outline: "border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#23262F] text-slate-900 dark:text-[#F4F5F7] hover:bg-slate-50 dark:hover:bg-[#2C303B] shadow-2xs",
+        danger: "bg-[#dc2626] hover:bg-[#b91c1c] active:bg-[#991b1b] text-white border border-[#dc2626]",
+        ghost: "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#23262F] hover:text-slate-950 dark:hover:text-[#F4F5F7]",
     };
     const sizes = {
         sm: "text-xs px-2.5 py-1.5 h-8 gap-1.5",

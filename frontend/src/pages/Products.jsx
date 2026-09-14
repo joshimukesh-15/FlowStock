@@ -12,7 +12,7 @@ import { fetchProducts, fetchCategories, createProductApi, updateProductApi, del
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { motion } from "framer-motion";
-import { fadeInVariants, useReducedMotion, pageEnterVariants } from "@/motion";
+import { useReducedMotion, pageEnterVariants } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
@@ -183,13 +183,13 @@ export default function ProductsPage() {
             </>}/>
 
         {/* Filter & Search Bar */}
-        <Card className="p-4">
+        <Card spotlight={true} className="p-3.5 sm:p-4 shadow-2xs">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <SearchBar placeholder="Search products by name or SKU..." value={searchTerm} onChange={setSearchTerm} onSubmit={handleSearchSubmit}/>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-zinc-500 font-medium shrink-0">Category:</span>
-              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 px-2.5 py-1.5 focus:border-zinc-950 dark:focus:border-zinc-200 focus:outline-none">
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium shrink-0">Category:</span>
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-zinc-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-zinc-900 dark:text-zinc-100 px-2.5 py-1.5 focus:border-[#B6FF2E] focus:outline-none">
                 <option value="">All Categories ({categories.length})</option>
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
@@ -198,23 +198,23 @@ export default function ProductsPage() {
         </Card>
 
         {/* Products Table */}
-        <Card className="overflow-hidden">
+        <Card spotlight={true} className="overflow-hidden shadow-2xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-600 font-semibold uppercase tracking-wider">
+              <thead className="bg-zinc-50 dark:bg-[#1C1F27] border-b border-zinc-100 dark:border-[#2A2E39] text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[11px]">
                 <tr>
-                  <th className="py-3 px-4">SKU / Code</th>
-                  <th className="py-3 px-4">Product Name</th>
-                  <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4 text-center">Unit</th>
-                  <th className="py-3 px-4 text-right">Selling Price</th>
-                  <th className="py-3 px-4 text-right">Cost Price</th>
-                  <th className="py-3 px-4 text-right">Margin</th>
-                  <th className="py-3 px-4 text-center">Reorder Point</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-2.5 px-3.5">SKU / Code</th>
+                  <th className="py-2.5 px-3.5">Product Name</th>
+                  <th className="py-2.5 px-3.5">Category</th>
+                  <th className="py-2.5 px-3.5 text-center">Unit</th>
+                  <th className="py-2.5 px-3.5 text-right">Selling Price</th>
+                  <th className="py-2.5 px-3.5 text-right">Cost Price</th>
+                  <th className="py-2.5 px-3.5 text-right">Margin</th>
+                  <th className="py-2.5 px-3.5 text-center">Reorder Point</th>
+                  <th className="py-2.5 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100">
+              <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-14", "w-16", "w-16", "w-12", "w-24", "w-20"]}/>
@@ -229,37 +229,37 @@ export default function ProductsPage() {
                     </td>
                   </tr>) : (products.map((p) => {
             const margin = p.price > 0 ? (((p.price - p.cost_price) / p.price) * 100).toFixed(0) : "0";
-            return (<tr key={p.id} className="hover:bg-zinc-50/70 transition-colors">
-                        <td className="py-3 px-4 font-mono font-semibold text-zinc-800">{p.sku}</td>
-                        <td className="py-3 px-4">
-                          <p className="font-medium text-zinc-900">{p.name}</p>
-                          {p.description && <p className="text-[11px] text-zinc-400 truncate max-w-xs">{p.description}</p>}
+            return (<tr key={p.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
+                        <td className="py-2.5 px-3.5 font-mono font-semibold text-zinc-900 dark:text-zinc-100">{p.sku}</td>
+                        <td className="py-2.5 px-3.5">
+                          <p className="font-medium text-zinc-900 dark:text-zinc-100">{p.name}</p>
+                          {p.description && <p className="text-[10px] text-zinc-400 dark:text-zinc-500 truncate max-w-xs">{p.description}</p>}
                         </td>
-                        <td className="py-3 px-4">
-                          <span className="inline-block px-2 py-0.5 bg-zinc-100 text-zinc-700 rounded text-[11px] border border-zinc-200">
+                        <td className="py-2.5 px-3.5">
+                          <span className="inline-block px-1.5 py-0.5 bg-zinc-100 dark:bg-[#20242D] text-zinc-700 dark:text-zinc-300 rounded text-[10px] border border-zinc-200 dark:border-[#323744]">
                             {p.category?.name || "Uncategorized"}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-center font-mono text-zinc-600">{p.unit}</td>
-                        <td className="py-3 px-4 text-right font-semibold text-zinc-900 font-mono">
+                        <td className="py-2.5 px-3.5 text-center font-mono text-zinc-500 dark:text-zinc-400">{p.unit}</td>
+                        <td className="py-2.5 px-3.5 text-right font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
                           ₹{p.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </td>
-                        <td className="py-3 px-4 text-right text-zinc-500 font-mono">
+                        <td className="py-2.5 px-3.5 text-right text-zinc-500 dark:text-zinc-400 font-mono">
                           ₹{p.cost_price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </td>
-                        <td className="py-3 px-4 text-right font-mono">
-                          <span className={Number(margin) >= 30 ? "text-zinc-900 font-semibold" : "text-zinc-900"}>
+                        <td className="py-2.5 px-3.5 text-right font-mono">
+                          <span className={Number(margin) >= 30 ? "text-emerald-600 dark:text-[#B6FF2E] font-semibold" : "text-zinc-700 dark:text-zinc-300"}>
                             {margin}%
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-center">
+                        <td className="py-2.5 px-3.5 text-center">
                           <Badge variant="warning">{p.reorder_point} {p.unit}</Badge>
                         </td>
-                        <td className="py-3 px-4 text-right space-x-1 whitespace-nowrap">
-                          <button onClick={() => handleOpenEdit(p)} className="p-1 hover:bg-zinc-200 rounded text-zinc-600 transition-colors" title="Edit Product">
+                        <td className="py-2.5 px-3.5 text-right space-x-1 whitespace-nowrap">
+                          <button onClick={() => handleOpenEdit(p)} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" title="Edit Product">
                             <Edit2 className="w-3.5 h-3.5"/>
                           </button>
-                          <button onClick={() => handleDeleteProduct(p.id, p.name)} className="p-1 hover:bg-zinc-100 text-zinc-400 hover:text-black rounded transition-colors" title="Delete Product">
+                          <button onClick={() => handleDeleteProduct(p.id, p.name)} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-red-500 dark:hover:text-red-400 rounded transition-colors" title="Delete Product">
                             <Trash2 className="w-3.5 h-3.5"/>
                           </button>
                         </td>
@@ -272,7 +272,7 @@ export default function ProductsPage() {
 
         {/* Product Modal */}
         <Modal isOpen={productModalOpen} onClose={() => setProductModalOpen(false)} maxWidth="lg">
-            <div className="p-5 space-y-4">
+          <div className="p-5 space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
                 <h3 className="font-semibold text-zinc-900 text-sm">
                   {editingProduct ? "Edit Product Details" : "Add New Product SKU"}

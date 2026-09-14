@@ -16,6 +16,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
+import { StatCard } from "@/components/ui/StatCard";
 export default function InventoryPage() {
     const { currentOrg } = useTenant();
     const prefersReducedMotion = useReducedMotion();
@@ -146,84 +147,44 @@ export default function InventoryPage() {
           </>}/>
 
       {/* Top KPI Cards */}
-      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" variants={itemVariants}>
-        <Card className="bg-white border-zinc-200 shadow-sm">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-700">
-              <Boxes className="w-5 h-5"/>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Tracked SKUs</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900">
-                  <AnimatedCounter value={totalSkus}/>
-                </span>
-                <Badge variant="default">Active</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-zinc-200 shadow-sm">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-900 border border-zinc-200/60">
-              <Package className="w-5 h-5"/>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Total Units in Stock</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900">
-                  <AnimatedCounter value={totalItems}/>
-                </span>
-                <span className="text-xs text-zinc-400 font-mono">units</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-zinc-200 shadow-sm">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className={`p-2.5 rounded-lg ${lowStockCount > 0
-            ? "bg-zinc-100 text-zinc-900 border border-zinc-200/60"
-            : "bg-zinc-100 text-zinc-900 border border-zinc-200/60"}`}>
-              <AlertTriangle className="w-5 h-5"/>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Low Stock Alerts</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900">
-                  <AnimatedCounter value={lowStockCount}/>
-                </span>
-                <Badge variant={lowStockCount > 0 ? "warning" : "success"}>
-                  {lowStockCount > 0 ? "Needs Reorder" : "Healthy"}
-                </Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-zinc-200 shadow-sm">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-900 border border-zinc-200/60">
-              <DollarSign className="w-5 h-5"/>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Total Stock Value (Cost)</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900 font-mono">
-                  <AnimatedCounter value={totalValuation} prefix="₹" formatINR decimals={2}/>
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" variants={itemVariants}>
+        <StatCard
+          title="Tracked SKUs"
+          value={totalSkus}
+          icon={Boxes}
+          badge={<Badge variant="default">Active</Badge>}
+          subText="Active catalog items"
+        />
+        <StatCard
+          title="Total Units in Stock"
+          value={totalItems}
+          suffix=" units"
+          icon={Package}
+          subText="On-hand warehouse balance"
+        />
+        <StatCard
+          title="Low Stock Alerts"
+          value={lowStockCount}
+          icon={AlertTriangle}
+          badge={<Badge variant={lowStockCount > 0 ? "warning" : "success"}>{lowStockCount > 0 ? "Needs Reorder" : "Healthy"}</Badge>}
+          subText={lowStockCount > 0 ? "Items below reorder point" : "All SKUs well stocked"}
+        />
+        <StatCard
+          title="Total Stock Value"
+          value={totalValuation}
+          prefix="₹"
+          formatINR
+          decimals={2}
+          icon={DollarSign}
+          subText="Current inventory valuation"
+        />
       </motion.div>
 
       {/* Inventory Table */}
       <motion.div variants={itemVariants}>
-        <Card className="overflow-hidden bg-white border-zinc-200 shadow-sm">
-          <CardHeader className="py-3 px-4 bg-zinc-50 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <CardTitle className="text-sm font-semibold text-zinc-700">
+        <Card className="overflow-hidden">
+          <CardHeader className="py-2.5 px-3.5 bg-zinc-50/60 dark:bg-zinc-900/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
               Live On-Hand Stock Levels & Reorder Thresholds
             </CardTitle>
             <SearchBar placeholder="Search by SKU, product, category..." value={searchQuery} onChange={setSearchQuery} className="w-full sm:w-64"/>
@@ -231,20 +192,20 @@ export default function InventoryPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-600 font-semibold uppercase tracking-wider">
+              <thead className="bg-zinc-50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 font-medium uppercase tracking-wider text-[11px]">
                 <tr>
-                  <th className="py-3 px-4">SKU</th>
-                  <th className="py-3 px-4">Product Name</th>
-                  <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4 text-center">On-Hand Stock</th>
-                  <th className="py-3 px-4 text-center">Reorder Level</th>
-                  <th className="py-3 px-4 text-right">Avg Cost</th>
-                  <th className="py-3 px-4 text-right">Total Valuation</th>
-                  <th className="py-3 px-4 text-center">Status</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-2 px-3.5">SKU</th>
+                  <th className="py-2 px-3.5">Product Name</th>
+                  <th className="py-2 px-3.5">Category</th>
+                  <th className="py-2 px-3.5 text-center">On-Hand Stock</th>
+                  <th className="py-2 px-3.5 text-center">Reorder Level</th>
+                  <th className="py-2 px-3.5 text-right">Avg Cost</th>
+                  <th className="py-2 px-3.5 text-right">Total Valuation</th>
+                  <th className="py-2 px-3.5 text-center">Status</th>
+                  <th className="py-2 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-200">
+              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-16", "w-16", "w-20", "w-24", "w-24", "w-20"]}/>
@@ -254,46 +215,46 @@ export default function InventoryPage() {
                     <td colSpan={9}>
                       <EmptyState compact icon={Boxes} title={searchQuery ? "No matching inventory records" : "No inventory data available"} description={searchQuery ? "Try refining your search keyword." : "Create products or record an incoming stock movement to begin tracking."}/>
                     </td>
-                  </tr>) : (filteredSummaries.map((s) => (<tr key={s.product.id} className={`hover:bg-zinc-50/80 transition-colors ${s.is_low_stock ? "bg-zinc-100/50" : ""}`}>
-                      <td className="py-3 px-4 font-mono font-bold text-zinc-900">
+                  </tr>) : (filteredSummaries.map((s) => (<tr key={s.product.id} className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors ${s.is_low_stock ? "bg-amber-500/5 dark:bg-amber-500/5" : ""}`}>
+                      <td className="py-2 px-3.5 font-mono font-bold text-zinc-900 dark:text-zinc-100">
                         {s.product.sku}
                       </td>
-                      <td className="py-3 px-4">
-                        <span className="font-medium text-zinc-900">{s.product.name}</span>
+                      <td className="py-2 px-3.5">
+                        <span className="font-medium text-zinc-900 dark:text-zinc-100">{s.product.name}</span>
                       </td>
-                      <td className="py-3 px-4 text-zinc-500">
+                      <td className="py-2 px-3.5 text-zinc-500 dark:text-zinc-400">
                         {s.product.category?.name || "General"}
                       </td>
-                      <td className="py-3 px-4 text-center">
-                        <span className={`inline-block font-mono font-bold px-2 py-0.5 rounded ${s.is_low_stock
-                ? "bg-zinc-900 text-white"
-                : "bg-zinc-100 text-zinc-800"}`}>
+                      <td className="py-2 px-3.5 text-center">
+                        <span className={`inline-block font-mono font-bold px-2 py-0.5 rounded text-xs ${s.is_low_stock
+                ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30"
+                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200"}`}>
                           {s.on_hand_quantity} {s.product.unit}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-center font-mono text-zinc-500">
+                      <td className="py-2 px-3.5 text-center font-mono text-zinc-500 dark:text-zinc-400">
                         {s.reorder_point} {s.product.unit}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono text-zinc-600">
+                      <td className="py-2 px-3.5 text-right font-mono text-zinc-600 dark:text-zinc-400">
                         ₹{Number(s.product.cost_price).toFixed(2)}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono font-bold text-zinc-900">
+                      <td className="py-2 px-3.5 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">
                         ₹{Number(s.total_cost_value).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                       </td>
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-2 px-3.5 text-center">
                         {s.is_low_stock ? (<Badge variant="warning">
                             Reorder Required
                           </Badge>) : (<Badge variant="success">
                             Adequate
                           </Badge>)}
                       </td>
-                      <td className="py-3 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <Button size="sm" variant="outline" onClick={() => handleOpenMovementModal(s)} className="h-7 text-xs px-2 gap-1 border-zinc-300 hover:bg-zinc-100">
+                      <td className="py-2 px-3.5 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <Button size="sm" variant="outline" onClick={() => handleOpenMovementModal(s)} className="h-6.5 text-[11px] px-2 gap-1">
                             <Plus className="w-3 h-3"/>
                             Adjust
                           </Button>
-                          <Button size="sm" variant="ghost" onClick={() => handleOpenHistory(s)} className="h-7 text-xs px-2 gap-1 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100">
+                          <Button size="sm" variant="ghost" onClick={() => handleOpenHistory(s)} className="h-6.5 text-[11px] px-2 gap-1 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
                             <History className="w-3 h-3"/>
                             Ledger
                           </Button>

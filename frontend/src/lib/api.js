@@ -36,6 +36,10 @@ function getHeaders(extraHeaders = {}) {
         ...extraHeaders,
     };
     if (typeof window !== "undefined") {
+        const token = localStorage.getItem("flowstock_token");
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
         const orgId = localStorage.getItem("flowstock_org_id");
         if (orgId) {
             headers["X-Organization-Id"] = orgId;
@@ -763,4 +767,71 @@ export async function triggerJobApi(jobName) {
         throw new Error(err.detail || `Failed to trigger job ${jobName}`);
     }
     return await res.json();
+}
+
+export async function loginApi(email, password) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.detail || "Invalid email or password");
+        }
+        return await res.json();
+    } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === "AbortError") {
+            throw new Error("Server took too long to respond. Please try again.");
+        }
+        throw err;
+    }
+}
+
+export async function signupApi(data) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.detail || "Signup failed");
+        }
+        return await res.json();
+    } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === "AbortError") {
+            throw new Error("Server took too long to respond. Please try again.");
+        }
+        throw err;
+    }
+}
+
+export async function fetchMe(token) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
+            headers: { "Authorization": `Bearer ${token}` },
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error("Session expired");
+        return await res.json();
+    } catch (err) {
+        clearTimeout(timeoutId);
+        throw err;
+    }
 }

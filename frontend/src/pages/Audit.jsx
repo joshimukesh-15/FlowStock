@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { History, RefreshCw, ShieldCheck, Filter, User, FileText, CreditCard, Truck, Boxes, ShoppingCart, Building2, } from "lucide-react";
 import { fetchAuditLogs } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
+import { SpotlightCard } from "@/components/reactbits/SpotlightCard";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
@@ -13,7 +14,7 @@ import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { motion } from "framer-motion";
-import { fadeInVariants, useReducedMotion, pageEnterVariants } from "@/motion";
+import { useReducedMotion, pageEnterVariants } from "@/motion";
 export default function AuditPage() {
     const [audits, setAudits] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -107,66 +108,58 @@ export default function AuditPage() {
             </Button>}/>
 
         {/* Metric Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-900 border border-zinc-200/60">
-                <History className="w-5 h-5"/>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-zinc-500">Total Audit Events</p>
-                <p className="text-lg font-bold text-zinc-900 mt-0.5">{audits.length}</p>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-[#20242D] text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-[#323744] flex items-center justify-center shrink-0">
+              <History className="w-4 h-4"/>
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 truncate">Total Audit Events</p>
+              <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">{audits.length}</p>
+            </div>
+          </SpotlightCard>
 
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-900 border border-zinc-200/60">
-                <CreditCard className="w-5 h-5"/>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-zinc-500">Financial & Invoices</p>
-                <p className="text-lg font-bold text-zinc-900 mt-0.5">
-                  {audits.filter((a) => a.entity_type === "Invoice" || a.entity_type === "Payment").length}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-[#20242D] text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-[#323744] flex items-center justify-center shrink-0">
+              <CreditCard className="w-4 h-4"/>
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 truncate">Financial & Invoices</p>
+              <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                {audits.filter((a) => a.entity_type === "Invoice" || a.entity_type === "Payment").length}
+              </p>
+            </div>
+          </SpotlightCard>
 
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-900 border border-zinc-200/60">
-                <Boxes className="w-5 h-5"/>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-zinc-500">Inventory Movements</p>
-                <p className="text-lg font-bold text-zinc-900 mt-0.5">
-                  {audits.filter((a) => a.entity_type === "Inventory").length}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-[#20242D] text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-[#323744] flex items-center justify-center shrink-0">
+              <Boxes className="w-4 h-4"/>
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 truncate">Inventory Movements</p>
+              <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                {audits.filter((a) => a.entity_type === "Inventory").length}
+              </p>
+            </div>
+          </SpotlightCard>
 
-          <Card>
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2.5 rounded-lg bg-zinc-100 text-zinc-900 border border-zinc-200/60">
-                <ShieldCheck className="w-5 h-5"/>
+          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+            <div className="w-9 h-9 rounded-lg bg-[#B6FF2E]/10 text-zinc-900 dark:text-[#B6FF2E] border border-[#B6FF2E]/20 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-4 h-4"/>
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 truncate">Tenant Isolation</p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Enforced</span>
+                <Badge variant="success">Active</Badge>
               </div>
-              <div>
-                <p className="text-xs font-medium text-zinc-500">Tenant Isolation</p>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-sm font-semibold text-zinc-900">Enforced</span>
-                  <Badge variant="success">Active</Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </SpotlightCard>
         </div>
 
         {/* Filter & Search Bar */}
-        <Card>
-          <CardContent className="p-4 space-y-4">
+        <Card spotlight={true} className="shadow-2xs">
+          <CardContent className="p-3.5 sm:p-4 space-y-3">
             {/* Entity Filter Tabs with Sliding Underline */}
             <Tabs tabs={entities.map((ent) => ({
             id: ent.value,
@@ -185,64 +178,64 @@ export default function AuditPage() {
         </Card>
 
         {/* Audit Log Table */}
-        <Card>
-          <CardHeader className="pb-3 flex flex-row items-center justify-between">
+        <Card spotlight={true} className="shadow-2xs">
+          <CardHeader className="py-3 px-4 border-b border-zinc-100 dark:border-[#262A34] flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-base font-semibold text-zinc-900">Audit Trail Records</CardTitle>
-              <p className="text-xs text-zinc-500">
+              <CardTitle className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Audit Trail Records</CardTitle>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
                 Sorted chronologically by event timestamp (UTC)
               </p>
             </div>
-            <span className="text-xs font-mono text-zinc-400">
+            <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500">
               Showing {audits.length} entries
             </span>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-zinc-50 text-zinc-600 font-semibold border-y border-zinc-200">
+              <table className="w-full text-left text-xs text-zinc-700 dark:text-zinc-300">
+                <thead className="bg-zinc-50 dark:bg-[#1C1F27] text-zinc-500 dark:text-zinc-400 font-semibold border-b border-zinc-100 dark:border-[#2A2E39] text-[11px] uppercase tracking-wider">
                   <tr>
-                    <th className="p-3">Timestamp</th>
-                    <th className="p-3">Action</th>
-                    <th className="p-3">Module</th>
-                    <th className="p-3">Target Entity</th>
-                    <th className="p-3">Operator</th>
-                    <th className="p-3">Operational Details</th>
-                    <th className="p-3 text-right">Host IP</th>
+                    <th className="py-2.5 px-3.5">Timestamp</th>
+                    <th className="py-2.5 px-3.5">Action</th>
+                    <th className="py-2.5 px-3.5">Module</th>
+                    <th className="py-2.5 px-3.5">Target Entity</th>
+                    <th className="py-2.5 px-3.5">Operator</th>
+                    <th className="py-2.5 px-3.5">Operational Details</th>
+                    <th className="py-2.5 px-3.5 text-right">Host IP</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-100">
+                <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
                   {loading ? (<tr>
                       <td colSpan={7} className="p-4">
                         <TableSkeleton rows={5} columns={["w-36", "w-24", "w-24", "w-32", "w-28", "w-56", "w-24"]}/>
                         <SkeletonAnnouncer label="Loading audit trails"/>
                       </td>
-                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-zinc-50 transition-colors">
-                        <td className="p-3 font-mono text-zinc-500 whitespace-nowrap">
+                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
+                        <td className="py-2.5 px-3.5 font-mono text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
                           {new Date(item.created_at).toLocaleString()}
                         </td>
-                        <td className="p-3 whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 whitespace-nowrap">
                           {getActionBadge(item.action)}
                         </td>
-                        <td className="p-3 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1.5 font-medium text-zinc-700">
+                        <td className="py-2.5 px-3.5 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
                             {getEntityIcon(item.entity_type)}
                             {item.entity_type}
                           </span>
                         </td>
-                        <td className="p-3 font-mono font-semibold text-zinc-900 whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-mono font-semibold text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
                           {item.entity_name || "—"}
                         </td>
-                        <td className="p-3 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1 text-zinc-700 font-medium">
+                        <td className="py-2.5 px-3.5 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 text-zinc-700 dark:text-zinc-300 font-medium">
                             <User className="w-3 h-3 text-zinc-400"/>
                             {item.user_name || "System"}
                           </span>
                         </td>
-                        <td className="p-3 text-zinc-600 max-w-md">
-                          <p className="line-clamp-2 leading-relaxed">{item.details || "No details"}</p>
+                        <td className="py-2.5 px-3.5 text-zinc-600 dark:text-zinc-400 max-w-md">
+                          <p className="line-clamp-2 leading-relaxed text-[11px]">{item.details || "No details"}</p>
                         </td>
-                        <td className="p-3 font-mono text-zinc-400 text-right whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-mono text-zinc-400 dark:text-zinc-500 text-right whitespace-nowrap">
                           {item.ip_address || "127.0.0.1"}
                         </td>
                       </tr>))) : (<tr>

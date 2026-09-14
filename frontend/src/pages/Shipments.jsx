@@ -12,10 +12,11 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ShipmentLifecycleStepper } from "@/components/ui/ShipmentLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { StatCard } from "@/components/ui/StatCard";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
-import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
@@ -241,33 +242,6 @@ export default function ShipmentsPage() {
             setDetailShipment(updated);
         }
     };
-    // Status Badge UI
-    const getStatusBadge = (status) => {
-        switch (status) {
-            case "PENDING":
-                return (<AnimatedBadge statusKey={status} variant="default" icon={Clock}>
-            Pending Pickup
-          </AnimatedBadge>);
-            case "IN_TRANSIT":
-                return (<AnimatedBadge statusKey={status} variant="warning" icon={Navigation} pulse>
-            In Transit
-          </AnimatedBadge>);
-            case "OUT_FOR_DELIVERY":
-                return (<AnimatedBadge statusKey={status} variant="warning" icon={Truck} pulse>
-            Out for Delivery
-          </AnimatedBadge>);
-            case "DELIVERED":
-                return (<AnimatedBadge statusKey={status} variant="success" icon={CheckCircle2}>
-            Delivered
-          </AnimatedBadge>);
-            case "CANCELLED":
-                return (<AnimatedBadge statusKey={status} variant="danger" icon={Ban}>
-            Cancelled
-          </AnimatedBadge>);
-            default:
-                return <AnimatedBadge statusKey={status} variant="default">{status}</AnimatedBadge>;
-        }
-    };
     // Filtered shipments
     const filteredShipments = shipments.filter((s) => {
         const matchesStatus = statusFilter === "ALL" ? true : s.status === statusFilter;
@@ -314,80 +288,40 @@ export default function ShipmentsPage() {
           </>}/>
 
       {/* KPI Summary Cards */}
-      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" variants={itemVariants}>
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Active Consignments
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-1 font-mono">
-                <AnimatedCounter value={inTransitCount}/>
-              </h3>
-              <p className="text-xs text-zinc-700 mt-0.5">En route or pending pickup</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900">
-              <Navigation className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Delivered Consignments
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-1 font-mono">
-                <AnimatedCounter value={deliveredCount}/>
-              </h3>
-              <p className="text-xs text-zinc-900 mt-0.5">Proof of delivery verified</p>
-            </div>
-            <div className="w-11 h-11 rounded-lg bg-zinc-900/10 border border-zinc-900/20 flex items-center justify-center text-zinc-900">
-              <PackageCheck className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Total Freight Cost
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-1 font-mono">
-                <AnimatedCounter value={totalFreightSpend} prefix="₹" formatINR decimals={2}/>
-              </h3>
-              <p className="text-xs text-zinc-500 mt-0.5">Indian logistics expenditure</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900">
-              <IndianRupee className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-5 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                Ready to Dispatch
-              </p>
-              <h3 className="text-2xl font-bold text-zinc-900 mt-1 font-mono">
-                <AnimatedCounter value={eligibleOrdersForShipping.length}/>
-              </h3>
-              <p className="text-xs text-zinc-700 mt-0.5">Confirmed customer orders</p>
-            </div>
-            <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-900">
-              <Building className="w-5 h-5"/>
-            </div>
-          </CardContent>
-        </Card>
+      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5" variants={itemVariants}>
+        <StatCard
+          title="Active Consignments"
+          value={inTransitCount}
+          icon={Navigation}
+          subText="En route or pending pickup"
+        />
+        <StatCard
+          title="Delivered Consignments"
+          value={deliveredCount}
+          icon={PackageCheck}
+          subText="Proof of delivery verified"
+        />
+        <StatCard
+          title="Total Freight Spend"
+          value={totalFreightSpend}
+          prefix="₹"
+          formatINR
+          decimals={2}
+          icon={IndianRupee}
+          subText="Logistics expenditure"
+        />
+        <StatCard
+          title="Ready to Dispatch"
+          value={eligibleOrdersForShipping.length}
+          icon={Building}
+          subText="Confirmed sales orders"
+        />
       </motion.div>
 
         {/* Table & Controls Card */}
-        <Card className="">
-          <CardHeader className="p-5 pb-3 border-b border-zinc-200">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <Card spotlight={true} className="shadow-2xs">
+          <CardHeader className="p-4 pb-3 border-b border-zinc-100 dark:border-[#262A34]">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={[
             { label: "All Consignments", id: "ALL" },
@@ -411,23 +345,23 @@ export default function ShipmentsPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Shipment
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-zinc-700">
-                  <thead className="bg-zinc-50 text-xs text-zinc-500 uppercase tracking-wider border-b border-zinc-200">
+                <table className="w-full text-left text-xs text-zinc-700 dark:text-zinc-300">
+                  <thead className="bg-zinc-50 dark:bg-[#1C1F27] text-[11px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider border-b border-zinc-100 dark:border-[#2A2E39]">
                     <tr>
-                      <th className="py-3 px-4 font-semibold">Shipment #</th>
-                      <th className="py-3 px-4 font-semibold">Order / Customer</th>
-                      <th className="py-3 px-4 font-semibold">Carrier & Tracking AWB</th>
-                      <th className="py-3 px-4 font-semibold">Route</th>
-                      <th className="py-3 px-4 font-semibold">Freight (₹)</th>
-                      <th className="py-3 px-4 font-semibold">Status</th>
-                      <th className="py-3 px-4 font-semibold text-right">Actions</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Shipment #</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Order / Customer</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Carrier & Tracking AWB</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Route</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Freight</th>
+                      <th className="py-2.5 px-3.5 font-semibold">Status</th>
+                      <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100">
-                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-zinc-50 transition-colors group">
-                        <td className="py-3.5 px-4 font-mono font-medium text-zinc-900">
+                  <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
+                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors group">
+                        <td className="py-2.5 px-3.5 font-mono font-medium text-zinc-900 dark:text-zinc-100">
                           {s.shipment_number}
-                          <div className="text-[11px] text-zinc-400 font-sans">
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-sans mt-0.5">
                             {new Date(s.created_at).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
@@ -435,46 +369,48 @@ export default function ShipmentsPage() {
                 })}
                           </div>
                         </td>
-                        <td className="py-3.5 px-4">
-                          <span className="font-semibold text-zinc-900">
+                        <td className="py-2.5 px-3.5">
+                          <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                             {s.order?.order_number || "Order"}
                           </span>
-                          <div className="text-xs text-zinc-500">
+                          <div className="text-xs text-zinc-500 dark:text-zinc-400">
                             {s.order?.customer?.name || "B2B Consignee"}
                           </div>
                         </td>
-                        <td className="py-3.5 px-4">
-                          <div className="font-medium text-zinc-800">
+                        <td className="py-2.5 px-3.5">
+                          <div className="font-medium text-zinc-800 dark:text-zinc-200">
                             {s.carrier}
                           </div>
-                          <span className="inline-flex items-center gap-1 font-mono text-xs bg-zinc-100 px-2 py-0.5 rounded text-zinc-600 border border-zinc-200">
+                          <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-zinc-100 dark:bg-[#20242D] px-1.5 py-0.5 rounded text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-[#323744] mt-0.5">
                             {s.tracking_number}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4 max-w-[220px]">
-                          <div className="text-xs truncate text-zinc-700 font-medium">
+                        <td className="py-2.5 px-3.5 max-w-[220px]">
+                          <div className="text-xs truncate text-zinc-700 dark:text-zinc-300 font-medium">
                             {s.destination_address}
                           </div>
-                          <div className="text-[11px] text-zinc-400 truncate">
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 truncate mt-0.5">
                             From: {s.origin_address || "Fulfillment Center"}
                           </div>
                         </td>
-                        <td className="py-3.5 px-4 font-semibold text-zinc-900">
+                        <td className="py-2.5 px-3.5 font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
                           {formatINR(s.shipping_cost || 0)}
                         </td>
-                        <td className="py-3.5 px-4">{getStatusBadge(s.status)}</td>
-                        <td className="py-3.5 px-4 text-right space-x-1.5">
-                          <Button size="sm" variant="outline" onClick={() => setDetailShipment(s)} className="h-7 px-2.5 text-xs">
-                            <Eye className="w-3.5 h-3.5 mr-1"/> Track
+                        <td className="py-2.5 px-3.5">
+                          <StatusBadge status={s.status} type="shipment" />
+                        </td>
+                        <td className="py-2.5 px-3.5 text-right space-x-1">
+                          <Button size="sm" variant="outline" onClick={() => setDetailShipment(s)} className="h-6.5 px-2 text-xs">
+                            <Eye className="w-3 h-3 mr-1"/> Track
                           </Button>
-                          {s.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(s.id)} disabled={actionLoading === s.id} className="h-7 px-2.5 text-xs bg-zinc-900 hover:bg-black text-white font-medium shadow-xs">
-                              <Send className="w-3.5 h-3.5 mr-1"/> Dispatch
+                          {s.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 font-medium shadow-xs">
+                              <Send className="w-3 h-3 mr-1"/> Dispatch
                             </Button>)}
-                          {s.status === "IN_TRANSIT" && (<Button size="sm" onClick={() => handleOutForDelivery(s.id)} disabled={actionLoading === s.id} className="h-7 px-2.5 text-xs bg-zinc-800 hover:bg-zinc-900 text-white font-medium shadow-xs">
-                              <Truck className="w-3.5 h-3.5 mr-1"/> Out for Delivery
+                          {s.status === "IN_TRANSIT" && (<Button size="sm" onClick={() => handleOutForDelivery(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-zinc-800 dark:bg-zinc-200 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium shadow-xs">
+                              <Truck className="w-3 h-3 mr-1"/> Out
                             </Button>)}
-                          {s.status === "OUT_FOR_DELIVERY" && (<Button size="sm" onClick={() => handleDeliver(s.id)} disabled={actionLoading === s.id} className="h-7 px-2.5 text-xs bg-zinc-950 hover:bg-black text-white font-medium shadow-xs">
-                              <CheckCircle2 className="w-3.5 h-3.5 mr-1"/> Deliver
+                          {s.status === "OUT_FOR_DELIVERY" && (<Button size="sm" onClick={() => handleDeliver(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 font-medium shadow-xs">
+                              <CheckCircle2 className="w-3 h-3 mr-1"/> Deliver
                             </Button>)}
                         </td>
                       </tr>))}
@@ -486,22 +422,22 @@ export default function ShipmentsPage() {
 
         {/* Modal 1: Create Shipment Modal */}
         <Modal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} maxWidth="xl" className="overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 bg-zinc-50/60">
-            <div className="flex items-center gap-2 text-zinc-900 font-bold">
-              <div className="w-7 h-7 rounded-md bg-zinc-950 text-white flex items-center justify-center shadow-xs">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-[#262A34] bg-zinc-50/60 dark:bg-[#181A20]">
+            <div className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100 font-bold">
+              <div className="w-7 h-7 rounded-md bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center shadow-xs">
                 <Truck className="w-4 h-4"/>
               </div>
               Create Outbound Shipment
             </div>
-            <button onClick={() => setCreateModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
+            <button onClick={() => setCreateModalOpen(false)} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
               <X className="w-5 h-5"/>
             </button>
           </div>
 
-              <form onSubmit={handleCreateShipment} className="p-6 space-y-4">
-                {formError && (<Alert variant="danger" className="text-xs">
-                    {formError}
-                  </Alert>)}
+          <form onSubmit={handleCreateShipment} className="p-6 space-y-4">
+            {formError && (<Alert variant="danger" className="text-xs">
+                {formError}
+              </Alert>)}
 
                 {/* Select Sales Order */}
                 <div>
@@ -603,7 +539,7 @@ export default function ShipmentsPage() {
                     <h2 className="text-lg font-bold text-zinc-900 font-mono">
                       {detailShipment.shipment_number}
                     </h2>
-                    {getStatusBadge(detailShipment.status)}
+                    <StatusBadge status={detailShipment.status} type="shipment" />
                   </div>
                   <p className="text-xs text-zinc-500 mt-0.5">
                     Carrier: <span className="text-zinc-900 font-medium">{detailShipment.carrier}</span> &bull; AWB:{" "}

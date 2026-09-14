@@ -20,6 +20,8 @@ import { AnimatedProgressBar } from "@/components/ui/AnimatedProgressBar";
 import { CardSkeleton, KpiRowSkeleton, FilterBarSkeleton, TableSkeleton, Skeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { RevenueVelocityMatrix } from "@/components/dashboard/RevenueVelocityMatrix";
 import { OrderStatusDistribution } from "@/components/dashboard/OrderStatusDistribution";
+import { QuickActionsBar } from "@/components/dashboard/QuickActionsBar";
+
 export default function HomePage() {
     const [summary, setSummary] = useState(null);
     const prefersReducedMotion = useReducedMotion();
@@ -33,29 +35,8 @@ export default function HomePage() {
     const [error, setError] = useState(null);
     const [lastChecked, setLastChecked] = useState("");
     const [activeTab, setActiveTab] = useState("inventory");
-    const [workspaceDropdownOpen, setWorkspaceDropdownOpen] = useState(false);
-    const workspaceRef = useRef(null);
-    const { currentOrg, currentUser, organizations, switchOrganization } = useTenant();
+    const { currentOrg } = useTenant();
     const { subscribe } = useRealtime();
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (workspaceRef.current && !workspaceRef.current.contains(event.target)) {
-                setWorkspaceDropdownOpen(false);
-            }
-        };
-        const handleKeyDown = (event) => {
-            if (event.key === "Escape") {
-                setWorkspaceDropdownOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        document.addEventListener("keydown", handleKeyDown);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, []);
     const loadData = async () => {
         setLoading(true);
         setError(null);
@@ -187,113 +168,19 @@ export default function HomePage() {
 
     return (<motion.div variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible" className="max-w-7xl mx-auto space-y-3 pb-12">
       {/* Header Bar */}
-      <PageHeader title="Executive Operations Cockpit" subtitle="Real-time enterprise operations cockpit, financial telemetry, and live multi-facility overview." actions={<div className="flex items-center gap-3">
-            <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono">
-              Updated: {lastChecked || "Loading..."}
+      <PageHeader title="Operations Cockpit" subtitle={`Real-time telemetry for ${currentOrg?.name || "Acme Logistics"}`} actions={<div className="flex items-center gap-2.5">
+            <span className="text-[11px] text-zinc-400 dark:text-zinc-500 font-mono">
+              Synced {lastChecked || "now"}
             </span>
-            <Button variant="outline" size="sm" onClick={loadData} disabled={loading} className="gap-1.5 h-8 text-xs">
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`}/>
+            <Button variant="outline" size="sm" onClick={loadData} disabled={loading} className="gap-1.5 h-7 text-xs">
+              <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`}/>
               Refresh
             </Button>
           </div>}/>
 
-      {/* Sleek 38-40px Tenant Context Strip */}
+      {/* Interactive Quick Actions Bar */}
       <motion.div variants={itemVariants}>
-        <div className="flex flex-wrap items-center justify-between gap-3 px-3.5 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/60 shadow-none text-xs">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <Building2 className="w-4 h-4 text-zinc-500 shrink-0"/>
-            <span className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
-              {currentOrg?.name || "Enterprise Tenant"}
-            </span>
-            {currentOrg?.slug && (<span className="hidden sm:inline-block font-mono text-[11px] text-zinc-500 dark:text-zinc-400 bg-zinc-200/60 dark:bg-zinc-800 px-1.5 py-0.5 rounded">
-                {currentOrg.slug}
-              </span>)}
-            <Badge variant="success" className="hidden md:inline-flex text-[10px] py-0 px-2">
-              Live Enterprise Tenant
-            </Badge>
-            <span className="hidden lg:inline text-zinc-300 dark:text-zinc-700">·</span>
-            <span className="hidden lg:inline text-zinc-500 dark:text-zinc-400 font-mono text-[11px]">
-              ₹ INR (Native)
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 ml-auto">
-            {/* Operator info */}
-            <div className="hidden sm:flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 text-[11px]">
-              <span>Operator:</span>
-              <span className="font-medium text-zinc-800 dark:text-zinc-200 font-mono">
-                {currentUser?.name || "Admin"} ({currentUser?.role || "Staff"})
-              </span>
-            </div>
-
-            {/* Compact Custom Workspace Switcher */}
-            <div className="relative pl-2 border-l border-zinc-200 dark:border-zinc-800" ref={workspaceRef}>
-              <button
-                type="button"
-                onClick={() => setWorkspaceDropdownOpen((prev) => !prev)}
-                className="inline-flex items-center gap-1.5 text-xs bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700/80 text-zinc-900 dark:text-zinc-100 font-medium px-2.5 py-1 rounded-md border border-zinc-200 dark:border-zinc-700 shadow-none transition-colors cursor-pointer outline-none focus-visible:ring-1 focus-visible:ring-zinc-400"
-                aria-haspopup="listbox"
-                aria-expanded={workspaceDropdownOpen}
-                aria-label="Switch organization workspace"
-              >
-                <ArrowRightLeft className="w-3.5 h-3.5 text-zinc-400 shrink-0"/>
-                <span className="max-w-[130px] sm:max-w-[160px] truncate">
-                  {currentOrg?.name || "Switch Workspace"}
-                </span>
-                <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 transition-transform duration-150 ${workspaceDropdownOpen ? "rotate-180" : ""}`}/>
-              </button>
-
-              <AnimatePresence>
-                {workspaceDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 4, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 4, scale: 0.98 }}
-                    transition={{ duration: 0.12 }}
-                    className="absolute right-0 top-full mt-1.5 w-64 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl py-1 z-50 origin-top-right text-xs"
-                    role="listbox"
-                  >
-                    <div className="px-3 py-1.5 border-b border-zinc-100 dark:border-zinc-800 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                      Switch Organization
-                    </div>
-                    <div className="max-h-56 overflow-y-auto py-1 divide-y divide-zinc-100/50 dark:divide-zinc-800/50">
-                      {organizations.map((org) => {
-                        const isSelected = org.id === currentOrg?.id;
-                        return (
-                          <button
-                            key={org.id}
-                            type="button"
-                            role="option"
-                            aria-selected={isSelected}
-                            onClick={() => {
-                              switchOrganization(org.id);
-                              setWorkspaceDropdownOpen(false);
-                            }}
-                            className={`w-full text-left px-3 py-2 flex items-center justify-between gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer ${
-                              isSelected
-                                ? "text-zinc-950 dark:text-zinc-50 font-semibold bg-zinc-50 dark:bg-zinc-800/60"
-                                : "text-zinc-700 dark:text-zinc-300"
-                            }`}
-                          >
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate text-xs font-medium">{org.name}</p>
-                              <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono">
-                                {org.slug} · {org.currency}
-                              </p>
-                            </div>
-                            {isSelected && (
-                              <Check className="w-3.5 h-3.5 text-zinc-950 dark:text-zinc-100 shrink-0" />
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
+        <QuickActionsBar summary={summary} />
       </motion.div>
 
       {error && (<motion.div variants={itemVariants}>
@@ -388,8 +275,8 @@ export default function HomePage() {
         {activeTab === "inventory" && (<div className="space-y-3">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
               {/* Stock Replenishment & Safety Thresholds (7 cols) */}
-              <Card className="lg:col-span-7 flex flex-col rounded-lg border-zinc-200 dark:border-zinc-800 shadow-none">
-                <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
+              <Card spotlight className="lg:col-span-7 flex flex-col">
+                <CardHeader className="flex flex-row items-center justify-between p-3.5 pb-2">
                   <div className="space-y-0.5">
                     <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
                       <AlertTriangle className={`w-3.5 h-3.5 ${(summary?.inventory.low_stock_count || 0) > 0
@@ -398,14 +285,14 @@ export default function HomePage() {
                       Stock Replenishment & Safety Thresholds
                     </CardTitle>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      SKUs requiring vendor replenishment to prevent operational stockouts
+                      SKUs requiring replenishment to prevent stockouts
                     </p>
                   </div>
                   <Badge variant={(summary?.inventory.low_stock_count || 0) > 0 ? "warning" : "success"}>
                     {summary?.inventory.low_stock_count || 0} At Risk
                   </Badge>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 flex-1 flex flex-col">
+                <CardContent className="p-3.5 pt-0 flex-1 flex flex-col">
                   {summary && summary.inventory.low_stock_items.length > 0 ? (<div className="space-y-2 flex-1">
                       <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
                         <table className="w-full text-left text-xs">
@@ -462,8 +349,8 @@ export default function HomePage() {
               </Card>
 
               {/* Multi-Facility Stock Distribution (5 cols) */}
-              <Card className="lg:col-span-5 flex flex-col rounded-lg border-zinc-200 dark:border-zinc-800 shadow-none">
-                <CardHeader className="p-4 pb-2">
+              <Card spotlight className="lg:col-span-5 flex flex-col">
+                <CardHeader className="p-3.5 pb-2">
                   <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
                     <WarehouseIcon className="w-3.5 h-3.5 text-zinc-500"/>
                     Multi-Facility Distribution
@@ -472,7 +359,7 @@ export default function HomePage() {
                     Working stock units and capital across warehouses
                   </p>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 flex-1 space-y-2">
+                <CardContent className="p-3.5 pt-0 flex-1 space-y-2">
                   {summary && summary.warehouses.length > 0 ? (summary.warehouses.map((wh) => (<div key={wh.warehouse_id} className="p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors space-y-1.5">
                         <div className="flex items-center justify-between text-xs">
                           <div className="flex items-center gap-1.5">
@@ -503,7 +390,7 @@ export default function HomePage() {
             </div>
 
             {/* Fast-Moving SKUs & Revenue Drivers */}
-            <Card className="rounded-lg border-zinc-200 dark:border-zinc-800 shadow-none">
+            <Card spotlight className="rounded-xl">
               <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
                 <div className="space-y-0.5">
                   <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
@@ -563,8 +450,8 @@ export default function HomePage() {
         {/* Tab 2: Logistics & Supply */}
         {activeTab === "logistics" && (<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Logistics Delivery Radar */}
-            <Card className="rounded-lg border-zinc-200 dark:border-zinc-800 shadow-none flex flex-col justify-between">
-              <CardHeader className="p-4 pb-2">
+            <Card spotlight className="flex flex-col justify-between">
+              <CardHeader className="p-3.5 pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
                     <Truck className="w-3.5 h-3.5 text-zinc-500"/>
@@ -578,7 +465,7 @@ export default function HomePage() {
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">Live parcel and freight tracking</p>
               </CardHeader>
-              <CardContent className="p-4 pt-0 space-y-3">
+              <CardContent className="p-3.5 pt-0 space-y-3">
                 <StatRow columns={4}>
                   <StatCol label="In Transit" value={summary?.logistics.in_transit_count || 0}/>
                   <StatCol label="Delivered" value={summary?.logistics.delivered_count || 0}/>
@@ -596,8 +483,8 @@ export default function HomePage() {
             </Card>
 
             {/* Inbound Purchasing Pipeline */}
-            <Card className="rounded-lg border-zinc-200 dark:border-zinc-800 shadow-none flex flex-col justify-between">
-              <CardHeader className="p-4 pb-2">
+            <Card spotlight className="flex flex-col justify-between">
+              <CardHeader className="p-3.5 pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
                     <Package className="w-3.5 h-3.5 text-zinc-500"/>
@@ -611,7 +498,7 @@ export default function HomePage() {
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">Supplier POs and committed spend</p>
               </CardHeader>
-              <CardContent className="p-4 pt-0 space-y-3">
+              <CardContent className="p-3.5 pt-0 space-y-3">
                 <StatRow columns={3}>
                   <StatCol label="Committed Spend" value={summary ? formatINR(summary.purchasing.committed_spend) : "₹0.00"}/>
                   <StatCol label="Active POs" value={summary?.purchasing.active_po_count || 0}/>
@@ -649,7 +536,7 @@ export default function HomePage() {
               {availableJobs.map((job) => {
                 const isRunning = runningJob === job.name;
                 const lastRun = job.last_run;
-                return (<Card key={job.name} className="flex flex-col justify-between rounded-lg border-zinc-200 dark:border-zinc-800 shadow-none hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+                return (<Card key={job.name} spotlight className="flex flex-col justify-between">
                     <CardHeader className="p-4 pb-2 space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-700">
@@ -763,8 +650,8 @@ export default function HomePage() {
           </div>)}
 
         {/* Tab 4: Activity Stream */}
-        {activeTab === "activity" && (<Card className="rounded-lg border-zinc-200 dark:border-zinc-800 shadow-none">
-            <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
+        {activeTab === "activity" && (<Card spotlight className="rounded-xl">
+            <CardHeader className="flex flex-row items-center justify-between p-3.5 pb-2">
               <div className="space-y-0.5">
                 <CardTitle className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-zinc-500"/>

@@ -1,12 +1,12 @@
 """Category and Product Repository Layer."""
 from typing import List, Optional
 from uuid import UUID
-from sqlalchemy import select, or_, delete
+from sqlalchemy import select, or_
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload, joinedload
+from sqlalchemy.orm import joinedload
 from app.models.catalog import Category, Product
 from app.repositories.base import TenantRepository
-from app.schemas.catalog import CategoryCreate, ProductCreate, ProductUpdate
+from app.schemas.catalog import ProductCreate, ProductUpdate
 
 
 class CategoryRepository(TenantRepository[Category]):

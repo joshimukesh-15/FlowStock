@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { TenantProvider } from './context/TenantContext';
 import { ToastProvider } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { AppShell } from './components/layout/AppShell';
 import { AppProgressBar } from './components/layout/AppProgressBar';
 import { DURATION, EASING, useReducedMotion } from './motion';
@@ -18,11 +19,19 @@ import InvoicesPage from './pages/Invoices';
 import AuditPage from './pages/Audit';
 import SettingsPage from './pages/Settings';
 import WelcomePage from './pages/Welcome';
+import LoginPage from './pages/Login';
+
+function ProtectedRoute({ children }) {
+    const { isAuthenticated, loading } = useAuth();
+    if (loading) return null;
+    if (!isAuthenticated) return <Navigate to="/" replace />;
+    return children;
+}
 
 function AppLayout() {
     const location = useLocation();
     const prefersReducedMotion = useReducedMotion();
-    const isWelcome = location.pathname === '/' || location.pathname === '/welcome';
+    const isPublic = location.pathname === '/' || location.pathname === '/welcome' || location.pathname === '/login';
 
     const content = (
       <AnimatePresence mode="wait" initial={false}>
@@ -43,16 +52,17 @@ function AppLayout() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/welcome" element={<WelcomePage />} />
-            <Route path="/dashboard" element={<OverviewPage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/warehouses" element={<WarehousesPage />} />
-            <Route path="/orders" element={<OrdersPage />} />
-            <Route path="/purchasing" element={<PurchasingPage />} />
-            <Route path="/shipments" element={<ShipmentsPage />} />
-            <Route path="/invoices" element={<InvoicesPage />} />
-            <Route path="/audit" element={<AuditPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/dashboard" element={<ProtectedRoute><OverviewPage /></ProtectedRoute>} />
+            <Route path="/products" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
+            <Route path="/inventory" element={<ProtectedRoute><InventoryPage /></ProtectedRoute>} />
+            <Route path="/warehouses" element={<ProtectedRoute><WarehousesPage /></ProtectedRoute>} />
+            <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+            <Route path="/purchasing" element={<ProtectedRoute><PurchasingPage /></ProtectedRoute>} />
+            <Route path="/shipments" element={<ProtectedRoute><ShipmentsPage /></ProtectedRoute>} />
+            <Route path="/invoices" element={<ProtectedRoute><InvoicesPage /></ProtectedRoute>} />
+            <Route path="/audit" element={<ProtectedRoute><AuditPage /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </motion.div>
@@ -62,7 +72,7 @@ function AppLayout() {
     return (
       <>
         <AppProgressBar />
-        {isWelcome ? content : <AppShell>{content}</AppShell>}
+        {isPublic ? content : <AppShell>{content}</AppShell>}
       </>
     );
 }
@@ -71,12 +81,15 @@ export default function App() {
     return (
       <BrowserRouter>
         <ThemeProvider>
-          <TenantProvider>
-            <ToastProvider>
-              <AppLayout />
-            </ToastProvider>
-          </TenantProvider>
+          <AuthProvider>
+            <TenantProvider>
+              <ToastProvider>
+                <AppLayout />
+              </ToastProvider>
+            </TenantProvider>
+          </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
     );
 }
+

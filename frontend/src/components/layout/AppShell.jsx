@@ -22,11 +22,11 @@ export const AppShell = ({ children }) => {
 
     return (
       <WebSocketProvider>
-        <div className="flex h-screen bg-zinc-50 dark:bg-[#09090b] text-zinc-950 dark:text-zinc-100 overflow-hidden font-sans">
+        <div className="flex h-screen bg-slate-50 dark:bg-[#14171F] text-slate-950 dark:text-[#F4F5F7] overflow-hidden font-sans">
           <Sidebar />
           <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
             <Header />
-            <main ref={mainRef} className="app-canvas flex-1 overflow-y-auto p-4 md:p-6 bg-zinc-50 dark:bg-[#09090b]">
+            <main ref={mainRef} className="app-canvas flex-1 overflow-y-auto p-3.5 sm:p-5 lg:p-6 bg-slate-50 dark:bg-[#14171F]">
               {children}
             </main>
           </div>

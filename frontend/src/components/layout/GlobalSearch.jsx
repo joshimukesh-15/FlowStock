@@ -49,7 +49,6 @@ export const GlobalSearch = () => {
             if (!active)
                 return;
             const mapped = [
-                { id: "nav-welcome", title: "Workspace Launchpad & Portal", detail: "Tenant selector & architecture telemetry (/welcome)", to: "/welcome", type: "Navigation" },
                 ...products.map((item) => ({ id: item.id, title: item.name, detail: item.sku, to: "/products", type: "Product" })),
                 ...orders.map((item) => ({ id: item.id, title: item.order_number, detail: item.customer?.name || item.status, to: "/orders", type: "Order" })),
                 ...purchaseOrders.map((item) => ({ id: item.id, title: item.po_number, detail: item.supplier?.name || item.status, to: "/purchasing", type: "Purchase order" })),

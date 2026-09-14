@@ -1,5 +1,5 @@
 """Sales Order Service Layer: Order Lifecycle & Inventory Reservation."""
-from typing import List, Optional
+from typing import List
 from uuid import UUID, uuid4
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession

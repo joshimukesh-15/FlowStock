@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,8 +9,59 @@
     --motion-micro: 150ms;
     --motion-normal: 250ms;
     --motion-complex: 350ms;
-    --motion-standard: cubic-bezier(0.2, 0, 0, 1);
+    --motion-standard: cubic-bezier(0.23, 1, 0.32, 1);
     --motion-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+    /* Emil Kowalski / Apple UI Curves */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+    /* Surfaces */
+    --color-surface-canvas: #f8fafc;
+    --color-surface-base: #ffffff;
+    --color-surface-raised: #f1f5f9;
+    --color-border-subtle: #e2e8f0;
+    --color-border-strong: #cbd5e1;
+
+    /* Inks */
+    --color-ink-primary: #0f172a;
+    --color-ink-secondary: #64748b;
+    --color-ink-muted: #94a3b8;
+    --color-ink-on-spark: #14171f;
+
+    /* Accent & Status */
+    --color-accent-spark: #b6ff2e;
+    --color-accent-hover: #a3f01b;
+    --color-accent-muted: #7fa71a;
+    --color-status-success: #10b981;
+    --color-status-warning: #f59e0b;
+    --color-status-danger: #ef4444;
+    --color-status-info: #3b82f6;
+  }
+
+  html.dark {
+    /* Graphite Surfaces */
+    --color-surface-canvas: #14171f;
+    --color-surface-base: #23262f;
+    --color-surface-raised: #2c303b;
+    --color-surface-overlay: #353a47;
+    --color-border-subtle: #323744;
+    --color-border-strong: #454c5e;
+
+    /* Inks */
+    --color-ink-primary: #f4f5f7;
+    --color-ink-secondary: #9ba3af;
+    --color-ink-muted: #687182;
+    --color-ink-on-spark: #14171f;
+
+    /* Accent & Status */
+    --color-accent-spark: #b6ff2e;
+    --color-accent-hover: #a3f01b;
+    --color-accent-muted: #7fa71a;
+    --color-status-success: #10b981;
+    --color-status-warning: #f59e0b;
+    --color-status-danger: #ef4444;
+    --color-status-info: #3b82f6;
   }
 
   html {
@@ -16,42 +69,60 @@
   }
 
   body {
-    @apply bg-zinc-50 text-zinc-950 dark:bg-[#09090b] dark:text-zinc-100 antialiased;
+    @apply bg-slate-50 text-slate-900 dark:bg-[#14171F] dark:text-[#F4F5F7] antialiased;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-optical-sizing: auto;
   }
 }
 
-/* Skeleton gradient shimmer sweep — high performance, GPU-accelerated */
+/* Skeleton shimmering loading placeholder — GPU-accelerated translateX sheen */
 @keyframes shimmer {
   0% {
-    background-position: -200% 0;
+    transform: translateX(-100%);
   }
   100% {
-    background-position: 200% 0;
+    transform: translateX(100%);
   }
 }
 
 .skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: #e4e4e7;
+  transform: translateZ(0);
+}
+
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
   background: linear-gradient(
     90deg,
-    rgba(228, 228, 231, 0.5) 0%,
-    rgba(244, 244, 245, 0.95) 50%,
-    rgba(228, 228, 231, 0.5) 100%
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0) 100%
   );
-  background-size: 200% 100%;
   animation: shimmer 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+  border-radius: inherit;
 }
 
 html.dark .skeleton-shimmer {
+  background-color: #2C303B;
+}
+
+html.dark .skeleton-shimmer::after {
   background: linear-gradient(
     90deg,
-    rgba(39, 39, 42, 0.6) 0%,
-    rgba(63, 63, 70, 0.9) 50%,
-    rgba(39, 39, 42, 0.6) 100%
+    rgba(255, 255, 255, 0) 0%,
+    rgba(182, 255, 46, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
   );
-  background-size: 200% 100%;
-  animation: shimmer 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 /* Custom slim sleek scrollbars */
@@ -66,20 +137,20 @@ html.dark .skeleton-shimmer {
 }
 .app-canvas::-webkit-scrollbar-thumb,
 *::-webkit-scrollbar-thumb {
-  background: rgba(161, 161, 170, 0.35);
+  background: rgba(148, 163, 184, 0.35);
   border-radius: 9999px;
 }
 .app-canvas::-webkit-scrollbar-thumb:hover,
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(161, 161, 170, 0.6);
+  background: rgba(148, 163, 184, 0.6);
 }
 html.dark .app-canvas::-webkit-scrollbar-thumb,
 html.dark *::-webkit-scrollbar-thumb {
-  background: rgba(63, 63, 70, 0.55);
+  background: rgba(44, 48, 59, 0.6);
 }
 html.dark .app-canvas::-webkit-scrollbar-thumb:hover,
 html.dark *::-webkit-scrollbar-thumb:hover {
-  background: rgba(82, 82, 91, 0.8);
+  background: rgba(182, 255, 46, 0.4);
 }
 
 /* CSS counterparts to the TypeScript motion tokens. */
@@ -98,10 +169,10 @@ html.dark *::-webkit-scrollbar-thumb:hover {
 
 @layer utilities {
   .app-canvas {
-    background-image: radial-gradient(circle at 10% -10%, rgba(24, 24, 27, 0.04), transparent 28rem);
+    background-image: radial-gradient(circle at 10% -10%, rgba(15, 23, 42, 0.03), transparent 28rem);
   }
   html.dark .app-canvas {
-    background-image: radial-gradient(circle at 10% -10%, rgba(255, 255, 255, 0.03), transparent 28rem);
+    background-image: radial-gradient(circle at 10% -10%, rgba(182, 255, 46, 0.03), transparent 32rem);
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -128,14 +199,14 @@ table thead {
 }
 
 html.dark table thead {
-  background-color: rgba(9, 9, 11, 0.95) !important;
+  background-color: rgba(20, 23, 31, 0.95) !important;
 }
 
 html:not(.dark) table thead {
-  background-color: rgba(250, 250, 250, 0.95) !important;
+  background-color: rgba(248, 250, 252, 0.95) !important;
 }
 
-/* Table row hover micro-interactions — governed by FLOWSTOCK_MOTION_SPEC */
+/* Table row hover micro-interactions */
 table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]) {
   transition: background-color var(--motion-micro, 150ms) cubic-bezier(0.2, 0, 0, 1);
 }
@@ -151,65 +222,91 @@ table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]) > td:first-chi
 }
 
 table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td {
-  background-color: rgba(244, 244, 245, 0.85);
+  background-color: rgba(241, 245, 249, 0.85);
 }
 
 table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:first-child {
-  box-shadow: inset 3px 0 0 0 #09090b;
+  box-shadow: inset 3px 0 0 0 #0f172a;
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td {
-  background-color: rgba(39, 39, 42, 0.5);
+  background-color: rgba(44, 48, 59, 0.55);
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:first-child {
-  box-shadow: inset 3px 0 0 0 #fafafa;
+  box-shadow: inset 3px 0 0 0 #B6FF2E;
 }
 
-/* High-contrast Typography & Surface Mappings in Dark Mode */
+/* Graphite & Lime Spark Surface Mappings in Dark Mode */
 html.dark {
   color-scheme: dark;
 }
 
 html.dark [class*="text-zinc-950"]:not([class*="dark:text-"]),
 html.dark [class*="text-zinc-900"]:not([class*="dark:text-"]) {
-  color: #fafafa;
+  color: #F4F5F7;
 }
 
 html.dark [class*="text-zinc-800"]:not([class*="dark:text-"]) {
-  color: #f4f4f5;
+  color: #E5E7EB;
 }
 
 html.dark [class*="text-zinc-700"]:not([class*="dark:text-"]) {
-  color: #e4e4e7;
+  color: #D1D5DB;
 }
 
 html.dark [class*="text-zinc-600"]:not([class*="dark:text-"]) {
-  color: #d4d4d8;
+  color: #9BA3AF;
 }
 
 html.dark [class*="text-zinc-500"]:not([class*="dark:text-"]) {
-  color: #a1a1aa;
+  color: #9BA3AF;
 }
 
-html.dark [class*="bg-zinc-50"]:not([class*="dark:bg-"]) {
-  background-color: rgba(24, 24, 27, 0.7);
+html.dark [class*="text-zinc-400"]:not([class*="dark:text-"]) {
+  color: #9BA3AF;
+}
+
+/* Surfaces */
+html.dark [class*="bg-zinc-950"]:not([class*="dark:bg-"]) {
+  background-color: #14171F;
+}
+
+html.dark [class*="bg-zinc-900"]:not([class*="dark:bg-"]) {
+  background-color: #23262F;
+}
+
+html.dark [class*="bg-zinc-800"]:not([class*="dark:bg-"]) {
+  background-color: #2C303B;
 }
 
 html.dark [class*="bg-zinc-100"]:not([class*="dark:bg-"]) {
-  background-color: #27272a;
+  background-color: #2C303B;
 }
 
-html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
-  border-color: rgba(39, 39, 42, 0.7);
+html.dark [class*="bg-zinc-50"]:not([class*="dark:bg-"]) {
+  background-color: #181A20;
 }
 
-html.dark [class*="border-zinc-200"]:not([class*="dark:border-"]) {
-  border-color: #27272a;
+/* Structural Borders */
+html.dark [class*="border-zinc-800"]:not([class*="dark:border-"]) {
+  border-color: #323744;
+}
+
+html.dark [class*="border-zinc-700"]:not([class*="dark:border-"]) {
+  border-color: #3D4353;
 }
 
 html.dark [class*="border-zinc-300"]:not([class*="dark:border-"]) {
-  border-color: #3f3f46;
+  border-color: #3D4353;
+}
+
+html.dark [class*="border-zinc-200"]:not([class*="dark:border-"]) {
+  border-color: #323744;
+}
+
+html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
+  border-color: #282C37;
 }
 
 /* Toast shrinking progress bar animation */
@@ -221,5 +318,40 @@ html.dark [class*="border-zinc-300"]:not([class*="dark:border-"]) {
     transform: scaleX(0);
   }
 }
+
+/* Emil Kowalski Tactile Button & Press Interactions */
+@layer utilities {
+  .btn-tactile {
+    transition: transform 150ms var(--ease-out), opacity 150ms var(--ease-out), background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+    user-select: none;
+  }
+  .btn-tactile:hover {
+    transform: scale(1.01);
+  }
+  .btn-tactile:active {
+    transform: scale(0.97);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-tactile,
+    .btn-tactile:hover,
+    .btn-tactile:active {
+      transform: none !important;
+    }
+  }
+
+  /* Apple-style translucent glass highlight */
+  .glass-header {
+    background-color: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  }
+  html.dark .glass-header {
+    background-color: rgba(24, 26, 32, 0.88);
+    backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid rgba(50, 55, 68, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
 
 

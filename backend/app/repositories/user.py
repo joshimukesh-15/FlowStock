@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.user import User
 from app.repositories.base import BaseRepository
 from app.schemas.organization import UserCreate
+from app.core.security import get_password_hash
 
 
 class UserRepository(BaseRepository[User]):
@@ -21,12 +22,13 @@ class UserRepository(BaseRepository[User]):
         return list(result.scalars().all())
 
     async def create_user(
-        self, db: AsyncSession, *, obj_in: UserCreate, organization_id: UUID
+        self, db: AsyncSession, *, obj_in: UserCreate, organization_id: UUID, password: Optional[str] = "admin123"
     ) -> User:
         db_obj = User(
             name=obj_in.name,
             email=obj_in.email,
             role=obj_in.role,
+            password_hash=get_password_hash(password) if password else None,
             organization_id=organization_id,
         )
         db.add(db_obj)

@@ -11,6 +11,7 @@ import { useToast } from "@/context/ToastContext";
 import { WarehouseTransferVisualizer } from "@/components/ui/WarehouseTransferVisualizer";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { SpotlightCard } from "@/components/reactbits/SpotlightCard";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
@@ -243,58 +244,55 @@ export default function WarehousesPage() {
             </span>)}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {warehouses.map((wh) => (<Card key={wh.id} className="bg-white border-zinc-200 hover:border-zinc-300 transition-[transform,opacity,background-color,border-color,color] shadow-sm">
-              <CardContent className="p-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {warehouses.map((wh) => (<SpotlightCard key={wh.id} className="p-4 shadow-2xs hover:shadow-sm">
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-zinc-900 text-base">{wh.name}</h3>
+                      <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">{wh.name}</h3>
                       {wh.is_default && (<Badge variant="success" className="text-[10px] uppercase tracking-wide">
-                          Default Facility
+                          Default
                         </Badge>)}
                     </div>
-                    <p className="text-xs font-mono text-zinc-900 mt-1">{wh.code}</p>
+                    <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400 mt-0.5">{wh.code}</p>
                   </div>
-                  <div className="w-9 h-9 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-600 border border-zinc-200">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-[#20242D] flex items-center justify-center text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-[#323744]">
                     <WarehouseIcon className="w-4 h-4"/>
                   </div>
                 </div>
 
-                {/* Capacity is intentionally not estimated without configured limits. */}
                 <div className="mt-3">
-                  <div className="flex items-center justify-between text-[11px] text-zinc-500 mb-1">
-                    <span>Capacity configuration</span>
-                    <span className="font-mono font-medium text-zinc-500">Not configured</span>
+                  <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 mb-1">
+                    <span>Capacity</span>
+                    <span className="font-mono text-zinc-400 dark:text-zinc-500">Uncapped</span>
                   </div>
-                  <div className="h-1.5 w-full rounded-full border border-dashed border-zinc-200 bg-zinc-50"/>
+                  <div className="h-1.5 w-full rounded-full border border-dashed border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800"/>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-zinc-100/80 flex items-center justify-between text-xs text-zinc-400">
+                <div className="mt-3.5 pt-3 border-t border-zinc-100 dark:border-[#262A34] flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500">
                   <span className="flex items-center gap-1.5 truncate">
-                    <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0"/>
+                    <MapPin className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0"/>
                     {wh.location || "General Logistics Zone"}
                   </span>
-                  <span className="text-[11px] text-zinc-500 shrink-0">
+                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500 shrink-0">
                     {new Date(wh.created_at).toLocaleDateString()}
                   </span>
                 </div>
-              </CardContent>
-            </Card>))}
+            </SpotlightCard>))}
         </div>
       </motion.div>
 
         {/* Stock Transfers Table */}
         <motion.div variants={itemVariants}>
-          <Card className="bg-white border-zinc-200 shadow-sm">
-            <CardHeader className="border-b border-zinc-100 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <Card spotlight={true} className="shadow-2xs">
+            <CardHeader className="border-b border-zinc-100 dark:border-[#262A34] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <CardTitle className="text-lg font-semibold text-zinc-900 flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-zinc-900"/>
+                <CardTitle className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-zinc-900 dark:text-zinc-100"/>
                   Inter-Warehouse Stock Transfers
                 </CardTitle>
-                <p className="text-xs text-zinc-500 mt-0.5">
-                  Full lifecycle audit: REQUESTED → IN_TRANSIT (source deducted) → RECEIVED (destination credited).
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  Lifecycle audit: REQUESTED → IN_TRANSIT → RECEIVED.
                 </p>
               </div>
 
@@ -309,92 +307,92 @@ export default function WarehousesPage() {
               </div>) : filteredTransfers.length === 0 ? (<EmptyState compact icon={Package} title="No transfers found" description={filterStatus !== "ALL"
                 ? `No transfers with status ${filterStatus.replace("_", " ")}.`
                 : "Create an inter-warehouse transfer to balance facility stock."}/>) : (<div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm text-zinc-700">
-                    <thead className="bg-zinc-50 text-xs uppercase font-medium text-zinc-400 border-b border-zinc-100">
+                  <table className="w-full text-left text-xs text-zinc-700 dark:text-zinc-300">
+                    <thead className="bg-zinc-50 dark:bg-[#1C1F27] text-[11px] uppercase font-medium text-zinc-500 dark:text-zinc-400 border-b border-zinc-100 dark:border-[#2A2E39]">
                       <tr>
-                        <th className="py-3.5 px-4">Transfer #</th>
-                        <th className="py-3.5 px-4">Product</th>
-                        <th className="py-3.5 px-4">Routing Path</th>
-                        <th className="py-3.5 px-4 text-right">Quantity</th>
-                        <th className="py-3.5 px-4 text-center">Status</th>
-                        <th className="py-3.5 px-4">Notes</th>
-                        <th className="py-3.5 px-4 text-right">Actions</th>
+                        <th className="py-2.5 px-3.5">Transfer #</th>
+                        <th className="py-2.5 px-3.5">Product</th>
+                        <th className="py-2.5 px-3.5">Routing Path</th>
+                        <th className="py-2.5 px-3.5 text-right">Quantity</th>
+                        <th className="py-2.5 px-3.5 text-center">Status</th>
+                        <th className="py-2.5 px-3.5">Notes</th>
+                        <th className="py-2.5 px-3.5 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-100">
+                    <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
                       {filteredTransfers.map((tr) => {
                 const isActing = actionLoading === tr.id;
-                return (<tr key={tr.id} className="hover:bg-zinc-50 transition-colors">
-                            <td className="py-3.5 px-4 font-mono text-xs font-semibold text-zinc-900">
+                return (<tr key={tr.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
+                            <td className="py-2.5 px-3.5 font-mono text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                               {tr.transfer_number}
-                              <div className="text-[10px] font-normal text-zinc-500 mt-0.5">
+                              <div className="text-[10px] font-normal text-zinc-400 dark:text-zinc-500 mt-0.5">
                                 {new Date(tr.created_at).toLocaleDateString()}
                               </div>
                             </td>
-                            <td className="py-3.5 px-4">
-                              <div className="font-medium text-zinc-900">
+                            <td className="py-2.5 px-3.5">
+                              <div className="font-medium text-zinc-900 dark:text-zinc-100">
                                 {tr.product?.name || "Product"}
                               </div>
-                              <span className="font-mono text-xs text-zinc-400">
+                              <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
                                 {tr.product?.sku || "SKU-UNKNOWN"}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4">
-                              <button type="button" onClick={() => setSelectedVisualizerTransfer(tr)} className="group flex items-center gap-1.5 text-xs text-left hover:text-black transition-colors" title="Click to view 2D transit visualizer">
-                                <span className="font-medium text-zinc-700 group-hover:text-zinc-950 underline decoration-zinc-300 group-hover:decoration-zinc-900 underline-offset-2">
+                            <td className="py-2.5 px-3.5">
+                              <button type="button" onClick={() => setSelectedVisualizerTransfer(tr)} className="group flex items-center gap-1.5 text-xs text-left hover:text-black dark:hover:text-white transition-colors" title="Click to view transit visualizer">
+                                <span className="font-medium text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
                                   {tr.source_warehouse?.name || "Source WH"}
                                 </span>
-                                <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-900 shrink-0 transition-transform group-hover:translate-x-0.5"/>
-                                <span className="font-medium text-zinc-700 group-hover:text-zinc-950 underline decoration-zinc-300 group-hover:decoration-zinc-900 underline-offset-2">
+                                <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white shrink-0 transition-transform group-hover:translate-x-0.5"/>
+                                <span className="font-medium text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
                                   {tr.destination_warehouse?.name || "Dest WH"}
                                 </span>
                               </button>
                             </td>
-                            <td className="py-3.5 px-4 text-right font-mono font-semibold text-zinc-900">
+                            <td className="py-2.5 px-3.5 text-right font-mono font-semibold text-zinc-900 dark:text-zinc-100">
                               {tr.quantity}{" "}
-                              <span className="text-xs text-zinc-400 font-normal">
+                              <span className="text-[11px] text-zinc-400 dark:text-zinc-500 font-normal">
                                 {tr.product?.unit || "units"}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4 text-center">
+                            <td className="py-2.5 px-3.5 text-center">
                               {getStatusBadge(tr.status)}
                             </td>
-                            <td className="py-3.5 px-4 text-xs text-zinc-400 max-w-xs truncate">
+                            <td className="py-2.5 px-3.5 text-xs text-zinc-400 dark:text-zinc-500 max-w-xs truncate">
                               {tr.notes || "—"}
                             </td>
-                            <td className="py-3.5 px-4 text-right">
+                            <td className="py-2.5 px-3.5 text-right">
                               <div className="flex items-center justify-end gap-1.5">
-                                <Button variant="ghost" size="sm" onClick={() => setSelectedVisualizerTransfer(tr)} className="text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 text-xs h-7 px-2" title="View Transfer Route Visualizer">
+                                <Button variant="ghost" size="sm" onClick={() => setSelectedVisualizerTransfer(tr)} className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs h-7 px-2" title="View Transfer Route Visualizer">
                                   Visualizer
                                 </Button>
 
                                 {tr.status === "REQUESTED" && (<>
-                                    <Button size="sm" onClick={() => handleDispatch(tr.id)} disabled={isActing} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
+                                    <Button size="sm" onClick={() => handleDispatch(tr.id)} disabled={isActing} className="bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 shadow-xs text-xs h-7 px-2.5">
                                       <Truck className="w-3 h-3 mr-1"/>
                                       Dispatch
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-zinc-500 hover:text-black hover:bg-zinc-100 text-xs h-7 px-2">
+                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-zinc-500 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs h-7 px-2">
                                       Cancel
                                     </Button>
                                   </>)}
 
                                 {tr.status === "IN_TRANSIT" && (<>
-                                    <Button size="sm" onClick={() => handleReceive(tr.id)} disabled={isActing} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
+                                    <Button size="sm" onClick={() => handleReceive(tr.id)} disabled={isActing} className="bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 shadow-xs text-xs h-7 px-2.5">
                                       <CheckCircle2 className="w-3 h-3 mr-1"/>
                                       Receive
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-zinc-500 hover:text-black hover:bg-zinc-100 text-xs h-7 px-2">
+                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-zinc-500 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs h-7 px-2">
                                       Cancel
                                     </Button>
                                   </>)}
 
-                                {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (<span className="text-xs text-zinc-500 font-medium italic">
+                                {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (<span className="text-xs text-zinc-400 dark:text-zinc-500 font-medium italic">
                                     Archived
                                   </span>)}
                               </div>
                             </td>
                           </tr>);
-            })}
+                      })}
                     </tbody>
                   </table>
                 </div>)}
@@ -404,12 +402,12 @@ export default function WarehousesPage() {
 
         {/* Modal: New Warehouse */}
         <Modal isOpen={warehouseModalOpen} onClose={() => setWarehouseModalOpen(false)} maxWidth="md" className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
-            <h3 className="font-semibold text-zinc-900 text-lg flex items-center gap-2">
-              <WarehouseIcon className="w-5 h-5 text-zinc-900"/>
+          <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-[#262A34]">
+            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-lg flex items-center gap-2">
+              <WarehouseIcon className="w-5 h-5 text-zinc-900 dark:text-zinc-100"/>
               Add Storage Facility
             </h3>
-            <button onClick={() => setWarehouseModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
+            <button onClick={() => setWarehouseModalOpen(false)} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
               <X className="w-5 h-5"/>
             </button>
           </div>

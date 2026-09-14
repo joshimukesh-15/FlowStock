@@ -1,6 +1,6 @@
 """Storage Abstraction Layer Interface."""
 from abc import ABC, abstractmethod
-from typing import BinaryIO, Optional
+from typing import Optional
 
 
 class StorageProvider(ABC):

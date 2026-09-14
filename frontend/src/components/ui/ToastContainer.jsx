@@ -65,7 +65,24 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
         }
     };
     const variants = toastVariants(reducedMotion);
-    return (<motion.div layout variants={variants} initial="hidden" animate="visible" exit="exit" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="pointer-events-auto relative overflow-hidden bg-zinc-950/95 text-white p-3.5 rounded-lg shadow-2xl border border-zinc-800 backdrop-blur-md flex items-start gap-3 w-full group transition-colors hover:border-zinc-700">
+    return (<motion.div
+      layout
+      variants={variants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      drag={reducedMotion ? false : "x"}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={{ left: 0.05, right: 0.7 }}
+      onDragEnd={(e, { offset, velocity }) => {
+        if (offset.x > 80 || velocity.x > 400) {
+          onDismiss(toast.id);
+        }
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="pointer-events-auto relative overflow-hidden bg-slate-950/95 text-white p-3.5 rounded-xl shadow-2xl border border-slate-800 border-t-white/20 backdrop-blur-md flex items-start gap-3 w-full group transition-colors hover:border-slate-700 cursor-grab active:cursor-grabbing select-none"
+    >
       <div className="shrink-0">{getIcon()}</div>
 
       <div className="flex-1 min-w-0 pr-1">

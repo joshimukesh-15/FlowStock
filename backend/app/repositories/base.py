@@ -2,7 +2,7 @@
 from typing import Any, Generic, List, Optional, Type, TypeVar, Union, Dict
 from uuid import UUID
 from pydantic import BaseModel
-from sqlalchemy import select, delete, update
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.base import Base, TenantScopedModel
 

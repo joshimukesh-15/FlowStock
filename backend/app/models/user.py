@@ -1,4 +1,5 @@
 """User Database Model."""
+from typing import Optional
 from uuid import UUID, uuid4
 from sqlalchemy import String, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -17,6 +18,7 @@ class User(Base, TimestampMixin):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(100), nullable=False)
     role: Mapped[str] = mapped_column(String(50), default="admin", nullable=False)
+    password_hash: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
 
     organization_id: Mapped[UUID] = mapped_column(
         ForeignKey("organizations.id", ondelete="CASCADE"),

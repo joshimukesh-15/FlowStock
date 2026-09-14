@@ -1,14 +1,13 @@
 """Background Job Execution and Automation Service."""
 import time
 from datetime import datetime, timezone, date
-from typing import List, Optional, Dict, Any
+from typing import List, Dict
 from uuid import UUID
 from fastapi import HTTPException, status
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.job import JobExecution
-from app.models.catalog import Product
 from app.models.invoice import Invoice
 from app.models.order import SalesOrder
 from app.repositories.inventory import inventory_repo

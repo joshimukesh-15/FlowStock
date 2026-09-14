@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { ShoppingCart, Plus, Trash2, CheckCircle2, Clock, Ban, PackageCheck, Building2, Users, RefreshCw, X, Eye, Truck, Layers, } from "lucide-react";
-import { fetchOrders, createOrderApi, confirmOrderApi, fulfillOrderApi, cancelOrderApi, fetchCustomers, createCustomerApi, fetchProducts, fetchWarehouses, } from "@/lib/api";
+import { ShoppingCart, Plus, Trash2, CheckCircle2, Clock, Ban, PackageCheck, Building2, Users, RefreshCw, X, Eye, Truck, Layers, IndianRupee } from "lucide-react";
+import { fetchOrders, createOrderApi, confirmOrderApi, fulfillOrderApi, cancelOrderApi, fetchCustomers, createCustomerApi, fetchProducts, fetchWarehouses } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
@@ -14,7 +14,9 @@ import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
-import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { StatCard } from "@/components/ui/StatCard";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/Table";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
@@ -265,27 +267,6 @@ export default function OrdersPage() {
         }
         return true;
     });
-    const getStatusBadge = (status) => {
-        switch (status) {
-            case "DRAFT":
-                return (<AnimatedBadge statusKey={status} variant="default" icon={Clock}>
-            DRAFT
-          </AnimatedBadge>);
-            case "CONFIRMED":
-                return (<AnimatedBadge statusKey={status} variant="warning" icon={PackageCheck} pulse>
-            STOCK RESERVED
-          </AnimatedBadge>);
-            case "FULFILLED":
-                return (<AnimatedBadge statusKey={status} variant="success" icon={CheckCircle2}>
-            FULFILLED
-          </AnimatedBadge>);
-            case "CANCELLED":
-                return (<AnimatedBadge statusKey={status} variant="danger" icon={Ban}>
-            CANCELLED
-          </AnimatedBadge>);
-        }
-    };
-
     if (loading && orders.length === 0) {
       return <PageSkeleton hasKpis={true} kpiCount={4} tableRows={6} />;
     }
@@ -311,73 +292,34 @@ export default function OrdersPage() {
           </>}/>
 
       {/* KPI Summary Cards */}
-      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" variants={itemVariants}>
-        <Card className="">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-zinc-900/10 text-zinc-900 flex items-center justify-center border border-zinc-900/20">
-              <span className="text-lg font-bold">₹</span>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Total Fulfilled Revenue</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900 font-mono">
-                  <AnimatedCounter value={totalRevenue} prefix="₹" formatINR decimals={2}/>
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-900 border border-zinc-200 flex items-center justify-center">
-              <Clock className="w-5 h-5"/>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Pending Orders</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900 font-mono">
-                  <AnimatedCounter value={pendingCount}/>
-                </span>
-                <span className="text-xs text-zinc-500">Draft + Confirmed</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-900 border border-zinc-200 flex items-center justify-center">
-              <PackageCheck className="w-5 h-5"/>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Reserved Stock Units</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900 font-mono">
-                  <AnimatedCounter value={totalReservedUnits}/>
-                </span>
-                <span className="text-xs text-zinc-700">Allocated</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-900 border border-zinc-200 flex items-center justify-center">
-              <Users className="w-5 h-5"/>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-zinc-500">Active B2B Customers</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-lg font-bold text-zinc-900 font-mono">
-                  <AnimatedCounter value={customers.length}/>
-                </span>
-                <span className="text-xs text-zinc-500">Profiles</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" variants={itemVariants}>
+        <StatCard
+          title="Fulfilled Revenue"
+          value={totalRevenue}
+          prefix="₹"
+          formatINR
+          decimals={2}
+          icon={IndianRupee}
+          subText="Delivered order realizations"
+        />
+        <StatCard
+          title="Pending Orders"
+          value={pendingCount}
+          icon={Clock}
+          subText="Draft + Confirmed awaiting fulfillment"
+        />
+        <StatCard
+          title="Reserved Stock Units"
+          value={totalReservedUnits}
+          icon={PackageCheck}
+          subText="Allocated physical inventory"
+        />
+        <StatCard
+          title="B2B Customers"
+          value={customers.length}
+          icon={Users}
+          subText="Active customer accounts"
+        />
       </motion.div>
 
         {/* Orders Table Container */}
@@ -451,7 +393,9 @@ export default function OrdersPage() {
                           <td className="py-3.5 px-4 text-right font-mono font-bold text-zinc-900">
                             ₹{o.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
-                          <td className="py-3.5 px-4 text-center">{getStatusBadge(o.status)}</td>
+                          <td className="py-3.5 px-4 text-center">
+                            <StatusBadge status={o.status} type="order" />
+                          </td>
                           <td className="py-3.5 px-4 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               <Button variant="ghost" size="sm" onClick={() => setDetailOrder(o)} className="text-zinc-500 hover:text-zinc-900 text-xs h-7 px-2" title="View Order Details">
@@ -685,7 +629,7 @@ export default function OrdersPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {getStatusBadge(detailOrder.status)}
+                  <StatusBadge status={detailOrder.status} type="order" />
                   <button onClick={() => setDetailOrder(null)} className="text-zinc-400 hover:text-zinc-700 ml-2">
                     <X className="w-5 h-5"/>
                   </button>

@@ -1,5 +1,5 @@
 """Inventory Business Logic Service."""
-from typing import List, Dict, Any
+from typing import List
 from uuid import UUID
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
