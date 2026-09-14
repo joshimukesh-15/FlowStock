@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Boxes,
@@ -19,10 +19,15 @@ import { Modal } from "@/components/ui/Modal";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-/* ── Clean Operational Feature Row Component ── */
-function FeatureRow({
+/* ── Astra 10K Cinematic Story Scene Component ── */
+function StoryScene({
+  id,
+  sceneNumber,
+  totalScenes = "04",
   tag,
+  metricBadge,
   title,
+  subtitle,
   description,
   bullets,
   imgSrc,
@@ -30,48 +35,98 @@ function FeatureRow({
   reverse = false,
 }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-16 sm:my-24">
-      {/* Media Column with premium bezel framing */}
-      <div
-        className={`group rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xl hover:shadow-2xl transition-all p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#2A2E39] dark:to-[#181A20] ${
-          reverse ? "lg:order-2" : "lg:order-1"
-        }`}
-      >
-        <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#14171F] relative aspect-[16/10] sm:h-[380px]">
-          <img
-            src={imgSrc}
-            alt={imgAlt}
-            className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.03] pointer-events-none" />
+    <div
+      id={id}
+      className="scroll-mt-36 py-16 sm:py-24 border-b border-slate-200/80 dark:border-[#323744]/70 last:border-b-0"
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        {/* Narrative Column (5 cols) */}
+        <div
+          className={`lg:col-span-5 space-y-5 text-left ${
+            reverse ? "lg:order-2" : "lg:order-1"
+          }`}
+        >
+          {/* Scene Tracker & Status */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#2A2E39] border border-slate-200 dark:border-[#3E4352] text-[11px] font-mono font-bold text-slate-700 dark:text-slate-300">
+              SCENE {sceneNumber} / {totalScenes}
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200 dark:border-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] text-[11px] font-mono font-semibold uppercase tracking-wider">
+              {tag}
+            </span>
+          </div>
+
+          <div>
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.15]">
+              {title}
+            </h3>
+            {subtitle && (
+              <p className="text-xs sm:text-sm font-semibold text-emerald-600 dark:text-[#B6FF2E] mt-1.5 font-mono uppercase tracking-wider">
+                {subtitle}
+              </p>
+            )}
+          </div>
+
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
+            {description}
+          </p>
+
+          <ul className="space-y-3 pt-2">
+            {bullets.map((b, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200"
+              >
+                <span className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                  ✓
+                </span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+
+          {metricBadge && (
+            <div className="pt-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#181A20] border border-slate-200 dark:border-[#323744] text-xs font-mono text-slate-700 dark:text-slate-300 shadow-2xs">
+                <span className="w-2 h-2 rounded-full bg-[#B6FF2E] animate-pulse" />
+                <span>{metricBadge}</span>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
 
-      {/* Text Column */}
-      <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200 dark:border-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] text-xs font-mono font-semibold tracking-wider uppercase">
-          {tag}
+        {/* Media Frame (7 cols) with Browser Window Bezel */}
+        <div
+          className={`lg:col-span-7 ${
+            reverse ? "lg:order-1" : "lg:order-2"
+          }`}
+        >
+          <div className="group rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xl hover:shadow-2xl transition-all p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#2A2E39] dark:to-[#181A20]">
+            {/* Window Header */}
+            <div className="px-3 py-2 bg-slate-100 dark:bg-[#14171F] rounded-t-xl border-b border-slate-200 dark:border-[#323744] flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+              </div>
+              <div className="px-2.5 py-0.5 rounded bg-slate-200/70 dark:bg-[#1F232D] text-[10px] font-mono text-slate-500 dark:text-[#9BA3AF]">
+                flowstock.ops / {id}
+              </div>
+              <div className="w-8" />
+            </div>
+
+            {/* Media Canvas */}
+            <div className="rounded-b-xl overflow-hidden bg-slate-950 relative aspect-[16/10] sm:h-[400px]">
+              <img
+                src={imgSrc}
+                alt={imgAlt}
+                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.01]"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+            </div>
+          </div>
         </div>
-
-        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-tight">
-          {title}
-        </h3>
-
-        <p className="text-base text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
-          {description}
-        </p>
-
-        <ul className="space-y-3 pt-2">
-          {bullets.map((b, idx) => (
-            <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200">
-              <span className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                ✓
-              </span>
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
@@ -81,8 +136,30 @@ export default function WelcomePage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
+  const [activeScene, setActiveScene] = useState("scene-01");
   const [termsOpen, setTermsOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
+
+  useEffect(() => {
+    const sceneIds = ["scene-01", "scene-02", "scene-03", "scene-04"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveScene(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.35, rootMargin: "-80px 0px -20% 0px" }
+    );
+
+    sceneIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -348,64 +425,131 @@ export default function WelcomePage() {
         </div>
       </section>
 
-      {/* 4. PLATFORM FEATURES (FULCRUM ALTERNATING ROWS WITH PARALLAX ZOOM) */}
-      <section id="platform" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="max-w-2xl mb-16 text-left">
-          <div className="text-xs font-bold font-mono text-emerald-600 dark:text-[#B6FF2E] uppercase tracking-wider mb-3">
-            The Platform
+      {/* 4. ASTRA 10K CINEMATIC VISUAL STORY & STICKY CHAPTER RAIL */}
+      <section id="platform" className="relative">
+        {/* Sticky Chapter Rail Navigation */}
+        <div className="sticky top-16 z-40 bg-white/95 dark:bg-[#14171F]/95 backdrop-blur-md border-y border-slate-200/80 dark:border-[#323744] transition-colors py-3 shadow-xs">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-500 dark:text-[#7C8189] shrink-0 uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#B6FF2E] animate-ping" />
+              <span>Visual Story:</span>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {[
+                { id: "scene-01", num: "01", label: "Intake Cockpit" },
+                { id: "scene-02", num: "02", label: "Stock Allocation" },
+                { id: "scene-03", num: "03", label: "Carrier Mesh" },
+                { id: "scene-04", num: "04", label: "GST Settlement" },
+              ].map((ch) => (
+                <button
+                  key={ch.id}
+                  type="button"
+                  onClick={() => scrollToSection(ch.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeScene === ch.id
+                      ? "bg-[#B6FF2E] text-[#14171F] font-bold shadow-xs"
+                      : "border border-slate-200 dark:border-[#323744] bg-white/80 dark:bg-[#181A20] text-slate-700 dark:text-slate-300 hover:border-slate-400 dark:hover:border-[#545963]"
+                  }`}
+                >
+                  <span className="opacity-60">{ch.num}</span>
+                  <span>{ch.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-tight mb-4">
-            Built around how warehouses actually run
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
-            Not a generic inventory spreadsheet with a new coat of paint — FlowStock is built for the floor, from receiving dock to outbound truck.
-          </p>
         </div>
 
-        {/* Feature Row 1: Sales Orders & Stock Allocation */}
-        <FeatureRow
-          tag="Sales Orders & Allocation"
-          title="Lock physical stock the instant orders confirm"
-          description="Every confirmed customer order immediately reserves physical inventory in the append-only ledger. Prevent stockouts, overselling across channels, and phantom stock drift before picking begins."
-          bullets={[
-            "Automated stock reservation with real-time SKU allocation locks",
-            "Lifecycle stepper: Draft → Confirmed → Stock Reserved → Fulfilled",
-            "Instant unit reconciliation across multi-facility warehouse depots"
-          ]}
-          imgSrc="/assets/showcase-orders.png"
-          imgAlt="FlowStock Sales Orders and Real-Time Stock Allocation Console"
-          reverse={false}
-        />
+        {/* Narrative Scenes Container */}
+        <div className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          {/* Visual Story Header */}
+          <div className="max-w-2xl mb-12 text-left">
+            <div className="text-xs font-bold font-mono text-emerald-600 dark:text-[#B6FF2E] uppercase tracking-wider mb-2">
+              Operational Journey
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-tight mb-4">
+              The lifecycle of a physical unit
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
+              Experience the end-to-end operational journey: from intake telemetry and atomic reservation lock to multi-carrier dispatch and statutory GST tax realization.
+            </p>
+          </div>
 
-        {/* Feature Row 2: Shipments & Logistics Tracking (Reversed) */}
-        <FeatureRow
-          tag="Carrier Mesh & Logistics"
-          title="Multi-carrier dispatches with instant tracking AWBs"
-          description="Dispatch consignments directly with nationwide carriers — Blue Dart, Delhivery, DTDC, and FedEx. Generate verified AWBs and receive real-time checkpoint milestone webhooks."
-          bullets={[
-            "Pre-integrated courier manifests with instant Air Waybill (AWB) generation",
-            "Real-time waypoint checkpoint timelines with full custody verification",
-            "Consignment freight expenditure accounting synchronized to order ledgers"
-          ]}
-          imgSrc="/assets/showcase-shipments.png"
-          imgAlt="FlowStock Shipments and Multi-Carrier Logistics Tracking Screen"
-          reverse={true}
-        />
+          {/* Scene 01: Intake & Telemetry Cockpit */}
+          <StoryScene
+            id="scene-01"
+            sceneNumber="01"
+            tag="Intake & Cockpit"
+            metricBadge="LIVE TELEMETRY: 12ms WebSocket Sync"
+            title="The Central Cockpit For High-Velocity Warehouses"
+            subtitle="Zero-Drift Double-Entry Accounting"
+            description="Gain absolute operational control across catalog SKUs, live bin balances, multi-depot inventory valuation, and active pipeline movements on a unified real-time operations cockpit."
+            bullets={[
+              "Double-entry append-only stock bookkeeping with mathematical consistency",
+              "Real-time ledger reconciliation across high-bay storage bins and pick faces",
+              "Zero phantom stock drift and instant audit compliance verification",
+            ]}
+            imgSrc="/assets/flowstock-hero.png"
+            imgAlt="FlowStock Operations Cockpit with Real-Time Warehouse Telemetry"
+            reverse={false}
+          />
 
-        {/* Feature Row 3: Invoices & Accounts Receivable */}
-        <FeatureRow
-          tag="Billing & GST Invoicing"
-          title="Compliant GST invoices & instant cash realization"
-          description="Issue statutory B2B tax invoices with automated CGST, SGST, and IGST breakdowns. Track accounts receivable aging, record bank/UPI settlement collections, and reconcile accounts in real time."
-          bullets={[
-            "Statutory GST invoice generation across 18%, 12%, and 5% tax brackets",
-            "Real-time receivables aging and payment collection reconciliation",
-            "Mathematical consistency guaranteed by double-entry ledger settlement"
-          ]}
-          imgSrc="/assets/showcase-invoices.png"
-          imgAlt="FlowStock Invoices and Accounts Receivable Management Screen"
-          reverse={false}
-        />
+          {/* Scene 02: Sales Orders & Stock Allocation */}
+          <StoryScene
+            id="scene-02"
+            sceneNumber="02"
+            tag="Stock Allocation"
+            metricBadge="ATOMIC RESERVATION: Zero Drift Guaranteed"
+            title="Lock Physical Stock The Instant Orders Confirm"
+            subtitle="Prevent Phantom Inventory & Overselling"
+            description="Every confirmed customer sales order automatically triggers atomic unit reservations in the immutable ledger. Prevent stockouts, overselling across channels, and phantom stock drift before picking begins."
+            bullets={[
+              "Automated stock reservation with real-time SKU allocation locks",
+              "Lifecycle stepper: Draft → Confirmed → Stock Reserved → Fulfilled",
+              "Instant unit reconciliation across multi-facility warehouse depots",
+            ]}
+            imgSrc="/assets/showcase-orders.png"
+            imgAlt="FlowStock Sales Orders and Real-Time Stock Allocation Console"
+            reverse={true}
+          />
+
+          {/* Scene 03: Carrier Mesh & Logistics Tracking */}
+          <StoryScene
+            id="scene-03"
+            sceneNumber="03"
+            tag="Carrier Mesh Dispatch"
+            metricBadge="LIVE CARRIER WEBHOOKS: Instant AWB Manifests"
+            title="Multi-Carrier Dispatches With Instant Tracking AWBs"
+            subtitle="Direct Blue Dart, Delhivery & DTDC Integration"
+            description="Dispatch consignments directly with nationwide carriers — Blue Dart, Delhivery, DTDC, and FedEx. Generate verified AWBs and receive real-time checkpoint milestone webhooks."
+            bullets={[
+              "Pre-integrated courier manifests with instant Air Waybill (AWB) generation",
+              "Real-time waypoint checkpoint timelines with full custody verification",
+              "Consignment freight expenditure accounting synchronized to order ledgers",
+            ]}
+            imgSrc="/assets/showcase-shipments.png"
+            imgAlt="FlowStock Shipments and Multi-Carrier Logistics Tracking Screen"
+            reverse={false}
+          />
+
+          {/* Scene 04: Invoices & Accounts Receivable */}
+          <StoryScene
+            id="scene-04"
+            sceneNumber="04"
+            tag="GST Invoicing & Settlement"
+            metricBadge="DOUBLE-ENTRY SETTLEMENT: 100% Tax Compliant"
+            title="Compliant GST Invoices & Instant Cash Realization"
+            subtitle="Automated Tax Calculations & Settlement Reconciliation"
+            description="Issue statutory B2B tax invoices with automated CGST, SGST, and IGST breakdowns. Track accounts receivable aging, record bank/UPI settlement collections, and reconcile accounts in real time."
+            bullets={[
+              "Statutory GST invoice generation across 18%, 12%, and 5% tax brackets",
+              "Real-time receivables aging and payment collection reconciliation",
+              "Mathematical consistency guaranteed by double-entry ledger settlement",
+            ]}
+            imgSrc="/assets/showcase-invoices.png"
+            imgAlt="FlowStock Invoices and Accounts Receivable Management Screen"
+            reverse={true}
+          />
+        </div>
       </section>
 
       {/* 5. STATS BAND (FULCRUM-STYLE) */}
