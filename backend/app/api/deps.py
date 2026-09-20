@@ -1,7 +1,7 @@
 """FastAPI Route Dependencies for Tenant, User Authentication, and RBAC Context."""
 from typing import List, Optional
 from uuid import UUID
-from fastapi import Depends, Header, HTTPException, status
+from fastapi import Depends, Header, HTTPException, status, Cookie
 from jose import JWTError, jwt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -46,19 +46,25 @@ async def get_current_user(
     x_user_id: Optional[str] = Header(None, alias="X-User-Id"),
     x_user_role: Optional[str] = Header(None, alias="X-User-Role"),
     authorization: Optional[str] = Header(None, alias="Authorization"),
+    access_token_cookie: Optional[str] = Cookie(None, alias="access_token"),
     tenant_id: UUID = Depends(get_current_tenant_id),
     db: AsyncSession = Depends(get_db),
 ) -> User:
     """
     Authenticate and resolve the current tenant user.
-    1. If Authorization Bearer token is provided, decode JWT and look up user.
+    1. If Authorization Bearer token or HttpOnly access_token cookie is provided, decode JWT and look up user.
     2. If X-User-Id is provided, look up user and strictly verify tenant ownership (anti-masquerading).
     3. If X-User-Role is provided, look up or instantiate a user with that role in the tenant.
     4. Otherwise, default to the primary administrator of the tenant.
     """
-    # 1. Bearer token
+    # 1. Bearer token or HttpOnly Cookie
+    token = None
     if authorization and authorization.startswith("Bearer "):
         token = authorization[7:].strip()
+    elif access_token_cookie:
+        token = access_token_cookie.strip()
+
+    if token:
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
             user_id_str = payload.get("sub")

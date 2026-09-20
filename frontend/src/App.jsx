@@ -23,6 +23,7 @@ import LoginPage from './pages/Login';
 
 import { PageSkeleton } from './components/ui/Skeleton';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { CookieConsent } from './components/ui/CookieConsent';
 import { SWRConfig } from 'swr';
 import { swrConfig } from './lib/swr';
 
@@ -82,6 +83,7 @@ function AppLayout() {
       <>
         <AppProgressBar />
         {isPublic ? content : <AppShell>{content}</AppShell>}
+        <CookieConsent />
       </>
     );
 }

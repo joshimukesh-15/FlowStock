@@ -23,6 +23,7 @@ async function cachedGet(url, ttlMs = DEFAULT_TTL_MS) {
     const res = await fetch(url, {
         cache: "no-store",
         headers: getHeaders(),
+        credentials: "include",
     });
     if (!res.ok)
         throw new Error(`HTTP ${res.status}`);
@@ -777,6 +778,7 @@ export async function loginApi(email, password) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
+            credentials: "include",
             signal: controller.signal,
         });
         clearTimeout(timeoutId);
@@ -802,6 +804,7 @@ export async function signupApi(data) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include",
             signal: controller.signal,
         });
         clearTimeout(timeoutId);
@@ -823,8 +826,13 @@ export async function fetchMe(token) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
     try {
+        const headers = {};
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
         const res = await fetch(`${API_BASE_URL}/auth/me`, {
-            headers: { "Authorization": `Bearer ${token}` },
+            headers,
+            credentials: "include",
             signal: controller.signal,
         });
         clearTimeout(timeoutId);
@@ -833,5 +841,16 @@ export async function fetchMe(token) {
     } catch (err) {
         clearTimeout(timeoutId);
         throw err;
+    }
+}
+
+export async function logoutApi() {
+    try {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+        });
+    } catch {
+        // ignore logout network errors
     }
 }

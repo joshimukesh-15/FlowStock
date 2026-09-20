@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { loginApi, signupApi, fetchMe, clearApiCache } from "@/lib/api";
+import { loginApi, signupApi, fetchMe, logoutApi, clearApiCache } from "@/lib/api";
 
 const AuthContext = createContext(undefined);
 
@@ -39,21 +39,17 @@ export const AuthProvider = ({ children }) => {
     setOrganization(null);
   }, []);
 
-  // On mount: check for existing token
+  // On mount: check for existing token or HttpOnly cookie session
   useEffect(() => {
-    const savedToken = localStorage.getItem("flowstock_token");
-    if (savedToken) {
-      fetchMe(savedToken)
-        .then((data) => {
-          persistSession(data);
-        })
-        .catch(() => {
-          clearSession();
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    const savedToken = localStorage.getItem("flowstock_token") || "";
+    fetchMe(savedToken)
+      .then((data) => {
+        persistSession(data);
+      })
+      .catch(() => {
+        clearSession();
+      })
+      .finally(() => setLoading(false));
   }, [persistSession, clearSession]);
 
   const login = async (email, password) => {
@@ -69,6 +65,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    logoutApi();
     clearSession();
   };
 

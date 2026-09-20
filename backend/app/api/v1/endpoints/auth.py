@@ -1,5 +1,4 @@
-"""Authentication Endpoints: Signup, Login, and Token Validation."""
-from fastapi import APIRouter, Depends, HTTPException, status, Header
+from fastapi import APIRouter, Depends, HTTPException, status, Header, Response, Cookie
 from typing import Optional
 from uuid import UUID
 from sqlalchemy import select
@@ -17,7 +16,7 @@ router = APIRouter()
 
 
 @router.post("/signup", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
-async def signup(payload: SignupRequest, db: AsyncSession = Depends(get_db)):
+async def signup(payload: SignupRequest, response: Response, db: AsyncSession = Depends(get_db)):
     """Register a new user and organization."""
     # Check if email already exists
     stmt = select(User).where(User.email == payload.email)
@@ -58,6 +57,16 @@ async def signup(payload: SignupRequest, db: AsyncSession = Depends(get_db)):
     # Generate JWT
     token = create_access_token(subject=str(user.id), extra_claims={"org_id": str(org.id)})
 
+    # Set secure HttpOnly cookie for XSS protection
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        samesite="lax",
+        secure=False,
+    )
+
     return TokenResponse(
         access_token=token,
         user=AuthUserRead.model_validate(user),
@@ -66,7 +75,7 @@ async def signup(payload: SignupRequest, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
+async def login(payload: LoginRequest, response: Response, db: AsyncSession = Depends(get_db)):
     """Authenticate user with email and password."""
     stmt = select(User).where(User.email == payload.email)
     result = await db.execute(stmt)
@@ -97,6 +106,16 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
 
     token = create_access_token(subject=str(user.id), extra_claims={"org_id": str(org.id)})
 
+    # Set secure HttpOnly cookie for XSS protection
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        samesite="lax",
+        secure=False,
+    )
+
     return TokenResponse(
         access_token=token,
         user=AuthUserRead.model_validate(user),
@@ -104,19 +123,32 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
     )
 
 
+@router.post("/logout")
+async def logout(response: Response):
+    """Clear HttpOnly authentication cookie."""
+    response.delete_cookie(key="access_token", samesite="lax")
+    return {"message": "Logged out successfully"}
+
+
 @router.get("/me", response_model=TokenResponse)
 async def get_me(
     authorization: Optional[str] = Header(None, alias="Authorization"),
+    access_token_cookie: Optional[str] = Cookie(None, alias="access_token"),
     db: AsyncSession = Depends(get_db),
 ):
-    """Validate token and return current user + organization."""
-    if not authorization or not authorization.startswith("Bearer "):
+    """Validate token and return current user + organization from header or HttpOnly cookie."""
+    token = None
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization[7:].strip()
+    elif access_token_cookie:
+        token = access_token_cookie.strip()
+
+    if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing or invalid authorization header.",
+            detail="Missing or invalid authentication credentials.",
         )
 
-    token = authorization[7:].strip()
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         user_id_str = payload.get("sub")
@@ -144,3 +176,4 @@ async def get_me(
         user=AuthUserRead.model_validate(user),
         organization=AuthOrgRead.model_validate(org),
     )
+
