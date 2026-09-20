@@ -10,6 +10,9 @@ import { useToast } from "@/context/ToastContext";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { POLifecycleStepper } from "@/components/ui/POLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
+import { FormModal } from "@/components/ui/FormModal";
+import { FormField } from "@/components/ui/FormField";
+import { KpiGrid } from "@/components/ui/KpiGrid";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { StatCard } from "@/components/ui/StatCard";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
@@ -19,6 +22,7 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
+import { formatDate, selectClass } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
 export default function PurchasingPage() {
@@ -276,7 +280,7 @@ export default function PurchasingPage() {
     return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <Truck className="w-6 h-6 text-zinc-900 dark:text-zinc-100"/>
+            <Truck className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
             Suppliers & Purchasing
           </span>} subtitle="Vendor purchase orders, inbound goods receiving, and warehouse restocking." actions={<>
             <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
@@ -294,7 +298,7 @@ export default function PurchasingPage() {
           </>}/>
 
       {/* KPI Metrics Cards */}
-      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5" variants={itemVariants}>
+      <KpiGrid>
         <StatCard
           title="Total Goods Procured"
           value={totalProcuredAmount}
@@ -322,11 +326,11 @@ export default function PurchasingPage() {
           icon={Building2}
           subText="Registered vendor partners"
         />
-      </motion.div>
+      </KpiGrid>
 
         {/* Purchase Orders Table Container */}
         <Card className="">
-          <CardHeader className="border-b border-zinc-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <CardHeader className="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by PO # or vendor..." className="w-64"/>
 
@@ -334,8 +338,8 @@ export default function PurchasingPage() {
               <Tabs tabs={["ALL", "DRAFT", "ISSUED", "RECEIVED", "CANCELLED"]} activeTab={statusFilter} onChange={setStatusFilter} layoutId="purchasing-status-tabs" variant="pill"/>
             </div>
 
-            <div className="text-xs text-zinc-400">
-              Showing <span className="font-semibold text-zinc-900">{filteredPOs.length}</span> purchase orders
+            <div className="text-xs text-slate-400">
+              Showing <span className="font-semibold text-slate-900">{filteredPOs.length}</span> purchase orders
             </div>
           </CardHeader>
 
@@ -347,8 +351,8 @@ export default function PurchasingPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Purchase Order
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-zinc-700">
-                  <thead className="bg-zinc-50 text-xs uppercase font-medium text-zinc-500 border-b border-zinc-200">
+                <table className="w-full text-left text-sm text-slate-700">
+                  <thead className="bg-slate-50 text-xs uppercase font-medium text-slate-500 border-b border-slate-200">
                     <tr>
                       <th className="py-3.5 px-4">PO Number</th>
                       <th className="py-3.5 px-4">Vendor / Supplier</th>
@@ -359,42 +363,42 @@ export default function PurchasingPage() {
                       <th className="py-3.5 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100">
+                  <tbody className="divide-y divide-slate-100">
                     {filteredPOs.map((po) => {
                 const isActing = actionLoading === po.id;
                 const itemCount = po.items.reduce((acc, it) => acc + it.quantity, 0);
-                return (<tr key={po.id} className="hover:bg-zinc-50 transition-colors">
-                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-zinc-900">
+                return (<tr key={po.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-slate-900">
                             {po.po_number}
-                            <div className="text-[10px] font-normal text-zinc-500 mt-0.5">
-                              {new Date(po.created_at).toLocaleDateString()}
+                            <div className="text-[10px] font-normal text-slate-500 mt-0.5">
+                              {formatDate(po.created_at)}
                             </div>
                           </td>
                           <td className="py-3.5 px-4">
-                            <div className="font-medium text-zinc-900">{po.supplier?.name || "Supplier"}</div>
-                            <div className="text-xs text-zinc-500 flex items-center gap-1.5 mt-0.5">
-                              {po.supplier?.company && (<span className="font-medium text-zinc-600">
+                            <div className="font-medium text-slate-900">{po.supplier?.name || "Supplier"}</div>
+                            <div className="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
+                              {po.supplier?.company && (<span className="font-medium text-slate-600">
                                   {po.supplier.company}
                                 </span>)}
-                              <span className="text-zinc-400 font-mono text-[11px]">
+                              <span className="text-slate-400 font-mono text-[11px]">
                                 {po.supplier?.email}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3.5 px-4 text-xs text-zinc-500">
+                          <td className="py-3.5 px-4 text-xs text-slate-500">
                             <div>
-                              <span className="text-zinc-700 font-medium">
+                              <span className="text-slate-700 font-medium">
                                 {po.destination_warehouse?.name || "Acme Central DC"}
                               </span>
-                              <span className="font-mono text-[10px] text-zinc-400 block">
+                              <span className="font-mono text-[10px] text-slate-400 block">
                                 {po.destination_warehouse?.code || "WH-MAIN"}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3.5 px-4 text-center font-mono text-xs text-zinc-600">
+                          <td className="py-3.5 px-4 text-center font-mono text-xs text-slate-600">
                             {po.items.length} lines ({itemCount} units)
                           </td>
-                          <td className="py-3.5 px-4 text-right font-mono font-bold text-zinc-900">
+                          <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900">
                             ₹{po.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3.5 px-4 text-center">
@@ -402,27 +406,27 @@ export default function PurchasingPage() {
                           </td>
                           <td className="py-3.5 px-4 text-right">
                             <div className="flex items-center justify-end gap-1.5">
-                              <Button variant="ghost" size="sm" onClick={() => setDetailPO(po)} className="text-zinc-500 hover:text-zinc-900 text-xs h-7 px-2" title="View Purchase Order">
+                              <Button variant="ghost" size="sm" onClick={() => setDetailPO(po)} className="text-slate-500 hover:text-slate-900 text-xs h-7 px-2" title="View Purchase Order">
                                 <Eye className="w-3.5 h-3.5 mr-1"/>
                                 Details
                               </Button>
 
                               {po.status === "DRAFT" && (<>
-                                  <Button size="sm" onClick={() => handleIssuePO(po.id)} disabled={isActing} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
+                                  <Button size="sm" onClick={() => handleIssuePO(po.id)} disabled={isActing} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
                                     <Send className="w-3 h-3 mr-1"/>
                                     Issue PO
                                   </Button>
-                                  <Button variant="ghost" size="sm" onClick={() => handleCancelPO(po.id)} disabled={isActing} className="text-zinc-500 hover:text-black hover:bg-zinc-100 text-xs h-7 px-2">
+                                  <Button variant="ghost" size="sm" onClick={() => handleCancelPO(po.id)} disabled={isActing} className="text-slate-500 hover:text-black hover:bg-slate-100 text-xs h-7 px-2">
                                     Cancel
                                   </Button>
                                 </>)}
 
                               {po.status === "ISSUED" && (<>
-                                  <Button size="sm" onClick={() => handleReceivePO(po.id)} disabled={isActing} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
+                                  <Button size="sm" onClick={() => handleReceivePO(po.id)} disabled={isActing} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
                                     <PackagePlus className="w-3 h-3 mr-1"/>
                                     Receive Goods
                                   </Button>
-                                  <Button variant="ghost" size="sm" onClick={() => handleCancelPO(po.id)} disabled={isActing} className="text-zinc-500 hover:text-black hover:bg-zinc-100 text-xs h-7 px-2">
+                                  <Button variant="ghost" size="sm" onClick={() => handleCancelPO(po.id)} disabled={isActing} className="text-slate-500 hover:text-black hover:bg-slate-100 text-xs h-7 px-2">
                                     Cancel
                                   </Button>
                                 </>)}
@@ -437,214 +441,242 @@ export default function PurchasingPage() {
         </Card>
 
         {/* Modal: Create Purchase Order */}
-        <Modal isOpen={poModalOpen} onClose={() => setPoModalOpen(false)} maxWidth="2xl" className="p-6 max-h-[90vh] flex flex-col">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
-            <h3 className="font-semibold text-zinc-900 text-lg flex items-center gap-2">
-              <Truck className="w-5 h-5 text-zinc-900"/>
-              Create Purchase Order (PO)
-            </h3>
-            <button onClick={() => setPoModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-              <X className="w-5 h-5"/>
-            </button>
+        <FormModal
+          isOpen={poModalOpen}
+          onClose={() => setPoModalOpen(false)}
+          title="Create Purchase Order (PO)"
+          icon={Truck}
+          onSubmit={handleCreatePOSubmit}
+          isSubmitting={poSubmitting}
+          submitText="Save Draft Purchase Order"
+          error={poError}
+          maxWidth="2xl"
+          bodyClassName="p-5 sm:p-6 space-y-4 max-h-[80vh] overflow-y-auto"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <FormField label="Vendor / Supplier *">
+              <select
+                value={poSupplierId}
+                onChange={(e) => setPoSupplierId(e.target.value)}
+                className={selectClass}
+                required
+              >
+                {suppliers.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} {s.company ? `(${s.company})` : ""}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+
+            <FormField label="Destination Warehouse *">
+              <select
+                value={poWarehouseId}
+                onChange={(e) => setPoWarehouseId(e.target.value)}
+                className={selectClass}
+                required
+              >
+                {warehouses.map((wh) => (
+                  <option key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))}
+              </select>
+            </FormField>
           </div>
 
-              {poError && (<Alert variant="danger" className="mt-4 text-xs">
-                  {poError}
-                </Alert>)}
+          {/* Line Items Section */}
+          <div className="pt-2">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF]">
+                Procurement Items
+              </label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleAddItemRow}
+                className="text-xs h-7"
+              >
+                <Plus className="w-3 h-3 mr-1" />
+                Add Item
+              </Button>
+            </div>
 
-              <form onSubmit={handleCreatePOSubmit} className="mt-4 space-y-4 flex-1 overflow-y-auto pr-1">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-700 mb-1">
-                      Vendor / Supplier *
-                    </label>
-                    <select value={poSupplierId} onChange={(e) => setPoSupplierId(e.target.value)} className="w-full bg-zinc-50 border border-zinc-700 rounded-md px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-950" required>
-                      {suppliers.map((s) => (<option key={s.id} value={s.id}>
-                          {s.name} {s.company ? `(${s.company})` : ""}
-                        </option>))}
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+              {poItems.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34] text-xs"
+                >
+                  <div className="flex-1">
+                    <select
+                      value={item.product_id}
+                      onChange={(e) => handleItemChange(idx, "product_id", e.target.value)}
+                      className={selectClass}
+                    >
+                      {products.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name} [{p.sku}]
+                        </option>
+                      ))}
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-700 mb-1">
-                      Destination Warehouse *
-                    </label>
-                    <select value={poWarehouseId} onChange={(e) => setPoWarehouseId(e.target.value)} className="w-full bg-zinc-50 border border-zinc-700 rounded-md px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-950" required>
-                      {warehouses.map((wh) => (<option key={wh.id} value={wh.id}>
-                          {wh.name} ({wh.code})
-                        </option>))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Line Items Section */}
-                <div className="pt-2">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                      Procurement Items
-                    </label>
-                    <Button type="button" variant="outline" size="sm" onClick={handleAddItemRow} className="border-zinc-700 text-xs h-7 text-zinc-700 hover:bg-zinc-800">
-                      <Plus className="w-3 h-3 mr-1"/>
-                      Add Item
-                    </Button>
+                  <div className="w-20">
+                    <Input
+                      type="number"
+                      min="1"
+                      value={item.quantity}
+                      onChange={(e) => handleItemChange(idx, "quantity", e.target.value)}
+                      placeholder="Qty"
+                      className="h-9 text-xs"
+                    />
                   </div>
 
-                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                    {poItems.map((item, idx) => (<div key={idx} className="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-50 border border-zinc-200 text-xs">
-                        <div className="flex-1">
-                          <select value={item.product_id} onChange={(e) => handleItemChange(idx, "product_id", e.target.value)} className="w-full bg-white border border-zinc-300 rounded px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-950">
-                            {products.map((p) => (<option key={p.id} value={p.id}>
-                                {p.name} [{p.sku}]
-                              </option>))}
-                          </select>
-                        </div>
-
-                        <div className="w-20">
-                          <Input type="number" min="1" value={item.quantity} onChange={(e) => handleItemChange(idx, "quantity", e.target.value)} placeholder="Qty" className="h-8 text-xs bg-white border-zinc-300 text-zinc-800"/>
-                        </div>
-
-                        <div className="w-24">
-                          <div className="relative">
-                            <span className="absolute left-2 top-2 text-zinc-500 text-xs">₹</span>
-                            <Input type="number" step="0.01" min="0" value={item.unit_cost} onChange={(e) => handleItemChange(idx, "unit_cost", e.target.value)} placeholder="Cost" className="h-8 text-xs bg-white border-zinc-300 pl-5 font-mono text-zinc-800"/>
-                          </div>
-                        </div>
-
-                        <div className="w-24 text-right font-mono font-semibold text-zinc-900">
-                          ₹{(item.quantity * item.unit_cost).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                        </div>
-
-                        <button type="button" onClick={() => handleRemoveItemRow(idx)} disabled={poItems.length <= 1} className={`p-1.5 rounded transition-colors ${poItems.length <= 1
-                ? "text-zinc-600 cursor-not-allowed"
-                : "text-zinc-400 hover:text-black hover:bg-zinc-100"}`}>
-                          <Trash2 className="w-4 h-4"/>
-                        </button>
-                      </div>))}
+                  <div className="w-24">
+                    <div className="relative">
+                      <span className="absolute left-2.5 top-2 text-slate-500 text-xs">₹</span>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={item.unit_cost}
+                        onChange={(e) => handleItemChange(idx, "unit_cost", e.target.value)}
+                        placeholder="Cost"
+                        className="h-9 text-xs pl-6 font-mono"
+                      />
+                    </div>
                   </div>
 
-                  {/* PO Total Preview */}
-                  <div className="mt-3 p-3 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-between">
-                    <span className="text-xs text-zinc-400 font-medium">Estimated PO Cost:</span>
-                    <span className="text-base font-bold text-zinc-900 font-mono">
-                      ₹{poCalculatedTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                    </span>
+                  <div className="w-24 text-right font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                    ₹{(item.quantity * item.unit_cost).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-zinc-700 mb-1">
-                    Procurement Notes / Terms
-                  </label>
-                  <Input value={poNotes} onChange={(e) => setPoNotes(e.target.value)} placeholder="e.g. Standard 30-day billing invoice"/>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveItemRow(idx)}
+                    disabled={poItems.length <= 1}
+                    className={`p-1.5 rounded transition-colors ${
+                      poItems.length <= 1
+                        ? "text-slate-400 cursor-not-allowed"
+                        : "text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                    }`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
+              ))}
+            </div>
 
-                <div className="flex items-center justify-end gap-2 pt-4 border-t border-zinc-100">
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setPoModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-                    Cancel
-                  </Button>
-                  <Button type="submit" size="sm" isLoading={poSubmitting} className="bg-zinc-950 hover:bg-black text-white shadow-xs">
-                    {poSubmitting ? "Generating PO..." : "Save Draft Purchase Order"}
-                  </Button>
-                </div>
-              </form>
-            </Modal>
+            {/* PO Total Preview */}
+            <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34] flex items-center justify-between">
+              <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium">Estimated PO Cost:</span>
+              <span className="text-base font-bold text-slate-900 dark:text-[#F4F5F7] font-mono">
+                ₹{poCalculatedTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+          </div>
+
+          <FormField label="Procurement Notes / Terms">
+            <Input
+              value={poNotes}
+              onChange={(e) => setPoNotes(e.target.value)}
+              placeholder="e.g. Standard 30-day billing invoice"
+            />
+          </FormField>
+        </FormModal>
 
         {/* Modal: New Supplier */}
-        <Modal isOpen={supplierModalOpen} onClose={() => setSupplierModalOpen(false)} maxWidth="md" className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
-            <h3 className="font-semibold text-zinc-900 text-lg flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-zinc-700"/>
-              Register Vendor / Supplier
-            </h3>
-            <button onClick={() => setSupplierModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-              <X className="w-5 h-5"/>
-            </button>
+        <FormModal
+          isOpen={supplierModalOpen}
+          onClose={() => setSupplierModalOpen(false)}
+          title="Register Vendor / Supplier"
+          icon={Building2}
+          onSubmit={handleCreateSupplierSubmit}
+          isSubmitting={supSubmitting}
+          submitText="Save Supplier"
+          error={supError}
+          maxWidth="md"
+        >
+          <FormField label="Vendor Contact Name *">
+            <Input
+              value={supName}
+              onChange={(e) => setSupName(e.target.value)}
+              placeholder="e.g. Anand Mahindra"
+              required
+            />
+          </FormField>
+
+          <FormField label="Vendor Email *">
+            <Input
+              type="email"
+              value={supEmail}
+              onChange={(e) => setSupEmail(e.target.value)}
+              placeholder="e.g. sales@vendor.in"
+              required
+            />
+          </FormField>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Company Name">
+              <Input
+                value={supCompany}
+                onChange={(e) => setSupCompany(e.target.value)}
+                placeholder="e.g. Mahindra Heavy Parts"
+              />
+            </FormField>
+            <FormField label="Phone Number">
+              <Input
+                value={supPhone}
+                onChange={(e) => setSupPhone(e.target.value)}
+                placeholder="e.g. +91 98200 55443"
+              />
+            </FormField>
           </div>
 
-          {supError && (<Alert variant="danger" className="mt-4 text-xs">
-              {supError}
-            </Alert>)}
+          <FormField label="Registered Office / Plant Address">
+            <Input
+              value={supAddress}
+              onChange={(e) => setSupAddress(e.target.value)}
+              placeholder="e.g. Plant 4, MIDC Industrial Area, Pune"
+            />
+          </FormField>
 
-          <form onSubmit={handleCreateSupplierSubmit} className="mt-4 space-y-3">
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Vendor Contact Name *
-              </label>
-              <Input value={supName} onChange={(e) => setSupName(e.target.value)} placeholder="e.g. Anand Mahindra" required/>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Vendor Email *
-              </label>
-              <Input type="email" value={supEmail} onChange={(e) => setSupEmail(e.target.value)} placeholder="e.g. sales@vendor.in" required/>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  Company Name
-                </label>
-                <Input value={supCompany} onChange={(e) => setSupCompany(e.target.value)} placeholder="e.g. Mahindra Heavy Parts"/>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  Phone Number
-                </label>
-                <Input value={supPhone} onChange={(e) => setSupPhone(e.target.value)} placeholder="e.g. +91 98200 55443"/>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Registered Office / Plant Address
-              </label>
-              <Input value={supAddress} onChange={(e) => setSupAddress(e.target.value)} placeholder="e.g. Plant 4, MIDC Industrial Area, Pune"/>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Payment Terms
-              </label>
-              <select value={supTerms} onChange={(e) => setSupTerms(e.target.value)} className="w-full bg-zinc-50 border border-zinc-700 rounded-md px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-950">
-                <option value="Immediate">Immediate / Advance</option>
-                <option value="Net 15">Net 15 Days</option>
-                <option value="Net 30">Net 30 Days</option>
-                <option value="Net 60">Net 60 Days</option>
-              </select>
-            </div>
-
-            <div className="flex items-center justify-end gap-2 pt-4 border-t border-zinc-100">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setSupplierModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-                Cancel
-              </Button>
-              <Button type="submit" size="sm" isLoading={supSubmitting} className="bg-zinc-950 hover:bg-black text-white shadow-xs">
-                {supSubmitting ? "Registering..." : "Save Supplier"}
-              </Button>
-            </div>
-          </form>
-        </Modal>
+          <FormField label="Payment Terms">
+            <select
+              value={supTerms}
+              onChange={(e) => setSupTerms(e.target.value)}
+              className={selectClass}
+            >
+              <option value="Immediate">Immediate / Advance</option>
+              <option value="Net 15">Net 15 Days</option>
+              <option value="Net 30">Net 30 Days</option>
+              <option value="Net 60">Net 60 Days</option>
+            </select>
+          </FormField>
+        </FormModal>
 
         {/* Modal: PO Details & Inbound Receiving */}
         <Modal isOpen={!!detailPO} onClose={() => setDetailPO(null)} maxWidth="2xl" className="p-6 max-h-[90vh] flex flex-col">
           {detailPO && (<>
-              <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-zinc-900/10 text-zinc-900 flex items-center justify-center border border-zinc-900/20">
+                  <div className="w-9 h-9 rounded-lg bg-slate-900/10 text-slate-900 flex items-center justify-center border border-zinc-900/20">
                     <Truck className="w-5 h-5"/>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-zinc-900 text-lg font-mono">
+                    <h3 className="font-semibold text-slate-900 text-lg font-mono">
                       {detailPO.po_number}
                     </h3>
-                    <p className="text-xs text-zinc-400">
-                      Created on {new Date(detailPO.created_at).toLocaleString()}
+                    <p className="text-xs text-slate-400">
+                      Created on {formatDate(detailPO.created_at, true)}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={detailPO.status} type="po" />
-                  <button onClick={() => setDetailPO(null)} className="text-zinc-400 hover:text-zinc-700 ml-2">
+                  <button onClick={() => setDetailPO(null)} className="text-slate-400 hover:text-slate-700 ml-2">
                     <X className="w-5 h-5"/>
                   </button>
                 </div>
@@ -655,27 +687,27 @@ export default function PurchasingPage() {
                 <POLifecycleStepper status={detailPO.status} createdAt={detailPO.created_at} updatedAt={detailPO.updated_at}/>
 
                 {/* Supplier & Receiving Warehouse Cards */}
-                <div className="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200 grid grid-cols-2 gap-3 text-xs">
+                <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-zinc-500 block">Vendor / Supplier</span>
-                    <span className="font-semibold text-zinc-900">{detailPO.supplier?.name}</span>
-                    {detailPO.supplier?.company && (<span className="text-zinc-400 block">{detailPO.supplier.company}</span>)}
-                    <span className="text-zinc-400 font-mono block mt-0.5">
+                    <span className="text-slate-500 block">Vendor / Supplier</span>
+                    <span className="font-semibold text-slate-900">{detailPO.supplier?.name}</span>
+                    {detailPO.supplier?.company && (<span className="text-slate-400 block">{detailPO.supplier.company}</span>)}
+                    <span className="text-slate-400 font-mono block mt-0.5">
                       {detailPO.supplier?.email}
                     </span>
-                    <span className="text-zinc-500 text-[11px] block mt-1">
+                    <span className="text-slate-500 text-[11px] block mt-1">
                       Terms: {detailPO.supplier?.payment_terms || "Net 30"}
                     </span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block">Receiving Destination Depot</span>
-                    <span className="font-semibold text-zinc-900">
+                    <span className="text-slate-500 block">Receiving Destination Depot</span>
+                    <span className="font-semibold text-slate-900">
                       {detailPO.destination_warehouse?.name || "Acme Central DC"}
                     </span>
-                    <span className="text-zinc-500 font-mono block">
+                    <span className="text-slate-500 font-mono block">
                       {detailPO.destination_warehouse?.code || "WH-MAIN"}
                     </span>
-                    {detailPO.destination_warehouse?.location && (<span className="text-zinc-400 block mt-1 truncate">
+                    {detailPO.destination_warehouse?.location && (<span className="text-slate-400 block mt-1 truncate">
                         Location: {detailPO.destination_warehouse.location}
                       </span>)}
                   </div>
@@ -683,12 +715,12 @@ export default function PurchasingPage() {
 
                 {/* Line Items Table */}
                 <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
                     Procured Goods Breakdown ({detailPO.items.length})
                   </h4>
-                  <div className="border border-zinc-200 rounded-lg overflow-hidden">
-                    <table className="w-full text-left text-xs text-zinc-700">
-                      <thead className="bg-zinc-50 text-zinc-400 uppercase font-medium border-b border-zinc-100">
+                  <div className="border border-slate-200 rounded-lg overflow-hidden">
+                    <table className="w-full text-left text-xs text-slate-700">
+                      <thead className="bg-slate-50 text-slate-400 uppercase font-medium border-b border-slate-100">
                         <tr>
                           <th className="py-2.5 px-3">Product</th>
                           <th className="py-2.5 px-3 text-right">Quantity</th>
@@ -696,33 +728,33 @@ export default function PurchasingPage() {
                           <th className="py-2.5 px-3 text-right">Subtotal (₹)</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-zinc-100 bg-white">
+                      <tbody className="divide-y divide-slate-100 bg-white">
                         {detailPO.items.map((it) => (<tr key={it.id}>
                             <td className="py-2.5 px-3">
-                              <span className="font-medium text-zinc-900 block">
+                              <span className="font-medium text-slate-900 block">
                                 {it.product?.name || "Product"}
                               </span>
-                              <span className="font-mono text-[11px] text-zinc-500">
+                              <span className="font-mono text-[11px] text-slate-500">
                                 {it.product?.sku || "SKU"}
                               </span>
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-zinc-900">
+                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-slate-900">
                               {it.quantity} {it.product?.unit || "units"}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono text-zinc-500">
+                            <td className="py-2.5 px-3 text-right font-mono text-slate-500">
                               ₹{it.unit_cost.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-bold text-zinc-950">
+                            <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-950">
                               ₹{it.subtotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
                           </tr>))}
                       </tbody>
-                      <tfoot className="bg-zinc-50 font-semibold border-t border-zinc-100">
+                      <tfoot className="bg-slate-50 font-semibold border-t border-slate-100">
                         <tr>
-                          <td colSpan={3} className="py-2.5 px-3 text-right text-zinc-400">
+                          <td colSpan={3} className="py-2.5 px-3 text-right text-slate-400">
                             Total Procurement Value:
                           </td>
-                          <td className="py-2.5 px-3 text-right font-mono text-sm text-zinc-900">
+                          <td className="py-2.5 px-3 text-right font-mono text-sm text-slate-900">
                             ₹{detailPO.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                         </tr>
@@ -732,49 +764,49 @@ export default function PurchasingPage() {
                 </div>
 
                 {/* State Machine Status Card */}
-                <div className="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs space-y-1.5">
-                  <div className="font-medium text-zinc-700 flex items-center gap-1.5">
-                    <Boxes className="w-3.5 h-3.5 text-zinc-900"/>
+                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
+                  <div className="font-medium text-slate-700 flex items-center gap-1.5">
+                    <Boxes className="w-3.5 h-3.5 text-slate-900"/>
                     Inventory Restocking Impact:
                   </div>
-                  {detailPO.status === "DRAFT" && (<p className="text-zinc-400 text-[11px]">
+                  {detailPO.status === "DRAFT" && (<p className="text-slate-400 text-[11px]">
                       This PO is currently in <strong>DRAFT</strong>. Click &quot;Issue PO&quot; to send it to the supplier.
                     </p>)}
-                  {detailPO.status === "ISSUED" && (<p className="text-zinc-700 text-[11px]">
+                  {detailPO.status === "ISSUED" && (<p className="text-slate-700 text-[11px]">
                       This PO has been <strong>ISSUED</strong> to the vendor. Awaiting shipment arrival at destination facility.
                       Click &quot;Receive Goods&quot; upon delivery to automatically append IN movements to the warehouse ledger.
                     </p>)}
-                  {detailPO.status === "RECEIVED" && (<p className="text-zinc-900 text-[11px]">
+                  {detailPO.status === "RECEIVED" && (<p className="text-slate-900 text-[11px]">
                       Goods have been <strong>RECEIVED</strong>! Inventory records have been appended with positive IN changes.
                     </p>)}
-                  {detailPO.status === "CANCELLED" && (<p className="text-zinc-400 text-[11px]">
+                  {detailPO.status === "CANCELLED" && (<p className="text-slate-400 text-[11px]">
                       This purchase order was <strong>CANCELLED</strong>. No inventory was touched.
                     </p>)}
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-zinc-100 mt-4">
-                <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)} className="text-zinc-400 hover:text-zinc-700">
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-4">
+                <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)} className="text-slate-400 hover:text-slate-700">
                   Close
                 </Button>
 
                 <div className="flex items-center gap-2">
                   {detailPO.status === "DRAFT" && (<>
-                      <Button variant="ghost" size="sm" onClick={() => handleCancelPO(detailPO.id)} disabled={actionLoading === detailPO.id} className="text-zinc-500 hover:text-black text-xs">
+                      <Button variant="ghost" size="sm" onClick={() => handleCancelPO(detailPO.id)} disabled={actionLoading === detailPO.id} className="text-slate-500 hover:text-black text-xs">
                         Cancel PO
                       </Button>
-                      <Button size="sm" onClick={() => handleIssuePO(detailPO.id)} disabled={actionLoading === detailPO.id} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs">
+                      <Button size="sm" onClick={() => handleIssuePO(detailPO.id)} disabled={actionLoading === detailPO.id} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs">
                         <Send className="w-3.5 h-3.5 mr-1"/>
                         Issue PO to Vendor
                       </Button>
                     </>)}
 
                   {detailPO.status === "ISSUED" && (<>
-                      <Button variant="ghost" size="sm" onClick={() => handleCancelPO(detailPO.id)} disabled={actionLoading === detailPO.id} className="text-zinc-500 hover:text-black text-xs">
+                      <Button variant="ghost" size="sm" onClick={() => handleCancelPO(detailPO.id)} disabled={actionLoading === detailPO.id} className="text-slate-500 hover:text-black text-xs">
                         Cancel PO
                       </Button>
-                      <Button size="sm" onClick={() => handleReceivePO(detailPO.id)} disabled={actionLoading === detailPO.id} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs">
+                      <Button size="sm" onClick={() => handleReceivePO(detailPO.id)} disabled={actionLoading === detailPO.id} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs">
                         <PackagePlus className="w-3.5 h-3.5 mr-1"/>
                         Receive Goods & Restock
                       </Button>

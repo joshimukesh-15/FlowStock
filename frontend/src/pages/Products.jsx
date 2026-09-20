@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -8,25 +8,42 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { Plus, Tag, Edit2, Trash2, X, Package, } from "lucide-react";
-import { fetchProducts, fetchCategories, createProductApi, updateProductApi, deleteProductApi, createCategoryApi, } from "@/lib/api";
+import { createCategoryApi } from "@/lib/api";
+import { useProductsData } from "@/hooks/useFlowStockData";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { motion } from "framer-motion";
 import { useReducedMotion, pageEnterVariants } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
+import { FormModal } from "@/components/ui/FormModal";
+import { FormField } from "@/components/ui/FormField";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { selectClass } from "@/lib/utils";
+
 export default function ProductsPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
     const prefersReducedMotion = useReducedMotion();
-    const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
     const [deleteTarget, setDeleteTarget] = useState(null);
+
+    // SWR & Optimistic UI Hook (0ms Navigation + Instant Mutations)
+    const {
+        products,
+        categories,
+        isLoading: loading,
+        createProduct,
+        updateProduct,
+        deleteProduct,
+        mutate,
+    } = useProductsData({
+        search: searchTerm || undefined,
+        category_id: selectedCategory || undefined,
+    });
+
     // Product Modal State
     const [productModalOpen, setProductModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
@@ -42,43 +59,14 @@ export default function ProductsPage() {
     });
     const [formError, setFormError] = useState("");
     const [submitting, setSubmitting] = useState(false);
+
     // Category Modal State
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     const [catName, setCatName] = useState("");
     const [catDesc, setCatDesc] = useState("");
     const [catError, setCatError] = useState("");
     const [catSubmitting, setCatSubmitting] = useState(false);
-    const loadData = async () => {
-        if (products.length === 0)
-            setLoading(true);
-        try {
-            const [prods, cats] = await Promise.all([
-                fetchProducts({
-                    search: searchTerm || undefined,
-                    category_id: selectedCategory || undefined,
-                }),
-                fetchCategories(),
-            ]);
-            setProducts(prods);
-            setCategories(cats);
-        }
-        catch (err) {
-            console.error("Failed to load catalog:", err);
-        }
-        finally {
-            setLoading(false);
-        }
-    };
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            loadData();
-        }, 250);
-        return () => clearTimeout(timer);
-    }, [currentOrg?.id, selectedCategory, searchTerm]);
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        loadData();
-    };
+
     const handleOpenAdd = () => {
         setEditingProduct(null);
         setFormData({
@@ -121,19 +109,19 @@ export default function ProductsPage() {
                 reorder_point: Number(formData.reorder_point),
                 category_id: formData.category_id || undefined,
             };
+            setProductModalOpen(false);
             if (editingProduct) {
-                await updateProductApi(editingProduct.id, payload);
                 toast.success("Product updated", `${formData.name} was successfully updated.`);
+                await updateProduct(editingProduct.id, payload);
             }
             else {
-                await createProductApi(payload);
                 toast.success("Product created", `${formData.name} was successfully added to catalog.`);
+                await createProduct(payload);
             }
-            setProductModalOpen(false);
-            await loadData();
         }
         catch (err) {
             setFormError(err.message || "Operation failed.");
+            toast.error("Operation failed", err.message || "Could not save product.");
         }
         finally {
             setSubmitting(false);
@@ -154,7 +142,7 @@ export default function ProductsPage() {
             setCategoryModalOpen(false);
             setCatName("");
             setCatDesc("");
-            await loadData();
+            mutate();
         }
         catch (err) {
             setCatError(err.message || "Failed to create category");
@@ -164,8 +152,10 @@ export default function ProductsPage() {
         }
     };
     const curr = currentOrg?.currency || "INR";
+    const safeProducts = Array.isArray(products) ? products : [];
+    const safeCategories = Array.isArray(categories) ? categories : [];
 
-    if (loading && products.length === 0) {
+    if (loading && safeProducts.length === 0) {
       return <PageSkeleton hasKpis={false} tableRows={6} />;
     }
 
@@ -173,7 +163,7 @@ export default function ProductsPage() {
         {/* Title Bar */}
         <PageHeader title="Products & SKU Catalog" badge={currentOrg && <Badge variant="info" className="capitalize">{currentOrg.name}</Badge>} subtitle="Master catalog of stock items, selling rates, and classification" actions={<>
               <Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)} className="gap-1.5">
-                <Tag className="w-3.5 h-3.5 text-zinc-500"/>
+                <Tag className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
                 New Category
               </Button>
               <Button size="sm" onClick={handleOpenAdd} className="gap-1.5">
@@ -185,13 +175,13 @@ export default function ProductsPage() {
         {/* Filter & Search Bar */}
         <Card spotlight={true} className="p-3.5 sm:p-4 shadow-2xs">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <SearchBar placeholder="Search products by name or SKU..." value={searchTerm} onChange={setSearchTerm} onSubmit={handleSearchSubmit}/>
+            <SearchBar placeholder="Search products by name or SKU..." value={searchTerm} onChange={setSearchTerm} onSubmit={(e) => e?.preventDefault()}/>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium shrink-0">Category:</span>
-              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-zinc-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-zinc-900 dark:text-zinc-100 px-2.5 py-1.5 focus:border-[#B6FF2E] focus:outline-none">
-                <option value="">All Categories ({categories.length})</option>
-                {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
+              <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium shrink-0">Category:</span>
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-slate-900 dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#B6FF2E] focus:outline-none">
+                <option value="">All Categories ({safeCategories.length})</option>
+                {safeCategories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>
           </div>
@@ -201,7 +191,7 @@ export default function ProductsPage() {
         <Card spotlight={true} className="overflow-hidden shadow-2xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-zinc-50 dark:bg-[#1C1F27] border-b border-zinc-100 dark:border-[#2A2E39] text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 dark:bg-[#14171F] border-b border-slate-100 dark:border-[#262A34] text-slate-500 dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-2.5 px-3.5">SKU / Code</th>
                   <th className="py-2.5 px-3.5">Product Name</th>
@@ -214,41 +204,41 @@ export default function ProductsPage() {
                   <th className="py-2.5 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-14", "w-16", "w-16", "w-12", "w-24", "w-20"]}/>
                       <SkeletonAnnouncer label="Loading product catalog"/>
                     </td>
-                  </tr>) : products.length === 0 ? (<tr>
+                  </tr>) : safeProducts.length === 0 ? (<tr>
                     <td colSpan={9}>
                       <EmptyState compact icon={Package} title="No products found" description="Add your first SKU or adjust your category filter to see catalog items." action={<Button size="sm" variant="primary" onClick={handleOpenAdd} className="gap-1.5 text-xs">
                             <Plus className="w-3.5 h-3.5"/>
                             Add Product SKU
                           </Button>}/>
                     </td>
-                  </tr>) : (products.map((p) => {
+                  </tr>) : (safeProducts.map((p) => {
             const margin = p.price > 0 ? (((p.price - p.cost_price) / p.price) * 100).toFixed(0) : "0";
-            return (<tr key={p.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
-                        <td className="py-2.5 px-3.5 font-mono font-semibold text-zinc-900 dark:text-zinc-100">{p.sku}</td>
+            return (<tr key={p.id} className="hover:bg-slate-50 dark:bg-[#14171F]/70 dark:hover:bg-[#20242D]/50 transition-colors">
+                        <td className="py-2.5 px-3.5 font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">{p.sku}</td>
                         <td className="py-2.5 px-3.5">
-                          <p className="font-medium text-zinc-900 dark:text-zinc-100">{p.name}</p>
-                          {p.description && <p className="text-[10px] text-zinc-400 dark:text-zinc-500 truncate max-w-xs">{p.description}</p>}
+                          <p className="font-medium text-slate-900 dark:text-[#F4F5F7]">{p.name}</p>
+                          {p.description && <p className="text-[10px] text-slate-400 dark:text-[#7C8189] dark:text-slate-500 dark:text-[#9BA3AF] truncate max-w-xs">{p.description}</p>}
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <span className="inline-block px-1.5 py-0.5 bg-zinc-100 dark:bg-[#20242D] text-zinc-700 dark:text-zinc-300 rounded text-[10px] border border-zinc-200 dark:border-[#323744]">
+                          <span className="inline-block px-1.5 py-0.5 bg-slate-100 dark:bg-[#23262F] dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1] rounded text-[10px] border border-slate-200 dark:border-[#323744]">
                             {p.category?.name || "Uncategorized"}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3.5 text-center font-mono text-zinc-500 dark:text-zinc-400">{p.unit}</td>
-                        <td className="py-2.5 px-3.5 text-right font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
+                        <td className="py-2.5 px-3.5 text-center font-mono text-slate-500 dark:text-[#9BA3AF]">{p.unit}</td>
+                        <td className="py-2.5 px-3.5 text-right font-semibold text-slate-900 dark:text-[#F4F5F7] font-mono">
                           ₹{p.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </td>
-                        <td className="py-2.5 px-3.5 text-right text-zinc-500 dark:text-zinc-400 font-mono">
+                        <td className="py-2.5 px-3.5 text-right text-slate-500 dark:text-[#9BA3AF] font-mono">
                           ₹{p.cost_price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </td>
                         <td className="py-2.5 px-3.5 text-right font-mono">
-                          <span className={Number(margin) >= 30 ? "text-emerald-600 dark:text-[#B6FF2E] font-semibold" : "text-zinc-700 dark:text-zinc-300"}>
+                          <span className={Number(margin) >= 30 ? "text-emerald-600 dark:text-[#B6FF2E] font-semibold" : "text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1]"}>
                             {margin}%
                           </span>
                         </td>
@@ -256,10 +246,10 @@ export default function ProductsPage() {
                           <Badge variant="warning">{p.reorder_point} {p.unit}</Badge>
                         </td>
                         <td className="py-2.5 px-3.5 text-right space-x-1 whitespace-nowrap">
-                          <button onClick={() => handleOpenEdit(p)} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" title="Edit Product">
+                          <button onClick={() => handleOpenEdit(p)} className="p-1 hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 rounded text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors" title="Edit Product">
                             <Edit2 className="w-3.5 h-3.5"/>
                           </button>
-                          <button onClick={() => handleDeleteProduct(p.id, p.name)} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-red-500 dark:hover:text-red-400 rounded transition-colors" title="Delete Product">
+                          <button onClick={() => handleDeleteProduct(p.id, p.name)} className="p-1 hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 text-slate-400 dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded transition-colors" title="Delete Product">
                             <Trash2 className="w-3.5 h-3.5"/>
                           </button>
                         </td>
@@ -271,103 +261,135 @@ export default function ProductsPage() {
         </Card>
 
         {/* Product Modal */}
-        <Modal isOpen={productModalOpen} onClose={() => setProductModalOpen(false)} maxWidth="lg">
-          <div className="p-5 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
-                <h3 className="font-semibold text-zinc-900 text-sm">
-                  {editingProduct ? "Edit Product Details" : "Add New Product SKU"}
-                </h3>
-                <button onClick={() => setProductModalOpen(false)} className="text-zinc-400 hover:text-zinc-600 p-1">
-                  <X className="w-4 h-4"/>
-                </button>
-              </div>
+        <FormModal
+          isOpen={productModalOpen}
+          onClose={() => setProductModalOpen(false)}
+          title={editingProduct ? "Edit Product Details" : "Add New Product SKU"}
+          icon={Package}
+          onSubmit={handleProductSubmit}
+          isSubmitting={submitting}
+          submitText={editingProduct ? "Update Product" : "Create Product"}
+          error={formError}
+          maxWidth="lg"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Input
+              label="Product Name *"
+              placeholder="e.g. Industrial Pallet Jack"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+            />
+            <Input
+              label="SKU Code *"
+              placeholder="e.g. SKU-PLT-01"
+              value={formData.sku}
+              onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+              required
+            />
+          </div>
 
-              {formError && (<Alert variant="danger" onClose={() => setFormError("")}>
-                  {formError}
-                </Alert>)}
+          <FormField label="Category">
+            <select
+              value={formData.category_id}
+              onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+              className={selectClass}
+            >
+              <option value="">None (Uncategorized)</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </FormField>
 
-              <form onSubmit={handleProductSubmit} className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
-                  <Input label="Product Name *" placeholder="e.g. Industrial Pallet Jack" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required/>
-                  <Input label="SKU Code *" placeholder="e.g. SKU-PLT-01" value={formData.sku} onChange={(e) => setFormData({ ...formData, sku: e.target.value })} required/>
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Input
+              label={`Selling Price (${curr})`}
+              type="number"
+              step="0.01"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+              required
+            />
+            <Input
+              label={`Cost Price (${curr})`}
+              type="number"
+              step="0.01"
+              value={formData.cost_price}
+              onChange={(e) => setFormData({ ...formData, cost_price: parseFloat(e.target.value) || 0 })}
+              required
+            />
+            <Input
+              label="Unit"
+              placeholder="pcs, box, kg"
+              value={formData.unit}
+              onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+              required
+            />
+          </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-zinc-700 mb-1">Category</label>
-                  <select value={formData.category_id} onChange={(e) => setFormData({ ...formData, category_id: e.target.value })} className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none">
-                    <option value="">None (Uncategorized)</option>
-                    {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3">
-                  <Input label={`Selling Price (${curr})`} type="number" step="0.01" value={formData.price} onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })} required/>
-                  <Input label={`Cost Price (${curr})`} type="number" step="0.01" value={formData.cost_price} onChange={(e) => setFormData({ ...formData, cost_price: parseFloat(e.target.value) || 0 })} required/>
-                  <Input label="Unit" placeholder="pcs, box, kg" value={formData.unit} onChange={(e) => setFormData({ ...formData, unit: e.target.value })} required/>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <Input label="Reorder Alert Level" type="number" value={formData.reorder_point} onChange={(e) => setFormData({ ...formData, reorder_point: parseInt(e.target.value) || 0 })} required/>
-                  <Input label="Description" placeholder="Specification notes..." value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })}/>
-                </div>
-
-                <div className="flex justify-end gap-2 pt-3 border-t border-zinc-100">
-                  <Button type="button" variant="outline" size="sm" onClick={() => setProductModalOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" size="sm" isLoading={submitting}>
-                    {submitting ? "Saving..." : editingProduct ? "Update Product" : "Create Product"}
-                  </Button>
-                </div>
-              </form>
-            </div>
-          </Modal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Input
+              label="Reorder Alert Level"
+              type="number"
+              value={formData.reorder_point}
+              onChange={(e) => setFormData({ ...formData, reorder_point: parseInt(e.target.value) || 0 })}
+              required
+            />
+            <Input
+              label="Description"
+              placeholder="Specification notes..."
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            />
+          </div>
+        </FormModal>
 
         {/* Category Modal */}
-        <Modal isOpen={categoryModalOpen} onClose={() => setCategoryModalOpen(false)} maxWidth="sm">
-            <div className="p-5 space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-zinc-100">
-                <h3 className="font-semibold text-zinc-900 text-sm">Add Category</h3>
-                <button onClick={() => setCategoryModalOpen(false)} className="text-zinc-400 hover:text-zinc-600 p-1">
-                  <X className="w-4 h-4"/>
-                </button>
-              </div>
-
-              {catError && (<Alert variant="danger" onClose={() => setCatError("")}>
-                  {catError}
-                </Alert>)}
-
-              <form onSubmit={handleCategorySubmit} className="space-y-3">
-                <Input label="Category Name *" placeholder="e.g. Storage & Racking" value={catName} onChange={(e) => setCatName(e.target.value)} required/>
-                <Input label="Description" placeholder="Optional notes" value={catDesc} onChange={(e) => setCatDesc(e.target.value)}/>
-                <div className="flex justify-end gap-2 pt-2">
-                  <Button type="button" variant="outline" size="sm" onClick={() => setCategoryModalOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" size="sm" isLoading={catSubmitting}>
-                    {catSubmitting ? "Creating..." : "Save Category"}
-                  </Button>
-                </div>
-              </form>
-            </div>
-          </Modal>
+        <FormModal
+          isOpen={categoryModalOpen}
+          onClose={() => setCategoryModalOpen(false)}
+          title="Add Category"
+          icon={Tag}
+          onSubmit={handleCategorySubmit}
+          isSubmitting={catSubmitting}
+          submitText="Save Category"
+          error={catError}
+          maxWidth="sm"
+        >
+          <Input
+            label="Category Name *"
+            placeholder="e.g. Storage & Racking"
+            value={catName}
+            onChange={(e) => setCatName(e.target.value)}
+            required
+          />
+          <Input
+            label="Description"
+            placeholder="Optional notes"
+            value={catDesc}
+            onChange={(e) => setCatDesc(e.target.value)}
+          />
+        </FormModal>
 
           <ConfirmModal isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={async () => {
             if (!deleteTarget)
                 return;
             try {
+                const targetId = deleteTarget.id;
                 const targetName = deleteTarget.name;
-                await deleteProductApi(deleteTarget.id);
                 setDeleteTarget(null);
                 toast.success("Product deleted", `${targetName} was successfully removed.`);
-                await loadData();
+                await deleteProduct(targetId);
             }
             catch (err) {
                 toast.error("Failed to delete", err.message || "An error occurred");
             }
         }} title="Delete Product" description={<>
                 Are you sure you want to delete{" "}
-                <strong className="text-zinc-900 font-semibold">{deleteTarget?.name}</strong>?
+                <strong className="text-slate-900 dark:text-white font-semibold">{deleteTarget?.name}</strong>?
                 This will permanently remove the product and its SKU tracking from this organization.
               </>} confirmText="Delete Product" variant="danger"/>
       </motion.div>);

@@ -21,9 +21,18 @@ import SettingsPage from './pages/Settings';
 import WelcomePage from './pages/Welcome';
 import LoginPage from './pages/Login';
 
+import { PageSkeleton } from './components/ui/Skeleton';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { SWRConfig } from 'swr';
+import { swrConfig } from './lib/swr';
+
 function ProtectedRoute({ children }) {
     const { isAuthenticated, loading } = useAuth();
-    if (loading) return null;
+    if (loading) return (
+        <div className="min-h-screen bg-slate-50 dark:bg-[#14171F] flex items-center justify-center">
+            <PageSkeleton />
+        </div>
+    );
     if (!isAuthenticated) return <Navigate to="/" replace />;
     return children;
 }
@@ -84,7 +93,11 @@ export default function App() {
           <AuthProvider>
             <TenantProvider>
               <ToastProvider>
-                <AppLayout />
+                <SWRConfig value={swrConfig}>
+                  <ErrorBoundary>
+                    <AppLayout />
+                  </ErrorBoundary>
+                </SWRConfig>
               </ToastProvider>
             </TenantProvider>
           </AuthProvider>

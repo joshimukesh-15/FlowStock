@@ -26,15 +26,15 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, description, c
             ? "bg-red-100 text-red-600"
             : isWarning
                 ? "bg-amber-100 text-amber-600"
-                : "bg-zinc-100 text-zinc-700"}`}>
+                : "bg-slate-100 text-slate-700"}`}>
             {isDanger ? (<AlertTriangle className="w-5 h-5"/>) : isWarning ? (<AlertCircle className="w-5 h-5"/>) : (<Info className="w-5 h-5"/>)}
           </div>
           <div>
-            <h3 className="text-base font-semibold text-zinc-900">{title}</h3>
+            <h3 className="text-base font-semibold text-slate-900">{title}</h3>
           </div>
         </div>
 
-        <div className="text-sm text-zinc-600 mb-5 leading-relaxed">
+        <div className="text-sm text-slate-600 mb-5 leading-relaxed">
           {description}
         </div>
 

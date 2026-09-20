@@ -40,10 +40,10 @@ export function OrderStatusDistribution({ summary, className = "" }) {
             pct: fulfilledPct,
             value: fulfilledValue,
             statusLabel: "Dispatched",
-            barColor: "bg-zinc-950 dark:bg-zinc-100",
-            textColor: "text-zinc-950 dark:text-zinc-100",
+            barColor: "bg-emerald-500",
+            textColor: "text-slate-900 dark:text-[#F4F5F7]",
             icon: PackageCheck,
-            iconColor: "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800",
+            iconColor: "text-emerald-500",
         },
         {
             id: "confirmed",
@@ -52,10 +52,10 @@ export function OrderStatusDistribution({ summary, className = "" }) {
             pct: confirmedPct,
             value: confirmedValue,
             statusLabel: "Reserved",
-            barColor: "bg-zinc-700 dark:bg-zinc-300",
-            textColor: "text-zinc-800 dark:text-zinc-200",
+            barColor: "bg-[#B6FF2E]",
+            textColor: "text-slate-900 dark:text-[#F4F5F7]",
             icon: Clock,
-            iconColor: "text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800",
+            iconColor: "text-lime-600 dark:text-[#B6FF2E]",
         },
         {
             id: "draft",
@@ -64,10 +64,10 @@ export function OrderStatusDistribution({ summary, className = "" }) {
             pct: draftPct,
             value: draftValue,
             statusLabel: "In Review",
-            barColor: "bg-zinc-400 dark:bg-zinc-500",
-            textColor: "text-zinc-700 dark:text-zinc-300",
+            barColor: "bg-amber-500",
+            textColor: "text-slate-900 dark:text-[#F4F5F7]",
             icon: FileEdit,
-            iconColor: "text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800",
+            iconColor: "text-amber-500",
         },
         {
             id: "efficiency",
@@ -76,85 +76,85 @@ export function OrderStatusDistribution({ summary, className = "" }) {
             pct: fulfillmentEfficiency,
             value: activeOrderBookValue,
             statusLabel: "Pipeline Rate",
-            barColor: "bg-zinc-900 dark:bg-zinc-200",
-            textColor: "text-zinc-950 dark:text-zinc-100",
+            barColor: "bg-cyan-500 dark:bg-cyan-400",
+            textColor: "text-slate-900 dark:text-[#F4F5F7]",
             icon: Activity,
-            iconColor: "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800",
+            iconColor: "text-cyan-500",
             isEfficiencyCard: true,
         },
     ];
-    return (<Card className={`flex flex-col border border-zinc-200 dark:border-zinc-800 shadow-none rounded-lg bg-white dark:bg-zinc-900 ${className}`}>
+    return (<Card className={`flex flex-col border border-slate-200 dark:border-[#323744] shadow-xs rounded-xl bg-white dark:bg-[#181A20] ${className}`}>
       {/* Compact Header */}
-      <CardHeader className="py-3 px-4 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-2">
+      <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#262A34] bg-slate-50/60 dark:bg-[#14171F]/60 space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+            <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-[#B6FF2E] border border-emerald-500/20">
               <ShoppingCart className="w-3.5 h-3.5"/>
             </div>
-            <CardTitle className="text-[13px] font-medium text-zinc-900 dark:text-zinc-100 tracking-tight">
+            <CardTitle className="text-[13px] font-semibold text-slate-900 dark:text-[#F4F5F7] tracking-tight">
               Order fulfillment distribution
             </CardTitle>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-[11px] font-mono font-medium text-zinc-700 dark:text-zinc-300">
-            <span className="inline-flex rounded-full h-1.5 w-1.5 bg-zinc-900 dark:bg-zinc-100 shrink-0"/>
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#23262F] border border-slate-200/60 dark:border-[#323744] text-[11px] font-mono font-medium text-slate-700 dark:text-[#9BA3AF]">
+            <span className="inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500 dark:bg-[#B6FF2E] shrink-0 animate-pulse"/>
             <span>{totalOrders} orders</span>
           </div>
         </div>
 
         {/* Compact Capsule Distribution Bar */}
-        <div className="w-full h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full flex gap-0.5 overflow-hidden">
+        <div className="w-full h-1.5 bg-slate-100 dark:bg-[#23262F] rounded-full flex gap-0.5 overflow-hidden">
           {totalOrders > 0 ? (<>
-              {fulfilledPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("fulfilled")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${fulfilledPct}%` }} transition={{ duration: 0.7, ease: EASING.standard }} className={`h-full bg-zinc-950 dark:bg-zinc-100 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "fulfilled" ? "opacity-30" : "opacity-100"}`} title={`Fulfilled: ${fulfilledCount} orders (${fulfilledPct}%)`}/>)}
-              {confirmedPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("confirmed")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${confirmedPct}%` }} transition={{ duration: 0.7, delay: 0.08, ease: EASING.standard }} className={`h-full bg-zinc-600 dark:bg-zinc-300 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "confirmed" ? "opacity-30" : "opacity-100"}`} title={`Confirmed: ${confirmedCount} orders (${confirmedPct}%)`}/>)}
-              {draftPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("draft")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${draftPct}%` }} transition={{ duration: 0.7, delay: 0.16, ease: EASING.standard }} className={`h-full bg-zinc-400 dark:bg-zinc-500 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "draft" ? "opacity-30" : "opacity-100"}`} title={`Draft: ${draftCount} orders (${draftPct}%)`}/>)}
-              {cancelledPct > 0 && (<motion.div initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${cancelledPct}%` }} transition={{ duration: 0.7, delay: 0.24, ease: EASING.standard }} className="h-full bg-zinc-200 dark:bg-zinc-700 rounded-full opacity-60" title={`Cancelled: ${cancelledCount} orders (${cancelledPct}%)`}/>)}
-            </>) : (<div className="w-full h-full bg-zinc-200 dark:bg-zinc-700 rounded-full opacity-40"/>)}
+              {fulfilledPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("fulfilled")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${fulfilledPct}%` }} transition={{ duration: 0.7, ease: EASING.standard }} className={`h-full bg-emerald-500 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "fulfilled" ? "opacity-30" : "opacity-100"}`} title={`Fulfilled: ${fulfilledCount} orders (${fulfilledPct}%)`}/>)}
+              {confirmedPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("confirmed")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${confirmedPct}%` }} transition={{ duration: 0.7, delay: 0.08, ease: EASING.standard }} className={`h-full bg-[#B6FF2E] rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "confirmed" ? "opacity-30" : "opacity-100"}`} title={`Confirmed: ${confirmedCount} orders (${confirmedPct}%)`}/>)}
+              {draftPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("draft")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${draftPct}%` }} transition={{ duration: 0.7, delay: 0.16, ease: EASING.standard }} className={`h-full bg-amber-500 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "draft" ? "opacity-30" : "opacity-100"}`} title={`Draft: ${draftCount} orders (${draftPct}%)`}/>)}
+              {cancelledPct > 0 && (<motion.div initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${cancelledPct}%` }} transition={{ duration: 0.7, delay: 0.24, ease: EASING.standard }} className="h-full bg-slate-300 dark:bg-[#2B303C] rounded-full opacity-60" title={`Cancelled: ${cancelledCount} orders (${cancelledPct}%)`}/>)}
+            </>) : (<div className="w-full h-full bg-slate-200 dark:bg-[#2B303C] rounded-full opacity-40"/>)}
         </div>
       </CardHeader>
 
       {/* 4 Columns Divided by Thin Hairlines (No Nested Cards) */}
       <CardContent className="p-0 flex-1 flex flex-col justify-between">
-        <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200 dark:divide-zinc-800">
+        <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 dark:divide-[#262A34]">
           {stages.map((stage) => {
             const isHovered = hoveredCard === stage.id;
             const Icon = stage.icon;
-            return (<div key={stage.id} onMouseEnter={() => setHoveredCard(stage.id)} onMouseLeave={() => setHoveredCard(null)} className={`p-3.5 transition-colors flex flex-col justify-between ${isHovered ? "bg-zinc-50/80 dark:bg-zinc-800/50" : "bg-transparent"}`}>
+            return (<div key={stage.id} onMouseEnter={() => setHoveredCard(stage.id)} onMouseLeave={() => setHoveredCard(null)} className={`p-3.5 transition-colors flex flex-col justify-between ${isHovered ? "bg-slate-50/80 dark:bg-[#23262F]/50" : "bg-transparent"}`}>
                 <div>
                   {/* Label + Pct Badge */}
                   <div className="flex items-center justify-between gap-1">
                     <div className="flex items-center gap-1.5 min-w-0">
-                      <Icon className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0"/>
-                      <span className="text-[12px] font-medium text-zinc-600 dark:text-zinc-300 truncate">
+                      <Icon className={`w-3.5 h-3.5 ${stage.iconColor} shrink-0`}/>
+                      <span className="text-[12px] font-medium text-slate-600 dark:text-[#9BA3AF] truncate">
                         {stage.shortName}
                       </span>
                     </div>
 
-                    <span className="text-[10px] font-mono font-medium text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.2 rounded">
+                    <span className="text-[10px] font-mono font-semibold text-slate-700 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23262F] border border-slate-200/50 dark:border-[#323744] px-1.5 py-0.5 rounded">
                       {stage.pct}%
                     </span>
                   </div>
 
                   {/* Big Number + Total Value */}
                   <div className="mt-1.5 flex items-baseline justify-between gap-1">
-                    <span className={`text-lg sm:text-xl font-semibold font-mono tabular-nums tracking-tight ${stage.textColor}`}>
+                    <span className={`text-lg sm:text-xl font-bold font-mono tabular-nums tracking-tight ${stage.textColor}`}>
                       {stage.isEfficiencyCard ? (<>
                           <AnimatedCounter value={stage.count}/>
-                          <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">%</span>
+                          <span className="text-xs font-medium text-slate-400 dark:text-[#7C8189]">%</span>
                         </>) : (<>
                           <AnimatedCounter value={stage.count}/>
-                          <span className="text-[10px] font-normal text-zinc-400 dark:text-zinc-500 ml-1 font-sans">orders</span>
+                          <span className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] ml-1 font-sans">orders</span>
                         </>)}
                     </span>
                   </div>
                 </div>
 
                 <div className="mt-2 space-y-1.5">
-                  <div className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 truncate">
+                  <div className="text-[11px] font-mono text-slate-400 dark:text-[#7C8189] truncate">
                     {formatINR(stage.value)}
                   </div>
                   {/* Micro Progress Line */}
-                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-0.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-100 dark:bg-[#23262F] h-1 rounded-full overflow-hidden">
                     <motion.div initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${stage.pct}%` }} transition={{ duration: 0.5, ease: EASING.standard }} className={`h-full ${stage.barColor} rounded-full`}/>
                   </div>
                 </div>
@@ -163,16 +163,16 @@ export function OrderStatusDistribution({ summary, className = "" }) {
         </div>
 
         {/* Compact Footer Strip */}
-        <div className="py-2 px-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 flex items-center justify-between text-xs">
+        <div className="py-2 px-4 border-t border-slate-100 dark:border-[#262A34] bg-slate-50/40 dark:bg-[#14171F]/40 flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Total Pipeline:</span>
-            <span className="font-semibold font-mono tabular-nums text-zinc-900 dark:text-zinc-100 text-xs">
+            <span className="text-[11px] text-slate-500 dark:text-[#9BA3AF]">Total Pipeline:</span>
+            <span className="font-semibold font-mono tabular-nums text-slate-900 dark:text-[#F4F5F7] text-xs">
               {formatINR(activeOrderBookValue)}
             </span>
           </div>
 
           <Link to="/orders">
-            <Button variant="ghost" size="sm" className="h-6 px-2 text-[11px] gap-1 font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100">
+            <Button variant="ghost" size="sm" className="h-6 px-2 text-[11px] gap-1 font-medium text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#B6FF2E]">
               Orders Console
               <ChevronRight className="w-3 h-3"/>
             </Button>

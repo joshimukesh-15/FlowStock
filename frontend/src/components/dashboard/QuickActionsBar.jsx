@@ -60,7 +60,7 @@ export function QuickActionsBar({ summary }) {
 
   return (
     <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-100/80 dark:bg-[#181A20] border border-zinc-200/80 dark:border-[#323744] text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 shrink-0">
+      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-100/80 dark:bg-[#181A20] border border-slate-200/80 dark:border-[#323744] text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] shrink-0">
         <Zap className="w-3.5 h-3.5 text-[#B6FF2E]" />
         <span>Quick Actions</span>
       </div>
@@ -72,10 +72,10 @@ export function QuickActionsBar({ summary }) {
             <Link
               key={act.label}
               to={act.href}
-              className={`group flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-xs font-medium text-zinc-800 dark:text-zinc-200 shadow-2xs hover:shadow-xs active:scale-[0.97] transition-all whitespace-nowrap cursor-pointer ${act.color}`}
+              className={`group flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-xs font-medium text-slate-800 dark:text-[#E2E8F0] shadow-2xs hover:shadow-xs active:scale-[0.97] transition-all whitespace-nowrap cursor-pointer ${act.color}`}
             >
               <div
-                className={`w-5 h-5 rounded-md flex items-center justify-center bg-zinc-100 dark:bg-zinc-800/80 ${act.accent} group-hover:scale-105 transition-transform`}
+                className={`w-5 h-5 rounded-md flex items-center justify-center bg-slate-100 dark:bg-[#23262F]/50 ${act.accent} group-hover:scale-105 transition-transform`}
               >
                 <Icon className="w-3 h-3" />
               </div>
@@ -87,7 +87,7 @@ export function QuickActionsBar({ summary }) {
                   {act.badge}
                 </span>
               ) : (
-                <Plus className="w-3 h-3 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Plus className="w-3 h-3 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
               )}
             </Link>
           );

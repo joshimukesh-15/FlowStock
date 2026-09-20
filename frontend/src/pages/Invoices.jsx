@@ -7,7 +7,7 @@ import { ReceiptText, Plus, Trash2, CheckCircle2, Clock, Ban, RefreshCw, X, Eye,
 import { fetchInvoices, fetchOrders, fetchCustomers, fetchProducts, createInvoiceApi, createInvoiceFromOrderApi, voidInvoiceApi, recordPaymentApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
-import { formatINR } from "@/lib/utils";
+import { formatINR, formatDate, selectClass } from "@/lib/utils";
 import { StatCard } from "@/components/ui/StatCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
@@ -16,6 +16,8 @@ import { Tabs } from "@/components/ui/Tabs";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
+import { FormField } from "@/components/ui/FormField";
+import { KpiGrid } from "@/components/ui/KpiGrid";
 import { motion } from "framer-motion";
 import { createStaggerContainer, slideUpVariants, pageEnterVariants, useReducedMotion } from "@/motion";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
@@ -291,7 +293,7 @@ export default function InvoicesPage() {
     return (<motion.div className="space-y-6" variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible">
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <ReceiptText className="w-7 h-7 text-zinc-900 dark:text-zinc-100"/>
+            <ReceiptText className="w-7 h-7 text-slate-900 dark:text-[#F4F5F7]"/>
             Invoices & Accounts Receivable
           </span>} subtitle="B2B GST tax invoices, accounts receivable balances, and payment collections in INR (₹)." actions={<>
             <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
@@ -310,7 +312,7 @@ export default function InvoicesPage() {
           </>}/>
 
       {/* KPI Summary Cards */}
-      <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+      <KpiGrid>
         <StatCard
           title="Total Invoiced"
           value={totalInvoiced}
@@ -345,11 +347,11 @@ export default function InvoicesPage() {
           icon={CheckCircle2}
           subText="Invoices with 0 balance"
         />
-      </motion.div>
+      </KpiGrid>
 
         {/* Table & Controls Card */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="p-4 pb-3 border-b border-zinc-100 dark:border-[#262A34]">
+          <CardHeader className="p-4 pb-3 border-b border-slate-100 dark:border-[#262A34]">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={[
@@ -373,8 +375,8 @@ export default function InvoicesPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Invoice
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-zinc-700 dark:text-zinc-300">
-                  <thead className="bg-zinc-50 dark:bg-[#1C1F27] text-[11px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider border-b border-zinc-100 dark:border-[#2A2E39]">
+                <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
+                  <thead className="bg-slate-50 dark:bg-[#1C1F27] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#2A2E39]">
                     <tr>
                       <th className="py-2.5 px-3.5 font-semibold">Invoice #</th>
                       <th className="py-2.5 px-3.5 font-semibold">Customer</th>
@@ -387,61 +389,53 @@ export default function InvoicesPage() {
                       <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
-                    {filteredInvoices.map((inv) => (<tr key={inv.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors group">
-                        <td className="py-2.5 px-3.5 font-mono font-medium text-zinc-900 dark:text-zinc-100 whitespace-nowrap">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
+                    {filteredInvoices.map((inv) => (<tr key={inv.id} className="hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors group">
+                        <td className="py-2.5 px-3.5 font-mono font-medium text-slate-900 dark:text-[#F4F5F7] whitespace-nowrap">
                           {inv.invoice_number}
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-sans mt-0.5">
-                            {new Date(inv.issue_date).toLocaleDateString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                })}
+                          <div className="text-[10px] text-slate-400 dark:text-[#7C8189] font-sans mt-0.5">
+                            {formatDate(inv.issue_date)}
                           </div>
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                          <span className="font-semibold text-slate-900 dark:text-[#F4F5F7]">
                             {inv.customer?.name || "B2B Customer"}
                           </span>
-                          <div className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                          <div className="text-[11px] text-slate-400 dark:text-[#7C8189]">
                             {inv.customer?.company || "Corporate Account"}
                           </div>
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap">
-                          {inv.order ? (<span className="font-mono text-[11px] bg-zinc-100 dark:bg-[#20242D] border border-zinc-200 dark:border-[#323744] text-zinc-800 dark:text-zinc-200 px-2 py-0.5 rounded inline-block whitespace-nowrap font-medium">
+                          {inv.order ? (<span className="font-mono text-[11px] bg-slate-100 dark:bg-[#20242D] border border-slate-200 dark:border-[#323744] text-slate-800 dark:text-[#E2E8F0] px-2 py-0.5 rounded inline-block whitespace-nowrap font-medium">
                               {inv.order.order_number}
-                            </span>) : (<span className="text-xs text-zinc-400 dark:text-zinc-500">Direct Invoice</span>)}
+                            </span>) : (<span className="text-xs text-slate-400 dark:text-[#7C8189]">Direct Invoice</span>)}
                         </td>
-                        <td className="py-2.5 px-3.5 font-semibold text-zinc-900 dark:text-zinc-100 font-mono whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-semibold text-slate-900 dark:text-[#F4F5F7] font-mono whitespace-nowrap">
                           {formatINR(inv.total_amount)}
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-normal">
+                          <div className="text-[10px] text-slate-400 dark:text-[#7C8189] font-normal">
                             incl. {inv.tax_rate}% GST
                           </div>
                         </td>
-                        <td className="py-2.5 px-3.5 font-medium text-zinc-900 dark:text-zinc-100 font-mono whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-medium text-slate-900 dark:text-[#F4F5F7] font-mono whitespace-nowrap">
                           {formatINR(inv.paid_amount)}
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap font-mono">
-                          <span className={`font-semibold ${inv.balance_due > 0 ? "text-zinc-950 dark:text-white font-bold" : "text-zinc-400 dark:text-zinc-500"}`}>
+                          <span className={`font-semibold ${inv.balance_due > 0 ? "text-slate-950 dark:text-white font-bold" : "text-slate-400 dark:text-[#7C8189]"}`}>
                             {formatINR(inv.balance_due)}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3.5 text-xs text-zinc-600 dark:text-zinc-400 whitespace-nowrap">
-                          {new Date(inv.due_date).toLocaleDateString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                })}
+                        <td className="py-2.5 px-3.5 text-xs text-slate-600 dark:text-[#9BA3AF] whitespace-nowrap">
+                          {formatDate(inv.due_date)}
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap"><StatusBadge status={inv.status} type="invoice" /></td>
                         <td className="py-2.5 px-3.5 text-right whitespace-nowrap space-x-1">
                           <Button size="sm" variant="outline" onClick={() => setViewInvoice(inv)} className="h-6.5 px-2 text-xs">
                             <Eye className="w-3 h-3 mr-1"/> View
                           </Button>
-                          {inv.balance_due > 0 && inv.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(inv)} className="h-6.5 px-2 text-xs bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 font-medium shadow-xs">
+                          {inv.balance_due > 0 && inv.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(inv)} className="h-6.5 px-2 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
                               <CreditCard className="w-3 h-3 mr-1"/> Pay
                             </Button>)}
-                          {inv.paid_amount === 0 && inv.status !== "VOID" && (<Button size="sm" variant="outline" onClick={() => handleVoidInvoice(inv.id)} disabled={actionLoading === inv.id} className="h-6.5 px-1.5 text-xs border border-zinc-300 dark:border-zinc-700 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white">
+                          {inv.paid_amount === 0 && inv.status !== "VOID" && (<Button size="sm" variant="outline" onClick={() => handleVoidInvoice(inv.id)} disabled={actionLoading === inv.id} className="h-6.5 px-1.5 text-xs border border-slate-300 dark:border-[#3A404F] text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white">
                               <Ban className="w-3 h-3"/>
                             </Button>)}
                         </td>
@@ -456,23 +450,23 @@ export default function InvoicesPage() {
         <Modal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} maxWidth="2xl">
           <div className="flex flex-col max-h-[90vh]">
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 bg-zinc-50/60">
-                <div className="flex items-center gap-2 text-zinc-900 font-bold">
-                  <div className="w-7 h-7 rounded-md bg-zinc-950 text-white flex items-center justify-center shadow-xs">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/60">
+                <div className="flex items-center gap-2 text-slate-900 font-bold">
+                  <div className="w-7 h-7 rounded-md bg-slate-950 text-white flex items-center justify-center shadow-xs">
                     <ReceiptText className="w-4 h-4"/>
                   </div>
                   Generate B2B GST Tax Invoice
                 </div>
-                <button onClick={() => setCreateModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
+                <button onClick={() => setCreateModalOpen(false)} className="text-slate-400 hover:text-slate-700">
                   <X className="w-5 h-5"/>
                 </button>
               </div>
 
               {/* Mode Tabs */}
-              <div className="px-6 pt-4 flex gap-2 border-b border-zinc-100">
+              <div className="px-6 pt-4 flex gap-2 border-b border-slate-100">
                 <button onClick={() => setCreateTab("order")} className={`pb-2 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${createTab === "order"
-            ? "border-zinc-900 text-zinc-900"
-            : "border-transparent text-zinc-500 hover:text-zinc-800"}`}>
+            ? "border-zinc-900 text-slate-900"
+            : "border-transparent text-slate-500 hover:text-slate-800"}`}>
                   From Confirmed Sales Order
                 </button>
                 <button onClick={() => {
@@ -480,8 +474,8 @@ export default function InvoicesPage() {
             if (customItems.length === 0)
                 handleAddCustomItem();
         }} className={`pb-2 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${createTab === "custom"
-            ? "border-zinc-900 text-zinc-900"
-            : "border-transparent text-zinc-500 hover:text-zinc-800"}`}>
+            ? "border-zinc-900 text-slate-900"
+            : "border-transparent text-slate-500 hover:text-slate-800"}`}>
                   Custom Line Items Invoice
                 </button>
               </div>
@@ -494,12 +488,12 @@ export default function InvoicesPage() {
                 {/* Tab 1: From Sales Order */}
                 {createTab === "order" ? (<form onSubmit={handleCreateFromOrder} className="space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                         Select Confirmed Sales Order *
                       </label>
-                      {eligibleOrdersForInvoice.length === 0 ? (<div className="p-4 text-xs bg-zinc-50 border border-zinc-200 text-zinc-700 rounded-lg">
+                      {eligibleOrdersForInvoice.length === 0 ? (<div className="p-4 text-xs bg-slate-50 border border-slate-200 text-slate-700 rounded-lg">
                           No confirmed or fulfilled sales orders found to invoice. You can create a custom line item invoice using the tab above or confirm an order in Orders & Sales.
-                        </div>) : (<select value={selectedOrderId} onChange={(e) => setSelectedOrderId(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
+                        </div>) : (<select value={selectedOrderId} onChange={(e) => setSelectedOrderId(e.target.value)} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
                           {eligibleOrdersForInvoice.map((o) => (<option key={o.id} value={o.id}>
                               {o.order_number} &bull; {o.customer?.name} ({formatINR(o.total_amount)}) [{o.status}]
                             </option>))}
@@ -507,10 +501,10 @@ export default function InvoicesPage() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                         GST Tax Rate (%)
                       </label>
-                      <select value={orderTaxRate} onChange={(e) => setOrderTaxRate(parseFloat(e.target.value))} className="w-full bg-white border border-zinc-300 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
+                      <select value={orderTaxRate} onChange={(e) => setOrderTaxRate(parseFloat(e.target.value))} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
                         <option value={18.0}>18% GST (Standard B2B Goods & Services)</option>
                         <option value={12.0}>12% GST (Processed Industrial Goods)</option>
                         <option value={5.0}>5% GST (Essential Commodities)</option>
@@ -519,23 +513,23 @@ export default function InvoicesPage() {
                       </select>
                     </div>
 
-                    <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-200 text-xs space-y-1.5">
-                      <div className="text-zinc-400">
+                    <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1.5">
+                      <div className="text-slate-400">
                         • Automatically copies customer billing and shipping address.
                       </div>
-                      <div className="text-zinc-400">
+                      <div className="text-slate-400">
                         • Generates invoice line items matching order product specifications and rates.
                       </div>
-                      <div className="text-zinc-400">
+                      <div className="text-slate-400">
                         • Defaults payment terms to Net 30 days.
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-100">
-                      <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)} className="border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                      <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)} className="border-slate-200 bg-white hover:bg-slate-50 text-slate-700">
                         Cancel
                       </Button>
-                      <Button type="submit" isLoading={creating} disabled={eligibleOrdersForInvoice.length === 0} className="bg-zinc-950 hover:bg-black text-white font-medium shadow-xs">
+                      <Button type="submit" isLoading={creating} disabled={eligibleOrdersForInvoice.length === 0} className="bg-slate-950 hover:bg-black text-white font-medium shadow-xs">
                         {creating ? "Generating..." : "Generate Tax Invoice"}
                       </Button>
                     </div>
@@ -544,10 +538,10 @@ export default function InvoicesPage() {
         <form onSubmit={handleCreateCustomInvoice} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                           Select B2B Customer *
                         </label>
-                        <select value={selectedCustomerId} onChange={(e) => setSelectedCustomerId(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
+                        <select value={selectedCustomerId} onChange={(e) => setSelectedCustomerId(e.target.value)} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
                           {customers.map((c) => (<option key={c.id} value={c.id}>
                               {c.name} ({c.company || "Client"})
                             </option>))}
@@ -555,10 +549,10 @@ export default function InvoicesPage() {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                           GST Tax Rate (%)
                         </label>
-                        <select value={customTaxRate} onChange={(e) => setCustomTaxRate(parseFloat(e.target.value))} className="w-full bg-white border border-zinc-300 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
+                        <select value={customTaxRate} onChange={(e) => setCustomTaxRate(parseFloat(e.target.value))} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
                           <option value={18.0}>18% GST (Standard)</option>
                           <option value={12.0}>12% GST</option>
                           <option value={5.0}>5% GST</option>
@@ -571,30 +565,30 @@ export default function InvoicesPage() {
                     {/* Dynamic Line Items */}
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
                           Invoice Line Items ({customItems.length})
                         </label>
-                        <Button type="button" size="sm" variant="outline" onClick={handleAddCustomItem} className="h-7 text-xs border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-900 font-medium">
+                        <Button type="button" size="sm" variant="outline" onClick={handleAddCustomItem} className="h-7 text-xs border-slate-300 bg-white hover:bg-slate-50 text-slate-900 font-medium">
                           <Plus className="w-3.5 h-3.5 mr-1"/> Add Line Item
                         </Button>
                       </div>
 
                       <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-                        {customItems.map((item, idx) => (<div key={idx} className="p-3 rounded-lg bg-zinc-50 border border-zinc-200 grid grid-cols-12 gap-2 items-center text-xs">
+                        {customItems.map((item, idx) => (<div key={idx} className="p-3 rounded-lg bg-slate-50 border border-slate-200 grid grid-cols-12 gap-2 items-center text-xs">
                             <div className="col-span-5">
-                              <Input placeholder="Description" value={item.description} onChange={(e) => handleUpdateCustomItem(idx, "description", e.target.value)} className="bg-white border-zinc-300 text-xs h-8 text-zinc-800" required/>
+                              <Input placeholder="Description" value={item.description} onChange={(e) => handleUpdateCustomItem(idx, "description", e.target.value)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
                             </div>
                             <div className="col-span-2">
-                              <Input type="number" min="1" placeholder="Qty" value={item.quantity} onChange={(e) => handleUpdateCustomItem(idx, "quantity", parseInt(e.target.value) || 1)} className="bg-white border-zinc-300 text-xs h-8 text-zinc-800" required/>
+                              <Input type="number" min="1" placeholder="Qty" value={item.quantity} onChange={(e) => handleUpdateCustomItem(idx, "quantity", parseInt(e.target.value) || 1)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
                             </div>
                             <div className="col-span-3">
-                              <Input type="number" step="0.01" min="0" placeholder="Unit Rate (₹)" value={item.unit_price} onChange={(e) => handleUpdateCustomItem(idx, "unit_price", parseFloat(e.target.value) || 0)} className="bg-white border-zinc-300 text-xs h-8 text-zinc-800" required/>
+                              <Input type="number" step="0.01" min="0" placeholder="Unit Rate (₹)" value={item.unit_price} onChange={(e) => handleUpdateCustomItem(idx, "unit_price", parseFloat(e.target.value) || 0)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
                             </div>
                             <div className="col-span-2 text-right flex items-center justify-end gap-2">
-                              <span className="font-semibold text-zinc-900">
+                              <span className="font-semibold text-slate-900">
                                 {formatINR((item.quantity || 0) * (item.unit_price || 0))}
                               </span>
-                              <button type="button" onClick={() => handleRemoveCustomItem(idx)} className="text-zinc-400 hover:text-black">
+                              <button type="button" onClick={() => handleRemoveCustomItem(idx)} className="text-slate-400 hover:text-black">
                                 <Trash2 className="w-3.5 h-3.5"/>
                               </button>
                             </div>
@@ -603,33 +597,33 @@ export default function InvoicesPage() {
                     </div>
 
                     {/* Financial Summary */}
-                    <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-200 text-xs space-y-1">
-                      <div className="flex justify-between text-zinc-500">
+                    <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1">
+                      <div className="flex justify-between text-slate-500">
                         <span>Subtotal:</span>
-                        <span className="font-medium text-zinc-800">{formatINR(customSubtotal)}</span>
+                        <span className="font-medium text-slate-800">{formatINR(customSubtotal)}</span>
                       </div>
-                      <div className="flex justify-between text-zinc-500">
+                      <div className="flex justify-between text-slate-500">
                         <span>GST ({customTaxRate}%):</span>
-                        <span className="font-medium text-zinc-800">{formatINR(customTax)}</span>
+                        <span className="font-medium text-slate-800">{formatINR(customTax)}</span>
                       </div>
-                      <div className="flex justify-between text-zinc-900 font-bold text-sm pt-2 border-t border-zinc-200">
+                      <div className="flex justify-between text-slate-900 font-bold text-sm pt-2 border-t border-slate-200">
                         <span>Total Invoice Amount:</span>
-                        <span className="text-zinc-950 font-bold">{formatINR(customTotal)}</span>
+                        <span className="text-slate-950 font-bold">{formatINR(customTotal)}</span>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                         Invoice Remarks / Payment Terms
                       </label>
-                      <Input placeholder="Payment due within 30 days via NEFT/RTGS" value={customNotes} onChange={(e) => setCustomNotes(e.target.value)} className="bg-white border-zinc-300 text-sm text-zinc-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950"/>
+                      <Input placeholder="Payment due within 30 days via NEFT/RTGS" value={customNotes} onChange={(e) => setCustomNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950"/>
                     </div>
 
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-100">
-                      <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)} className="border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700">
+                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                      <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)} className="border-slate-200 bg-white hover:bg-slate-50 text-slate-700">
                         Cancel
                       </Button>
-                      <Button type="submit" isLoading={creating} disabled={customItems.length === 0} className="bg-zinc-950 hover:bg-black text-white font-medium shadow-xs">
+                      <Button type="submit" isLoading={creating} disabled={customItems.length === 0} className="bg-slate-950 hover:bg-black text-white font-medium shadow-xs">
                         {creating ? "Creating..." : "Create & Post Invoice"}
                       </Button>
                     </div>
@@ -641,14 +635,14 @@ export default function InvoicesPage() {
         {/* Modal 2: Record Payment Modal */}
         <Modal isOpen={paymentModalOpen && !!paymentInvoice} onClose={() => setPaymentModalOpen(false)} maxWidth="md">
           {paymentInvoice && (<div>
-              <div className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-100 bg-zinc-50/70">
-                <div className="flex items-center gap-2.5 text-zinc-900 font-bold text-sm">
-                  <div className="w-7 h-7 rounded-md bg-zinc-950 text-white flex items-center justify-center shadow-xs">
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-slate-50/70">
+                <div className="flex items-center gap-2.5 text-slate-900 font-bold text-sm">
+                  <div className="w-7 h-7 rounded-md bg-slate-950 text-white flex items-center justify-center shadow-xs">
                     <CreditCard className="w-4 h-4"/>
                   </div>
                   Record Payment Receipt
                 </div>
-                <button onClick={() => setPaymentModalOpen(false)} className="text-zinc-400 hover:text-zinc-700 p-1 rounded-md transition-colors">
+                <button onClick={() => setPaymentModalOpen(false)} className="text-slate-400 hover:text-slate-700 p-1 rounded-md transition-colors">
                   <X className="w-4 h-4"/>
                 </button>
               </div>
@@ -659,26 +653,26 @@ export default function InvoicesPage() {
                   </Alert>)}
 
                 {/* Summary Banner */}
-                <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-200 text-xs space-y-1.5">
-                  <div className="flex justify-between items-center text-zinc-500">
+                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1.5">
+                  <div className="flex justify-between items-center text-slate-500">
                     <span>Invoice:</span>
-                    <span className="font-mono text-zinc-900 font-semibold">
+                    <span className="font-mono text-slate-900 font-semibold">
                       {paymentInvoice.invoice_number}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center text-zinc-500">
+                  <div className="flex justify-between items-center text-slate-500">
                     <span>Customer:</span>
-                    <span className="text-zinc-800 font-medium">{paymentInvoice.customer?.name}</span>
+                    <span className="text-slate-800 font-medium">{paymentInvoice.customer?.name}</span>
                   </div>
-                  <div className="flex justify-between items-center text-zinc-500">
+                  <div className="flex justify-between items-center text-slate-500">
                     <span>Total Bill:</span>
-                    <span className="text-zinc-800 font-medium">{formatINR(paymentInvoice.total_amount)}</span>
+                    <span className="text-slate-800 font-medium">{formatINR(paymentInvoice.total_amount)}</span>
                   </div>
-                  <div className="flex justify-between items-center pt-2 border-t border-zinc-200">
-                    <span className="font-bold text-zinc-700 uppercase tracking-wider text-[10px]">
+                  <div className="flex justify-between items-center pt-2 border-t border-slate-200">
+                    <span className="font-bold text-slate-700 uppercase tracking-wider text-[10px]">
                       Outstanding Balance Due:
                     </span>
-                    <span className="font-bold text-sm text-zinc-950">
+                    <span className="font-bold text-sm text-slate-950">
                       {formatINR(paymentInvoice.balance_due)}
                     </span>
                   </div>
@@ -687,27 +681,27 @@ export default function InvoicesPage() {
                 {/* Payment Amount */}
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
                       Payment Amount (₹) *
                     </label>
-                    <button type="button" onClick={() => setPayAmount(paymentInvoice.balance_due)} className="text-[11px] font-medium text-zinc-900 hover:underline cursor-pointer">
+                    <button type="button" onClick={() => setPayAmount(paymentInvoice.balance_due)} className="text-[11px] font-medium text-slate-900 hover:underline cursor-pointer">
                       Pay Full ({formatINR(paymentInvoice.balance_due)})
                     </button>
                   </div>
                   <div className="relative">
-                    <span className="absolute left-3 top-2 text-zinc-500 text-sm font-semibold">
+                    <span className="absolute left-3 top-2 text-slate-500 text-sm font-semibold">
                       ₹
                     </span>
-                    <Input type="number" step="0.01" min="0.01" max={paymentInvoice.balance_due} value={payAmount} onChange={(e) => setPayAmount(parseFloat(e.target.value) || 0)} className="pl-8 bg-white border-zinc-300 text-sm text-zinc-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9" required/>
+                    <Input type="number" step="0.01" min="0.01" max={paymentInvoice.balance_due} value={payAmount} onChange={(e) => setPayAmount(parseFloat(e.target.value) || 0)} className="pl-8 bg-white border-slate-300 text-sm text-slate-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9" required/>
                   </div>
                 </div>
 
                 {/* Payment Method */}
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                     Settlement Method *
                   </label>
-                  <select value={payMethod} onChange={(e) => setPayMethod(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-lg px-3 py-2 text-sm text-zinc-900 font-medium focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950 h-9">
+                  <select value={payMethod} onChange={(e) => setPayMethod(e.target.value)} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 font-medium focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950 h-9">
                     {PAYMENT_METHODS.map((m) => (<option key={m.value} value={m.value}>
                         {m.label}
                       </option>))}
@@ -716,24 +710,24 @@ export default function InvoicesPage() {
 
                 {/* Transaction Reference (UTR / Cheque #) */}
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                     Bank Reference / UTR / Cheque Number *
                   </label>
-                  <Input placeholder="e.g. UTR-HDFC8823101" value={payReference} onChange={(e) => setPayReference(e.target.value)} className="bg-white border-zinc-300 text-sm text-zinc-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9" required/>
+                  <Input placeholder="e.g. UTR-HDFC8823101" value={payReference} onChange={(e) => setPayReference(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9" required/>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                     Receipt Notes (Optional)
                   </label>
-                  <Input placeholder="Remittance received in corporate account" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} className="bg-white border-zinc-300 text-sm text-zinc-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9"/>
+                  <Input placeholder="Remittance received in corporate account" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9"/>
                 </div>
 
-                <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-zinc-100">
-                  <Button type="button" variant="outline" onClick={() => setPaymentModalOpen(false)} className="border-zinc-300 bg-white hover:bg-zinc-100 text-zinc-700 text-xs h-8 px-3">
+                <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-100">
+                  <Button type="button" variant="outline" onClick={() => setPaymentModalOpen(false)} className="border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs h-8 px-3">
                     Cancel
                   </Button>
-                  <Button type="submit" isLoading={recordingPayment} disabled={payAmount <= 0} className="bg-zinc-950 hover:bg-black text-white font-medium text-xs h-8 px-4 shadow-xs">
+                  <Button type="submit" isLoading={recordingPayment} disabled={payAmount <= 0} className="bg-slate-950 hover:bg-black text-white font-medium text-xs h-8 px-4 shadow-xs">
                     {recordingPayment ? "Recording..." : "Record & Apply Payment"}
                   </Button>
                 </div>
@@ -745,72 +739,64 @@ export default function InvoicesPage() {
         <Modal isOpen={!!viewInvoice} onClose={() => setViewInvoice(null)} maxWidth="3xl">
           {viewInvoice && (<div className="flex flex-col max-h-[90vh]">
               {/* Header with Print / Close Buttons */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 bg-zinc-50/50">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
                 <div className="flex items-center gap-2.5">
-                  <ReceiptText className="w-5 h-5 text-zinc-900"/>
-                  <span className="font-mono text-lg font-bold text-zinc-900">
+                  <ReceiptText className="w-5 h-5 text-slate-900"/>
+                  <span className="font-mono text-lg font-bold text-slate-900">
                     {viewInvoice.invoice_number}
                   </span>
                   <StatusBadge status={viewInvoice.status} type="invoice" />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline" onClick={() => window.print()} className="text-xs border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-50">
+                  <Button size="sm" variant="outline" onClick={() => window.print()} className="text-xs border-slate-300 bg-white text-slate-700 hover:bg-slate-50">
                     Print / Export
                   </Button>
-                  {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="text-xs bg-zinc-950 hover:bg-black text-white font-medium shadow-xs">
+                  {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="text-xs bg-slate-950 hover:bg-black text-white font-medium shadow-xs">
                       <CreditCard className="w-3.5 h-3.5 mr-1"/> Record Payment
                     </Button>)}
-                  <button onClick={() => setViewInvoice(null)} className="text-zinc-400 hover:text-zinc-700 p-1">
+                  <button onClick={() => setViewInvoice(null)} className="text-slate-400 hover:text-slate-700 p-1">
                     <X className="w-5 h-5"/>
                   </button>
                 </div>
               </div>
 
               {/* Printable B2B Tax Invoice Body */}
-              <div className="p-8 overflow-y-auto flex-1 space-y-6 bg-zinc-50/30 text-zinc-700 text-xs">
+              <div className="p-8 overflow-y-auto flex-1 space-y-6 bg-slate-50/30 text-slate-700 text-xs">
                 {/* Invoice Meta Banner */}
-                <div className="flex flex-col sm:flex-row justify-between gap-4 pb-6 border-b border-zinc-100">
+                <div className="flex flex-col sm:flex-row justify-between gap-4 pb-6 border-b border-slate-100">
                   <div>
-                    <h2 className="text-xl font-bold text-zinc-900 tracking-wide">
+                    <h2 className="text-xl font-bold text-slate-900 tracking-wide">
                       TAX INVOICE
                     </h2>
-                    <p className="text-zinc-500 text-xs mt-0.5">
+                    <p className="text-slate-500 text-xs mt-0.5">
                       FlowStock B2B SaaS Enterprise Distribution
                     </p>
-                    <p className="text-zinc-500 mt-1">
-                      GSTIN: <span className="font-mono text-zinc-700">27AABCF1234F1Z8</span>
+                    <p className="text-slate-500 mt-1">
+                      GSTIN: <span className="font-mono text-slate-700">27AABCF1234F1Z8</span>
                     </p>
                   </div>
                   <div className="sm:text-right space-y-1">
                     <div>
-                      <span className="text-zinc-500">Invoice Number: </span>
-                      <span className="font-mono font-bold text-zinc-900">
+                      <span className="text-slate-500">Invoice Number: </span>
+                      <span className="font-mono font-bold text-slate-900">
                         {viewInvoice.invoice_number}
                       </span>
                     </div>
                     <div>
-                      <span className="text-zinc-500">Issue Date: </span>
-                      <span className="text-zinc-700">
-                        {new Date(viewInvoice.issue_date).toLocaleDateString("en-IN", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-            })}
+                      <span className="text-slate-500">Issue Date: </span>
+                      <span className="text-slate-700">
+                        {formatDate(viewInvoice.issue_date)}
                       </span>
                     </div>
                     <div>
-                      <span className="text-zinc-500">Due Date: </span>
-                      <span className="text-zinc-700">
-                        {new Date(viewInvoice.due_date).toLocaleDateString("en-IN", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-            })}
+                      <span className="text-slate-500">Due Date: </span>
+                      <span className="text-slate-700">
+                        {formatDate(viewInvoice.due_date)}
                       </span>
                     </div>
                     {viewInvoice.order && (<div>
-                        <span className="text-zinc-500">Order Ref: </span>
-                        <span className="font-mono text-zinc-700">
+                        <span className="text-slate-500">Order Ref: </span>
+                        <span className="font-mono text-slate-700">
                           {viewInvoice.order.order_number}
                         </span>
                       </div>)}
@@ -818,43 +804,43 @@ export default function InvoicesPage() {
                 </div>
 
                 {/* Customer Bill To & Ship To */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg bg-zinc-50 border border-zinc-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg bg-slate-50 border border-slate-200">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 block mb-1">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
                       Billed To (Consignee):
                     </span>
-                    <p className="font-bold text-zinc-900 text-sm">
+                    <p className="font-bold text-slate-900 text-sm">
                       {viewInvoice.customer?.name}
                     </p>
-                    <p className="text-zinc-600">
+                    <p className="text-slate-600">
                       {viewInvoice.customer?.company || "Commercial Account"}
                     </p>
-                    <p className="text-zinc-500 mt-1">
+                    <p className="text-slate-500 mt-1">
                       {viewInvoice.customer?.billing_address || "Corporate Headquarters"}
                     </p>
-                    <p className="text-zinc-500 mt-1">
+                    <p className="text-slate-500 mt-1">
                       Email: {viewInvoice.customer?.email} &bull; Phone: {viewInvoice.customer?.phone || "N/A"}
                     </p>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 block mb-1">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
                       Shipping / Delivery Destination:
                     </span>
-                    <p className="text-zinc-700">
+                    <p className="text-slate-700">
                       {viewInvoice.customer?.shipping_address ||
                 viewInvoice.customer?.billing_address ||
                 "Site Receiving Facility"}
                     </p>
-                    <p className="text-zinc-500 mt-2">
-                      Place of Supply: <span className="text-zinc-700">Maharashtra (27)</span>
+                    <p className="text-slate-500 mt-2">
+                      Place of Supply: <span className="text-slate-700">Maharashtra (27)</span>
                     </p>
                   </div>
                 </div>
 
                 {/* Line Items Table */}
-                <div className="rounded-lg border border-zinc-200 overflow-hidden">
+                <div className="rounded-lg border border-slate-200 overflow-hidden">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-zinc-50 text-zinc-500 uppercase tracking-wider border-b border-zinc-100">
+                    <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-100">
                       <tr>
                         <th className="py-2.5 px-3">#</th>
                         <th className="py-2.5 px-3">Item Description</th>
@@ -863,15 +849,15 @@ export default function InvoicesPage() {
                         <th className="py-2.5 px-3 text-right">Amount (₹)</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-100 bg-white">
+                    <tbody className="divide-y divide-slate-100 bg-white">
                       {viewInvoice.items.map((it, idx) => (<tr key={it.id || idx}>
-                          <td className="py-2 px-3 text-zinc-500">{idx + 1}</td>
-                          <td className="py-2 px-3 font-medium text-zinc-900">
+                          <td className="py-2 px-3 text-slate-500">{idx + 1}</td>
+                          <td className="py-2 px-3 font-medium text-slate-900">
                             {it.description}
                           </td>
                           <td className="py-2 px-3 text-center">{it.quantity}</td>
                           <td className="py-2 px-3 text-right">{formatINR(it.unit_price)}</td>
-                          <td className="py-2 px-3 text-right font-semibold text-zinc-900">
+                          <td className="py-2 px-3 text-right font-semibold text-slate-900">
                             {formatINR(it.subtotal)}
                           </td>
                         </tr>))}
@@ -881,39 +867,39 @@ export default function InvoicesPage() {
 
                 {/* Totals & Tax Calculation Breakdown */}
                 <div className="flex flex-col sm:flex-row justify-between gap-6 pt-2">
-                  <div className="text-zinc-500 space-y-1">
-                    <p className="font-semibold text-zinc-700">Payment Terms & Notes:</p>
-                    <p className="text-zinc-600">{viewInvoice.notes || "Standard B2B terms apply."}</p>
-                    <p className="text-[11px] text-zinc-500 pt-2">
+                  <div className="text-slate-500 space-y-1">
+                    <p className="font-semibold text-slate-700">Payment Terms & Notes:</p>
+                    <p className="text-slate-600">{viewInvoice.notes || "Standard B2B terms apply."}</p>
+                    <p className="text-[11px] text-slate-500 pt-2">
                       Beneficiary: FlowStock Operations Pvt Ltd &bull; Bank: HDFC Bank
                     </p>
                   </div>
-                  <div className="w-full sm:w-72 space-y-2 bg-zinc-50 p-4 rounded-lg border border-zinc-200">
-                    <div className="flex justify-between text-zinc-500">
+                  <div className="w-full sm:w-72 space-y-2 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div className="flex justify-between text-slate-500">
                       <span>Taxable Subtotal:</span>
                       <span>{formatINR(viewInvoice.subtotal)}</span>
                     </div>
-                    <div className="flex justify-between text-zinc-500">
+                    <div className="flex justify-between text-slate-500">
                       <span>CGST ({viewInvoice.tax_rate / 2}%):</span>
                       <span>{formatINR(viewInvoice.tax_amount / 2)}</span>
                     </div>
-                    <div className="flex justify-between text-zinc-500">
+                    <div className="flex justify-between text-slate-500">
                       <span>SGST ({viewInvoice.tax_rate / 2}%):</span>
                       <span>{formatINR(viewInvoice.tax_amount / 2)}</span>
                     </div>
-                    <div className="flex justify-between text-zinc-900 font-bold text-sm pt-2 border-t border-zinc-200">
+                    <div className="flex justify-between text-slate-900 font-bold text-sm pt-2 border-t border-slate-200">
                       <span>Grand Total:</span>
-                      <span className="text-zinc-950">
+                      <span className="text-slate-950">
                         {formatINR(viewInvoice.total_amount)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-zinc-700 pt-1">
+                    <div className="flex justify-between text-slate-700 pt-1">
                       <span>Amount Received:</span>
                       <span>{formatINR(viewInvoice.paid_amount)}</span>
                     </div>
-                    <div className="flex justify-between font-bold pt-1 border-t border-zinc-200">
-                      <span className="text-zinc-700">Balance Payable:</span>
-                      <span className={viewInvoice.balance_due > 0 ? "text-zinc-950 font-bold" : "text-zinc-400"}>
+                    <div className="flex justify-between font-bold pt-1 border-t border-slate-200">
+                      <span className="text-slate-700">Balance Payable:</span>
+                      <span className={viewInvoice.balance_due > 0 ? "text-slate-950 font-bold" : "text-slate-400"}>
                         {formatINR(viewInvoice.balance_due)}
                       </span>
                     </div>
@@ -921,14 +907,14 @@ export default function InvoicesPage() {
                 </div>
 
                 {/* Payment History Audit Ledger */}
-                <div className="pt-4 border-t border-zinc-100">
-                  <h4 className="font-semibold text-zinc-900 uppercase tracking-wider text-xs mb-3 flex items-center gap-1.5">
-                    <ArrowDownLeft className="w-4 h-4 text-zinc-900"/>
+                <div className="pt-4 border-t border-slate-100">
+                  <h4 className="font-semibold text-slate-900 uppercase tracking-wider text-xs mb-3 flex items-center gap-1.5">
+                    <ArrowDownLeft className="w-4 h-4 text-slate-900"/>
                     Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
                   </h4>
-                  {(!viewInvoice.payments || viewInvoice.payments.length === 0) ? (<EmptyState compact icon={ArrowDownLeft} title="No payments recorded yet" description="Record a payment remittance against this invoice to settle the balance due."/>) : (<div className="rounded-lg border border-zinc-200 overflow-hidden">
+                  {(!viewInvoice.payments || viewInvoice.payments.length === 0) ? (<EmptyState compact icon={ArrowDownLeft} title="No payments recorded yet" description="Record a payment remittance against this invoice to settle the balance due."/>) : (<div className="rounded-lg border border-slate-200 overflow-hidden">
                       <table className="w-full text-left text-xs">
-                        <thead className="bg-zinc-50 text-zinc-400 uppercase tracking-wider border-b border-zinc-100">
+                        <thead className="bg-slate-50 text-slate-400 uppercase tracking-wider border-b border-slate-100">
                           <tr>
                             <th className="py-2 px-3">Receipt #</th>
                             <th className="py-2 px-3">Date</th>
@@ -937,23 +923,19 @@ export default function InvoicesPage() {
                             <th className="py-2 px-3 text-right">Amount (₹)</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-100 bg-white">
+                        <tbody className="divide-y divide-slate-100 bg-white">
                           {viewInvoice.payments.map((pay) => (<tr key={pay.id}>
-                              <td className="py-2 px-3 font-mono text-zinc-900">
+                              <td className="py-2 px-3 font-mono text-slate-900">
                                 {pay.payment_number}
                               </td>
-                              <td className="py-2 px-3 text-zinc-400">
-                                {new Date(pay.payment_date).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                    })}
+                              <td className="py-2 px-3 text-slate-400">
+                                {formatDate(pay.payment_date)}
                               </td>
                               <td className="py-2 px-3">{pay.payment_method}</td>
-                              <td className="py-2 px-3 font-mono text-zinc-700">
+                              <td className="py-2 px-3 font-mono text-slate-700">
                                 {pay.reference}
                               </td>
-                              <td className="py-2 px-3 text-right font-semibold text-zinc-900">
+                              <td className="py-2 px-3 text-right font-semibold text-slate-900">
                                 {formatINR(pay.amount)}
                               </td>
                             </tr>))}

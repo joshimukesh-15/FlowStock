@@ -48,7 +48,7 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
                 return <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5"/>;
             case "info":
             default:
-                return <Info className="w-4 h-4 text-zinc-300 shrink-0 mt-0.5"/>;
+                return <Info className="w-4 h-4 text-slate-300 shrink-0 mt-0.5"/>;
         }
     };
     const getProgressBarColor = () => {
@@ -90,31 +90,31 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
           <span className="text-xs font-semibold text-white tracking-tight truncate">
             {toast.title}
           </span>
-          <span className="text-[10px] text-zinc-500 shrink-0 font-mono">
+          <span className="text-[10px] text-slate-500 shrink-0 font-mono">
             {toast.timestamp}
           </span>
         </div>
 
-        {toast.description && (<p className="text-[11px] text-zinc-300 mt-0.5 line-clamp-2 leading-relaxed">
+        {toast.description && (<p className="text-[11px] text-slate-300 mt-0.5 line-clamp-2 leading-relaxed">
             {toast.description}
           </p>)}
 
-        {toast.action && (<button onClick={toast.action.onClick} className="mt-2 text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-white transition-colors">
+        {toast.action && (<button onClick={toast.action.onClick} className="mt-2 text-[10px] font-medium px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-white transition-colors">
             {toast.action.label}
           </button>)}
 
-        {toast.link && (<a href={toast.link} className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-medium text-zinc-300 hover:text-white underline transition-colors">
+        {toast.link && (<a href={toast.link} className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-medium text-slate-300 hover:text-white underline transition-colors">
             <span>View details</span>
             <ExternalLink className="w-2.5 h-2.5"/>
           </a>)}
       </div>
 
-      <button onClick={() => onDismiss(toast.id)} className="text-zinc-400 hover:text-white p-1 -mr-1.5 -mt-1.5 rounded hover:bg-zinc-800/80 transition-colors" aria-label="Dismiss notification">
+      <button onClick={() => onDismiss(toast.id)} className="text-slate-400 hover:text-white p-1 -mr-1.5 -mt-1.5 rounded hover:bg-slate-800/80 transition-colors" aria-label="Dismiss notification">
         <X className="w-3.5 h-3.5"/>
       </button>
 
       {/* Shrinking progress bar */}
-      {toast.duration > 0 && (<div className="absolute bottom-0 left-0 right-0 h-[2px] bg-zinc-800/60 overflow-hidden">
+      {toast.duration > 0 && (<div className="absolute bottom-0 left-0 right-0 h-[2px] bg-slate-800/60 overflow-hidden">
           <div className={`h-full origin-left ${getProgressBarColor()}`} style={{
                 animation: reducedMotion
                     ? "none"

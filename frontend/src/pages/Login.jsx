@@ -1,17 +1,45 @@
 "use client";
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { ArrowRight, Eye, EyeOff, Building2, User, Mail, Lock, KeyRound } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import {
+  ArrowRight,
+  Eye,
+  EyeOff,
+  Building2,
+  User,
+  Mail,
+  Lock,
+  KeyRound,
+  Globe,
+  Zap,
+  ShieldCheck,
+} from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { Logomark } from "@/components/ui/Logomark";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { login, signup } = useAuth();
-  const [mode, setMode] = useState("login"); // "login" or "signup"
+
+  const queryMode = searchParams.get("mode");
+  const [mode, setMode] = useState(
+    queryMode === "signup" ? "signup" : "login"
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (queryMode === "signup" || queryMode === "login") {
+      setMode(queryMode);
+    }
+  }, [queryMode]);
+
+  const switchMode = (newMode) => {
+    setMode(newMode);
+    setError("");
+    setSearchParams({ mode: newMode });
+  };
 
   // Login fields
   const [email, setEmail] = useState("");
@@ -42,196 +70,333 @@ export default function LoginPage() {
       }
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message || "Something went wrong");
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const inputClass = "w-full rounded-xl border border-slate-300 dark:border-[#545963] bg-white dark:bg-[#181A20] pl-10 pr-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#7C8189] focus:outline-none focus:border-emerald-500 dark:focus:border-[#B6FF2E] focus:ring-1 focus:ring-emerald-500 dark:focus:ring-[#B6FF2E] transition-colors";
+  const inputBase =
+    "w-full rounded-lg border bg-white dark:bg-[#0F1117] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
+  const inputColors =
+    "border-slate-200 dark:border-[#2A2D37] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#555A66] focus:border-[#B6FF2E] dark:focus:border-[#B6FF2E] focus:ring-[#B6FF2E]/20 dark:focus:ring-[#B6FF2E]/15";
+  const inputClass = `${inputBase} ${inputColors}`;
+
+  const labelClass =
+    "block text-xs font-medium text-slate-600 dark:text-[#9BA3AF] mb-1";
+
+  const iconClass =
+    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#555A66]";
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#14171F] flex items-center justify-center p-4 relative overflow-hidden transition-colors">
-      {/* Ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] pointer-events-none -z-10" style={{
-        background: 'radial-gradient(ellipse 50% 40% at 50% 0%, rgba(182,255,46,0.06), transparent 70%)',
-      }} />
+    <div className="min-h-screen bg-[#FAFBFC] dark:bg-[#0B0D12] flex items-center justify-center px-4 py-8 relative overflow-hidden">
+      {/* Background decoration */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(182,255,46,0.04), transparent 60%)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, rgba(182,255,46,0.08), transparent)",
+        }}
+      />
 
-      <div className="w-full max-w-md">
-        {/* Logo header */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-6">
-            <div className="w-9 h-9 rounded-lg bg-slate-900 dark:bg-[#3A3E47] border border-slate-800 dark:border-[#545963] flex items-center justify-center p-1">
-              <Logomark className="w-6 h-6" />
-            </div>
-            <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">FlowStock</span>
-          </Link>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
-            {mode === "login" ? "Welcome back" : "Create your account"}
-          </h1>
-          <p className="text-sm text-slate-500 dark:text-[#9BA3AF]">
-            {mode === "login"
-              ? "Log in to your operations cockpit"
-              : "Set up your organization and start managing inventory"}
-          </p>
-        </div>
+      <div className="w-full max-w-[400px] relative z-10">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center justify-center gap-2.5 mb-8 group outline-none"
+        >
+          <img
+            src="/assets/flowstock-reveal.svg"
+            alt="FlowStock"
+            className="w-9 h-9 group-hover:scale-105 transition-transform duration-200"
+          />
+          <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">
+            FlowStock
+          </span>
+        </Link>
 
-        {/* Form card */}
-        <div className="rounded-2xl border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-lg p-6 sm:p-8">
-          {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 text-xs text-red-700 dark:text-red-400">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === "signup" && (
-              <>
-                {/* Name */}
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-[#7C8189]" />
-                  <input
-                    type="text"
-                    placeholder="Full name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className={inputClass}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Email */}
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-[#7C8189]" />
-              <input
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className={inputClass}
-              />
-            </div>
-
-            {/* Password */}
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-[#7C8189]" />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className={`${inputClass} pr-10`}
-              />
+        {/* Card */}
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#1E2028] bg-white dark:bg-[#13151B] shadow-sm dark:shadow-none">
+          {/* Tab switcher — always visible at top of card */}
+          <div className="px-6 pt-5 pb-0">
+            <div className="flex bg-slate-100 dark:bg-[#0B0D12] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#1E2028]">
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#7C8189] hover:text-slate-600 dark:hover:text-white transition-colors"
+                onClick={() => switchMode("login")}
+                className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer ${
+                  mode === "login"
+                    ? "bg-white dark:bg-[#1E2028] text-slate-900 dark:text-white shadow-sm"
+                    : "text-slate-500 dark:text-[#555A66] hover:text-slate-700 dark:hover:text-[#9BA3AF]"
+                }`}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                Log In
+              </button>
+              <button
+                type="button"
+                onClick={() => switchMode("signup")}
+                className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer ${
+                  mode === "signup"
+                    ? "bg-white dark:bg-[#1E2028] text-slate-900 dark:text-white shadow-sm"
+                    : "text-slate-500 dark:text-[#555A66] hover:text-slate-700 dark:hover:text-[#9BA3AF]"
+                }`}
+              >
+                Create Account
               </button>
             </div>
+          </div>
 
-            {mode === "signup" && (
-              <>
-                {/* Separator */}
-                <div className="flex items-center gap-3 py-1">
-                  <div className="flex-1 h-px bg-slate-200 dark:bg-[#323744]" />
-                  <span className="text-[11px] font-mono text-slate-400 dark:text-[#7C8189] uppercase tracking-wider">Organization</span>
-                  <div className="flex-1 h-px bg-slate-200 dark:bg-[#323744]" />
-                </div>
+          {/* Header text */}
+          <div className="px-6 pt-4 pb-1">
+            <h1 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">
+              {mode === "login"
+                ? "Welcome back"
+                : "Get started with FlowStock"}
+            </h1>
+            <p className="text-xs text-slate-500 dark:text-[#555A66] mt-0.5">
+              {mode === "login"
+                ? "Sign in to your workspace"
+                : "Create your organization in under a minute"}
+            </p>
+          </div>
 
-                {/* Org Name */}
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-[#7C8189]" />
-                  <input
-                    type="text"
-                    placeholder="Organization name"
-                    value={orgName}
-                    onChange={(e) => {
-                      setOrgName(e.target.value);
-                      if (!orgSlug || orgSlug === orgName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")) {
-                        setOrgSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""));
-                      }
-                    }}
-                    required
-                    className={inputClass}
-                  />
-                </div>
-
-                {/* Org Slug */}
-                <div className="relative">
-                  <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-[#7C8189]" />
-                  <input
-                    type="text"
-                    placeholder="org-slug"
-                    value={orgSlug}
-                    onChange={(e) => setOrgSlug(e.target.value)}
-                    required
-                    className={inputClass}
-                  />
-                </div>
-
-                {/* Currency */}
-                <div className="relative">
-                  <select
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value)}
-                    className="w-full rounded-xl border border-slate-300 dark:border-[#545963] bg-white dark:bg-[#181A20] px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 dark:focus:border-[#B6FF2E] focus:ring-1 focus:ring-emerald-500 dark:focus:ring-[#B6FF2E] transition-colors"
-                  >
-                    <option value="INR">INR (₹)</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
-                  </select>
-                </div>
-              </>
+          {/* Form */}
+          <div className="px-6 pt-3 pb-5">
+            {error && (
+              <div className="mb-3 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 text-xs text-red-600 dark:text-red-400">
+                {error}
+              </div>
             )}
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="group w-full h-11 bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-bold text-sm rounded-xl inline-flex items-center justify-center gap-2 transition-all shadow-[0_2px_12px_rgba(182,255,46,0.25)] hover:shadow-[0_4px_20px_rgba(182,255,46,0.4)] disabled:opacity-50 cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
-            >
-              <span>{loading ? (mode === "login" ? "Logging in..." : "Creating account...") : (mode === "login" ? "Log In" : "Create Account")}</span>
-              {!loading && <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />}
-            </button>
-
-            {mode === "login" && (
-              <div className="pt-2">
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#23262F]/50 flex items-center justify-between text-xs">
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189] block">Demo Administrator</span>
-                    <span className="font-mono text-slate-700 dark:text-slate-200 font-semibold truncate block">alice@acme.local</span>
+            <form onSubmit={handleSubmit} className="space-y-3">
+              {mode === "signup" && (
+                <div>
+                  <label className={labelClass}>Full Name</label>
+                  <div className="relative">
+                    <User className={iconClass} />
+                    <input
+                      type="text"
+                      placeholder="Alex Morgan"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      className={inputClass}
+                    />
                   </div>
+                </div>
+              )}
+
+              <div>
+                <label className={labelClass}>Email</label>
+                <div className="relative">
+                  <Mail className={iconClass} />
+                  <input
+                    type="email"
+                    placeholder="name@company.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className={labelClass}>Password</label>
+                <div className="relative">
+                  <Lock className={iconClass} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Min. 6 characters"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    className={`${inputClass} pr-9`}
+                  />
                   <button
                     type="button"
-                    onClick={() => {
-                      setEmail("alice@acme.local");
-                      setPassword("admin123");
-                      setError("");
-                    }}
-                    className="shrink-0 px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white dark:bg-[#B6FF2E] dark:hover:bg-[#a3f01b] dark:text-[#14171F] text-[11px] font-bold transition-all cursor-pointer shadow-xs"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#555A66] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
-                    Auto Fill
+                    {showPassword ? (
+                      <EyeOff className="w-3.5 h-3.5" />
+                    ) : (
+                      <Eye className="w-3.5 h-3.5" />
+                    )}
                   </button>
                 </div>
               </div>
-            )}
-          </form>
 
-          {/* Mode toggle */}
-          <div className="mt-6 pt-5 border-t border-slate-200 dark:border-[#323744] text-center">
-            <p className="text-sm text-slate-500 dark:text-[#9BA3AF]">
-              {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
+              {mode === "signup" && (
+                <>
+                  {/* Org section divider */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#1E2028]" />
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400 dark:text-[#3A3E47]">
+                      Organization
+                    </span>
+                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#1E2028]" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {/* Org Name */}
+                    <div>
+                      <label className={labelClass}>Company Name</label>
+                      <div className="relative">
+                        <Building2 className={iconClass} />
+                        <input
+                          type="text"
+                          placeholder="Acme Ltd"
+                          value={orgName}
+                          onChange={(e) => {
+                            setOrgName(e.target.value);
+                            const auto = e.target.value
+                              .toLowerCase()
+                              .replace(/[^a-z0-9]+/g, "-")
+                              .replace(/^-|-$/g, "");
+                            if (
+                              !orgSlug ||
+                              orgSlug ===
+                                orgName
+                                  .toLowerCase()
+                                  .replace(/[^a-z0-9]+/g, "-")
+                                  .replace(/^-|-$/g, "")
+                            ) {
+                              setOrgSlug(auto);
+                            }
+                          }}
+                          required
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Workspace Slug */}
+                    <div>
+                      <label className={labelClass}>Workspace ID</label>
+                      <div className="relative">
+                        <KeyRound className={iconClass} />
+                        <input
+                          type="text"
+                          placeholder="acme-ltd"
+                          value={orgSlug}
+                          onChange={(e) =>
+                            setOrgSlug(
+                              e.target.value
+                                .toLowerCase()
+                                .replace(/[^a-z0-9-]/g, "")
+                            )
+                          }
+                          required
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {orgSlug && (
+                    <p className="text-[10px] text-slate-400 dark:text-[#3A3E47] font-mono -mt-1 pl-0.5">
+                      flowstock.app/
+                      <span className="text-emerald-600 dark:text-[#B6FF2E]">
+                        {orgSlug}
+                      </span>
+                    </p>
+                  )}
+
+                  {/* Currency */}
+                  <div>
+                    <label className={labelClass}>Currency</label>
+                    <div className="relative">
+                      <Globe className={iconClass} />
+                      <select
+                        value={currency}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className={`${inputBase} border-slate-200 dark:border-[#2A2D37] text-slate-900 dark:text-white focus:border-[#B6FF2E] dark:focus:border-[#B6FF2E] focus:ring-[#B6FF2E]/20 dark:focus:ring-[#B6FF2E]/15 appearance-none cursor-pointer`}
+                      >
+                        <option value="INR">INR — Indian Rupee</option>
+                        <option value="USD">USD — US Dollar</option>
+                        <option value="EUR">EUR — Euro</option>
+                        <option value="GBP">GBP — British Pound</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="group w-full h-10 bg-[#B6FF2E] hover:bg-[#a8ed1f] text-[#0B0D12] font-bold text-sm rounded-lg inline-flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer hover:scale-[1.005] active:scale-[0.995] mt-1"
+              >
+                <span>
+                  {loading
+                    ? mode === "login"
+                      ? "Signing in…"
+                      : "Creating…"
+                    : mode === "login"
+                      ? "Log In"
+                      : "Create Account"}
+                </span>
+                {!loading && (
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                )}
+              </button>
+            </form>
+
+            {/* Demo quick-fill — login mode only */}
+            {mode === "login" && (
+              <div className="mt-3 p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#1E2028] bg-slate-50/50 dark:bg-[#0B0D12]/50 flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1 mb-0.5">
+                    <Zap className="w-3 h-3 text-amber-500" />
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                      Demo
+                    </span>
+                  </div>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">
+                    alice@acme.local
+                  </span>
+                  <span className="text-[10px] text-slate-400 dark:text-[#555A66]">
+                    Pass: <code className="font-mono">admin123</code>
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail("alice@acme.local");
+                    setPassword("admin123");
+                    setError("");
+                  }}
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#B6FF2E] hover:bg-[#a8ed1f] text-[#0B0D12] text-[11px] font-bold transition-colors cursor-pointer"
+                >
+                  Auto Fill
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Footer toggle */}
+          <div className="px-6 py-3.5 border-t border-slate-100 dark:border-[#1E2028] text-center">
+            <p className="text-xs text-slate-500 dark:text-[#555A66]">
+              {mode === "login"
+                ? "Don't have an account? "
+                : "Already have an account? "}
               <button
                 type="button"
-                onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(""); }}
+                onClick={() =>
+                  switchMode(mode === "login" ? "signup" : "login")
+                }
                 className="text-emerald-600 dark:text-[#B6FF2E] font-semibold hover:underline cursor-pointer"
               >
                 {mode === "login" ? "Sign up" : "Log in"}
@@ -240,10 +405,19 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Back to landing */}
-        <div className="mt-6 text-center">
-          <Link to="/" className="text-xs text-slate-400 dark:text-[#7C8189] hover:text-slate-600 dark:hover:text-white transition-colors">
-            ← Back to FlowStock
+        {/* Trust badge */}
+        <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#3A3E47]">
+          <ShieldCheck className="w-3 h-3" />
+          <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
+        </div>
+
+        {/* Back link */}
+        <div className="mt-3 text-center">
+          <Link
+            to="/"
+            className="text-[11px] text-slate-400 dark:text-[#3A3E47] hover:text-slate-600 dark:hover:text-[#9BA3AF] transition-colors"
+          >
+            ← Back to Home
           </Link>
         </div>
       </div>

@@ -93,7 +93,6 @@ export async function createOrgUserApi(orgId, data) {
     }
     return await res.json();
 }
-clearApiCache();
 export async function createOrganizationApi(data) {
     const res = await fetch(`${API_BASE_URL}/organizations`, {
         method: "POST",
@@ -104,6 +103,7 @@ export async function createOrganizationApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create organization");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function deleteOrganizationApi(id) {
@@ -120,7 +120,6 @@ export async function deleteOrganizationApi(id) {
 export async function fetchCategories() {
     return cachedGet(`${API_BASE_URL}/categories`);
 }
-clearApiCache();
 export async function createCategoryApi(data) {
     const res = await fetch(`${API_BASE_URL}/categories`, {
         method: "POST",
@@ -131,6 +130,7 @@ export async function createCategoryApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create category");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function fetchProducts(params = {}) {
@@ -142,7 +142,6 @@ export async function fetchProducts(params = {}) {
     const url = `${API_BASE_URL}/products${query.toString() ? `?${query.toString()}` : ""}`;
     return cachedGet(url);
 }
-clearApiCache();
 export async function createProductApi(data) {
     const res = await fetch(`${API_BASE_URL}/products`, {
         method: "POST",
@@ -153,9 +152,9 @@ export async function createProductApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create product");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function updateProductApi(id, data) {
     const res = await fetch(`${API_BASE_URL}/products/${id}`, {
         method: "PUT",
@@ -166,9 +165,9 @@ export async function updateProductApi(id, data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to update product");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function deleteProductApi(id) {
     const res = await fetch(`${API_BASE_URL}/products/${id}`, {
         method: "DELETE",
@@ -176,6 +175,7 @@ export async function deleteProductApi(id) {
     });
     if (!res.ok)
         throw new Error(`HTTP ${res.status}`);
+    clearApiCache();
 }
 // --- Inventory ---
 export async function fetchInventorySummaries() {
@@ -187,7 +187,6 @@ export async function fetchInventorySummaries() {
         throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
-clearApiCache();
 export async function recordMovementApi(data) {
     const res = await fetch(`${API_BASE_URL}/inventory/movements`, {
         method: "POST",
@@ -198,6 +197,7 @@ export async function recordMovementApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to record inventory movement");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function fetchProductMovements(productId) {
@@ -213,7 +213,6 @@ export async function fetchProductMovements(productId) {
 export async function fetchWarehouses() {
     return cachedGet(`${API_BASE_URL}/warehouses`);
 }
-clearApiCache();
 export async function createWarehouseApi(data) {
     const res = await fetch(`${API_BASE_URL}/warehouses`, {
         method: "POST",
@@ -224,6 +223,7 @@ export async function createWarehouseApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create warehouse");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function fetchTransfers(params = {}) {
@@ -241,7 +241,6 @@ export async function fetchTransfers(params = {}) {
         throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
-clearApiCache();
 export async function createTransferApi(data) {
     const res = await fetch(`${API_BASE_URL}/transfers`, {
         method: "POST",
@@ -252,9 +251,9 @@ export async function createTransferApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create transfer");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function dispatchTransferApi(id) {
     const res = await fetch(`${API_BASE_URL}/transfers/${id}/dispatch`, {
         method: "POST",
@@ -264,9 +263,9 @@ export async function dispatchTransferApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to dispatch transfer");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function receiveTransferApi(id) {
     const res = await fetch(`${API_BASE_URL}/transfers/${id}/receive`, {
         method: "POST",
@@ -276,6 +275,7 @@ export async function receiveTransferApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to receive transfer");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function cancelTransferApi(id) {
@@ -303,7 +303,6 @@ export async function fetchCustomers(search) {
         throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
-clearApiCache();
 export async function createCustomerApi(data) {
     const res = await fetch(`${API_BASE_URL}/customers`, {
         method: "POST",
@@ -314,6 +313,7 @@ export async function createCustomerApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create customer");
     }
+    clearApiCache();
     return await res.json();
 }
 // --- Sales Orders ---
@@ -326,7 +326,6 @@ export async function fetchOrders(params = {}) {
     const url = `${API_BASE_URL}/orders${query.toString() ? `?${query.toString()}` : ""}`;
     return cachedGet(url);
 }
-clearApiCache();
 export async function createOrderApi(data) {
     const res = await fetch(`${API_BASE_URL}/orders`, {
         method: "POST",
@@ -337,9 +336,9 @@ export async function createOrderApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create order");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function confirmOrderApi(id) {
     const res = await fetch(`${API_BASE_URL}/orders/${id}/confirm`, {
         method: "POST",
@@ -349,9 +348,9 @@ export async function confirmOrderApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to confirm order");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function fulfillOrderApi(id) {
     const res = await fetch(`${API_BASE_URL}/orders/${id}/fulfill`, {
         method: "POST",
@@ -361,9 +360,9 @@ export async function fulfillOrderApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to fulfill order");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function cancelOrderApi(id) {
     const res = await fetch(`${API_BASE_URL}/orders/${id}/cancel`, {
         method: "POST",
@@ -373,6 +372,7 @@ export async function cancelOrderApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to cancel order");
     }
+    clearApiCache();
     return await res.json();
 }
 // --- Suppliers ---
@@ -389,7 +389,6 @@ export async function fetchSuppliers(search) {
         throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
-clearApiCache();
 export async function createSupplierApi(data) {
     const res = await fetch(`${API_BASE_URL}/suppliers`, {
         method: "POST",
@@ -400,6 +399,7 @@ export async function createSupplierApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create supplier");
     }
+    clearApiCache();
     return await res.json();
 }
 // --- Purchase Orders ---
@@ -412,7 +412,6 @@ export async function fetchPurchaseOrders(params = {}) {
     const url = `${API_BASE_URL}/purchase-orders${query.toString() ? `?${query.toString()}` : ""}`;
     return cachedGet(url);
 }
-clearApiCache();
 export async function createPurchaseOrderApi(data) {
     const res = await fetch(`${API_BASE_URL}/purchase-orders`, {
         method: "POST",
@@ -423,9 +422,9 @@ export async function createPurchaseOrderApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create purchase order");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function issuePurchaseOrderApi(id) {
     const res = await fetch(`${API_BASE_URL}/purchase-orders/${id}/issue`, {
         method: "POST",
@@ -435,9 +434,9 @@ export async function issuePurchaseOrderApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to issue purchase order");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function receivePurchaseOrderApi(id) {
     const res = await fetch(`${API_BASE_URL}/purchase-orders/${id}/receive`, {
         method: "POST",
@@ -447,9 +446,9 @@ export async function receivePurchaseOrderApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to receive purchase order");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function cancelPurchaseOrderApi(id) {
     const res = await fetch(`${API_BASE_URL}/purchase-orders/${id}/cancel`, {
         method: "POST",
@@ -459,6 +458,7 @@ export async function cancelPurchaseOrderApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to cancel purchase order");
     }
+    clearApiCache();
     return await res.json();
 }
 // --- Shipments & Logistics Tracking ---
@@ -480,7 +480,6 @@ export async function fetchShipmentById(id) {
         throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
-clearApiCache();
 export async function createShipmentApi(data) {
     const res = await fetch(`${API_BASE_URL}/shipments`, {
         method: "POST",
@@ -491,9 +490,9 @@ export async function createShipmentApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create shipment");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function dispatchShipmentApi(id, data) {
     const res = await fetch(`${API_BASE_URL}/shipments/${id}/dispatch`, {
         method: "POST",
@@ -504,9 +503,9 @@ export async function dispatchShipmentApi(id, data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to dispatch shipment");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function outForDeliveryShipmentApi(id, data) {
     const res = await fetch(`${API_BASE_URL}/shipments/${id}/out-for-delivery`, {
         method: "POST",
@@ -517,9 +516,9 @@ export async function outForDeliveryShipmentApi(id, data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to mark shipment out for delivery");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function deliverShipmentApi(id, data) {
     const res = await fetch(`${API_BASE_URL}/shipments/${id}/deliver`, {
         method: "POST",
@@ -530,9 +529,9 @@ export async function deliverShipmentApi(id, data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to mark shipment delivered");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function cancelShipmentApi(id, data) {
     const res = await fetch(`${API_BASE_URL}/shipments/${id}/cancel`, {
         method: "POST",
@@ -543,6 +542,7 @@ export async function cancelShipmentApi(id, data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to cancel shipment");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function addShipmentEventApi(id, data) {
@@ -576,7 +576,6 @@ export async function fetchInvoiceById(id) {
         throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
-clearApiCache();
 export async function createInvoiceApi(data) {
     const res = await fetch(`${API_BASE_URL}/invoices`, {
         method: "POST",
@@ -587,6 +586,7 @@ export async function createInvoiceApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to create invoice");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function createInvoiceFromOrderApi(orderId, taxRate = 18.0) {
@@ -600,7 +600,6 @@ export async function createInvoiceFromOrderApi(orderId, taxRate = 18.0) {
     }
     return await res.json();
 }
-clearApiCache();
 export async function issueInvoiceApi(id) {
     const res = await fetch(`${API_BASE_URL}/invoices/${id}/issue`, {
         method: "POST",
@@ -610,9 +609,9 @@ export async function issueInvoiceApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to issue invoice");
     }
+    clearApiCache();
     return await res.json();
 }
-clearApiCache();
 export async function voidInvoiceApi(id) {
     const res = await fetch(`${API_BASE_URL}/invoices/${id}/void`, {
         method: "POST",
@@ -622,6 +621,7 @@ export async function voidInvoiceApi(id) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to void invoice");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function fetchPayments(params = {}) {
@@ -637,7 +637,6 @@ export async function fetchPayments(params = {}) {
         throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
-clearApiCache();
 export async function recordPaymentApi(data) {
     const res = await fetch(`${API_BASE_URL}/payments`, {
         method: "POST",
@@ -648,6 +647,7 @@ export async function recordPaymentApi(data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to record payment");
     }
+    clearApiCache();
     return await res.json();
 }
 export async function fetchDashboardSummary() {

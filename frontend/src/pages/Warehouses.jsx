@@ -10,6 +10,8 @@ import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { WarehouseTransferVisualizer } from "@/components/ui/WarehouseTransferVisualizer";
 import { Modal } from "@/components/ui/Modal";
+import { FormModal } from "@/components/ui/FormModal";
+import { FormField } from "@/components/ui/FormField";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { SpotlightCard } from "@/components/reactbits/SpotlightCard";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
@@ -18,6 +20,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Alert } from "@/components/ui/Alert";
+import { formatDate, selectClass } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
 export default function WarehousesPage() {
@@ -215,7 +218,7 @@ export default function WarehousesPage() {
     return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <WarehouseIcon className="w-6 h-6 text-zinc-900 dark:text-zinc-100"/>
+            <WarehouseIcon className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
             Warehouses & Stock Transfers
           </span>} subtitle="Multi-facility inventory nodes, physical stock routing, and inter-depot logistics." actions={<>
             <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
@@ -235,10 +238,10 @@ export default function WarehousesPage() {
       {/* Warehouses Grid */}
       <motion.div variants={itemVariants}>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
             Storage Facilities ({warehouses.length})
           </h2>
-          {warehouses.length < 2 && (<span className="text-xs text-zinc-700 flex items-center gap-1">
+          {warehouses.length < 2 && (<span className="text-xs text-slate-700 flex items-center gap-1">
               <AlertCircle className="w-3.5 h-3.5"/>
               Add at least 2 warehouses to initiate inter-depot transfers.
             </span>)}
@@ -249,33 +252,33 @@ export default function WarehousesPage() {
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">{wh.name}</h3>
+                      <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">{wh.name}</h3>
                       {wh.is_default && (<Badge variant="success" className="text-[10px] uppercase tracking-wide">
                           Default
                         </Badge>)}
                     </div>
-                    <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400 mt-0.5">{wh.code}</p>
+                    <p className="text-xs font-mono text-slate-500 dark:text-[#9BA3AF] mt-0.5">{wh.code}</p>
                   </div>
-                  <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-[#20242D] flex items-center justify-center text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-[#323744]">
+                  <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#20242D] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744]">
                     <WarehouseIcon className="w-4 h-4"/>
                   </div>
                 </div>
 
                 <div className="mt-3">
-                  <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 mb-1">
+                  <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-[#9BA3AF] mb-1">
                     <span>Capacity</span>
-                    <span className="font-mono text-zinc-400 dark:text-zinc-500">Uncapped</span>
+                    <span className="font-mono text-slate-400 dark:text-[#7C8189]">Uncapped</span>
                   </div>
-                  <div className="h-1.5 w-full rounded-full border border-dashed border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800"/>
+                  <div className="h-1.5 w-full rounded-full border border-dashed border-slate-200 dark:border-[#3A404F] bg-slate-50 dark:bg-[#23262F]"/>
                 </div>
 
-                <div className="mt-3.5 pt-3 border-t border-zinc-100 dark:border-[#262A34] flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-[#262A34] flex items-center justify-between text-xs text-slate-400 dark:text-[#7C8189]">
                   <span className="flex items-center gap-1.5 truncate">
-                    <MapPin className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 shrink-0"/>
+                    <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0"/>
                     {wh.location || "General Logistics Zone"}
                   </span>
-                  <span className="text-[11px] text-zinc-400 dark:text-zinc-500 shrink-0">
-                    {new Date(wh.created_at).toLocaleDateString()}
+                  <span className="text-[11px] text-slate-400 dark:text-[#7C8189] shrink-0">
+                    {formatDate(wh.created_at)}
                   </span>
                 </div>
             </SpotlightCard>))}
@@ -285,13 +288,13 @@ export default function WarehousesPage() {
         {/* Stock Transfers Table */}
         <motion.div variants={itemVariants}>
           <Card spotlight={true} className="shadow-2xs">
-            <CardHeader className="border-b border-zinc-100 dark:border-[#262A34] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <CardHeader className="border-b border-slate-100 dark:border-[#262A34] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <CardTitle className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-zinc-900 dark:text-zinc-100"/>
+                <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7] flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-slate-900 dark:text-[#F4F5F7]"/>
                   Inter-Warehouse Stock Transfers
                 </CardTitle>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
                   Lifecycle audit: REQUESTED → IN_TRANSIT → RECEIVED.
                 </p>
               </div>
@@ -307,8 +310,8 @@ export default function WarehousesPage() {
               </div>) : filteredTransfers.length === 0 ? (<EmptyState compact icon={Package} title="No transfers found" description={filterStatus !== "ALL"
                 ? `No transfers with status ${filterStatus.replace("_", " ")}.`
                 : "Create an inter-warehouse transfer to balance facility stock."}/>) : (<div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-zinc-700 dark:text-zinc-300">
-                    <thead className="bg-zinc-50 dark:bg-[#1C1F27] text-[11px] uppercase font-medium text-zinc-500 dark:text-zinc-400 border-b border-zinc-100 dark:border-[#2A2E39]">
+                  <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
+                    <thead className="bg-slate-50 dark:bg-[#1C1F27] text-[11px] uppercase font-medium text-slate-500 dark:text-[#9BA3AF] border-b border-slate-100 dark:border-[#2A2E39]">
                       <tr>
                         <th className="py-2.5 px-3.5">Transfer #</th>
                         <th className="py-2.5 px-3.5">Product</th>
@@ -319,74 +322,74 @@ export default function WarehousesPage() {
                         <th className="py-2.5 px-3.5 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
                       {filteredTransfers.map((tr) => {
                 const isActing = actionLoading === tr.id;
-                return (<tr key={tr.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
-                            <td className="py-2.5 px-3.5 font-mono text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                return (<tr key={tr.id} className="hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
+                            <td className="py-2.5 px-3.5 font-mono text-xs font-semibold text-slate-900 dark:text-[#F4F5F7]">
                               {tr.transfer_number}
-                              <div className="text-[10px] font-normal text-zinc-400 dark:text-zinc-500 mt-0.5">
-                                {new Date(tr.created_at).toLocaleDateString()}
+                              <div className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] mt-0.5">
+                                {formatDate(tr.created_at)}
                               </div>
                             </td>
                             <td className="py-2.5 px-3.5">
-                              <div className="font-medium text-zinc-900 dark:text-zinc-100">
+                              <div className="font-medium text-slate-900 dark:text-[#F4F5F7]">
                                 {tr.product?.name || "Product"}
                               </div>
-                              <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+                              <span className="font-mono text-[11px] text-slate-400 dark:text-[#7C8189]">
                                 {tr.product?.sku || "SKU-UNKNOWN"}
                               </span>
                             </td>
                             <td className="py-2.5 px-3.5">
                               <button type="button" onClick={() => setSelectedVisualizerTransfer(tr)} className="group flex items-center gap-1.5 text-xs text-left hover:text-black dark:hover:text-white transition-colors" title="Click to view transit visualizer">
-                                <span className="font-medium text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
+                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
                                   {tr.source_warehouse?.name || "Source WH"}
                                 </span>
-                                <ArrowRight className="w-3 h-3 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white shrink-0 transition-transform group-hover:translate-x-0.5"/>
-                                <span className="font-medium text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
+                                <ArrowRight className="w-3 h-3 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white shrink-0 transition-transform group-hover:translate-x-0.5"/>
+                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
                                   {tr.destination_warehouse?.name || "Dest WH"}
                                 </span>
                               </button>
                             </td>
-                            <td className="py-2.5 px-3.5 text-right font-mono font-semibold text-zinc-900 dark:text-zinc-100">
+                            <td className="py-2.5 px-3.5 text-right font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">
                               {tr.quantity}{" "}
-                              <span className="text-[11px] text-zinc-400 dark:text-zinc-500 font-normal">
+                              <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-normal">
                                 {tr.product?.unit || "units"}
                               </span>
                             </td>
                             <td className="py-2.5 px-3.5 text-center">
                               {getStatusBadge(tr.status)}
                             </td>
-                            <td className="py-2.5 px-3.5 text-xs text-zinc-400 dark:text-zinc-500 max-w-xs truncate">
+                            <td className="py-2.5 px-3.5 text-xs text-slate-400 dark:text-[#7C8189] max-w-xs truncate">
                               {tr.notes || "—"}
                             </td>
                             <td className="py-2.5 px-3.5 text-right">
                               <div className="flex items-center justify-end gap-1.5">
-                                <Button variant="ghost" size="sm" onClick={() => setSelectedVisualizerTransfer(tr)} className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs h-7 px-2" title="View Transfer Route Visualizer">
+                                <Button variant="ghost" size="sm" onClick={() => setSelectedVisualizerTransfer(tr)} className="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs h-7 px-2" title="View Transfer Route Visualizer">
                                   Visualizer
                                 </Button>
 
                                 {tr.status === "REQUESTED" && (<>
-                                    <Button size="sm" onClick={() => handleDispatch(tr.id)} disabled={isActing} className="bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 shadow-xs text-xs h-7 px-2.5">
+                                    <Button size="sm" onClick={() => handleDispatch(tr.id)} disabled={isActing} className="bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 shadow-xs text-xs h-7 px-2.5">
                                       <Truck className="w-3 h-3 mr-1"/>
                                       Dispatch
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-zinc-500 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs h-7 px-2">
+                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-slate-500 hover:text-black dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 text-xs h-7 px-2">
                                       Cancel
                                     </Button>
                                   </>)}
 
                                 {tr.status === "IN_TRANSIT" && (<>
-                                    <Button size="sm" onClick={() => handleReceive(tr.id)} disabled={isActing} className="bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 shadow-xs text-xs h-7 px-2.5">
+                                    <Button size="sm" onClick={() => handleReceive(tr.id)} disabled={isActing} className="bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 shadow-xs text-xs h-7 px-2.5">
                                       <CheckCircle2 className="w-3 h-3 mr-1"/>
                                       Receive
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-zinc-500 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs h-7 px-2">
+                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-slate-500 hover:text-black dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 text-xs h-7 px-2">
                                       Cancel
                                     </Button>
                                   </>)}
 
-                                {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (<span className="text-xs text-zinc-400 dark:text-zinc-500 font-medium italic">
+                                {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (<span className="text-xs text-slate-400 dark:text-[#7C8189] font-medium italic">
                                     Archived
                                   </span>)}
                               </div>
@@ -401,149 +404,146 @@ export default function WarehousesPage() {
         </motion.div>
 
         {/* Modal: New Warehouse */}
-        <Modal isOpen={warehouseModalOpen} onClose={() => setWarehouseModalOpen(false)} maxWidth="md" className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-[#262A34]">
-            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-lg flex items-center gap-2">
-              <WarehouseIcon className="w-5 h-5 text-zinc-900 dark:text-zinc-100"/>
-              Add Storage Facility
-            </h3>
-            <button onClick={() => setWarehouseModalOpen(false)} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
-              <X className="w-5 h-5"/>
-            </button>
+        <FormModal
+          isOpen={warehouseModalOpen}
+          onClose={() => setWarehouseModalOpen(false)}
+          title="Add Storage Facility"
+          icon={WarehouseIcon}
+          onSubmit={handleCreateWarehouse}
+          isSubmitting={warehouseSubmitting}
+          submitText="Create Facility"
+          error={warehouseError}
+          maxWidth="md"
+        >
+          <FormField label="Warehouse Name *">
+            <Input
+              value={warehouseName}
+              onChange={(e) => setWarehouseName(e.target.value)}
+              placeholder="e.g. West Coast Distribution Hub"
+              required
+            />
+          </FormField>
+
+          <FormField label="Facility Code (Unique) *">
+            <Input
+              value={warehouseCode}
+              onChange={(e) => setWarehouseCode(e.target.value.toUpperCase())}
+              placeholder="e.g. WH-WEST-01"
+              required
+            />
+          </FormField>
+
+          <FormField label="Location / Address">
+            <Input
+              value={warehouseLocation}
+              onChange={(e) => setWarehouseLocation(e.target.value)}
+              placeholder="e.g. Port of Oakland, CA"
+            />
+          </FormField>
+
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              type="checkbox"
+              id="whDefault"
+              checked={warehouseIsDefault}
+              onChange={(e) => setWarehouseIsDefault(e.target.checked)}
+              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#20242D] text-slate-900 focus:ring-zinc-950"
+            />
+            <label htmlFor="whDefault" className="text-xs text-slate-700 dark:text-[#CBD5E1] cursor-pointer">
+              Set as default receiving facility for new inventory
+            </label>
           </div>
-
-          {warehouseError && (<Alert variant="danger" className="mt-4 text-xs">
-              {warehouseError}
-            </Alert>)}
-
-          <form onSubmit={handleCreateWarehouse} className="mt-4 space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Warehouse Name *
-              </label>
-              <Input value={warehouseName} onChange={(e) => setWarehouseName(e.target.value)} placeholder="e.g. West Coast Distribution Hub" required/>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Facility Code (Unique) *
-              </label>
-              <Input value={warehouseCode} onChange={(e) => setWarehouseCode(e.target.value.toUpperCase())} placeholder="e.g. WH-WEST-01" required/>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Location / Address
-              </label>
-              <Input value={warehouseLocation} onChange={(e) => setWarehouseLocation(e.target.value)} placeholder="e.g. Port of Oakland, CA"/>
-            </div>
-
-            <div className="flex items-center gap-2 pt-2">
-              <input type="checkbox" id="whDefault" checked={warehouseIsDefault} onChange={(e) => setWarehouseIsDefault(e.target.checked)} className="w-4 h-4 rounded border-zinc-700 bg-zinc-50 text-zinc-900 focus:ring-zinc-950"/>
-              <label htmlFor="whDefault" className="text-xs text-zinc-700 cursor-pointer">
-                Set as default receiving facility for new inventory
-              </label>
-            </div>
-
-            <div className="flex items-center justify-end gap-2 pt-4 border-t border-zinc-100">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setWarehouseModalOpen(false)} className="text-zinc-500 hover:text-zinc-900">
-                Cancel
-              </Button>
-              <Button type="submit" size="sm" isLoading={warehouseSubmitting} className="bg-zinc-950 hover:bg-black text-white shadow-xs">
-                {warehouseSubmitting ? "Creating..." : "Create Facility"}
-              </Button>
-            </div>
-          </form>
-        </Modal>
+        </FormModal>
 
         {/* Modal: New Transfer */}
-        <Modal isOpen={transferModalOpen} onClose={() => setTransferModalOpen(false)} maxWidth="lg" className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
-            <h3 className="font-semibold text-zinc-900 text-lg flex items-center gap-2">
-              <Truck className="w-5 h-5 text-zinc-900"/>
-              Initiate Stock Transfer
-            </h3>
-            <button onClick={() => setTransferModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-              <X className="w-5 h-5"/>
-            </button>
+        <FormModal
+          isOpen={transferModalOpen}
+          onClose={() => setTransferModalOpen(false)}
+          title="Initiate Stock Transfer"
+          icon={Truck}
+          onSubmit={handleCreateTransfer}
+          isSubmitting={transferSubmitting}
+          submitText="Create Transfer Request"
+          error={transferError}
+          maxWidth="lg"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Source Warehouse *">
+              <select
+                value={sourceWarehouseId}
+                onChange={(e) => setSourceWarehouseId(e.target.value)}
+                className={selectClass}
+                required
+              >
+                {warehouses.map((wh) => (
+                  <option key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))}
+              </select>
+            </FormField>
+
+            <FormField label="Destination Warehouse *">
+              <select
+                value={destinationWarehouseId}
+                onChange={(e) => setDestinationWarehouseId(e.target.value)}
+                className={selectClass}
+                required
+              >
+                {warehouses.map((wh) => (
+                  <option key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))}
+              </select>
+            </FormField>
           </div>
 
-          {transferError && (<Alert variant="danger" className="mt-4 text-xs">
-              {transferError}
-            </Alert>)}
+          <FormField label="Select Product *">
+            <select
+              value={selectedProductId}
+              onChange={(e) => setSelectedProductId(e.target.value)}
+              className={selectClass}
+              required
+            >
+              {products.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} [{p.sku}]
+                </option>
+              ))}
+            </select>
+          </FormField>
 
-          <form onSubmit={handleCreateTransfer} className="mt-4 space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  Source Warehouse *
-                </label>
-                <select value={sourceWarehouseId} onChange={(e) => setSourceWarehouseId(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-md px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-950" required>
-                  {warehouses.map((wh) => (<option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>))}
-                </select>
-              </div>
+          <FormField
+            label="Quantity to Transfer *"
+            hint="Stock will be held and deducted from source warehouse upon Dispatch."
+          >
+            <Input
+              type="number"
+              min="1"
+              value={transferQuantity}
+              onChange={(e) => setTransferQuantity(parseInt(e.target.value) || 1)}
+              required
+            />
+          </FormField>
 
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  Destination Warehouse *
-                </label>
-                <select value={destinationWarehouseId} onChange={(e) => setDestinationWarehouseId(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-md px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-950" required>
-                  {warehouses.map((wh) => (<option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>))}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Select Product *
-              </label>
-              <select value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-md px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-950" required>
-                {products.map((p) => (<option key={p.id} value={p.id}>
-                    {p.name} [{p.sku}]
-                  </option>))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Quantity to Transfer *
-              </label>
-              <Input type="number" min="1" value={transferQuantity} onChange={(e) => setTransferQuantity(parseInt(e.target.value) || 1)} required/>
-              <p className="text-[11px] text-zinc-500 mt-1">
-                Stock will be held and deducted from source warehouse upon Dispatch.
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Routing Notes / Manifest
-              </label>
-              <Input value={transferNotes} onChange={(e) => setTransferNotes(e.target.value)} placeholder="e.g. Urgent regional rebalancing"/>
-            </div>
-
-            <div className="flex items-center justify-end gap-2 pt-4 border-t border-zinc-100">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setTransferModalOpen(false)} className="text-zinc-500 hover:text-zinc-900">
-                Cancel
-              </Button>
-              <Button type="submit" size="sm" isLoading={transferSubmitting} className="bg-zinc-950 hover:bg-black text-white shadow-xs">
-                {transferSubmitting ? "Initiating..." : "Create Transfer Request"}
-              </Button>
-            </div>
-          </form>
-        </Modal>
+          <FormField label="Routing Notes / Manifest">
+            <Input
+              value={transferNotes}
+              onChange={(e) => setTransferNotes(e.target.value)}
+              placeholder="e.g. Urgent regional rebalancing"
+            />
+          </FormField>
+        </FormModal>
 
         {/* Modal: Transfer Visualizer */}
         <Modal isOpen={!!selectedVisualizerTransfer} onClose={() => setSelectedVisualizerTransfer(null)} maxWidth="lg" className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
-            <h3 className="font-semibold text-zinc-900 text-lg flex items-center gap-2">
-              <Truck className="w-5 h-5 text-zinc-900"/>
+          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+            <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">
+              <Truck className="w-5 h-5 text-slate-900"/>
               Stock Transit Route Visualizer
             </h3>
-            <button onClick={() => setSelectedVisualizerTransfer(null)} className="text-zinc-400 hover:text-zinc-700">
+            <button onClick={() => setSelectedVisualizerTransfer(null)} className="text-slate-400 hover:text-slate-700">
               <X className="w-5 h-5"/>
             </button>
           </div>
@@ -551,7 +551,7 @@ export default function WarehousesPage() {
           {selectedVisualizerTransfer && (<div className="space-y-4 mt-4">
               <WarehouseTransferVisualizer transfer={selectedVisualizerTransfer}/>
               <div className="flex justify-end pt-2">
-                <Button variant="outline" size="sm" onClick={() => setSelectedVisualizerTransfer(null)} className="border-zinc-200 text-zinc-700 hover:bg-zinc-50">
+                <Button variant="outline" size="sm" onClick={() => setSelectedVisualizerTransfer(null)} className="border-slate-200 text-slate-700 hover:bg-slate-50">
                   Close
                 </Button>
               </div>

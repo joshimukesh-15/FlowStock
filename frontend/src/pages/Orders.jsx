@@ -3,13 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { ShoppingCart, Plus, Trash2, CheckCircle2, Clock, Ban, PackageCheck, Building2, Users, RefreshCw, X, Eye, Truck, Layers, IndianRupee } from "lucide-react";
-import { fetchOrders, createOrderApi, confirmOrderApi, fulfillOrderApi, cancelOrderApi, fetchCustomers, createCustomerApi, fetchProducts, fetchWarehouses } from "@/lib/api";
+import { ShoppingCart, Plus, Trash2, Clock, PackageCheck, Users, RefreshCw, X, Eye, Truck, Building2, Layers, IndianRupee } from "lucide-react";
+import { fulfillOrderApi, cancelOrderApi, createCustomerApi } from "@/lib/api";
+import { useOrdersData } from "@/hooks/useFlowStockData";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { OrderLifecycleStepper } from "@/components/ui/OrderLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
+import { FormModal } from "@/components/ui/FormModal";
+import { FormField } from "@/components/ui/FormField";
+import { KpiGrid } from "@/components/ui/KpiGrid";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -20,23 +23,35 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
+import { formatDate, selectClass } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
+
 export default function OrdersPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
     const prefersReducedMotion = useReducedMotion();
     const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
     const itemVariants = slideUpVariants(prefersReducedMotion);
-    const [orders, setOrders] = useState([]);
-    const [customers, setCustomers] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [warehouses, setWarehouses] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(null);
     const [orderIdToCancel, setOrderIdToCancel] = useState(null);
     const [statusFilter, setStatusFilter] = useState("ALL");
     const [searchQuery, setSearchQuery] = useState("");
+
+    // SWR & Optimistic UI for Orders & Sales (0ms Navigation + Instant Status Updates)
+    const {
+        orders,
+        customers,
+        warehouses,
+        products,
+        isLoading: loading,
+        confirmOrder,
+        createOrder,
+        mutate,
+    } = useOrdersData({
+        status: statusFilter !== "ALL" ? statusFilter : undefined,
+    });
+
     // Create Order Modal State
     const [orderModalOpen, setOrderModalOpen] = useState(false);
     const [orderCustomerId, setOrderCustomerId] = useState("");
@@ -45,6 +60,7 @@ export default function OrdersPage() {
     const [orderItems, setOrderItems] = useState([]);
     const [orderError, setOrderError] = useState("");
     const [orderSubmitting, setOrderSubmitting] = useState(false);
+
     // New Customer Modal State
     const [customerModalOpen, setCustomerModalOpen] = useState(false);
     const [custName, setCustName] = useState("");
@@ -55,39 +71,18 @@ export default function OrdersPage() {
     const [custShipping, setCustShipping] = useState("");
     const [custError, setCustError] = useState("");
     const [custSubmitting, setCustSubmitting] = useState(false);
+
     // Order Details Modal State
     const [detailOrder, setDetailOrder] = useState(null);
-    const loadData = async () => {
-        if (orders.length === 0)
-            setLoading(true);
-        try {
-            const [ordList, custList, prodList, whList] = await Promise.all([
-                fetchOrders(),
-                fetchCustomers(),
-                fetchProducts(),
-                fetchWarehouses(),
-            ]);
-            setOrders(ordList);
-            setCustomers(custList);
-            setProducts(prodList);
-            setWarehouses(whList);
-            if (custList.length > 0 && !orderCustomerId) {
-                setOrderCustomerId(custList[0].id);
-            }
-            if (whList.length > 0 && !orderWarehouseId) {
-                setOrderWarehouseId(whList[0].id);
-            }
-        }
-        catch (err) {
-            console.error("Failed to load orders data:", err);
-        }
-        finally {
-            setLoading(false);
-        }
-    };
+
     useEffect(() => {
-        loadData();
-    }, [currentOrg?.id]);
+        if (customers.length > 0 && !orderCustomerId) {
+            setOrderCustomerId(customers[0].id);
+        }
+        if (warehouses.length > 0 && !orderWarehouseId) {
+            setOrderWarehouseId(warehouses[0].id);
+        }
+    }, [customers, warehouses]);
     const handleOpenCreateOrder = () => {
         if (products.length === 0) {
             toast.warning("No products available", "Please add products to catalog first before creating sales orders.");
@@ -158,7 +153,7 @@ export default function OrdersPage() {
         setOrderSubmitting(true);
         setOrderError("");
         try {
-            await createOrderApi({
+            await createOrder({
                 customer_id: orderCustomerId,
                 warehouse_id: orderWarehouseId || undefined,
                 notes: orderNotes.trim() || undefined,
@@ -170,7 +165,6 @@ export default function OrdersPage() {
             });
             setOrderModalOpen(false);
             toast.success("Sales order created", "Order has been registered in draft state.");
-            await loadData();
         }
         catch (err) {
             setOrderError(err.message || "Failed to create sales order");
@@ -204,7 +198,7 @@ export default function OrdersPage() {
             setCustCompany("");
             setCustBilling("");
             setCustShipping("");
-            await loadData();
+            await mutate();
             setOrderCustomerId(newCust.id);
         }
         catch (err) {
@@ -217,11 +211,10 @@ export default function OrdersPage() {
     const handleConfirmOrder = async (orderId) => {
         setActionLoading(orderId);
         try {
-            const updated = await confirmOrderApi(orderId);
+            const updated = await confirmOrder(orderId);
             if (detailOrder?.id === orderId)
-                setDetailOrder(updated);
-            toast.success("Order confirmed", `Stock reserved for ${updated.order_number}.`);
-            await loadData();
+                setDetailOrder(updated || ((prev) => prev ? { ...prev, status: "CONFIRMED" } : prev));
+            toast.success("Order confirmed", "Stock reserved for order.");
         }
         catch (err) {
             toast.error("Stock reservation error", err.message || "Unable to confirm order");
@@ -236,8 +229,8 @@ export default function OrdersPage() {
             const updated = await fulfillOrderApi(orderId);
             if (detailOrder?.id === orderId)
                 setDetailOrder(updated);
-            toast.success("Order fulfilled", `${updated.order_number} marked as fulfilled.`);
-            await loadData();
+            toast.success("Order fulfilled", `${updated?.order_number || "Order"} marked as fulfilled.`);
+            await mutate();
         }
         catch (err) {
             toast.error("Fulfillment error", err.message || "Unable to fulfill order");
@@ -250,34 +243,36 @@ export default function OrdersPage() {
         setOrderIdToCancel(orderId);
     };
     // KPIs
-    const fulfilledOrders = orders.filter((o) => o.status === "FULFILLED");
-    const totalRevenue = fulfilledOrders.reduce((sum, o) => sum + o.total_amount, 0);
-    const pendingCount = orders.filter((o) => o.status === "DRAFT" || o.status === "CONFIRMED").length;
-    const reservedOrders = orders.filter((o) => o.status === "CONFIRMED");
-    const totalReservedUnits = reservedOrders.reduce((sum, o) => sum + o.items.reduce((iSum, it) => iSum + it.quantity, 0), 0);
-    const filteredOrders = orders.filter((o) => {
+    const safeOrders = Array.isArray(orders) ? orders : [];
+    const fulfilledOrders = safeOrders.filter((o) => o?.status === "FULFILLED");
+    const totalRevenue = fulfilledOrders.reduce((sum, o) => sum + (Number(o?.total_amount) || 0), 0);
+    const pendingCount = safeOrders.filter((o) => o?.status === "DRAFT" || o?.status === "CONFIRMED").length;
+    const reservedOrders = safeOrders.filter((o) => o?.status === "CONFIRMED");
+    const totalReservedUnits = reservedOrders.reduce((sum, o) => sum + (Array.isArray(o?.items) ? o.items.reduce((iSum, it) => iSum + (Number(it?.quantity) || 0), 0) : 0), 0);
+    const filteredOrders = safeOrders.filter((o) => {
+        if (!o) return false;
         if (statusFilter !== "ALL" && o.status !== statusFilter)
             return false;
         if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase();
-            const matchNum = o.order_number.toLowerCase().includes(q);
-            const matchCust = o.customer?.name.toLowerCase().includes(q) || false;
+            const matchNum = o.order_number?.toLowerCase().includes(q) || false;
+            const matchCust = o.customer?.name?.toLowerCase().includes(q) || false;
             const matchCompany = o.customer?.company?.toLowerCase().includes(q) || false;
             return matchNum || matchCust || matchCompany;
         }
         return true;
     });
-    if (loading && orders.length === 0) {
+    if (loading && safeOrders.length === 0) {
       return <PageSkeleton hasKpis={true} kpiCount={4} tableRows={6} />;
     }
 
     return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <ShoppingCart className="w-6 h-6 text-zinc-900 dark:text-zinc-100"/>
+            <ShoppingCart className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
             Sales Orders & Stock Allocation
           </span>} subtitle="B2B customer order lifecycle, inventory reservation, and dispatch fulfillment." actions={<>
-            <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
+            <Button variant="outline" size="sm" onClick={() => mutate()} disabled={loading}>
               <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`}/>
               Refresh
             </Button>
@@ -292,7 +287,7 @@ export default function OrdersPage() {
           </>}/>
 
       {/* KPI Summary Cards */}
-      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" variants={itemVariants}>
+      <KpiGrid>
         <StatCard
           title="Fulfilled Revenue"
           value={totalRevenue}
@@ -320,11 +315,11 @@ export default function OrdersPage() {
           icon={Users}
           subText="Active customer accounts"
         />
-      </motion.div>
+      </KpiGrid>
 
         {/* Orders Table Container */}
         <Card className="">
-          <CardHeader className="border-b border-zinc-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <CardHeader className="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by order # or customer..." className="w-64"/>
 
@@ -332,8 +327,8 @@ export default function OrdersPage() {
               <Tabs tabs={["ALL", "DRAFT", "CONFIRMED", "FULFILLED", "CANCELLED"]} activeTab={statusFilter} onChange={setStatusFilter} layoutId="orders-status-tabs" variant="pill"/>
             </div>
 
-            <div className="text-xs text-zinc-500">
-              Showing <span className="font-semibold text-zinc-900">{filteredOrders.length}</span> orders
+            <div className="text-xs text-slate-500">
+              Showing <span className="font-semibold text-slate-900">{filteredOrders.length}</span> orders
             </div>
           </CardHeader>
 
@@ -345,8 +340,8 @@ export default function OrdersPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Sales Order
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-zinc-700">
-                  <thead className="bg-zinc-50 text-xs uppercase font-medium text-zinc-500 border-b border-zinc-200">
+                <table className="w-full text-left text-sm text-slate-700">
+                  <thead className="bg-slate-50 text-xs uppercase font-medium text-slate-500 border-b border-slate-200">
                     <tr>
                       <th className="py-3.5 px-4">Order #</th>
                       <th className="py-3.5 px-4">Customer</th>
@@ -357,40 +352,40 @@ export default function OrdersPage() {
                       <th className="py-3.5 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100">
+                  <tbody className="divide-y divide-slate-100">
                     {filteredOrders.map((o) => {
                 const isActing = actionLoading === o.id;
                 const itemCount = o.items.reduce((acc, it) => acc + it.quantity, 0);
-                return (<tr key={o.id} className="hover:bg-zinc-50 transition-colors">
-                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-zinc-900">
+                return (<tr key={o.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-slate-900">
                             {o.order_number}
-                            <div className="text-[10px] font-normal text-zinc-500 mt-0.5">
-                              {new Date(o.created_at).toLocaleDateString()}
+                            <div className="text-[10px] font-normal text-slate-500 mt-0.5">
+                              {formatDate(o.created_at)}
                             </div>
                           </td>
                           <td className="py-3.5 px-4">
-                            <div className="font-medium text-zinc-900">{o.customer?.name || "Customer"}</div>
-                            <div className="text-xs text-zinc-400 flex items-center gap-1.5 mt-0.5">
-                              {o.customer?.company && (<span className="font-medium text-zinc-700">
+                            <div className="font-medium text-slate-900">{o.customer?.name || "Customer"}</div>
+                            <div className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
+                              {o.customer?.company && (<span className="font-medium text-slate-700">
                                   {o.customer.company}
                                 </span>)}
-                              <span className="text-zinc-500 font-mono text-[11px]">
+                              <span className="text-slate-500 font-mono text-[11px]">
                                 {o.customer?.email}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3.5 px-4 text-xs text-zinc-400">
+                          <td className="py-3.5 px-4 text-xs text-slate-400">
                             {o.warehouse ? (<div>
-                                <span className="text-zinc-700">{o.warehouse.name}</span>
-                                <span className="font-mono text-[10px] text-zinc-500 block">
+                                <span className="text-slate-700">{o.warehouse.name}</span>
+                                <span className="font-mono text-[10px] text-slate-500 block">
                                   {o.warehouse.code}
                                 </span>
                               </div>) : ("Default Facility")}
                           </td>
-                          <td className="py-3.5 px-4 text-center font-mono text-xs text-zinc-700">
+                          <td className="py-3.5 px-4 text-center font-mono text-xs text-slate-700">
                             {o.items.length} lines ({itemCount} units)
                           </td>
-                          <td className="py-3.5 px-4 text-right font-mono font-bold text-zinc-900">
+                          <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900">
                             ₹{o.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3.5 px-4 text-center">
@@ -398,27 +393,27 @@ export default function OrdersPage() {
                           </td>
                           <td className="py-3.5 px-4 text-right">
                             <div className="flex items-center justify-end gap-1.5">
-                              <Button variant="ghost" size="sm" onClick={() => setDetailOrder(o)} className="text-zinc-500 hover:text-zinc-900 text-xs h-7 px-2" title="View Order Details">
+                              <Button variant="ghost" size="sm" onClick={() => setDetailOrder(o)} className="text-slate-500 hover:text-slate-900 text-xs h-7 px-2" title="View Order Details">
                                 <Eye className="w-3.5 h-3.5 mr-1"/>
                                 Details
                               </Button>
 
                               {o.status === "DRAFT" && (<>
-                                  <Button size="sm" onClick={() => handleConfirmOrder(o.id)} disabled={isActing} className="bg-zinc-900 hover:bg-black text-white text-xs h-7 px-2.5 font-medium shadow-xs">
+                                  <Button size="sm" onClick={() => handleConfirmOrder(o.id)} disabled={isActing} className="bg-slate-900 hover:bg-black text-white text-xs h-7 px-2.5 font-medium shadow-xs">
                                     <PackageCheck className="w-3 h-3 mr-1"/>
                                     Confirm
                                   </Button>
-                                  <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(o.id)} disabled={isActing} className="text-zinc-500 hover:text-black hover:bg-zinc-100 text-xs h-7 px-2">
+                                  <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(o.id)} disabled={isActing} className="text-slate-500 hover:text-black hover:bg-slate-100 text-xs h-7 px-2">
                                     Cancel
                                   </Button>
                                 </>)}
 
                               {o.status === "CONFIRMED" && (<>
-                                  <Button size="sm" onClick={() => handleFulfillOrder(o.id)} disabled={isActing} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
+                                  <Button size="sm" onClick={() => handleFulfillOrder(o.id)} disabled={isActing} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
                                     <Truck className="w-3 h-3 mr-1"/>
                                     Fulfill
                                   </Button>
-                                  <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(o.id)} disabled={isActing} className="text-zinc-500 hover:text-black hover:bg-zinc-100 text-xs h-7 px-2">
+                                  <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(o.id)} disabled={isActing} className="text-slate-500 hover:text-black hover:bg-slate-100 text-xs h-7 px-2">
                                     Cancel
                                   </Button>
                                 </>)}
@@ -433,204 +428,230 @@ export default function OrdersPage() {
         </Card>
 
         {/* Modal: Create Sales Order */}
-        <Modal isOpen={orderModalOpen} onClose={() => setOrderModalOpen(false)} maxWidth="2xl" className="p-6 max-h-[90vh] flex flex-col">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
-            <h3 className="font-semibold text-zinc-900 text-lg flex items-center gap-2">
-              <ShoppingCart className="w-5 h-5 text-zinc-900"/>
-              Create Sales Order
-            </h3>
-            <button onClick={() => setOrderModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-              <X className="w-5 h-5"/>
-            </button>
+        <FormModal
+          isOpen={orderModalOpen}
+          onClose={() => setOrderModalOpen(false)}
+          title="Create Sales Order"
+          icon={ShoppingCart}
+          onSubmit={handleCreateOrderSubmit}
+          isSubmitting={orderSubmitting}
+          submitText="Create Draft Order"
+          error={orderError}
+          maxWidth="2xl"
+          bodyClassName="p-5 sm:p-6 space-y-4 max-h-[80vh] overflow-y-auto"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <FormField label="B2B Customer *">
+              <select
+                value={orderCustomerId}
+                onChange={(e) => setOrderCustomerId(e.target.value)}
+                className={selectClass}
+                required
+              >
+                {customers.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} {c.company ? `(${c.company})` : ""}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+
+            <FormField label="Fulfillment Facility">
+              <select
+                value={orderWarehouseId}
+                onChange={(e) => setOrderWarehouseId(e.target.value)}
+                className={selectClass}
+              >
+                {warehouses.map((wh) => (
+                  <option key={wh.id} value={wh.id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))}
+              </select>
+            </FormField>
           </div>
 
-          {orderError && (<Alert variant="danger" className="mt-4 text-xs">
-              {orderError}
-            </Alert>)}
-
-          <form onSubmit={handleCreateOrderSubmit} className="mt-4 space-y-4 flex-1 overflow-y-auto pr-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  B2B Customer *
-                </label>
-                <select value={orderCustomerId} onChange={(e) => setOrderCustomerId(e.target.value)} className="w-full bg-zinc-50 border border-zinc-300 rounded-md px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-950" required>
-                  {customers.map((c) => (<option key={c.id} value={c.id}>
-                      {c.name} {c.company ? `(${c.company})` : ""}
-                    </option>))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  Fulfillment Facility
-                </label>
-                <select value={orderWarehouseId} onChange={(e) => setOrderWarehouseId(e.target.value)} className="w-full bg-zinc-50 border border-zinc-700 rounded-md px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-950">
-                  {warehouses.map((wh) => (<option key={wh.id} value={wh.id}>
-                      {wh.name} ({wh.code})
-                    </option>))}
-                </select>
-              </div>
-            </div>
-
-            {/* Line Items Section */}
-            <div className="pt-2">
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                  Order Line Items
-                </label>
-                <Button type="button" variant="outline" size="sm" onClick={handleAddItemRow} className="border-zinc-700 text-xs h-7 text-zinc-700 hover:bg-zinc-800">
-                  <Plus className="w-3 h-3 mr-1"/>
-                  Add Item
-                </Button>
-              </div>
-
-              <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                {orderItems.map((item, idx) => (<div key={idx} className="flex items-center gap-2 p-2.5 rounded-lg bg-zinc-50 border border-zinc-200 text-xs">
-                    <div className="flex-1">
-                      <select value={item.product_id} onChange={(e) => handleItemChange(idx, "product_id", e.target.value)} className="w-full bg-white border border-zinc-300 rounded px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-950">
-                        {products.map((p) => (<option key={p.id} value={p.id}>
-                            {p.name} [{p.sku}]
-                          </option>))}
-                      </select>
-                    </div>
-
-                    <div className="w-20">
-                      <Input type="number" min="1" value={item.quantity} onChange={(e) => handleItemChange(idx, "quantity", e.target.value)} placeholder="Qty" className="h-8 text-xs bg-white border-zinc-300 text-zinc-800"/>
-                    </div>
-
-                    <div className="w-24">
-                      <div className="relative">
-                        <span className="absolute left-2 top-2 text-zinc-500 text-xs">₹</span>
-                        <Input type="number" step="0.01" min="0" value={item.unit_price} onChange={(e) => handleItemChange(idx, "unit_price", e.target.value)} placeholder="Price" className="h-8 text-xs bg-white border-zinc-300 pl-5 font-mono text-zinc-800"/>
-                      </div>
-                    </div>
-
-                    <div className="w-24 text-right font-mono font-semibold text-zinc-900">
-                      ₹{(item.quantity * item.unit_price).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                    </div>
-
-                    <button type="button" onClick={() => handleRemoveItemRow(idx)} disabled={orderItems.length <= 1} className={`p-1.5 rounded transition-colors ${orderItems.length <= 1
-                ? "text-zinc-600 cursor-not-allowed"
-                : "text-zinc-400 hover:text-black hover:bg-zinc-200"}`}>
-                      <Trash2 className="w-3.5 h-3.5"/>
-                    </button>
-                  </div>))}
-              </div>
-
-              {/* Total Summary */}
-              <div className="flex items-center justify-between p-3 mt-3 bg-zinc-50 rounded-lg border border-zinc-200">
-                <span className="text-xs text-zinc-500">
-                  Total Order Amount ({orderItems.length} items):
-                </span>
-                <span className="text-base font-bold font-mono text-zinc-950">
-                  ₹{orderCalculatedTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Order Notes / Reference
+          {/* Line Items Section */}
+          <div className="pt-2">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF]">
+                Order Line Items
               </label>
-              <Input value={orderNotes} onChange={(e) => setOrderNotes(e.target.value)} placeholder="e.g. PO-REF-2024-88, delivery instructions"/>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleAddItemRow}
+                className="text-xs h-7"
+              >
+                <Plus className="w-3 h-3 mr-1" />
+                Add Item
+              </Button>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-4 border-t border-zinc-100">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setOrderModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-                Cancel
-              </Button>
-              <Button type="submit" size="sm" isLoading={orderSubmitting} className="bg-zinc-950 hover:bg-black text-white shadow-xs">
-                {orderSubmitting ? "Creating Order..." : "Create Draft Order"}
-              </Button>
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+              {orderItems.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34] text-xs"
+                >
+                  <div className="flex-1">
+                    <select
+                      value={item.product_id}
+                      onChange={(e) => handleItemChange(idx, "product_id", e.target.value)}
+                      className={selectClass}
+                    >
+                      {products.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name} [{p.sku}]
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="w-20">
+                    <Input
+                      type="number"
+                      min="1"
+                      value={item.quantity}
+                      onChange={(e) => handleItemChange(idx, "quantity", e.target.value)}
+                      placeholder="Qty"
+                      className="h-9 text-xs"
+                    />
+                  </div>
+
+                  <div className="w-24">
+                    <div className="relative">
+                      <span className="absolute left-2.5 top-2 text-slate-500 text-xs">₹</span>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={item.unit_price}
+                        onChange={(e) => handleItemChange(idx, "unit_price", e.target.value)}
+                        placeholder="Price"
+                        className="h-9 text-xs pl-6 font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="w-24 text-right font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                    ₹{(item.quantity * item.unit_price).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveItemRow(idx)}
+                    disabled={orderItems.length <= 1}
+                    className={`p-1.5 rounded transition-colors ${
+                      orderItems.length <= 1
+                        ? "text-slate-400 cursor-not-allowed"
+                        : "text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                    }`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
             </div>
-          </form>
-        </Modal>
+
+            {/* Total Summary */}
+            <div className="flex items-center justify-between p-3 mt-3 bg-slate-50 dark:bg-[#1C1F27] rounded-lg border border-slate-200 dark:border-[#262A34]">
+              <span className="text-xs text-slate-500 dark:text-[#9BA3AF]">
+                Total Order Amount ({orderItems.length} items):
+              </span>
+              <span className="text-base font-bold font-mono text-slate-950 dark:text-[#F4F5F7]">
+                ₹{orderCalculatedTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+          </div>
+
+          <FormField label="Order Notes / Reference">
+            <Input
+              value={orderNotes}
+              onChange={(e) => setOrderNotes(e.target.value)}
+              placeholder="e.g. PO-REF-2024-88, delivery instructions"
+            />
+          </FormField>
+        </FormModal>
 
         {/* Modal: New Customer */}
-        <Modal isOpen={customerModalOpen} onClose={() => setCustomerModalOpen(false)} maxWidth="md" className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
-            <h3 className="font-semibold text-zinc-900 text-lg flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-zinc-700"/>
-              Add B2B Customer Profile
-            </h3>
-            <button onClick={() => setCustomerModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-              <X className="w-5 h-5"/>
-            </button>
+        <FormModal
+          isOpen={customerModalOpen}
+          onClose={() => setCustomerModalOpen(false)}
+          title="Add B2B Customer Profile"
+          icon={Building2}
+          onSubmit={handleCreateCustomerSubmit}
+          isSubmitting={custSubmitting}
+          submitText="Save Customer"
+          error={custError}
+          maxWidth="md"
+        >
+          <FormField label="Contact Name *">
+            <Input
+              value={custName}
+              onChange={(e) => setCustName(e.target.value)}
+              placeholder="e.g. Ramesh Sharma"
+              required
+            />
+          </FormField>
+
+          <FormField label="Email Address *">
+            <Input
+              type="email"
+              value={custEmail}
+              onChange={(e) => setCustEmail(e.target.value)}
+              placeholder="e.g. procurement@bharatcorp.in"
+              required
+            />
+          </FormField>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <FormField label="Company / Organization">
+              <Input
+                value={custCompany}
+                onChange={(e) => setCustCompany(e.target.value)}
+                placeholder="e.g. Bharat Corp Ltd"
+              />
+            </FormField>
+            <FormField label="Phone Number">
+              <Input
+                value={custPhone}
+                onChange={(e) => setCustPhone(e.target.value)}
+                placeholder="e.g. +91 98200 12345"
+              />
+            </FormField>
           </div>
 
-          {custError && (<Alert variant="danger" className="mt-4 text-xs">
-              {custError}
-            </Alert>)}
-
-          <form onSubmit={handleCreateCustomerSubmit} className="mt-4 space-y-3">
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Contact Name *
-              </label>
-              <Input value={custName} onChange={(e) => setCustName(e.target.value)} placeholder="e.g. Ramesh Sharma" required/>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Email Address *
-              </label>
-              <Input type="email" value={custEmail} onChange={(e) => setCustEmail(e.target.value)} placeholder="e.g. procurement@bharatcorp.in" required/>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  Company / Organization
-                </label>
-                <Input value={custCompany} onChange={(e) => setCustCompany(e.target.value)} placeholder="e.g. Bharat Corp Ltd"/>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-zinc-700 mb-1">
-                  Phone Number
-                </label>
-                <Input value={custPhone} onChange={(e) => setCustPhone(e.target.value)} placeholder="e.g. +91 98200 12345"/>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 mb-1">
-                Shipping Address
-              </label>
-              <Input value={custShipping} onChange={(e) => setCustShipping(e.target.value)} placeholder="e.g. Warehouse 4B, MIDC Industrial Area, Pune"/>
-            </div>
-
-            <div className="flex items-center justify-end gap-2 pt-4 border-t border-zinc-100">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setCustomerModalOpen(false)} className="text-zinc-400 hover:text-zinc-700">
-                Cancel
-              </Button>
-              <Button type="submit" size="sm" isLoading={custSubmitting} className="bg-zinc-950 hover:bg-black text-white shadow-xs">
-                {custSubmitting ? "Adding..." : "Save Customer"}
-              </Button>
-            </div>
-          </form>
-        </Modal>
+          <FormField label="Shipping Address">
+            <Input
+              value={custShipping}
+              onChange={(e) => setCustShipping(e.target.value)}
+              placeholder="e.g. Warehouse 4B, MIDC Industrial Area, Pune"
+            />
+          </FormField>
+        </FormModal>
 
         {/* Modal: Order Details & Status Workflow */}
         <Modal isOpen={!!detailOrder} onClose={() => setDetailOrder(null)} maxWidth="2xl" className="p-6 max-h-[90vh] flex flex-col">
           {detailOrder && (<>
-              <div className="flex items-center justify-between pb-4 border-b border-zinc-100">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-zinc-900/10 text-zinc-900 flex items-center justify-center border border-zinc-900/20">
+                  <div className="w-9 h-9 rounded-lg bg-slate-900/10 text-slate-900 flex items-center justify-center border border-zinc-900/20">
                     <ShoppingCart className="w-5 h-5"/>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-zinc-900 text-lg font-mono">
+                    <h3 className="font-semibold text-slate-900 text-lg font-mono">
                       {detailOrder.order_number}
                     </h3>
-                    <p className="text-xs text-zinc-500">
-                      Created on {new Date(detailOrder.created_at).toLocaleDateString()} &bull; {detailOrder.customer?.name}
+                    <p className="text-xs text-slate-500">
+                      Created on {formatDate(detailOrder.created_at)} &bull; {detailOrder.customer?.name}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={detailOrder.status} type="order" />
-                  <button onClick={() => setDetailOrder(null)} className="text-zinc-400 hover:text-zinc-700 ml-2">
+                  <button onClick={() => setDetailOrder(null)} className="text-slate-400 hover:text-slate-700 ml-2">
                     <X className="w-5 h-5"/>
                   </button>
                 </div>
@@ -641,24 +662,24 @@ export default function OrdersPage() {
                 <OrderLifecycleStepper status={detailOrder.status} createdAt={detailOrder.created_at} updatedAt={detailOrder.updated_at}/>
 
                 {/* Customer Info Card */}
-                <div className="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200 grid grid-cols-2 gap-3 text-xs">
+                <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-zinc-500 block">Customer</span>
-                    <span className="font-semibold text-zinc-900">{detailOrder.customer?.name}</span>
-                    {detailOrder.customer?.company && (<span className="text-zinc-500 block">{detailOrder.customer.company}</span>)}
-                    <span className="text-zinc-500 font-mono block mt-0.5">
+                    <span className="text-slate-500 block">Customer</span>
+                    <span className="font-semibold text-slate-900">{detailOrder.customer?.name}</span>
+                    {detailOrder.customer?.company && (<span className="text-slate-500 block">{detailOrder.customer.company}</span>)}
+                    <span className="text-slate-500 font-mono block mt-0.5">
                       {detailOrder.customer?.email}
                     </span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block">Fulfillment Facility</span>
-                    <span className="font-semibold text-zinc-900">
+                    <span className="text-slate-500 block">Fulfillment Facility</span>
+                    <span className="font-semibold text-slate-900">
                       {detailOrder.warehouse?.name || "Acme Central DC"}
                     </span>
-                    <span className="text-zinc-500 font-mono block">
+                    <span className="text-slate-500 font-mono block">
                       {detailOrder.warehouse?.code || "WH-MAIN"}
                     </span>
-                    {detailOrder.customer?.shipping_address && (<span className="text-zinc-600 block mt-1 truncate">
+                    {detailOrder.customer?.shipping_address && (<span className="text-slate-600 block mt-1 truncate">
                         Ship To: {detailOrder.customer.shipping_address}
                       </span>)}
                   </div>
@@ -666,12 +687,12 @@ export default function OrdersPage() {
 
                 {/* Line Items Table */}
                 <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
                     Itemized Order Lines ({detailOrder.items?.length || 0})
                   </h4>
-                  <div className="border border-zinc-200 rounded-lg overflow-hidden">
-                    <table className="w-full text-left text-xs text-zinc-700">
-                      <thead className="bg-zinc-50 text-zinc-500 uppercase font-medium border-b border-zinc-200">
+                  <div className="border border-slate-200 rounded-lg overflow-hidden">
+                    <table className="w-full text-left text-xs text-slate-700">
+                      <thead className="bg-slate-50 text-slate-500 uppercase font-medium border-b border-slate-200">
                         <tr>
                           <th className="py-2.5 px-3">Product</th>
                           <th className="py-2.5 px-3 text-right">Quantity</th>
@@ -679,33 +700,33 @@ export default function OrdersPage() {
                           <th className="py-2.5 px-3 text-right">Subtotal (₹)</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-zinc-100 bg-white">
+                      <tbody className="divide-y divide-slate-100 bg-white">
                         {detailOrder.items?.map((it) => (<tr key={it.id}>
                             <td className="py-2.5 px-3">
-                              <span className="font-medium text-zinc-900 block">
+                              <span className="font-medium text-slate-900 block">
                                 {it.product?.name || "Product"}
                               </span>
-                              <span className="font-mono text-[11px] text-zinc-500">
+                              <span className="font-mono text-[11px] text-slate-500">
                                 {it.product?.sku || "SKU"}
                               </span>
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-zinc-900">
+                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-slate-900">
                               {it.quantity} {it.product?.unit || "units"}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono text-zinc-500">
+                            <td className="py-2.5 px-3 text-right font-mono text-slate-500">
                               ₹{it.unit_price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-bold text-zinc-950">
+                            <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-950">
                               ₹{it.subtotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
                           </tr>))}
                       </tbody>
-                      <tfoot className="bg-zinc-50 font-semibold border-t border-zinc-200">
+                      <tfoot className="bg-slate-50 font-semibold border-t border-slate-200">
                         <tr>
-                          <td colSpan={3} className="py-2.5 px-3 text-right text-zinc-500">
+                          <td colSpan={3} className="py-2.5 px-3 text-right text-slate-500">
                             Total Order Value:
                           </td>
-                          <td className="py-2.5 px-3 text-right font-mono text-sm text-zinc-950 font-bold">
+                          <td className="py-2.5 px-3 text-right font-mono text-sm text-slate-950 font-bold">
                             ₹{detailOrder.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                         </tr>
@@ -715,50 +736,50 @@ export default function OrdersPage() {
                 </div>
 
                 {/* State Machine Explainer Card */}
-                <div className="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs space-y-1.5">
-                  <div className="font-medium text-zinc-700 flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-zinc-900"/>
+                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
+                  <div className="font-medium text-slate-700 flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-slate-900"/>
                     Inventory Reservation Status:
                   </div>
-                  {detailOrder.status === "DRAFT" && (<p className="text-zinc-400 text-[11px]">
+                  {detailOrder.status === "DRAFT" && (<p className="text-slate-400 text-[11px]">
                       This order is currently a <strong>DRAFT</strong>. Stock has not yet been reserved.
                       Clicking &quot;Confirm & Reserve&quot; checks available inventory and allocates it.
                     </p>)}
-                  {detailOrder.status === "CONFIRMED" && (<p className="text-zinc-700 text-[11px]">
+                  {detailOrder.status === "CONFIRMED" && (<p className="text-slate-700 text-[11px]">
                       This order is <strong>CONFIRMED</strong>. Stock is safely reserved in the warehouse and cannot be sold to other orders.
                       Clicking &quot;Fulfill & Dispatch&quot; appends OUT ledger entries and reduces on-hand inventory.
                     </p>)}
-                  {detailOrder.status === "FULFILLED" && (<p className="text-zinc-900 text-[11px]">
+                  {detailOrder.status === "FULFILLED" && (<p className="text-slate-900 text-[11px]">
                       This order is <strong>FULFILLED</strong>. Goods have been dispatched from the warehouse and corresponding ledger entries were recorded.
                     </p>)}
-                  {detailOrder.status === "CANCELLED" && (<p className="text-zinc-400 text-[11px]">
+                  {detailOrder.status === "CANCELLED" && (<p className="text-slate-400 text-[11px]">
                       This order is <strong>CANCELLED</strong>. Any reserved inventory was returned to the available selling pool.
                     </p>)}
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-zinc-100 mt-4">
-                <Button variant="ghost" size="sm" onClick={() => setDetailOrder(null)} className="text-zinc-400 hover:text-zinc-700">
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-4">
+                <Button variant="ghost" size="sm" onClick={() => setDetailOrder(null)} className="text-slate-400 hover:text-slate-700">
                   Close
                 </Button>
 
                 <div className="flex items-center gap-2">
                   {detailOrder.status === "DRAFT" && (<>
-                      <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="text-zinc-500 hover:text-black text-xs">
+                      <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="text-slate-500 hover:text-black text-xs">
                         Cancel Order
                       </Button>
-                      <Button size="sm" onClick={() => handleConfirmOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="bg-zinc-950 hover:bg-black text-white text-xs font-medium shadow-xs">
+                      <Button size="sm" onClick={() => handleConfirmOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="bg-slate-950 hover:bg-black text-white text-xs font-medium shadow-xs">
                         <PackageCheck className="w-3.5 h-3.5 mr-1"/>
                         Confirm & Reserve Stock
                       </Button>
                     </>)}
 
                   {detailOrder.status === "CONFIRMED" && (<>
-                      <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="text-zinc-500 hover:text-black text-xs">
+                      <Button variant="ghost" size="sm" onClick={() => handleCancelOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="text-slate-500 hover:text-black text-xs">
                         Cancel Order
                       </Button>
-                      <Button size="sm" onClick={() => handleFulfillOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="bg-zinc-950 hover:bg-black text-white shadow-xs text-xs">
+                      <Button size="sm" onClick={() => handleFulfillOrder(detailOrder.id)} disabled={actionLoading === detailOrder.id} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs">
                         <Truck className="w-3.5 h-3.5 mr-1"/>
                         Fulfill & Dispatch
                       </Button>
@@ -778,7 +799,7 @@ export default function OrdersPage() {
                     setDetailOrder(updated);
                 setOrderIdToCancel(null);
                 toast.success("Order cancelled", `Order ${updated.order_number} has been cancelled.`);
-                await loadData();
+                await mutate();
             }
             catch (err) {
                 toast.error("Cancellation error", err.message || "Unable to cancel order");

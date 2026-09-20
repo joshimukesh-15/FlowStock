@@ -31,7 +31,7 @@ export const AppProgressBar = () => {
       className="fixed top-0 left-0 right-0 h-[2px] z-[9999] pointer-events-none bg-transparent"
     >
       <div
-        className="h-full bg-zinc-950 dark:bg-zinc-100 shadow-[0_0_8px_rgba(0,0,0,0.3)] dark:shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all ease-out"
+        className="h-full bg-slate-950 dark:bg-slate-100 shadow-[0_0_8px_rgba(0,0,0,0.3)] dark:shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all ease-out"
         style={{
           width: `${progress}%`,
           opacity: visible ? 1 : 0,

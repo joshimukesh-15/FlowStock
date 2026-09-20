@@ -86,44 +86,7 @@
   }
 }
 
-.skeleton-shimmer {
-  position: relative;
-  overflow: hidden;
-  background-color: #e4e4e7;
-  transform: translateZ(0);
-}
 
-.skeleton-shimmer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.75) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shimmer 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-html.dark .skeleton-shimmer {
-  background-color: #2C303B;
-}
-
-html.dark .skeleton-shimmer::after {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(182, 255, 46, 0.08) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
 
 /* Custom slim sleek scrollbars */
 .app-canvas::-webkit-scrollbar,
@@ -355,3 +318,11 @@ html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
 
 
 
+
+html.lenis, html.lenis body { height: auto; } .lenis.lenis-smooth { scroll-behavior: auto !important; } .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; } .lenis.lenis-stopped { overflow: hidden; } .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+/* Allow text selection inside inputs and textareas so typing still works normally */
+input, textarea, [contenteditable='true'] { -webkit-user-select: auto !important; user-select: auto !important; }
+
+/* Production-level GPU acceleration for dashboard scroll */
+.app-canvas { will-change: scroll-position; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }

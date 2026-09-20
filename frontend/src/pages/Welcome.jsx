@@ -1,12 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import {
   Boxes,
   Truck,
   ReceiptText,
-  Sparkles,
-  ArrowDown,
   ArrowRight,
   Check,
   X,
@@ -20,7 +17,16 @@ import { Modal } from "@/components/ui/Modal";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-/* ── Professional Scroll-Animated Feature Row ── */
+function SparklesIcon({ className = "w-3 h-3" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+      <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+    </svg>
+  );
+}
+
+/* ── High-Performance Responsive Feature Row ── */
 function FeatureRow({
   tag,
   title,
@@ -31,36 +37,26 @@ function FeatureRow({
   reverse = false,
 }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-20 sm:my-28">
-      {/* Media Column - Elegant Entrance */}
-      <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.97 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`group rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xl hover:shadow-2xl transition-shadow p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#2A2E39] dark:to-[#181A20] ${
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-20">
+      {/* Media Column */}
+      <div
+        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-md hover:shadow-xl transition-shadow p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#2A2E39] dark:to-[#181A20] ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
-        <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#14171F] relative aspect-[16/10] sm:h-[380px]">
+        <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#14171F] relative aspect-[16/10]">
           <img
             src={imgSrc}
             alt={imgAlt}
-            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            className="w-full h-full object-cover object-center hover:scale-[1.02] transition-transform duration-500 ease-out"
             loading="lazy"
+            decoding="async"
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.02] to-white/[0.03] pointer-events-none" />
         </div>
-      </motion.div>
+      </div>
 
-      {/* Text Column - Staggered Entrance */}
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}
-      >
+      {/* Text Column */}
+      <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200 dark:border-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] text-xs font-mono font-semibold tracking-wider uppercase">
           {tag}
         </div>
@@ -83,65 +79,6 @@ function FeatureRow({
             </li>
           ))}
         </ul>
-      </motion.div>
-    </div>
-  );
-}
-
-/* ── The Apple-Style Timeline Video Scroll ── */
-function CockpitShowcase3D() {
-  const containerRef = useRef(null);
-  const imgRef = useRef(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Smooth the raw scroll for buttery video-like playback without stuttering
-  const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.001 });
-
-  const totalFrames = 10;
-  
-  // Directly swap the image source on the GPU without triggering React re-renders.
-  // This completely eliminates the lag and perfectly matches "scroll time" (frame-wise).
-  useMotionValueEvent(smooth, "change", (latest) => {
-    // Map 0-1 progress to 1-10 frame index
-    const frame = Math.max(1, Math.min(totalFrames, Math.ceil(latest * totalFrames)));
-    if (imgRef.current) {
-       imgRef.current.src = `/assets/scroll-layer-${frame}.png`;
-    }
-  });
-
-  return (
-    <div
-      id="cockpit-showcase"
-      ref={containerRef}
-      className="relative w-full h-[250vh]" // Height defines how long the scroll takes
-    >
-      {/* Preload all images to prevent flickering when scrolling fast */}
-      <div className="hidden">
-        {Array.from({ length: totalFrames }).map((_, i) => (
-          <img key={i} src={`/assets/scroll-layer-${i + 1}.png`} alt="preload" />
-        ))}
-      </div>
-
-      <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden">
-        
-        <div className="relative w-full max-w-5xl rounded-xl sm:rounded-2xl border border-slate-200 dark:border-white/10 shadow-[0_30px_100px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_30px_100px_-15px_rgba(182,255,46,0.1)] overflow-hidden bg-white/95 dark:bg-[#14171F]/90 backdrop-blur-md">
-           <div className="relative w-full pt-[54%] overflow-hidden">
-             {/* Single DOM element for zero-lag performance */}
-             <img 
-               ref={imgRef}
-               src="/assets/scroll-layer-1.png" 
-               alt="App Timeline" 
-               className="absolute top-0 left-0 w-full h-[106%] object-cover object-top" 
-             />
-           </div>
-           {/* Premium Edge Glow */}
-           <div className="absolute inset-0 pointer-events-none border border-white/20 rounded-2xl" />
-        </div>
-
       </div>
     </div>
   );
@@ -154,51 +91,48 @@ export default function WelcomePage() {
   const [termsOpen, setTermsOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
 
-  const { scrollY } = useScroll();
-  
-  // Smooth the scroll for jitter-free background parallax
-  const smoothScroll = useSpring(scrollY, { stiffness: 60, damping: 20, restDelta: 0.001 });
-  
-  // High-End Website Parallax Distances (Applied only to absolute background elements)
-  const bgParallax1 = useTransform(smoothScroll, [0, 2000], [0, 800]);
-  const bgParallax2 = useTransform(smoothScroll, [0, 2000], [0, -600]);
-
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    if (!el) return;
+    const yOffset = -70;
+    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: "smooth" });
   };
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#14171F] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#B6FF2E] selection:text-[#14171F] relative transition-colors">
       
-      {/* GLOBAL PARALLAX BACKGROUND ELEMENTS (High-End Studio Feel) */}
+      {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS (Zero scroll repaint lag) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        <motion.div style={{ y: bgParallax1 }} className="absolute -top-32 -left-64 w-[800px] h-[800px] bg-[#B6FF2E]/10 dark:bg-[#B6FF2E]/5 rounded-full blur-[140px] pointer-events-none" />
-        <motion.div style={{ y: bgParallax2 }} className="absolute top-[40%] -right-64 w-[1000px] h-[1000px] bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-[160px] pointer-events-none" />
-        
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[700px]" style={{
-          background: 'radial-gradient(ellipse 50% 40% at 50% 0%, rgba(182,255,46,0.08), transparent 70%), radial-gradient(ellipse 60% 50% at 30% 10%, rgba(16,185,129,0.06), transparent 60%), radial-gradient(ellipse 60% 50% at 70% 10%, rgba(59,130,246,0.04), transparent 60%)',
-        }} />
         <div 
-          className="absolute inset-0 opacity-[0.08] dark:opacity-[0.06]"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[450px]" 
           style={{
-            backgroundImage: 'radial-gradient(#94a3b8 0.5px, transparent 0.5px)',
-            backgroundSize: '24px 24px',
-            maskImage: 'radial-gradient(ellipse 60% 50% at 50% 12%, black 30%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 60% 50% at 50% 12%, black 30%, transparent 100%)'
-          }}
+            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(182,255,46,0.06), transparent 70%)',
+          }} 
+        />
+        <div 
+          className="absolute top-[35%] right-0 w-[500px] h-[500px]" 
+          style={{
+            background: 'radial-gradient(circle at 100% 50%, rgba(16,185,129,0.04), transparent 70%)',
+          }} 
+        />
+        <div 
+          className="absolute top-[65%] left-0 w-[500px] h-[500px]" 
+          style={{
+            background: 'radial-gradient(circle at 0% 50%, rgba(59,130,246,0.03), transparent 70%)',
+          }} 
         />
       </div>
 
       {/* 1. FIXED TOP NAVBAR */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#14171F]/95 border-b border-slate-200/80 dark:border-[#323744] transition-colors">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#14171F]/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#323744] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-900 dark:bg-[#3A3E47] border border-slate-800 dark:border-[#545963] flex items-center justify-center p-1">
-              <Logomark className="w-6 h-6" />
-            </div>
+          <div className="flex items-center gap-3 relative z-10 cursor-pointer">
+            <img 
+              src="/assets/flowstock-ambient.svg" 
+              alt="FlowStock Logo" 
+              className="w-10 h-10 hover:scale-105 transition-transform drop-shadow-md" 
+            />
             <div>
               <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white block leading-none">
                 FlowStock
@@ -256,15 +190,15 @@ export default function WelcomePage() {
               <>
                 <button
                   type="button"
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/login?mode=login")}
                   className="h-8 px-3 text-xs gap-1.5 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#545963] hover:border-slate-300 dark:hover:border-[#B0B4BA] bg-white dark:bg-transparent hover:bg-slate-50 dark:hover:bg-[#3A3E47]/40 text-slate-800 dark:text-white font-medium transition-colors cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Login</span>
+                  <span className="hidden sm:inline">Log In</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/login?mode=signup")}
                   className="h-8 px-3 text-xs gap-1.5 inline-flex items-center justify-center rounded-lg bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-semibold transition-colors cursor-pointer shadow-xs"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
@@ -276,8 +210,8 @@ export default function WelcomePage() {
         </div>
       </header>
 
-      {/* 2. HERO SECTION WITH MASTERPIECE COCKPIT SHOWCASE */}
-      <section id="hero" className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 bg-transparent">
+      {/* 2. HERO SECTION */}
+      <section id="hero" className="relative pt-32 sm:pt-40 pb-20 sm:pb-28 bg-transparent">
         {/* Clean Ambient Atmosphere (No Image) */}
         <div className="absolute inset-0 pointer-events-none">
           <div
@@ -328,7 +262,7 @@ export default function WelcomePage() {
               <>
                 <button
                   type="button"
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/login?mode=signup")}
                   className="h-12 px-7 rounded-xl bg-slate-900 dark:bg-[#B6FF2E] hover:bg-slate-800 dark:hover:bg-[#a3f01b] text-white dark:text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(15,23,42,0.15)] dark:shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
                   <span>Get Started Free</span>
@@ -336,7 +270,7 @@ export default function WelcomePage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => scrollToSection("cockpit-showcase")}
+                  onClick={() => scrollToSection("platform")}
                   className="h-12 px-7 rounded-xl bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-800 dark:text-white font-semibold text-sm inline-flex items-center gap-2 border border-slate-200 dark:border-white/25 transition-all active:scale-[0.98] cursor-pointer shadow-sm dark:shadow-none"
                 >
                   <span>Explore Platform</span>
@@ -345,9 +279,6 @@ export default function WelcomePage() {
             )}
           </div>
         </div>
-
-        {/* Grand FlowStock Cockpit 3D Scroll Showcase Centerpiece */}
-        <CockpitShowcase3D isAuthenticated={isAuthenticated} navigate={navigate} />
       </section>
 
       {/* 3. LOGISTICS CARRIER LOGO STRIP (FULCRUM-STYLE) */}
@@ -380,48 +311,48 @@ export default function WelcomePage() {
           </p>
         </div>
 
-        {/* Feature Row 1: Sales Orders & Stock Allocation */}
+        {/* Feature Row 1: Inventory Ledger & Stock Levels */}
         <FeatureRow
-          tag="Sales Orders & Allocation"
-          title="Lock physical stock the instant orders confirm"
-          description="Every confirmed customer order immediately reserves physical inventory in the append-only ledger. Prevent stockouts, overselling across channels, and phantom stock drift before picking begins."
+          tag="Immutable Stock Ledger"
+          title="Real-time stock valuation and automatic reorder thresholds"
+          description="Every unit of inventory is tracked through an immutable financial-grade ledger. Gain instant visibility into days-on-hand, total valuation, and automated reorder points before shortages occur."
           bullets={[
-            "Automated stock reservation with real-time SKU allocation locks",
-            "Lifecycle stepper: Draft → Confirmed → Stock Reserved → Fulfilled",
-            "Instant unit reconciliation across multi-facility warehouse depots"
+            "Live inventory valuation and automated safety buffer calculations",
+            "Itemized SKU tracking with instant ledger reconciliation",
+            "Reorder-required alerts synchronized across warehouse depots"
           ]}
-          imgSrc="/assets/showcase-orders.png"
-          imgAlt="FlowStock Sales Orders and Real-Time Stock Allocation Console"
+          imgSrc="/assets/flowstock-inventory.jpeg"
+          imgAlt="FlowStock Inventory Ledger and Real-Time Stock Valuation Console"
           reverse={false}
         />
 
-        {/* Feature Row 2: Shipments & Logistics Tracking (Reversed) */}
+        {/* Feature Row 2: Products & SKU Catalog (Reversed) */}
         <FeatureRow
-          tag="Carrier Mesh & Logistics"
-          title="Multi-carrier dispatches with instant tracking AWBs"
-          description="Dispatch consignments directly with nationwide carriers — Blue Dart, Delhivery, DTDC, and FedEx. Generate verified AWBs and receive real-time checkpoint milestone webhooks."
+          tag="Catalog & SKU Master"
+          title="Centralized product registry across all SKU variants"
+          description="Manage tens of thousands of active SKUs with complete category breakdowns, unit pricing, and lifecycle tracking from introduction to clearance."
           bullets={[
-            "Pre-integrated courier manifests with instant Air Waybill (AWB) generation",
-            "Real-time waypoint checkpoint timelines with full custody verification",
-            "Consignment freight expenditure accounting synchronized to order ledgers"
+            "Detailed product hierarchy with parent categories and SKU variants",
+            "Real-time stock level monitoring with Active and Clearance states",
+            "Rapid SKU lookup and bulk catalog management for high-volume catalogs"
           ]}
-          imgSrc="/assets/showcase-shipments.png"
-          imgAlt="FlowStock Shipments and Multi-Carrier Logistics Tracking Screen"
+          imgSrc="/assets/flowstock-products.jpeg"
+          imgAlt="FlowStock Products and SKU Variants Management Console"
           reverse={true}
         />
 
-        {/* Feature Row 3: Invoices & Accounts Receivable */}
+        {/* Feature Row 3: Executive Operations & Financial Velocity */}
         <FeatureRow
-          tag="Billing & GST Invoicing"
-          title="Compliant GST invoices & instant cash realization"
-          description="Issue statutory B2B tax invoices with automated CGST, SGST, and IGST breakdowns. Track accounts receivable aging, record bank/UPI settlement collections, and reconcile accounts in real time."
+          tag="Operations & Financial Velocity"
+          title="Live executive cockpit for revenue and order fulfillment"
+          description="Bridge warehouse logistics with financial realization. Monitor invoiced revenue, receivables aging, total inventory capitalization, and active order books from a single unified pane."
           bullets={[
-            "Statutory GST invoice generation across 18%, 12%, and 5% tax brackets",
-            "Real-time receivables aging and payment collection reconciliation",
-            "Mathematical consistency guaranteed by double-entry ledger settlement"
+            "Real-time tracking of invoiced revenue and accounts receivable",
+            "Interactive fulfillment curves and order velocity intelligence",
+            "Integrated multi-tenant warehouse overview with double-entry precision"
           ]}
-          imgSrc="/assets/showcase-invoices.png"
-          imgAlt="FlowStock Invoices and Accounts Receivable Management Screen"
+          imgSrc="/assets/flowstock-operations.jpeg"
+          imgAlt="FlowStock Executive Operations and Warehouse Management Dashboard"
           reverse={false}
         />
       </section>
@@ -455,7 +386,7 @@ export default function WelcomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#23262F] text-[11px] font-mono tracking-wider text-slate-500 dark:text-[#9BA3AF] mb-4">
-              <Sparkles className="w-3 h-3 text-emerald-500 dark:text-[#B6FF2E]" />
+              <SparklesIcon className="w-3 h-3 text-emerald-500 dark:text-[#B6FF2E]" />
               CORE CAPABILITIES
             </div>
             <p className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
@@ -577,7 +508,7 @@ export default function WelcomePage() {
         <div className="flex flex-wrap items-center justify-center gap-4">
           <button
             type="button"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/login?mode=signup")}
             className="h-12 px-8 rounded-xl bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] cursor-pointer"
           >
             <span>Start Free Trial</span>
@@ -838,7 +769,6 @@ export default function WelcomePage() {
           </div>
         </div>
       </Modal>
-
     </div>
   );
 }

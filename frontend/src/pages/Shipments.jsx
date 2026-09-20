@@ -7,10 +7,13 @@ import { Truck, Plus, CheckCircle2, Clock, Ban, RefreshCw, X, Eye, Send, MapPin,
 import { fetchShipments, fetchOrders, createShipmentApi, dispatchShipmentApi, outForDeliveryShipmentApi, deliverShipmentApi, cancelShipmentApi, addShipmentEventApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
-import { formatINR } from "@/lib/utils";
+import { formatINR, formatDate, selectClass } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ShipmentLifecycleStepper } from "@/components/ui/ShipmentLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
+import { FormModal } from "@/components/ui/FormModal";
+import { FormField } from "@/components/ui/FormField";
+import { KpiGrid } from "@/components/ui/KpiGrid";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { StatCard } from "@/components/ui/StatCard";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
@@ -269,7 +272,7 @@ export default function ShipmentsPage() {
     return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <Truck className="w-7 h-7 text-zinc-900 dark:text-zinc-100"/>
+            <Truck className="w-7 h-7 text-slate-900 dark:text-[#F4F5F7]"/>
             Shipments & Logistics Tracking
           </span>} subtitle="Consignment dispatch, carrier manifests, real-time AWB tracking, and checkpoint timelines." actions={<>
             <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
@@ -288,7 +291,7 @@ export default function ShipmentsPage() {
           </>}/>
 
       {/* KPI Summary Cards */}
-      <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5" variants={itemVariants}>
+      <KpiGrid>
         <StatCard
           title="Active Consignments"
           value={inTransitCount}
@@ -316,11 +319,11 @@ export default function ShipmentsPage() {
           icon={Building}
           subText="Confirmed sales orders"
         />
-      </motion.div>
+      </KpiGrid>
 
         {/* Table & Controls Card */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="p-4 pb-3 border-b border-zinc-100 dark:border-[#262A34]">
+          <CardHeader className="p-4 pb-3 border-b border-slate-100 dark:border-[#262A34]">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={[
@@ -345,8 +348,8 @@ export default function ShipmentsPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Shipment
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-zinc-700 dark:text-zinc-300">
-                  <thead className="bg-zinc-50 dark:bg-[#1C1F27] text-[11px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider border-b border-zinc-100 dark:border-[#2A2E39]">
+                <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
+                  <thead className="bg-slate-50 dark:bg-[#1C1F27] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#2A2E39]">
                     <tr>
                       <th className="py-2.5 px-3.5 font-semibold">Shipment #</th>
                       <th className="py-2.5 px-3.5 font-semibold">Order / Customer</th>
@@ -357,43 +360,39 @@ export default function ShipmentsPage() {
                       <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-[#262A34]">
-                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-zinc-50/70 dark:hover:bg-[#20242D]/50 transition-colors group">
-                        <td className="py-2.5 px-3.5 font-mono font-medium text-zinc-900 dark:text-zinc-100">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
+                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors group">
+                        <td className="py-2.5 px-3.5 font-mono font-medium text-slate-900 dark:text-[#F4F5F7]">
                           {s.shipment_number}
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-sans mt-0.5">
-                            {new Date(s.created_at).toLocaleDateString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                })}
+                          <div className="text-[10px] text-slate-400 dark:text-[#7C8189] font-sans mt-0.5">
+                            {formatDate(s.created_at)}
                           </div>
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                          <span className="font-semibold text-slate-900 dark:text-[#F4F5F7]">
                             {s.order?.order_number || "Order"}
                           </span>
-                          <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                          <div className="text-xs text-slate-500 dark:text-[#9BA3AF]">
                             {s.order?.customer?.name || "B2B Consignee"}
                           </div>
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <div className="font-medium text-zinc-800 dark:text-zinc-200">
+                          <div className="font-medium text-slate-800 dark:text-[#E2E8F0]">
                             {s.carrier}
                           </div>
-                          <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-zinc-100 dark:bg-[#20242D] px-1.5 py-0.5 rounded text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-[#323744] mt-0.5">
+                          <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-slate-100 dark:bg-[#20242D] px-1.5 py-0.5 rounded text-slate-600 dark:text-[#9BA3AF] border border-slate-200 dark:border-[#323744] mt-0.5">
                             {s.tracking_number}
                           </span>
                         </td>
                         <td className="py-2.5 px-3.5 max-w-[220px]">
-                          <div className="text-xs truncate text-zinc-700 dark:text-zinc-300 font-medium">
+                          <div className="text-xs truncate text-slate-700 dark:text-[#CBD5E1] font-medium">
                             {s.destination_address}
                           </div>
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 truncate mt-0.5">
+                          <div className="text-[10px] text-slate-400 dark:text-[#7C8189] truncate mt-0.5">
                             From: {s.origin_address || "Fulfillment Center"}
                           </div>
                         </td>
-                        <td className="py-2.5 px-3.5 font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
+                        <td className="py-2.5 px-3.5 font-semibold text-slate-900 dark:text-[#F4F5F7] font-mono">
                           {formatINR(s.shipping_cost || 0)}
                         </td>
                         <td className="py-2.5 px-3.5">
@@ -403,13 +402,13 @@ export default function ShipmentsPage() {
                           <Button size="sm" variant="outline" onClick={() => setDetailShipment(s)} className="h-6.5 px-2 text-xs">
                             <Eye className="w-3 h-3 mr-1"/> Track
                           </Button>
-                          {s.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 font-medium shadow-xs">
+                          {s.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
                               <Send className="w-3 h-3 mr-1"/> Dispatch
                             </Button>)}
-                          {s.status === "IN_TRANSIT" && (<Button size="sm" onClick={() => handleOutForDelivery(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-zinc-800 dark:bg-zinc-200 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-medium shadow-xs">
+                          {s.status === "IN_TRANSIT" && (<Button size="sm" onClick={() => handleOutForDelivery(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-slate-800 dark:bg-slate-200 hover:bg-slate-900 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-medium shadow-xs">
                               <Truck className="w-3 h-3 mr-1"/> Out
                             </Button>)}
-                          {s.status === "OUT_FOR_DELIVERY" && (<Button size="sm" onClick={() => handleDeliver(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-zinc-950 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-900 font-medium shadow-xs">
+                          {s.status === "OUT_FOR_DELIVERY" && (<Button size="sm" onClick={() => handleDeliver(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
                               <CheckCircle2 className="w-3 h-3 mr-1"/> Deliver
                             </Button>)}
                         </td>
@@ -421,132 +420,145 @@ export default function ShipmentsPage() {
         </Card>
 
         {/* Modal 1: Create Shipment Modal */}
-        <Modal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} maxWidth="xl" className="overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 dark:border-[#262A34] bg-zinc-50/60 dark:bg-[#181A20]">
-            <div className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100 font-bold">
-              <div className="w-7 h-7 rounded-md bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center shadow-xs">
-                <Truck className="w-4 h-4"/>
+        <FormModal
+          isOpen={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          title="Create Outbound Shipment"
+          icon={Truck}
+          onSubmit={handleCreateShipment}
+          isSubmitting={submitting}
+          submitText="Create & Manifest Consignment"
+          submitDisabled={eligibleOrdersForShipping.length === 0}
+          error={formError}
+          maxWidth="xl"
+          bodyClassName="p-5 sm:p-6 space-y-4 max-h-[80vh] overflow-y-auto"
+        >
+          {/* Select Sales Order */}
+          <FormField label="Sales Order to Ship *">
+            {eligibleOrdersForShipping.length === 0 ? (
+              <div className="p-3 text-xs bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34] text-slate-700 dark:text-[#CBD5E1] rounded-lg">
+                No confirmed or fulfilled sales orders available to ship. Please confirm a draft sales order first in Orders & Sales.
               </div>
-              Create Outbound Shipment
-            </div>
-            <button onClick={() => setCreateModalOpen(false)} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
-              <X className="w-5 h-5"/>
-            </button>
+            ) : (
+              <select
+                value={selectedOrderId}
+                onChange={(e) => handleOrderChange(e.target.value)}
+                className={selectClass}
+              >
+                {eligibleOrdersForShipping.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.order_number} — {o.customer?.name} ({formatINR(o.total_amount)}) [{o.status}]
+                  </option>
+                ))}
+              </select>
+            )}
+          </FormField>
+
+          {/* Carrier & Tracking Number */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormField label="Carrier Partner *">
+              <select
+                value={carrier}
+                onChange={(e) => setCarrier(e.target.value)}
+                className={selectClass}
+              >
+                {CARRIERS.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+
+            <FormField
+              label={
+                <span className="flex items-center justify-between w-full">
+                  <span>Airway Bill (AWB) / Tracking #</span>
+                  <button
+                    type="button"
+                    onClick={handleGenerateTracking}
+                    className="text-[11px] text-slate-900 dark:text-[#F4F5F7] hover:underline font-normal"
+                  >
+                    Auto-generate
+                  </button>
+                </span>
+              }
+            >
+              <Input
+                placeholder="e.g. BD-882310"
+                value={trackingNumber}
+                onChange={(e) => setTrackingNumber(e.target.value)}
+                className="font-mono text-sm"
+              />
+            </FormField>
           </div>
 
-          <form onSubmit={handleCreateShipment} className="p-6 space-y-4">
-            {formError && (<Alert variant="danger" className="text-xs">
-                {formError}
-              </Alert>)}
+          {/* Origin & Destination Addresses */}
+          <div className="space-y-3">
+            <FormField label="Origin Dispatch Hub">
+              <Input
+                placeholder="Central Distribution Center, Bhiwandi"
+                value={originAddress}
+                onChange={(e) => setOriginAddress(e.target.value)}
+                className="text-sm"
+              />
+            </FormField>
 
-                {/* Select Sales Order */}
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
-                    Sales Order to Ship *
-                  </label>
-                  {eligibleOrdersForShipping.length === 0 ? (<div className="p-3 text-xs bg-zinc-50 border border-zinc-200 text-zinc-700 rounded-lg">
-                      No confirmed or fulfilled sales orders available to ship. Please confirm a draft sales order first in Orders & Sales.
-                    </div>) : (<select value={selectedOrderId} onChange={(e) => handleOrderChange(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
-                      {eligibleOrdersForShipping.map((o) => (<option key={o.id} value={o.id}>
-                          {o.order_number} — {o.customer?.name} ({formatINR(o.total_amount)}) [{o.status}]
-                        </option>))}
-                    </select>)}
-                </div>
+            <FormField label="Consignee Destination Address *">
+              <Input
+                placeholder="Plot 45, Hinjewadi Phase 1, Pune, MH"
+                value={destinationAddress}
+                onChange={(e) => setDestinationAddress(e.target.value)}
+                className="text-sm"
+                required
+              />
+            </FormField>
+          </div>
 
-                {/* Carrier & Tracking Number */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
-                      Carrier Partner *
-                    </label>
-                    <select value={carrier} onChange={(e) => setCarrier(e.target.value)} className="w-full bg-white border border-zinc-300 rounded-lg px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
-                      {CARRIERS.map((c) => (<option key={c} value={c}>
-                          {c}
-                        </option>))}
-                    </select>
-                  </div>
+          {/* Freight Cost */}
+          <FormField label="Shipping & Logistics Cost (₹)">
+            <div className="relative">
+              <span className="absolute left-3 top-2.5 text-slate-500 text-sm">₹</span>
+              <Input
+                type="number"
+                step="0.01"
+                min="0"
+                value={shippingCost}
+                onChange={(e) => setShippingCost(parseFloat(e.target.value) || 0)}
+                className="pl-8 text-sm font-mono"
+              />
+            </div>
+          </FormField>
 
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-                        Airway Bill (AWB) / Tracking #
-                      </label>
-                      <button type="button" onClick={handleGenerateTracking} className="text-[11px] text-zinc-900 hover:underline">
-                        Auto-generate
-                      </button>
-                    </div>
-                    <Input placeholder="e.g. BD-882310" value={trackingNumber} onChange={(e) => setTrackingNumber(e.target.value)} className="bg-white border-zinc-300 text-sm text-zinc-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950"/>
-                  </div>
-                </div>
-
-                {/* Origin & Destination Addresses */}
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
-                      Origin Dispatch Hub
-                    </label>
-                    <Input placeholder="Central Distribution Center, Bhiwandi" value={originAddress} onChange={(e) => setOriginAddress(e.target.value)} className="bg-white border-zinc-300 text-sm text-zinc-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950"/>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
-                      Consignee Destination Address *
-                    </label>
-                    <Input placeholder="Plot 45, Hinjewadi Phase 1, Pune, MH" value={destinationAddress} onChange={(e) => setDestinationAddress(e.target.value)} className="bg-white border-zinc-300 text-sm text-zinc-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950"/>
-                  </div>
-                </div>
-
-                {/* Freight Cost */}
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-1">
-                    Shipping & Logistics Cost (₹)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-zinc-500 text-sm">
-                      ₹
-                    </span>
-                    <Input type="number" step="0.01" min="0" value={shippingCost} onChange={(e) => setShippingCost(parseFloat(e.target.value) || 0)} className="pl-8 bg-white border-zinc-300 text-sm text-zinc-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950"/>
-                  </div>
-                </div>
-
-                {/* Notes */}
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">
-                    Logistics / Handling Notes
-                  </label>
-                  <Input placeholder="Fragile contents, tailgate required, etc." value={notes} onChange={(e) => setNotes(e.target.value)} className="bg-zinc-50 border-zinc-800 text-sm"/>
-                </div>
-
-                {/* Modal Footer */}
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-100">
-                  <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)} className="border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700">
-                    Cancel
-                  </Button>
-                  <Button type="submit" isLoading={submitting} disabled={eligibleOrdersForShipping.length === 0} className="bg-zinc-950 hover:bg-black text-white font-medium shadow-xs">
-                    {submitting ? "Manifesting..." : "Create & Manifest Consignment"}
-                  </Button>
-                </div>
-              </form>
-        </Modal>
+          {/* Notes */}
+          <FormField label="Logistics / Handling Notes">
+            <Input
+              placeholder="Fragile contents, tailgate required, etc."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="text-sm"
+            />
+          </FormField>
+        </FormModal>
 
         {/* Modal 2: Tracking Journey & Checkpoint Timeline Modal */}
         <Modal isOpen={!!detailShipment} onClose={() => setDetailShipment(null)} maxWidth="2xl" className="flex flex-col max-h-[90vh] overflow-hidden">
           {detailShipment && (<>
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 bg-zinc-50/40">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/40">
                 <div>
                   <div className="flex items-center gap-2.5">
-                    <h2 className="text-lg font-bold text-zinc-900 font-mono">
+                    <h2 className="text-lg font-bold text-slate-900 font-mono">
                       {detailShipment.shipment_number}
                     </h2>
                     <StatusBadge status={detailShipment.status} type="shipment" />
                   </div>
-                  <p className="text-xs text-zinc-500 mt-0.5">
-                    Carrier: <span className="text-zinc-900 font-medium">{detailShipment.carrier}</span> &bull; AWB:{" "}
-                    <span className="font-mono text-zinc-900">{detailShipment.tracking_number}</span>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Carrier: <span className="text-slate-900 font-medium">{detailShipment.carrier}</span> &bull; AWB:{" "}
+                    <span className="font-mono text-slate-900">{detailShipment.tracking_number}</span>
                   </p>
                 </div>
-                <button onClick={() => setDetailShipment(null)} className="text-zinc-400 hover:text-zinc-700">
+                <button onClick={() => setDetailShipment(null)} className="text-slate-400 hover:text-slate-700">
                   <X className="w-5 h-5"/>
                 </button>
               </div>
@@ -555,61 +567,61 @@ export default function ShipmentsPage() {
                 {/* Consignment Lifecycle Stepper (Real backend status) */}
                 <ShipmentLifecycleStepper status={detailShipment.status} carrier={detailShipment.carrier} trackingNumber={detailShipment.tracking_number}/>
                 {/* Route & Consignment Info Banner */}
-                <div className="p-4 rounded-lg bg-zinc-50 border border-zinc-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-zinc-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
                       Origin Dispatch Hub
                     </span>
-                    <span className="text-zinc-900 font-medium flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0"/>
+                    <span className="text-slate-900 font-medium flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0"/>
                       {detailShipment.origin_address || "Central DC"}
                     </span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
                       Destination Consignee
                     </span>
-                    <span className="text-zinc-900 font-medium flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3.5 h-3.5 text-zinc-900 shrink-0"/>
+                    <span className="text-slate-900 font-medium flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3.5 h-3.5 text-slate-900 shrink-0"/>
                       {detailShipment.destination_address}
                     </span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
                       Sales Order Reference
                     </span>
-                    <span className="text-zinc-900 font-medium mt-0.5 block">
+                    <span className="text-slate-900 font-medium mt-0.5 block">
                       {detailShipment.order?.order_number} &bull; {detailShipment.order?.customer?.name}
                     </span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
                       Freight Cost (₹)
                     </span>
-                    <span className="text-zinc-900 font-bold mt-0.5 block">
+                    <span className="text-slate-900 font-bold mt-0.5 block">
                       {formatINR(detailShipment.shipping_cost || 0)}
                     </span>
                   </div>
                 </div>
 
                 {/* State Machine Transition Actions */}
-                <div className="p-3.5 bg-zinc-50 rounded-lg border border-zinc-200 flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                     Workflow Actions:
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
-                    {detailShipment.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(detailShipment.id)} className="bg-zinc-900 hover:bg-black text-white text-xs h-8 font-medium shadow-xs">
+                    {detailShipment.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(detailShipment.id)} className="bg-slate-900 hover:bg-black text-white text-xs h-8 font-medium shadow-xs">
                         <Send className="w-3.5 h-3.5 mr-1.5"/> Mark Dispatched
                       </Button>)}
-                    {["PENDING", "IN_TRANSIT"].includes(detailShipment.status) && (<Button size="sm" onClick={() => handleOutForDelivery(detailShipment.id)} className="bg-zinc-800 hover:bg-zinc-900 text-white text-xs h-8 font-medium shadow-xs">
+                    {["PENDING", "IN_TRANSIT"].includes(detailShipment.status) && (<Button size="sm" onClick={() => handleOutForDelivery(detailShipment.id)} className="bg-slate-800 hover:bg-slate-900 text-white text-xs h-8 font-medium shadow-xs">
                         <Truck className="w-3.5 h-3.5 mr-1.5"/> Out for Delivery
                       </Button>)}
                     {detailShipment.status !== "DELIVERED" &&
-                detailShipment.status !== "CANCELLED" && (<Button size="sm" onClick={() => handleDeliver(detailShipment.id)} className="bg-zinc-950 hover:bg-black text-white text-xs h-8 font-semibold shadow-xs">
+                detailShipment.status !== "CANCELLED" && (<Button size="sm" onClick={() => handleDeliver(detailShipment.id)} className="bg-slate-950 hover:bg-black text-white text-xs h-8 font-semibold shadow-xs">
                           <CheckCircle2 className="w-3.5 h-3.5 mr-1.5"/> Confirm Delivery
                         </Button>)}
                     {detailShipment.status !== "DELIVERED" &&
-                detailShipment.status !== "CANCELLED" && (<Button size="sm" variant="outline" onClick={() => handleCancel(detailShipment.id)} className="border-zinc-300 hover:bg-zinc-100 hover:text-black text-zinc-600 text-xs h-8">
+                detailShipment.status !== "CANCELLED" && (<Button size="sm" variant="outline" onClick={() => handleCancel(detailShipment.id)} className="border-slate-300 hover:bg-slate-100 hover:text-black text-slate-600 text-xs h-8">
                           <Ban className="w-3.5 h-3.5 mr-1.5"/> Cancel Consignment
                         </Button>)}
                   </div>
@@ -617,37 +629,37 @@ export default function ShipmentsPage() {
 
                 {/* Visual Timeline Section */}
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4 flex items-center gap-1.5">
-                    <Navigation className="w-4 h-4 text-zinc-900"/>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-1.5">
+                    <Navigation className="w-4 h-4 text-slate-900"/>
                     Tracking Journey Timeline ({detailShipment.events?.length || 0} Checkpoints)
                   </h4>
 
-                  <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-zinc-200">
+                  <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
                     {(detailShipment.events || []).map((ev, idx) => (<motion.div key={ev.id || idx} className="relative group" initial={{ opacity: 0, y: prefersReducedMotion ? 0 : DISTANCE.normal }} animate={{ opacity: 1, y: 0 }} transition={{
                     duration: prefersReducedMotion ? 0 : DURATION.normal,
                     delay: prefersReducedMotion ? 0 : idx * STAGGER.timeline,
                 }}>
                         {/* Timeline Node */}
                         <div className={`absolute -left-6 top-1 w-5 h-5 rounded-full border-2 flex items-center justify-center ${ev.status === "DELIVERED"
-                    ? "bg-zinc-950 border-zinc-950 text-white"
+                    ? "bg-slate-950 border-zinc-950 text-white"
                     : ev.status === "CANCELLED"
-                        ? "bg-zinc-200 border-zinc-400 text-zinc-700"
+                        ? "bg-slate-200 border-zinc-400 text-slate-700"
                         : ev.status === "OUT_FOR_DELIVERY"
-                            ? "bg-zinc-800 border-zinc-800 text-white"
+                            ? "bg-slate-800 border-zinc-800 text-white"
                             : ev.status === "IN_TRANSIT"
                                 ? "bg-zinc-600 border-zinc-600 text-white"
-                                : "bg-zinc-100 border-zinc-300 text-zinc-500"}`}>
+                                : "bg-slate-100 border-slate-300 text-slate-500"}`}>
                           <div className="w-1.5 h-1.5 rounded-full bg-current"/>
                         </div>
 
                         {/* Timeline Card */}
-                        <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-3 text-xs">
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs">
                           <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="font-semibold text-zinc-900 flex items-center gap-1.5">
-                              <MapPin className="w-3.5 h-3.5 text-zinc-400"/>
+                            <span className="font-semibold text-slate-900 flex items-center gap-1.5">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400"/>
                               {ev.location}
                             </span>
-                            <span className="text-[11px] text-zinc-500 font-mono">
+                            <span className="text-[11px] text-slate-500 font-mono">
                               {new Date(ev.created_at).toLocaleString("en-IN", {
                     month: "short",
                     day: "2-digit",
@@ -656,9 +668,9 @@ export default function ShipmentsPage() {
                 })}
                             </span>
                           </div>
-                          <p className="text-zinc-700">{ev.description}</p>
+                          <p className="text-slate-700">{ev.description}</p>
                           <div className="mt-1.5 flex items-center gap-2">
-                            {getStatusBadge(ev.status)}
+                            <StatusBadge status={ev.status} type="shipment" />
                           </div>
                         </div>
                       </motion.div>))}
@@ -667,16 +679,16 @@ export default function ShipmentsPage() {
 
                 {/* Add Custom Transit Checkpoint Form */}
                 {detailShipment.status !== "DELIVERED" &&
-                detailShipment.status !== "CANCELLED" && (<form onSubmit={handleAddCheckpoint} className="p-4 bg-zinc-50 border border-zinc-200 rounded-lg space-y-3">
-                      <h5 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                detailShipment.status !== "CANCELLED" && (<form onSubmit={handleAddCheckpoint} className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                      <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                         + Log Real-Time Checkpoint Scan
                       </h5>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <Input placeholder="Location (e.g. Pune Gateway Hub)" value={newCheckpointLocation} onChange={(e) => setNewCheckpointLocation(e.target.value)} className="bg-white border-zinc-300 text-xs h-8 text-zinc-800" required/>
-                        <Input placeholder="Checkpoint scan details..." value={newCheckpointDesc} onChange={(e) => setNewCheckpointDesc(e.target.value)} className="bg-white border-zinc-300 text-xs h-8 text-zinc-800" required/>
+                        <Input placeholder="Location (e.g. Pune Gateway Hub)" value={newCheckpointLocation} onChange={(e) => setNewCheckpointLocation(e.target.value)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
+                        <Input placeholder="Checkpoint scan details..." value={newCheckpointDesc} onChange={(e) => setNewCheckpointDesc(e.target.value)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
                       </div>
                       <div className="text-right">
-                        <Button type="submit" size="sm" isLoading={loggingCheckpoint} className="bg-zinc-800 hover:bg-zinc-700 text-white text-xs h-8">
+                        <Button type="submit" size="sm" isLoading={loggingCheckpoint} className="bg-slate-800 hover:bg-slate-700 text-white text-xs h-8">
                           {loggingCheckpoint ? "Logging..." : "Log Checkpoint Scan"}
                         </Button>
                       </div>
