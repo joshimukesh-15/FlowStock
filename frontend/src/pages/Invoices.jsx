@@ -4,7 +4,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ReceiptText, Plus, Trash2, CheckCircle2, Clock, Ban, RefreshCw, X, Eye, CreditCard, IndianRupee, FileText, ArrowDownLeft, AlertCircle, } from "lucide-react";
-import { fetchInvoices, fetchOrders, fetchCustomers, fetchProducts, createInvoiceApi, createInvoiceFromOrderApi, voidInvoiceApi, recordPaymentApi, } from "@/lib/api";
+import { fetchInvoices, fetchInvoiceById, fetchOrders, fetchCustomers, fetchProducts, createInvoiceApi, createInvoiceFromOrderApi, voidInvoiceApi, recordPaymentApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { formatINR, formatDate, selectClass } from "@/lib/utils";
@@ -67,6 +67,18 @@ export default function InvoicesPage() {
     const [recordingPayment, setRecordingPayment] = useState(false);
     // Printable Tax Invoice Modal State
     const [viewInvoice, setViewInvoice] = useState(null);
+    const [invoiceModalTab, setInvoiceModalTab] = useState("document");
+
+    const handleViewInvoice = async (inv) => {
+        setViewInvoice(inv);
+        setInvoiceModalTab("document");
+        try {
+            const fresh = await fetchInvoiceById(inv.id);
+            if (fresh) setViewInvoice(fresh);
+        } catch {
+            // retain inv
+        }
+    };
     const loadData = async () => {
         if (invoices.length === 0)
             setLoading(true);
@@ -429,7 +441,7 @@ export default function InvoicesPage() {
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap"><StatusBadge status={inv.status} type="invoice" /></td>
                         <td className="py-2.5 px-3.5 text-right whitespace-nowrap space-x-1">
-                          <Button size="sm" variant="outline" onClick={() => setViewInvoice(inv)} className="h-6.5 px-2 text-xs">
+                          <Button size="sm" variant="outline" onClick={() => handleViewInvoice(inv)} className="h-6.5 px-2 text-xs">
                             <Eye className="w-3 h-3 mr-1"/> View
                           </Button>
                           {inv.balance_due > 0 && inv.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(inv)} className="h-6.5 px-2 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
@@ -737,214 +749,371 @@ export default function InvoicesPage() {
 
         {/* Modal 3: Printable Tax Invoice Viewer & Payment Ledger Drawer */}
         <Modal isOpen={!!viewInvoice} onClose={() => setViewInvoice(null)} maxWidth="3xl">
-          {viewInvoice && (<div className="flex flex-col max-h-[90vh]">
-              {/* Header with Print / Close Buttons */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-                <div className="flex items-center gap-2.5">
-                  <ReceiptText className="w-5 h-5 text-slate-900"/>
-                  <span className="font-mono text-lg font-bold text-slate-900">
-                    {viewInvoice.invoice_number}
-                  </span>
-                  <StatusBadge status={viewInvoice.status} type="invoice" />
+          {viewInvoice && (
+            <div className="max-h-[88vh] overflow-y-auto bg-slate-50/30 dark:bg-[#181A20] text-slate-700 dark:text-slate-300 text-xs relative flex flex-col">
+              {/* Sticky Header with Title, Tabs, Actions */}
+              <div className="sticky top-0 z-20 border-b border-slate-200 dark:border-[#262A34] bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md shadow-2xs shrink-0">
+                <div className="flex items-center justify-between px-6 py-3.5">
+                  <div className="flex items-center gap-2.5">
+                    <ReceiptText className="w-5 h-5 text-slate-900 dark:text-slate-100"/>
+                    <span className="font-mono text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+                      {viewInvoice.invoice_number}
+                    </span>
+                    <StatusBadge status={viewInvoice.status} type="invoice" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button size="sm" variant="outline" onClick={() => window.print()} className="text-xs border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50">
+                      Print / Export
+                    </Button>
+                    {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
+                      <Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
+                        <CreditCard className="w-3.5 h-3.5 mr-1"/> Record Payment
+                      </Button>
+                    )}
+                    <button onClick={() => setViewInvoice(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1">
+                      <X className="w-5 h-5"/>
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline" onClick={() => window.print()} className="text-xs border-slate-300 bg-white text-slate-700 hover:bg-slate-50">
-                    Print / Export
-                  </Button>
-                  {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="text-xs bg-slate-950 hover:bg-black text-white font-medium shadow-xs">
-                      <CreditCard className="w-3.5 h-3.5 mr-1"/> Record Payment
-                    </Button>)}
-                  <button onClick={() => setViewInvoice(null)} className="text-slate-400 hover:text-slate-700 p-1">
-                    <X className="w-5 h-5"/>
-                  </button>
+
+                {/* Sub-header navigation tabs */}
+                <div className="px-6 pb-2.5 flex items-center justify-between">
+                  <Tabs
+                    tabs={[
+                      { id: "document", label: "Tax Invoice Document", icon: FileText },
+                      { 
+                        id: "payments", 
+                        label: "Payment Remittance", 
+                        icon: ArrowDownLeft, 
+                        count: viewInvoice.payments?.length || 0 
+                      },
+                    ]}
+                    activeTab={invoiceModalTab}
+                    onChange={setInvoiceModalTab}
+                    variant="pill"
+                    layoutId="invoice-viewer-tab"
+                  />
+                  {invoiceModalTab === "payments" && viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
+                    <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                      Balance Due: {formatINR(viewInvoice.balance_due)}
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {/* Printable B2B Tax Invoice Body */}
-              <div className="p-8 overflow-y-auto flex-1 space-y-6 bg-slate-50/30 text-slate-700 text-xs">
-                {/* Invoice Meta Banner */}
-                <div className="flex flex-col sm:flex-row justify-between gap-4 pb-6 border-b border-slate-100">
-                  <div>
-                    <h2 className="text-xl font-bold text-slate-900 tracking-wide">
-                      TAX INVOICE
-                    </h2>
-                    <p className="text-slate-500 text-xs mt-0.5">
-                      FlowStock B2B SaaS Enterprise Distribution
-                    </p>
-                    <p className="text-slate-500 mt-1">
-                      GSTIN: <span className="font-mono text-slate-700">27AABCF1234F1Z8</span>
-                    </p>
-                  </div>
-                  <div className="sm:text-right space-y-1">
+              {/* TAB 1: TAX INVOICE DOCUMENT */}
+              {invoiceModalTab === "document" && (
+                <div className="p-6 sm:p-8 space-y-6">
+                  {/* Invoice Meta Banner */}
+                  <div className="flex flex-col sm:flex-row justify-between gap-4 pb-6 border-b border-slate-100 dark:border-[#262A34]">
                     <div>
-                      <span className="text-slate-500">Invoice Number: </span>
-                      <span className="font-mono font-bold text-slate-900">
-                        {viewInvoice.invoice_number}
-                      </span>
+                      <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-wide">
+                        TAX INVOICE
+                      </h2>
+                      <p className="text-slate-500 dark:text-[#9BA3AF] text-xs mt-0.5">
+                        FlowStock B2B SaaS Enterprise Distribution
+                      </p>
+                      <p className="text-slate-500 dark:text-[#9BA3AF] mt-1">
+                        GSTIN: <span className="font-mono text-slate-700 dark:text-slate-300">27AABCF1234F1Z8</span>
+                      </p>
                     </div>
-                    <div>
-                      <span className="text-slate-500">Issue Date: </span>
-                      <span className="text-slate-700">
-                        {formatDate(viewInvoice.issue_date)}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-slate-500">Due Date: </span>
-                      <span className="text-slate-700">
-                        {formatDate(viewInvoice.due_date)}
-                      </span>
-                    </div>
-                    {viewInvoice.order && (<div>
-                        <span className="text-slate-500">Order Ref: </span>
-                        <span className="font-mono text-slate-700">
-                          {viewInvoice.order.order_number}
+                    <div className="sm:text-right space-y-1">
+                      <div>
+                        <span className="text-slate-500 dark:text-[#9BA3AF]">Invoice Number: </span>
+                        <span className="font-mono font-bold text-slate-900 dark:text-white">
+                          {viewInvoice.invoice_number}
                         </span>
-                      </div>)}
-                  </div>
-                </div>
-
-                {/* Customer Bill To & Ship To */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg bg-slate-50 border border-slate-200">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
-                      Billed To (Consignee):
-                    </span>
-                    <p className="font-bold text-slate-900 text-sm">
-                      {viewInvoice.customer?.name}
-                    </p>
-                    <p className="text-slate-600">
-                      {viewInvoice.customer?.company || "Commercial Account"}
-                    </p>
-                    <p className="text-slate-500 mt-1">
-                      {viewInvoice.customer?.billing_address || "Corporate Headquarters"}
-                    </p>
-                    <p className="text-slate-500 mt-1">
-                      Email: {viewInvoice.customer?.email} &bull; Phone: {viewInvoice.customer?.phone || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1">
-                      Shipping / Delivery Destination:
-                    </span>
-                    <p className="text-slate-700">
-                      {viewInvoice.customer?.shipping_address ||
-                viewInvoice.customer?.billing_address ||
-                "Site Receiving Facility"}
-                    </p>
-                    <p className="text-slate-500 mt-2">
-                      Place of Supply: <span className="text-slate-700">Maharashtra (27)</span>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Line Items Table */}
-                <div className="rounded-lg border border-slate-200 overflow-hidden">
-                  <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-100">
-                      <tr>
-                        <th className="py-2.5 px-3">#</th>
-                        <th className="py-2.5 px-3">Item Description</th>
-                        <th className="py-2.5 px-3 text-center">Qty</th>
-                        <th className="py-2.5 px-3 text-right">Unit Rate (₹)</th>
-                        <th className="py-2.5 px-3 text-right">Amount (₹)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 bg-white">
-                      {viewInvoice.items.map((it, idx) => (<tr key={it.id || idx}>
-                          <td className="py-2 px-3 text-slate-500">{idx + 1}</td>
-                          <td className="py-2 px-3 font-medium text-slate-900">
-                            {it.description}
-                          </td>
-                          <td className="py-2 px-3 text-center">{it.quantity}</td>
-                          <td className="py-2 px-3 text-right">{formatINR(it.unit_price)}</td>
-                          <td className="py-2 px-3 text-right font-semibold text-slate-900">
-                            {formatINR(it.subtotal)}
-                          </td>
-                        </tr>))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Totals & Tax Calculation Breakdown */}
-                <div className="flex flex-col sm:flex-row justify-between gap-6 pt-2">
-                  <div className="text-slate-500 space-y-1">
-                    <p className="font-semibold text-slate-700">Payment Terms & Notes:</p>
-                    <p className="text-slate-600">{viewInvoice.notes || "Standard B2B terms apply."}</p>
-                    <p className="text-[11px] text-slate-500 pt-2">
-                      Beneficiary: FlowStock Operations Pvt Ltd &bull; Bank: HDFC Bank
-                    </p>
-                  </div>
-                  <div className="w-full sm:w-72 space-y-2 bg-slate-50 p-4 rounded-lg border border-slate-200">
-                    <div className="flex justify-between text-slate-500">
-                      <span>Taxable Subtotal:</span>
-                      <span>{formatINR(viewInvoice.subtotal)}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 dark:text-[#9BA3AF]">Issue Date: </span>
+                        <span className="text-slate-700 dark:text-slate-300">
+                          {formatDate(viewInvoice.issue_date)}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 dark:text-[#9BA3AF]">Due Date: </span>
+                        <span className="text-slate-700 dark:text-slate-300">
+                          {formatDate(viewInvoice.due_date)}
+                        </span>
+                      </div>
+                      {viewInvoice.order && (
+                        <div>
+                          <span className="text-slate-500 dark:text-[#9BA3AF]">Order Ref: </span>
+                          <span className="font-mono text-slate-700 dark:text-slate-300">
+                            {viewInvoice.order.order_number}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between text-slate-500">
-                      <span>CGST ({viewInvoice.tax_rate / 2}%):</span>
-                      <span>{formatINR(viewInvoice.tax_amount / 2)}</span>
+                  </div>
+
+                  {/* Customer Bill To & Ship To */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34]">
+                    <div>
+                      <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-[#9BA3AF] block mb-1">
+                        Billed To (Consignee):
+                      </span>
+                      <p className="font-bold text-slate-900 dark:text-white text-sm">
+                        {viewInvoice.customer?.name}
+                      </p>
+                      <p className="text-slate-600 dark:text-slate-300">
+                        {viewInvoice.customer?.company || "Commercial Account"}
+                      </p>
+                      <p className="text-slate-500 dark:text-[#9BA3AF] mt-1">
+                        {viewInvoice.customer?.billing_address || "Corporate Headquarters"}
+                      </p>
+                      <p className="text-slate-500 dark:text-[#9BA3AF] mt-1">
+                        Email: {viewInvoice.customer?.email} &bull; Phone: {viewInvoice.customer?.phone || "N/A"}
+                      </p>
                     </div>
-                    <div className="flex justify-between text-slate-500">
-                      <span>SGST ({viewInvoice.tax_rate / 2}%):</span>
-                      <span>{formatINR(viewInvoice.tax_amount / 2)}</span>
+                    <div>
+                      <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-[#9BA3AF] block mb-1">
+                        Shipping / Delivery Destination:
+                      </span>
+                      <p className="text-slate-700 dark:text-slate-300">
+                        {viewInvoice.customer?.shipping_address ||
+                          viewInvoice.customer?.billing_address ||
+                          "Site Receiving Facility"}
+                      </p>
+                      <p className="text-slate-500 dark:text-[#9BA3AF] mt-2">
+                        Place of Supply: <span className="text-slate-700 dark:text-slate-300">Maharashtra (27)</span>
+                      </p>
                     </div>
-                    <div className="flex justify-between text-slate-900 font-bold text-sm pt-2 border-t border-slate-200">
-                      <span>Grand Total:</span>
-                      <span className="text-slate-950">
+                  </div>
+
+                  {/* Line Items Table */}
+                  <div className="rounded-lg border border-slate-200 dark:border-[#262A34] overflow-hidden">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-slate-50 dark:bg-[#1C1F27] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#262A34]">
+                        <tr>
+                          <th className="py-2.5 px-3">#</th>
+                          <th className="py-2.5 px-3">Item Description</th>
+                          <th className="py-2.5 px-3 text-center">Qty</th>
+                          <th className="py-2.5 px-3 text-right">Unit Rate (₹)</th>
+                          <th className="py-2.5 px-3 text-right">Amount (₹)</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 dark:divide-[#262A34] bg-white dark:bg-[#181A20]">
+                        {viewInvoice.items.map((it, idx) => (
+                          <tr key={it.id || idx}>
+                            <td className="py-2 px-3 text-slate-500 dark:text-[#9BA3AF]">{idx + 1}</td>
+                            <td className="py-2 px-3 font-medium text-slate-900 dark:text-white">
+                              {it.description}
+                            </td>
+                            <td className="py-2 px-3 text-center text-slate-700 dark:text-slate-300">{it.quantity}</td>
+                            <td className="py-2 px-3 text-right text-slate-700 dark:text-slate-300">{formatINR(it.unit_price)}</td>
+                            <td className="py-2 px-3 text-right font-semibold text-slate-900 dark:text-white font-mono">
+                              {formatINR(it.subtotal)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Totals & Tax Calculation Breakdown */}
+                  <div className="flex flex-col sm:flex-row justify-between gap-6 pt-2">
+                    <div className="text-slate-500 dark:text-[#9BA3AF] space-y-1">
+                      <p className="font-semibold text-slate-700 dark:text-slate-300">Payment Terms & Notes:</p>
+                      <p className="text-slate-600 dark:text-slate-400">{viewInvoice.notes || "Standard B2B terms apply."}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-[#9BA3AF] pt-2">
+                        Beneficiary: FlowStock Operations Pvt Ltd &bull; Bank: HDFC Bank
+                      </p>
+                    </div>
+                    <div className="w-full sm:w-72 space-y-2 bg-slate-50 dark:bg-[#1C1F27] p-4 rounded-lg border border-slate-200 dark:border-[#262A34]">
+                      <div className="flex justify-between text-slate-500 dark:text-[#9BA3AF]">
+                        <span>Taxable Subtotal:</span>
+                        <span>{formatINR(viewInvoice.subtotal)}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-500 dark:text-[#9BA3AF]">
+                        <span>CGST ({viewInvoice.tax_rate / 2}%):</span>
+                        <span>{formatINR(viewInvoice.tax_amount / 2)}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-500 dark:text-[#9BA3AF]">
+                        <span>SGST ({viewInvoice.tax_rate / 2}%):</span>
+                        <span>{formatINR(viewInvoice.tax_amount / 2)}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-900 dark:text-white font-bold text-sm pt-2 border-t border-slate-200 dark:border-[#262A34]">
+                        <span>Grand Total:</span>
+                        <span className="text-slate-950 dark:text-white">
+                          {formatINR(viewInvoice.total_amount)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-slate-700 dark:text-slate-300 pt-1">
+                        <span>Amount Received:</span>
+                        <span className="font-medium text-emerald-600 dark:text-emerald-400">{formatINR(viewInvoice.paid_amount)}</span>
+                      </div>
+                      <div className="flex justify-between font-bold pt-1 border-t border-slate-200 dark:border-[#262A34]">
+                        <span className="text-slate-700 dark:text-slate-300">Balance Payable:</span>
+                        <span className={viewInvoice.balance_due > 0 ? "text-rose-600 dark:text-rose-400 font-bold" : "text-slate-400 dark:text-slate-500"}>
+                          {formatINR(viewInvoice.balance_due)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Payment History Audit Ledger Section */}
+                  <div className="pt-4 border-t border-slate-200 dark:border-[#262A34]">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-slate-900 dark:text-white uppercase tracking-wider text-xs flex items-center gap-1.5">
+                        <ArrowDownLeft className="w-4 h-4 text-slate-900 dark:text-white"/>
+                        Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
+                      </h4>
+                      {viewInvoice.payments?.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setInvoiceModalTab("payments")}
+                          className="text-xs text-blue-600 dark:text-blue-400 font-medium hover:underline flex items-center gap-1"
+                        >
+                          Open Ledger Tab &rarr;
+                        </button>
+                      )}
+                    </div>
+                    {(!viewInvoice.payments || viewInvoice.payments.length === 0) ? (
+                      <EmptyState
+                        compact
+                        icon={ArrowDownLeft}
+                        title="No payments recorded yet"
+                        description="Record a payment remittance against this invoice to settle the balance due."
+                      />
+                    ) : (
+                      <div className="rounded-lg border border-slate-200 dark:border-[#262A34] overflow-hidden">
+                        <table className="w-full text-left text-xs">
+                          <thead className="bg-slate-50 dark:bg-[#1C1F27] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#262A34]">
+                            <tr>
+                              <th className="py-2.5 px-3">Receipt #</th>
+                              <th className="py-2.5 px-3">Date</th>
+                              <th className="py-2.5 px-3">Method</th>
+                              <th className="py-2.5 px-3">Reference / UTR</th>
+                              <th className="py-2.5 px-3 text-right">Amount (₹)</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-100 dark:divide-[#262A34] bg-white dark:bg-[#181A20]">
+                            {viewInvoice.payments.map((pay) => (
+                              <tr key={pay.id}>
+                                <td className="py-2.5 px-3 font-mono font-medium text-slate-900 dark:text-white">
+                                  {pay.payment_number}
+                                </td>
+                                <td className="py-2.5 px-3 text-slate-500 dark:text-[#9BA3AF]">
+                                  {formatDate(pay.payment_date)}
+                                </td>
+                                <td className="py-2.5 px-3 text-slate-700 dark:text-slate-300 font-medium">{pay.payment_method}</td>
+                                <td className="py-2.5 px-3 font-mono text-slate-600 dark:text-[#9BA3AF]">
+                                  {pay.reference || "—"}
+                                </td>
+                                <td className="py-2.5 px-3 text-right font-semibold text-emerald-600 dark:text-emerald-400 font-mono">
+                                  {formatINR(pay.amount)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                  {/* Clean bottom spacer so content never gets cut off */}
+                  <div className="h-10 shrink-0" />
+                </div>
+              )}
+
+              {/* TAB 2: DEDICATED PAYMENT REMITTANCE LEDGER */}
+              {invoiceModalTab === "payments" && (
+                <div className="p-6 sm:p-8 space-y-5">
+                  {/* Financial Summary KPI Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34]">
+                      <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider block">Total Billed</span>
+                      <span className="text-lg font-bold text-slate-900 dark:text-white font-mono mt-0.5 block">
                         {formatINR(viewInvoice.total_amount)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-slate-700 pt-1">
-                      <span>Amount Received:</span>
-                      <span>{formatINR(viewInvoice.paid_amount)}</span>
+                    <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20">
+                      <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Amount Received</span>
+                      <span className="text-lg font-bold text-emerald-700 dark:text-emerald-400 font-mono mt-0.5 block">
+                        {formatINR(viewInvoice.paid_amount)}
+                      </span>
                     </div>
-                    <div className="flex justify-between font-bold pt-1 border-t border-slate-200">
-                      <span className="text-slate-700">Balance Payable:</span>
-                      <span className={viewInvoice.balance_due > 0 ? "text-slate-950 font-bold" : "text-slate-400"}>
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34]">
+                      <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider block">Outstanding Balance</span>
+                      <span className={`text-lg font-bold font-mono mt-0.5 block ${viewInvoice.balance_due > 0 ? "text-rose-600 dark:text-rose-400" : "text-slate-900 dark:text-white"}`}>
                         {formatINR(viewInvoice.balance_due)}
                       </span>
                     </div>
                   </div>
-                </div>
 
-                {/* Payment History Audit Ledger */}
-                <div className="pt-4 border-t border-slate-100">
-                  <h4 className="font-semibold text-slate-900 uppercase tracking-wider text-xs mb-3 flex items-center gap-1.5">
-                    <ArrowDownLeft className="w-4 h-4 text-slate-900"/>
-                    Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
-                  </h4>
-                  {(!viewInvoice.payments || viewInvoice.payments.length === 0) ? (<EmptyState compact icon={ArrowDownLeft} title="No payments recorded yet" description="Record a payment remittance against this invoice to settle the balance due."/>) : (<div className="rounded-lg border border-slate-200 overflow-hidden">
-                      <table className="w-full text-left text-xs">
-                        <thead className="bg-slate-50 text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                          <tr>
-                            <th className="py-2 px-3">Receipt #</th>
-                            <th className="py-2 px-3">Date</th>
-                            <th className="py-2 px-3">Method</th>
-                            <th className="py-2 px-3">Reference / UTR</th>
-                            <th className="py-2 px-3 text-right">Amount (₹)</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 bg-white">
-                          {viewInvoice.payments.map((pay) => (<tr key={pay.id}>
-                              <td className="py-2 px-3 font-mono text-slate-900">
-                                {pay.payment_number}
-                              </td>
-                              <td className="py-2 px-3 text-slate-400">
-                                {formatDate(pay.payment_date)}
-                              </td>
-                              <td className="py-2 px-3">{pay.payment_method}</td>
-                              <td className="py-2 px-3 font-mono text-slate-700">
-                                {pay.reference}
-                              </td>
-                              <td className="py-2 px-3 text-right font-semibold text-slate-900">
-                                {formatINR(pay.amount)}
-                              </td>
-                            </tr>))}
-                        </tbody>
-                      </table>
-                    </div>)}
+                  {/* Payment Table with Full Visibility */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                        <ArrowDownLeft className="w-4 h-4 text-slate-700 dark:text-slate-300"/>
+                        Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
+                      </h4>
+                      {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
+                        <Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="h-7 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium">
+                          <CreditCard className="w-3.5 h-3.5 mr-1" /> Add Payment
+                        </Button>
+                      )}
+                    </div>
+
+                    {(!viewInvoice.payments || viewInvoice.payments.length === 0) ? (
+                      <EmptyState
+                        icon={ArrowDownLeft}
+                        title="No payment remittance recorded"
+                        description="This invoice is currently pending payment. Record the transaction reference and payment method to reconcile the balance."
+                        action={
+                          viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" ? (
+                            <Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="text-xs mt-2">
+                              <CreditCard className="w-3.5 h-3.5 mr-1" /> Record Payment Remittance
+                            </Button>
+                          ) : null
+                        }
+                      />
+                    ) : (
+                      <div className="rounded-xl border border-slate-200 dark:border-[#262A34] overflow-hidden shadow-2xs">
+                        <table className="w-full text-left text-xs">
+                          <thead className="bg-slate-50 dark:bg-[#1C1F27] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#262A34]">
+                            <tr>
+                              <th className="py-3 px-3.5 font-semibold">Receipt #</th>
+                              <th className="py-3 px-3.5 font-semibold">Date</th>
+                              <th className="py-3 px-3.5 font-semibold">Method</th>
+                              <th className="py-3 px-3.5 font-semibold">Reference / UTR</th>
+                              <th className="py-3 px-3.5 text-right font-semibold">Amount (₹)</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-100 dark:divide-[#262A34] bg-white dark:bg-[#181A20]">
+                            {viewInvoice.payments.map((pay) => (
+                              <tr key={pay.id} className="hover:bg-slate-50/60 dark:hover:bg-[#1F232D] transition-colors">
+                                <td className="py-3 px-3.5 font-mono font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0"/>
+                                  {pay.payment_number}
+                                </td>
+                                <td className="py-3 px-3.5 text-slate-500 dark:text-[#9BA3AF]">
+                                  {formatDate(pay.payment_date)}
+                                </td>
+                                <td className="py-3 px-3.5 font-medium text-slate-700 dark:text-slate-300">
+                                  <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#262A34] text-[11px] font-mono">
+                                    {pay.payment_method}
+                                  </span>
+                                </td>
+                                <td className="py-3 px-3.5 font-mono text-slate-600 dark:text-[#9BA3AF]">
+                                  {pay.reference || "—"}
+                                </td>
+                                <td className="py-3 px-3.5 text-right font-bold text-slate-900 dark:text-white font-mono text-sm">
+                                  {formatINR(pay.amount)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                  {/* Clean bottom spacer */}
+                  <div className="h-10 shrink-0" />
                 </div>
-              </div>
-            </div>)}
+              )}
+            </div>
+          )}
         </Modal>
 
         <ConfirmModal isOpen={!!invoiceIdToVoid} onClose={() => setInvoiceIdToVoid(null)} onConfirm={async () => {
