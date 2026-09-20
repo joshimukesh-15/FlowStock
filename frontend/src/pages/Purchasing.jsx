@@ -20,6 +20,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { formatDate, selectClass } from "@/lib/utils";
@@ -283,10 +284,7 @@ export default function PurchasingPage() {
             <Truck className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
             Suppliers & Purchasing
           </span>} subtitle="Vendor purchase orders, inbound goods receiving, and warehouse restocking." actions={<>
-            <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
-              <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`}/>
-              Refresh
-            </Button>
+            <RefreshButton onClick={loadData} />
             <Button variant="outline" size="sm" onClick={() => setSupplierModalOpen(true)}>
               <Building2 className="w-4 h-4 mr-1.5"/>
               New Supplier

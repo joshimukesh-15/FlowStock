@@ -14,6 +14,7 @@ import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { FormField } from "@/components/ui/FormField";
@@ -308,10 +309,7 @@ export default function InvoicesPage() {
             <ReceiptText className="w-7 h-7 text-slate-900 dark:text-[#F4F5F7]"/>
             Invoices & Accounts Receivable
           </span>} subtitle="B2B GST tax invoices, accounts receivable balances, and payment collections in INR (₹)." actions={<>
-            <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`}/>
-              Refresh
-            </Button>
+            <RefreshButton onClick={loadData} />
             <Button onClick={() => {
                 if (eligibleOrdersForInvoice.length > 0 && !selectedOrderId) {
                     setSelectedOrderId(eligibleOrdersForInvoice[0].id);

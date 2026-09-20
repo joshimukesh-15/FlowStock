@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { Plus, Tag, Edit2, Trash2, X, Package, } from "lucide-react";
@@ -162,6 +163,7 @@ export default function ProductsPage() {
     return (<motion.div className="max-w-7xl mx-auto space-y-6" variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible">
         {/* Title Bar */}
         <PageHeader title="Products & SKU Catalog" badge={currentOrg && <Badge variant="info" className="capitalize">{currentOrg.name}</Badge>} subtitle="Master catalog of stock items, selling rates, and classification" actions={<>
+              <RefreshButton onClick={() => mutate()} />
               <Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)} className="gap-1.5">
                 <Tag className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
                 New Category

@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { Alert } from "@/components/ui/Alert";
 import { Tabs } from "@/components/ui/Tabs";
 import { StatCard } from "@/components/ui/StatCard";
@@ -173,10 +174,7 @@ export default function HomePage() {
             <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-mono">
               Synced {lastChecked || "now"}
             </span>
-            <Button variant="outline" size="sm" onClick={loadData} disabled={loading} className="gap-1.5 h-7 text-xs">
-              <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`}/>
-              Refresh
-            </Button>
+            <RefreshButton onClick={loadData} isRefreshing={loading} className="h-7 text-xs" />
           </div>}/>
 
       {/* Interactive Quick Actions Bar */}

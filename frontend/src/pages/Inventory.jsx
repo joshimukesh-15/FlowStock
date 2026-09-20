@@ -15,6 +15,7 @@ import { Modal } from "@/components/ui/Modal";
 import { TableSkeleton, ListSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { StatCard } from "@/components/ui/StatCard";
@@ -145,10 +146,7 @@ export default function InventoryPage() {
             <Boxes className="w-5 h-5 text-slate-900 dark:text-[#F4F5F7]"/>
             Inventory Ledger & Valuations
           </span>} subtitle="Perpetual FIFO stock counts, reorder thresholds, and transactional audit trails." actions={<>
-            <Button variant="outline" size="sm" onClick={() => mutate()} disabled={loading} className="gap-1.5">
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`}/>
-              Sync Ledger
-            </Button>
+            <RefreshButton onClick={() => mutate()} label="Sync Ledger" />
             <Button size="sm" onClick={() => handleOpenMovementModal()} disabled={safeSummaries.length === 0} className="gap-1.5">
               <Plus className="w-4 h-4"/>
               Record Movement

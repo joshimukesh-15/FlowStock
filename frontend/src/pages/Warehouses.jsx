@@ -19,6 +19,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { Alert } from "@/components/ui/Alert";
 import { formatDate, selectClass } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -215,30 +216,28 @@ export default function WarehousesPage() {
       return <PageSkeleton hasKpis={false} tableRows={5} />;
     }
 
-    return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
-      {/* Top Header */}
-      <PageHeader title={<span className="flex items-center gap-2.5">
-            <WarehouseIcon className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
-            Warehouses & Stock Transfers
-          </span>} subtitle="Multi-facility inventory nodes, physical stock routing, and inter-depot logistics." actions={<>
-            <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>
-              <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`}/>
-              Refresh
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => setWarehouseModalOpen(true)}>
-              <Plus className="w-4 h-4 mr-1.5"/>
-              New Warehouse
-            </Button>
-            <Button size="sm" onClick={() => setTransferModalOpen(true)} disabled={warehouses.length < 2}>
-              <Truck className="w-4 h-4 mr-1.5"/>
-              Transfer Stock
-            </Button>
-          </>}/>
+    return (
+      <motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
+        {/* Top Header */}
+        <PageHeader title={<span className="flex items-center gap-2.5">
+              <WarehouseIcon className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
+              Warehouses & Stock Transfers
+            </span>} subtitle="Multi-facility inventory nodes, physical stock routing, and inter-depot logistics." actions={<>
+              <RefreshButton onClick={loadData} />
+              <Button variant="outline" size="sm" onClick={() => setWarehouseModalOpen(true)}>
+                <Plus className="w-4 h-4 mr-1.5"/>
+                New Warehouse
+              </Button>
+              <Button size="sm" onClick={() => setTransferModalOpen(true)} disabled={warehouses.length < 2}>
+                <Truck className="w-4 h-4 mr-1.5"/>
+                Transfer Stock
+              </Button>
+            </>}/>
 
-      {/* Warehouses Grid */}
-      <motion.div variants={itemVariants}>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+        {/* Warehouses Grid */}
+        <motion.div variants={itemVariants}>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
             Storage Facilities ({warehouses.length})
           </h2>
           {warehouses.length < 2 && (<span className="text-xs text-slate-700 flex items-center gap-1">

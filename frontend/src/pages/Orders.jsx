@@ -21,6 +21,7 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { StatCard } from "@/components/ui/StatCard";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/Table";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { formatDate, selectClass } from "@/lib/utils";
@@ -272,10 +273,7 @@ export default function OrdersPage() {
             <ShoppingCart className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
             Sales Orders & Stock Allocation
           </span>} subtitle="B2B customer order lifecycle, inventory reservation, and dispatch fulfillment." actions={<>
-            <Button variant="outline" size="sm" onClick={() => mutate()} disabled={loading}>
-              <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`}/>
-              Refresh
-            </Button>
+            <RefreshButton onClick={() => mutate()} />
             <Button variant="outline" size="sm" onClick={() => setCustomerModalOpen(true)}>
               <Users className="w-4 h-4 mr-1.5"/>
               New Customer

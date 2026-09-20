@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RefreshButton } from "@/components/ui/RefreshButton";
 import { Tabs } from "@/components/ui/Tabs";
 import { Alert } from "@/components/ui/Alert";
 import { PageSkeleton } from "@/components/ui/Skeleton";
@@ -332,10 +333,7 @@ export default function SettingsPage() {
                 Live health check of the FlowStock API, SQLite/Postgres database engine, and cache.
               </p>
             </div>
-            <Button variant="outline" size="sm" onClick={loadHealth} disabled={checkingHealth} className="gap-1.5 text-xs">
-              <RefreshCw className={`w-3.5 h-3.5 ${checkingHealth ? "animate-spin" : ""}`}/>
-              Re-check
-            </Button>
+            <RefreshButton onClick={loadHealth} isRefreshing={checkingHealth} label="Re-check" className="h-8 text-xs" />
           </CardHeader>
           <CardContent className="p-4 sm:p-5 pt-0 grid grid-cols-1 md:grid-cols-3 gap-3">
             <div className="rounded-xl border border-slate-200 dark:border-[#323744] bg-slate-50/50 dark:bg-[#14171F]/60 p-3.5 space-y-2">
