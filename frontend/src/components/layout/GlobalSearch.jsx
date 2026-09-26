@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FileText, Package, Search, ShoppingCart, Truck, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -17,23 +17,32 @@ let cachedSearchData = null;
 let lastCacheTime = 0;
 
 /** Searches existing API data with 60s cache; it does not create a separate search index or demo data. */
-export const GlobalSearch = () => {
+export const GlobalSearch = ({ onOpen }) => {
     const prefersReducedMotion = useReducedMotion();
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const openSearch = () => {
+        setIsOpen(true);
+        onOpen?.();
+    };
+
     useEffect(() => {
         const handleShortcut = (event) => {
             const target = event.target;
-            if (event.key === "/" && !target?.matches("input, textarea, select, [contenteditable='true']")) {
+            const isTyping = target?.matches("input, textarea, select, [contenteditable='true']");
+            const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+            const isSlash = event.key === "/" && !isTyping;
+            if (isCmdK || isSlash) {
                 event.preventDefault();
-                setIsOpen(true);
+                openSearch();
             }
         };
         window.addEventListener("keydown", handleShortcut);
         return () => window.removeEventListener("keydown", handleShortcut);
-    }, []);
+    }, [onOpen]);
     useEffect(() => {
         if (!isOpen)
             return;
@@ -84,10 +93,17 @@ export const GlobalSearch = () => {
         setQuery("");
     };
     return (<>
-      <button type="button" onClick={() => setIsOpen(true)} className="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#181A20] px-3 py-1.5 text-xs text-slate-600 dark:text-[#9BA3AF] transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-950 dark:hover:text-white" aria-label="Search FlowStock records">
-        <Search className="h-3.5 w-3.5"/>
-        Search
-        <kbd className="rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] px-1 font-mono text-[10px] text-slate-400">/</kbd>
+      <button
+        type="button"
+        onClick={openSearch}
+        className="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#181A20] px-3 py-1.5 text-xs text-slate-600 dark:text-[#9BA3AF] transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-950 dark:hover:text-white cursor-pointer"
+        aria-label="Search FlowStock records (Ctrl+K or /)"
+      >
+        <Search className="h-3.5 w-3.5 text-slate-400 dark:text-[#7C8189]"/>
+        <span>Search</span>
+        <kbd className="rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] px-1.5 py-0.5 font-mono text-[10px] text-slate-400 dark:text-[#7C8189]">
+          Ctrl K
+        </kbd>
       </button>
 
       <Modal isOpen={isOpen} onClose={close} maxWidth="xl">
