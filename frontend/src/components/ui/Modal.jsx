@@ -45,3 +45,5 @@ export const Modal = ({ isOpen, onClose, children, maxWidth = "md", className = 
         </div>)}
     </AnimatePresence>);
 };
+
+export default Modal;
