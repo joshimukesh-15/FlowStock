@@ -330,11 +330,11 @@ export default function HomePage() {
                           </tbody>
                         </table>
                       </div>
-                      <div className="pt-1 flex justify-end">
+                      <div className="pt-2 flex justify-end">
                         <Link to="/purchasing">
-                          <Button size="sm" variant="primary" className="gap-1 text-xs py-1 h-7">
-                            Create Purchase Order
-                            <ArrowUpRight className="w-3 h-3"/>
+                          <Button size="sm" variant="primary">
+                            <span>Create Purchase Order</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
                           </Button>
                         </Link>
                       </div>
@@ -404,8 +404,9 @@ export default function HomePage() {
                   </p>
                 </div>
                 <Link to="/products">
-                  <Button variant="outline" size="sm" className="h-7 text-xs gap-1">
-                    All Products <ChevronRight className="w-3 h-3"/>
+                  <Button variant="outline" size="xs">
+                    <span>All Products</span>
+                    <ChevronRight className="w-3.5 h-3.5 shrink-0"/>
                   </Button>
                 </Link>
               </CardHeader>
@@ -460,8 +461,9 @@ export default function HomePage() {
                     Logistics Delivery Radar
                   </CardTitle>
                   <Link to="/shipments">
-                    <Button variant="outline" size="sm" className="h-7 text-xs gap-1">
-                      Shipments <ExternalLink className="w-3 h-3"/>
+                    <Button variant="outline" size="xs">
+                      <span>Shipments</span>
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0"/>
                     </Button>
                   </Link>
                 </div>
@@ -493,8 +495,9 @@ export default function HomePage() {
                     Inbound Purchasing Pipeline
                   </CardTitle>
                   <Link to="/purchasing">
-                    <Button variant="outline" size="sm" className="h-7 text-xs gap-1">
-                      Procurement <ExternalLink className="w-3 h-3"/>
+                    <Button variant="outline" size="xs">
+                      <span>Procurement</span>
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0"/>
                     </Button>
                   </Link>
                 </div>
@@ -664,8 +667,9 @@ export default function HomePage() {
                 </p>
               </div>
               <Link to="/audit">
-                <Button variant="outline" size="sm" className="h-7 text-xs gap-1">
-                  Full Audit Trail <ChevronRight className="w-3 h-3"/>
+                <Button variant="outline" size="xs">
+                  <span>Full Audit Trail</span>
+                  <ChevronRight className="w-3.5 h-3.5 shrink-0"/>
                 </Button>
               </Link>
             </CardHeader>

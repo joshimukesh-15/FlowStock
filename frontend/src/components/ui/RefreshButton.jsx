@@ -63,17 +63,19 @@ export function RefreshButton({
       aria-busy={isSpinning}
       aria-label={typeof children === "string" ? children : label}
       onClick={handleClick}
-      whileTap={!disabled && !isSpinning && !prefersReducedMotion ? { scale: 0.96 } : undefined}
-      transition={{ type: "spring", stiffness: 420, damping: 24 }}
+      whileTap={!disabled && !isSpinning && !prefersReducedMotion ? { scale: 0.98 } : undefined}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
       className={cn(
-        "group relative inline-flex items-center justify-center gap-1.5 rounded-lg border font-medium select-none cursor-pointer transition-colors duration-150 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#14171F] disabled:opacity-50 disabled:pointer-events-none",
+        "group relative inline-flex items-center justify-center gap-1.5 rounded-lg border font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight transition-all duration-150 ease-out outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#14171F] disabled:opacity-50 disabled:pointer-events-none",
+        size === "xs" && "h-7 px-2.5 text-xs",
         size === "sm" && "h-8 px-3 text-xs",
-        size === "md" && "h-9 px-4 text-sm",
-        size === "lg" && "h-11 px-5 text-base",
+        size === "md" && "h-9 px-3.5 text-xs sm:text-sm",
+        size === "lg" && "h-10 px-4 text-sm font-medium",
+        size === "xl" && "h-11 px-5 text-base font-semibold",
         variant === "outline" &&
-          "border-slate-300 dark:border-[#323744] bg-white dark:bg-[#23262F] text-slate-800 dark:text-[#F4F5F7] hover:bg-slate-50 dark:hover:bg-[#2C303B] hover:text-slate-950 dark:hover:text-white shadow-2xs",
+          "border-slate-300 dark:border-[#323744] bg-white dark:bg-[#181A20] text-slate-700 dark:text-[#D1D5DB] hover:bg-slate-50 dark:hover:bg-[#20242D] hover:text-slate-900 dark:hover:text-white shadow-2xs",
         variant === "primary" &&
-          "bg-[#B6FF2E] text-[#14171F] border border-[#B6FF2E] font-semibold hover:bg-[#a3f01b]",
+          "bg-[#B6FF2E] text-[#111318] border border-[#a6ec22]/60 dark:border-[#B6FF2E] font-semibold hover:bg-[#a6ec22] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(182,255,46,0.2)] hover:shadow-[0_2px_8px_rgba(182,255,46,0.35)]",
         isSpinning && "cursor-wait",
         className
       )}

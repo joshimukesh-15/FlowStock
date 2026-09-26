@@ -1,135 +1,100 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
-const springPhysics = { type: "spring", stiffness: 420, damping: 26 };
-
+/**
+ * Top Tier-1 MNC Enterprise Button Component (Linear, Stripe, Vercel standard)
+ * 
+ * Features:
+ * - Single-source DOM hierarchy: zero duplicate children, zero layout desync
+ * - Crisp corporate typography: whitespace-nowrap, tracking-tight, leading-none optical centering
+ * - 60fps GPU-accelerated CSS transitions: zero coordinate-tracking overhead
+ * - High-contrast accessible palettes with calibrated light/dark mode elevation
+ * - Subtle haptic spring feedback on click (whileTap)
+ */
 export const Button = React.forwardRef((
   {
     className,
     variant = "primary",
     size = "md",
+    type = "button",
     isLoading = false,
     children,
     disabled,
-    onPointerEnter,
-    onPointerLeave,
     ...props
   },
   ref
 ) => {
   const prefersReducedMotion = useReducedMotion();
-  const [hovered, setHovered] = useState(false);
-  const [origin, setOrigin] = useState({ x: 50, y: 50 });
-  const buttonRef = useRef(null);
-
-  // Sync ref
-  const setCombinedRef = (node) => {
-    buttonRef.current = node;
-    if (typeof ref === "function") ref(node);
-    else if (ref) ref.current = node;
-  };
-
-  const trackCoords = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    if (r.width > 0 && r.height > 0) {
-      setOrigin({
-        x: Math.round(((e.clientX - r.left) / r.width) * 100),
-        y: Math.round(((e.clientY - r.top) / r.height) * 100),
-      });
-    }
-  };
-
-  const handlePointerEnter = (e) => {
-    if (!disabled && !isLoading) {
-      trackCoords(e);
-      setHovered(true);
-    }
-    onPointerEnter?.(e);
-  };
-
-  const handlePointerLeave = (e) => {
-    if (!disabled && !isLoading) {
-      trackCoords(e);
-      setHovered(false);
-    }
-    onPointerLeave?.(e);
-  };
 
   const baseStyles =
-    "relative inline-flex items-center justify-center font-medium select-none cursor-pointer overflow-hidden rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#14171F] disabled:opacity-50 disabled:pointer-events-none transition-colors duration-200";
+    "relative inline-flex items-center justify-center font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#14171F] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed transition-all duration-150 ease-out";
 
   const variants = {
     primary:
-      "bg-[#B6FF2E] text-[#14171F] font-semibold border border-[#B6FF2E] shadow-sm hover:border-[#a3f01b]",
+      "bg-[#B6FF2E] hover:bg-[#a6ec22] active:bg-[#97d81c] text-[#111318] font-semibold border border-[#a6ec22]/60 dark:border-[#B6FF2E] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(182,255,46,0.2)] hover:shadow-[0_2px_8px_rgba(182,255,46,0.35)]",
+    default:
+      "bg-[#B6FF2E] hover:bg-[#a6ec22] active:bg-[#97d81c] text-[#111318] font-semibold border border-[#a6ec22]/60 dark:border-[#B6FF2E] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(182,255,46,0.2)] hover:shadow-[0_2px_8px_rgba(182,255,46,0.35)]",
     secondary:
-      "bg-slate-100 dark:bg-[#23262F] text-slate-900 dark:text-[#F4F5F7] border border-slate-200 dark:border-[#323744] hover:bg-slate-200/80 dark:hover:bg-[#2C303B]",
+      "bg-slate-100 hover:bg-slate-200/90 active:bg-slate-200 text-slate-800 dark:bg-[#1E222B] dark:hover:bg-[#282D37] dark:active:bg-[#181B22] dark:text-[#F4F5F7] border border-slate-200/80 dark:border-[#323744] shadow-2xs",
     outline:
-      "border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#23262F] text-slate-900 dark:text-[#F4F5F7] hover:bg-slate-50 dark:hover:bg-[#2C303B] shadow-2xs",
-    danger:
-      "bg-[#dc2626] hover:bg-[#b91c1c] active:bg-[#991b1b] text-white border border-[#dc2626] shadow-sm",
+      "bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-300 dark:bg-[#181A20] dark:hover:bg-[#20242D] dark:active:bg-[#14161C] dark:text-[#D1D5DB] dark:hover:text-white dark:border-[#323744] shadow-2xs",
     ghost:
-      "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#23262F] hover:text-slate-950 dark:hover:text-[#F4F5F7]",
+      "text-slate-600 hover:text-slate-900 hover:bg-slate-100/90 active:bg-slate-200/70 dark:text-[#9BA3AF] dark:hover:text-[#F4F5F7] dark:hover:bg-[#23262F]/80 dark:active:bg-[#23262F]",
+    danger:
+      "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-medium border border-rose-600 shadow-2xs",
+    "danger-subtle":
+      "bg-rose-50 hover:bg-rose-100 active:bg-rose-200/80 text-rose-600 dark:bg-rose-950/30 dark:hover:bg-rose-900/40 dark:text-rose-400 border border-rose-200/70 dark:border-rose-900/50",
+    "subtle-danger":
+      "bg-rose-50 hover:bg-rose-100 active:bg-rose-200/80 text-rose-600 dark:bg-rose-950/30 dark:hover:bg-rose-900/40 dark:text-rose-400 border border-rose-200/70 dark:border-rose-900/50",
   };
 
   const sizes = {
-    sm: "text-xs px-2.5 py-1.5 h-8 gap-1.5",
-    md: "text-sm px-4 py-2 h-9 gap-2",
-    lg: "text-base px-5 py-2.5 h-11 gap-2.5",
+    xs: "h-7 px-2.5 text-xs gap-1.5 rounded-md",
+    sm: "h-8 px-3 text-xs gap-1.5 rounded-md font-medium",
+    md: "h-9 px-3.5 text-xs sm:text-sm gap-2 rounded-lg font-medium",
+    lg: "h-10 px-4 text-sm gap-2.5 rounded-lg font-medium",
+    xl: "h-11 px-5 text-base gap-2.5 rounded-xl font-semibold",
+    icon: "h-9 w-9 p-0 rounded-lg shrink-0",
+    "icon-xs": "h-7 w-7 p-0 rounded-md shrink-0",
+    "icon-sm": "h-8 w-8 p-0 rounded-md shrink-0",
+    "icon-lg": "h-10 w-10 p-0 rounded-lg shrink-0",
   };
 
   const spinnerSizes = {
+    xs: "w-3 h-3",
     sm: "w-3.5 h-3.5",
-    md: "w-4 h-4",
-    lg: "w-4.5 h-4.5",
+    md: "w-3.5 h-3.5 sm:w-4 sm:h-4",
+    lg: "w-4 h-4",
+    xl: "w-4.5 h-4.5",
+    icon: "w-4 h-4",
+    "icon-xs": "w-3 h-3",
+    "icon-sm": "w-3.5 h-3.5",
+    "icon-lg": "w-4 h-4",
   };
 
   const isInteractive = !disabled && !isLoading;
   const canAnimate = isInteractive && !prefersReducedMotion;
-  const isPrimary = variant === "primary";
+  const variantClass = variants[variant] || variants.primary;
+  const sizeClass = sizes[size] || sizes.md;
+  const spinnerSizeClass = spinnerSizes[size] || spinnerSizes.md;
 
   return (
     <motion.button
-      ref={setCombinedRef}
+      ref={ref}
+      type={type}
       disabled={disabled || isLoading}
       aria-busy={isLoading}
-      whileTap={canAnimate ? { scale: 0.97 } : undefined}
-      transition={springPhysics}
-      onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
-      onFocus={() => isInteractive && setHovered(true)}
-      onBlur={() => isInteractive && setHovered(false)}
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
+      whileTap={canAnimate ? { scale: 0.98 } : undefined}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      className={cn(baseStyles, variantClass, sizeClass, className)}
       {...props}
     >
-      {/* 1. PRIMARY: Clip-Path Circle Reveal Overlay */}
-      {isPrimary && canAnimate && (
-        <motion.span
-          aria-hidden="true"
-          initial={false}
-          animate={{
-            clipPath: hovered
-              ? `circle(150% at ${origin.x}% ${origin.y}%)`
-              : `circle(0% at ${origin.x}% ${origin.y}%)`,
-          }}
-          transition={{ type: "tween", duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-          className={cn(
-            "pointer-events-none absolute inset-0 z-20 flex items-center justify-center font-semibold bg-[#14171F] text-[#B6FF2E]",
-            sizes[size]
-          )}
-        >
-          {children}
-        </motion.span>
-      )}
-
-      {/* Loading Spinner */}
       {isLoading && (
-        <Loader2 className={cn("animate-spin shrink-0 z-10", spinnerSizes[size])} />
+        <Loader2 className={cn("animate-spin shrink-0 text-current", spinnerSizeClass)} />
       )}
-
-      {/* Button Content — completely stable in the DOM, never jumps */}
-      <span className="relative z-10 inline-flex items-center justify-center gap-[inherit]">
+      <span className="inline-flex items-center justify-center gap-[inherit] leading-none shrink-0 pointer-events-none">
         {children}
       </span>
     </motion.button>
@@ -137,3 +102,5 @@ export const Button = React.forwardRef((
 });
 
 Button.displayName = "Button";
+
+export default Button;
