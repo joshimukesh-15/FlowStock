@@ -3,8 +3,33 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Warehouse as WarehouseIcon, Plus, ArrowRight, Truck, CheckCircle2, Clock, Ban, MapPin, X, Package, AlertCircle, } from "lucide-react";
-import { fetchWarehouses, createWarehouseApi, fetchTransfers, createTransferApi, dispatchTransferApi, receiveTransferApi, cancelTransferApi, fetchProducts, } from "@/lib/api";
+import {
+  Warehouse as WarehouseIcon,
+  Plus,
+  ArrowRight,
+  Truck,
+  CheckCircle2,
+  Clock,
+  Ban,
+  MapPin,
+  X,
+  Package,
+  AlertCircle,
+  Pencil,
+  Gauge,
+  Database,
+} from "lucide-react";
+import {
+  fetchWarehouses,
+  createWarehouseApi,
+  updateWarehouseApi,
+  fetchTransfers,
+  createTransferApi,
+  dispatchTransferApi,
+  receiveTransferApi,
+  cancelTransferApi,
+  fetchProducts,
+} from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { WarehouseTransferVisualizer } from "@/components/ui/WarehouseTransferVisualizer";
@@ -14,6 +39,7 @@ import { FormField } from "@/components/ui/FormField";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { StatCard } from "@/components/ui/StatCard";
 
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
@@ -22,6 +48,7 @@ import { RefreshButton } from "@/components/ui/RefreshButton";
 import { formatDate, selectClass } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
+
 export default function WarehousesPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
@@ -35,14 +62,28 @@ export default function WarehousesPage() {
     const [actionLoading, setActionLoading] = useState(null);
     const [transferIdToCancel, setTransferIdToCancel] = useState(null);
     const [filterStatus, setFilterStatus] = useState("ALL");
+
     // New Warehouse Modal State
     const [warehouseModalOpen, setWarehouseModalOpen] = useState(false);
     const [warehouseName, setWarehouseName] = useState("");
     const [warehouseCode, setWarehouseCode] = useState("");
     const [warehouseLocation, setWarehouseLocation] = useState("");
+    const [warehouseCapacity, setWarehouseCapacity] = useState(2500);
     const [warehouseIsDefault, setWarehouseIsDefault] = useState(false);
     const [warehouseError, setWarehouseError] = useState("");
     const [warehouseSubmitting, setWarehouseSubmitting] = useState(false);
+
+    // Edit Warehouse Modal State
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [editingWarehouse, setEditingWarehouse] = useState(null);
+    const [editName, setEditName] = useState("");
+    const [editCode, setEditCode] = useState("");
+    const [editLocation, setEditLocation] = useState("");
+    const [editCapacity, setEditCapacity] = useState(2500);
+    const [editIsDefault, setEditIsDefault] = useState(false);
+    const [editError, setEditError] = useState("");
+    const [editSubmitting, setEditSubmitting] = useState(false);
+
     // New Transfer Modal State
     const [transferModalOpen, setTransferModalOpen] = useState(false);
     const [sourceWarehouseId, setSourceWarehouseId] = useState("");
@@ -52,6 +93,7 @@ export default function WarehousesPage() {
     const [transferNotes, setTransferNotes] = useState("");
     const [transferError, setTransferError] = useState("");
     const [transferSubmitting, setTransferSubmitting] = useState(false);
+
     const loadData = async () => {
         if (warehouses.length === 0)
             setLoading(true);
@@ -82,9 +124,22 @@ export default function WarehousesPage() {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         loadData();
     }, [currentOrg?.id]);
+
+    const handleOpenEdit = (wh) => {
+        setEditingWarehouse(wh);
+        setEditName(wh.name || "");
+        setEditCode(wh.code || "");
+        setEditLocation(wh.location || "");
+        setEditCapacity(wh.capacity || 2500);
+        setEditIsDefault(wh.is_default || false);
+        setEditError("");
+        setEditModalOpen(true);
+    };
+
     const handleCreateWarehouse = async (e) => {
         e.preventDefault();
         if (!warehouseName.trim() || !warehouseCode.trim()) {
@@ -98,12 +153,14 @@ export default function WarehousesPage() {
                 name: warehouseName.trim(),
                 code: warehouseCode.trim(),
                 location: warehouseLocation.trim() || undefined,
+                capacity: Number(warehouseCapacity) || 2500,
                 is_default: warehouseIsDefault,
             });
             setWarehouseModalOpen(false);
             setWarehouseName("");
             setWarehouseCode("");
             setWarehouseLocation("");
+            setWarehouseCapacity(2500);
             setWarehouseIsDefault(false);
             toast.success("Warehouse added", "Facility successfully registered.");
             await loadData();
@@ -113,6 +170,34 @@ export default function WarehousesPage() {
         }
         finally {
             setWarehouseSubmitting(false);
+        }
+    };
+
+    const handleUpdateWarehouse = async (e) => {
+        e.preventDefault();
+        if (!editingWarehouse) return;
+        if (!editName.trim() || !editCode.trim()) {
+            setEditError("Warehouse name and code are required.");
+            return;
+        }
+        setEditSubmitting(true);
+        setEditError("");
+        try {
+            await updateWarehouseApi(editingWarehouse.id, {
+                name: editName.trim(),
+                code: editCode.trim(),
+                location: editLocation.trim() || undefined,
+                capacity: Number(editCapacity) || 2500,
+                is_default: editIsDefault,
+            });
+            setEditModalOpen(false);
+            setEditingWarehouse(null);
+            toast.success("Facility updated", "Storage capacity & details recalibrated.");
+            await loadData();
+        } catch (err) {
+            setEditError(err.message || "Failed to update warehouse");
+        } finally {
+            setEditSubmitting(false);
         }
     };
     const handleCreateTransfer = async (e) => {
@@ -209,8 +294,13 @@ export default function WarehousesPage() {
         }
     };
 
+    const totalCapacity = warehouses.reduce((sum, w) => sum + (w.capacity || 2500), 0);
+    const totalStock = warehouses.reduce((sum, w) => sum + (w.current_stock || 0), 0);
+    const networkUtilization = totalCapacity > 0 ? ((totalStock / totalCapacity) * 100).toFixed(1) : "0.0";
+    const totalAvailable = Math.max(0, totalCapacity - totalStock);
+
     if (loading && warehouses.length === 0) {
-      return <PageSkeleton hasKpis={false} tableRows={5} />;
+      return <PageSkeleton hasKpis={true} tableRows={5} />;
     }
 
     return (
@@ -231,6 +321,47 @@ export default function WarehousesPage() {
               </Button>
             </>}/>
 
+        {/* Network Metrics Overview */}
+        <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <StatCard
+            title="Active Facilities"
+            value={warehouses.length}
+            suffix=" nodes"
+            icon={WarehouseIcon}
+            subText="Operational logistics depots"
+          />
+          <StatCard
+            title="Total Network Capacity"
+            value={totalCapacity}
+            suffix=" units"
+            icon={Database}
+            subText="Aggregate storage threshold"
+          />
+          <StatCard
+            title="Stored Live Inventory"
+            value={totalStock}
+            suffix=" units"
+            icon={Package}
+            subText={`${totalAvailable.toLocaleString()} units free headroom`}
+          />
+          <StatCard
+            title="Network Capacity Load"
+            value={Number(networkUtilization)}
+            suffix="%"
+            decimals={1}
+            icon={Gauge}
+            progress={Number(networkUtilization)}
+            badge={
+              <Badge
+                variant={Number(networkUtilization) >= 90 ? "danger" : Number(networkUtilization) >= 75 ? "warning" : "success"}
+                className="text-[10px]"
+              >
+                {Number(networkUtilization) >= 90 ? "High Load" : Number(networkUtilization) >= 75 ? "Elevated" : "Optimal"}
+              </Badge>
+            }
+          />
+        </motion.div>
+
         {/* Warehouses Grid */}
         <motion.div variants={itemVariants}>
           <div className="flex items-center justify-between mb-3">
@@ -244,40 +375,121 @@ export default function WarehousesPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {warehouses.map((wh) => (<Card key={wh.id} className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">{wh.name}</h3>
-                      {wh.is_default && (<Badge variant="success" className="text-[10px] uppercase tracking-wide">
-                          Default
-                      </Badge>)}
-                    </div>
-                    <p className="text-xs font-mono text-slate-500 dark:text-[#9BA3AF] mt-0.5">{wh.code}</p>
-                  </div>
-                  <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#20242D] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744]">
-                    <WarehouseIcon className="w-4 h-4"/>
-                  </div>
-                </div>
+          {warehouses.map((wh) => {
+            const capacity = wh.capacity || 2500;
+            const currentStock = wh.current_stock || 0;
+            const pct = Number(
+              wh.utilization_pct !== undefined
+                ? wh.utilization_pct
+                : capacity > 0
+                ? ((currentStock / capacity) * 100).toFixed(1)
+                : 0
+            );
+            const availableUnits = Math.max(0, capacity - currentStock);
 
-                <div className="mt-3">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-[#9BA3AF] mb-1">
-                    <span>Capacity</span>
-                    <span className="font-mono text-slate-400 dark:text-[#7C8189]">Uncapped</span>
+            const isCritical = pct >= 90;
+            const isHigh = pct >= 75 && pct < 90;
+
+            const badgeStyle = isCritical
+              ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30"
+              : isHigh
+              ? "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30"
+              : "text-emerald-600 dark:text-[#B6FF2E] bg-emerald-500/10 dark:bg-[#B6FF2E]/10 border-emerald-500/30 dark:border-[#B6FF2E]/30";
+
+            const barFillColor = isCritical
+              ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"
+              : isHigh
+              ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]"
+              : "bg-emerald-500 dark:bg-[#B6FF2E] shadow-[0_0_8px_rgba(182,255,46,0.35)]";
+
+            const statusLabel = isCritical
+              ? "Near Limit"
+              : isHigh
+              ? "High Load"
+              : pct === 0
+              ? "Available"
+              : "Optimal";
+
+            return (
+              <Card key={wh.id} className="p-4 flex flex-col justify-between hover:border-slate-300 dark:hover:border-[#464D5D] transition-colors group">
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm truncate">
+                          {wh.name}
+                        </h3>
+                        {wh.is_default && (
+                          <Badge variant="success" className="text-[10px] uppercase tracking-wide shrink-0">
+                            Default
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-xs font-mono text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+                        {wh.code}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(wh)}
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#262A34] transition-colors cursor-pointer"
+                        title="Configure Facility & Capacity"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#20242D] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744]">
+                        <WarehouseIcon className="w-4 h-4" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="h-1.5 w-full rounded-full border border-dashed border-slate-200 dark:border-[#3A404F] bg-slate-50 dark:bg-[#23262F]"/>
+
+                  {/* Realistic Capacity Metrics & Visualization */}
+                  <div className="mt-3.5 p-3 rounded-xl bg-slate-50/70 dark:bg-[#15171E] border border-slate-200/60 dark:border-[#262A34]">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="font-medium text-slate-600 dark:text-[#9BA3AF] flex items-center gap-1.5">
+                        <Gauge className="w-3.5 h-3.5 text-slate-400" />
+                        Storage Capacity
+                      </span>
+                      <span className="font-mono text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        {currentStock.toLocaleString()}{" "}
+                        <span className="font-normal text-slate-400">/ {capacity.toLocaleString()} units</span>
+                      </span>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="h-2 w-full rounded-full bg-slate-200/70 dark:bg-[#23262F] overflow-hidden p-0.5">
+                      <div
+                        className={`h-full rounded-full transition-all duration-700 ease-out ${barFillColor}`}
+                        style={{ width: `${Math.min(100, Math.max(currentStock > 0 ? 3 : 0, pct))}%` }}
+                      />
+                    </div>
+
+                    {/* Capacity Footer: Remaining Units & Status Pill */}
+                    <div className="flex items-center justify-between text-[11px] mt-2 pt-1.5 border-t border-slate-200/40 dark:border-white/5">
+                      <span className="text-slate-500 dark:text-[#7C8189] font-mono">
+                        {availableUnits.toLocaleString()} units free
+                      </span>
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold border ${badgeStyle}`}>
+                        {pct.toFixed(1)}% · {statusLabel}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-[#262A34] flex items-center justify-between text-xs text-slate-400 dark:text-[#7C8189]">
                   <span className="flex items-center gap-1.5 truncate">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0"/>
+                    <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0" />
                     {wh.location || "General Logistics Zone"}
                   </span>
                   <span className="text-[11px] text-slate-400 dark:text-[#7C8189] shrink-0">
                     {formatDate(wh.created_at)}
                   </span>
                 </div>
-            </Card>))}
+              </Card>
+            );
+          })}
         </div>
       </motion.div>
 
@@ -437,6 +649,21 @@ export default function WarehousesPage() {
             />
           </FormField>
 
+          <FormField
+            label="Storage Capacity (Units) *"
+            hint="Maximum inventory unit threshold for this physical storage hub."
+          >
+            <Input
+              type="number"
+              min="1"
+              step="50"
+              value={warehouseCapacity}
+              onChange={(e) => setWarehouseCapacity(Math.max(1, parseInt(e.target.value) || 1))}
+              placeholder="e.g. 2500"
+              required
+            />
+          </FormField>
+
           <div className="flex items-center gap-2 pt-1">
             <input
               type="checkbox"
@@ -447,6 +674,72 @@ export default function WarehousesPage() {
             />
             <label htmlFor="whDefault" className="text-xs text-slate-700 dark:text-[#CBD5E1] cursor-pointer">
               Set as default receiving facility for new inventory
+            </label>
+          </div>
+        </FormModal>
+
+        {/* Modal: Edit Warehouse */}
+        <FormModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          title="Configure Storage Facility & Capacity"
+          icon={Pencil}
+          onSubmit={handleUpdateWarehouse}
+          isSubmitting={editSubmitting}
+          submitText="Save Configuration"
+          error={editError}
+          maxWidth="md"
+        >
+          <FormField label="Warehouse Name *">
+            <Input
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              placeholder="e.g. West Coast Distribution Hub"
+              required
+            />
+          </FormField>
+
+          <FormField label="Facility Code (Unique) *">
+            <Input
+              value={editCode}
+              onChange={(e) => setEditCode(e.target.value.toUpperCase())}
+              placeholder="e.g. WH-WEST-01"
+              required
+            />
+          </FormField>
+
+          <FormField label="Location / Address">
+            <Input
+              value={editLocation}
+              onChange={(e) => setEditLocation(e.target.value)}
+              placeholder="e.g. Port of Oakland, CA"
+            />
+          </FormField>
+
+          <FormField
+            label="Storage Capacity (Units) *"
+            hint="Adjusting capacity recalibrates real-time utilization telemetry across the network."
+          >
+            <Input
+              type="number"
+              min="1"
+              step="50"
+              value={editCapacity}
+              onChange={(e) => setEditCapacity(Math.max(1, parseInt(e.target.value) || 1))}
+              required
+            />
+          </FormField>
+
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              type="checkbox"
+              id="editWhDefault"
+              checked={editIsDefault}
+              onChange={(e) => setEditIsDefault(e.target.checked)}
+              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#20242D] text-slate-900 focus:ring-zinc-950"
+            />
+            <label htmlFor="editWhDefault" className="text-xs text-slate-700 dark:text-[#CBD5E1] cursor-pointer">
+              Set as primary default facility for receiving stock
             </label>
           </div>
         </FormModal>

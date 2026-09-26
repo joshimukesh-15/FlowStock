@@ -227,6 +227,19 @@ export async function createWarehouseApi(data) {
     clearApiCache();
     return await res.json();
 }
+export async function updateWarehouseApi(id, data) {
+    const res = await fetch(`${API_BASE_URL}/warehouses/${id}`, {
+        method: "PATCH",
+        headers: getHeaders(),
+        body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || "Failed to update warehouse");
+    }
+    clearApiCache();
+    return await res.json();
+}
 export async function fetchTransfers(params = {}) {
     const query = new URLSearchParams();
     if (params.status)

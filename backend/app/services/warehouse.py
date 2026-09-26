@@ -9,16 +9,39 @@ from app.repositories.warehouse import warehouse_repo
 from app.repositories.transfer import transfer_repo
 from app.repositories.catalog import product_repo
 from app.repositories.inventory import inventory_repo
-from app.schemas.warehouse import WarehouseCreate
+from app.schemas.warehouse import WarehouseCreate, WarehouseUpdate, WarehouseRead
 from app.schemas.transfer import StockTransferCreate
 
 
 class WarehouseService:
     # --- Warehouses ---
-    async def list_warehouses(self, db: AsyncSession, organization_id: UUID) -> List[Warehouse]:
-        return await warehouse_repo.list_by_tenant(db, organization_id=organization_id)
+    async def list_warehouses(self, db: AsyncSession, organization_id: UUID) -> List[WarehouseRead]:
+        warehouses = await warehouse_repo.list_by_tenant(db, organization_id=organization_id)
+        stock_map = await warehouse_repo.get_warehouse_stock_map(db, organization_id=organization_id)
 
-    async def get_warehouse(self, db: AsyncSession, organization_id: UUID, id: UUID) -> Warehouse:
+        result: List[WarehouseRead] = []
+        for wh in warehouses:
+            curr = max(0, stock_map.get(wh.id, 0))
+            cap = wh.capacity if wh.capacity and wh.capacity > 0 else 2500
+            pct = round((curr / cap) * 100.0, 1)
+            result.append(
+                WarehouseRead(
+                    id=wh.id,
+                    organization_id=wh.organization_id,
+                    name=wh.name,
+                    code=wh.code,
+                    location=wh.location,
+                    capacity=cap,
+                    is_default=wh.is_default,
+                    current_stock=curr,
+                    utilization_pct=pct,
+                    created_at=wh.created_at,
+                    updated_at=wh.updated_at,
+                )
+            )
+        return result
+
+    async def get_warehouse_model(self, db: AsyncSession, organization_id: UUID, id: UUID) -> Warehouse:
         wh = await warehouse_repo.get_by_tenant(db, id=id, organization_id=organization_id)
         if not wh:
             raise HTTPException(
@@ -27,9 +50,29 @@ class WarehouseService:
             )
         return wh
 
+    async def get_warehouse(self, db: AsyncSession, organization_id: UUID, id: UUID) -> WarehouseRead:
+        wh = await self.get_warehouse_model(db, organization_id, id)
+        stock_map = await warehouse_repo.get_warehouse_stock_map(db, organization_id=organization_id)
+        curr = max(0, stock_map.get(wh.id, 0))
+        cap = wh.capacity if wh.capacity and wh.capacity > 0 else 2500
+        pct = round((curr / cap) * 100.0, 1)
+        return WarehouseRead(
+            id=wh.id,
+            organization_id=wh.organization_id,
+            name=wh.name,
+            code=wh.code,
+            location=wh.location,
+            capacity=cap,
+            is_default=wh.is_default,
+            current_stock=curr,
+            utilization_pct=pct,
+            created_at=wh.created_at,
+            updated_at=wh.updated_at,
+        )
+
     async def create_warehouse(
         self, db: AsyncSession, organization_id: UUID, obj_in: WarehouseCreate
-    ) -> Warehouse:
+    ) -> WarehouseRead:
         existing = await warehouse_repo.get_by_code(
             db, organization_id=organization_id, code=obj_in.code
         )
@@ -38,8 +81,54 @@ class WarehouseService:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Warehouse with code '{obj_in.code}' already exists in this organization.",
             )
-        return await warehouse_repo.create_warehouse(
+        wh = await warehouse_repo.create_warehouse(
             db, obj_in=obj_in, organization_id=organization_id
+        )
+        cap = wh.capacity if wh.capacity and wh.capacity > 0 else 2500
+        return WarehouseRead(
+            id=wh.id,
+            organization_id=wh.organization_id,
+            name=wh.name,
+            code=wh.code,
+            location=wh.location,
+            capacity=cap,
+            is_default=wh.is_default,
+            current_stock=0,
+            utilization_pct=0.0,
+            created_at=wh.created_at,
+            updated_at=wh.updated_at,
+        )
+
+    async def update_warehouse(
+        self, db: AsyncSession, organization_id: UUID, id: UUID, obj_in: WarehouseUpdate
+    ) -> WarehouseRead:
+        wh = await self.get_warehouse_model(db, organization_id, id)
+        if obj_in.code and obj_in.code.strip().upper() != wh.code:
+            existing = await warehouse_repo.get_by_code(
+                db, organization_id=organization_id, code=obj_in.code
+            )
+            if existing and existing.id != wh.id:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Warehouse with code '{obj_in.code}' already exists in this organization.",
+                )
+        updated_wh = await warehouse_repo.update_warehouse(db, warehouse=wh, obj_in=obj_in)
+        stock_map = await warehouse_repo.get_warehouse_stock_map(db, organization_id=organization_id)
+        curr = max(0, stock_map.get(updated_wh.id, 0))
+        cap = updated_wh.capacity if updated_wh.capacity and updated_wh.capacity > 0 else 2500
+        pct = round((curr / cap) * 100.0, 1)
+        return WarehouseRead(
+            id=updated_wh.id,
+            organization_id=updated_wh.organization_id,
+            name=updated_wh.name,
+            code=updated_wh.code,
+            location=updated_wh.location,
+            capacity=cap,
+            is_default=updated_wh.is_default,
+            current_stock=curr,
+            utilization_pct=pct,
+            created_at=updated_wh.created_at,
+            updated_at=updated_wh.updated_at,
         )
 
     # --- Transfer State Machine ---
