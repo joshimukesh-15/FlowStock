@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { motion } from "framer-motion";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
@@ -53,10 +54,11 @@ export function FormModal({
             </Button>
             <Button
               type="submit"
+              variant="primary"
               size="sm"
               isLoading={isSubmitting}
               disabled={submitDisabled || isSubmitting}
-              className="bg-slate-950 hover:bg-black dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 shadow-xs"
+              className="shadow-xs font-semibold"
             >
               {isSubmitting ? "Saving..." : submitText}
             </Button>
@@ -84,14 +86,15 @@ export function FormModal({
           )}
           {title}
         </h3>
-        <button
+        <motion.button
           type="button"
+          whileTap={{ scale: 0.90 }}
           onClick={onClose}
-          className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md p-1 transition-colors"
+          className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md p-1.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E]"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
-        </button>
+        </motion.button>
       </div>
 
       {/* Body / Form */}

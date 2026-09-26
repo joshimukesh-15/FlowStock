@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Modal } from "@/components/ui/Modal";
+import { Button } from "@/components/ui/Button";
+import { motion } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -178,32 +180,35 @@ export default function WelcomePage() {
             <ThemeToggle />
 
             {isAuthenticated ? (
-              <button
-                type="button"
+              <Button
+                size="sm"
+                variant="primary"
                 onClick={() => navigate("/dashboard")}
-                className="h-8 px-3 text-xs gap-1.5 inline-flex items-center justify-center rounded-lg bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-semibold transition-colors cursor-pointer shadow-xs"
+                className="h-8 px-3 text-xs gap-1.5 shadow-xs"
               >
                 <span>Go to Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </Button>
             ) : (
               <>
-                <button
-                  type="button"
+                <Button
+                  size="sm"
+                  variant="outline"
                   onClick={() => navigate("/login?mode=login")}
-                  className="h-8 px-3 text-xs gap-1.5 inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#545963] hover:border-slate-300 dark:hover:border-[#B0B4BA] bg-white dark:bg-transparent hover:bg-slate-50 dark:hover:bg-[#3A3E47]/40 text-slate-800 dark:text-white font-medium transition-colors cursor-pointer"
+                  className="h-8 px-3 text-xs gap-1.5 border border-slate-200 dark:border-[#545963] hover:border-slate-300 dark:hover:border-[#B0B4BA] bg-white dark:bg-transparent text-slate-800 dark:text-white"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Log In</span>
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  size="sm"
+                  variant="primary"
                   onClick={() => navigate("/login?mode=signup")}
-                  className="h-8 px-3 text-xs gap-1.5 inline-flex items-center justify-center rounded-lg bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-semibold transition-colors cursor-pointer shadow-xs"
+                  className="h-8 px-3 text-xs gap-1.5 shadow-xs"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>Sign Up</span>
-                </button>
+                </Button>
               </>
             )}
           </div>
@@ -250,31 +255,34 @@ export default function WelcomePage() {
           {/* CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4">
             {isAuthenticated ? (
-              <button
-                type="button"
+              <Button
+                size="lg"
+                variant="primary"
                 onClick={() => navigate("/dashboard")}
-                className="h-12 px-7 rounded-xl bg-slate-900 dark:bg-[#B6FF2E] hover:bg-slate-800 dark:hover:bg-[#a3f01b] text-white dark:text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(15,23,42,0.15)] dark:shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
               >
                 <span>Go to Dashboard</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </Button>
             ) : (
               <>
-                <button
-                  type="button"
+                <Button
+                  size="lg"
+                  variant="primary"
                   onClick={() => navigate("/login?mode=signup")}
-                  className="h-12 px-7 rounded-xl bg-slate-900 dark:bg-[#B6FF2E] hover:bg-slate-800 dark:hover:bg-[#a3f01b] text-white dark:text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(15,23,42,0.15)] dark:shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
                 >
                   <span>Get Started Free</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
                   onClick={() => scrollToSection("platform")}
-                  className="h-12 px-7 rounded-xl bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-800 dark:text-white font-semibold text-sm inline-flex items-center gap-2 border border-slate-200 dark:border-white/25 transition-all active:scale-[0.98] cursor-pointer shadow-sm dark:shadow-none"
+                  className="h-12 px-7 rounded-xl font-semibold text-sm border-slate-200 dark:border-white/25 bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-800 dark:text-white shadow-sm dark:shadow-none"
                 >
                   <span>Explore Platform</span>
-                </button>
+                </Button>
               </>
             )}
           </div>
@@ -660,13 +668,14 @@ export default function WelcomePage() {
           {/* Footer */}
           <div className="p-4 border-t border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#181A20]/40 flex items-center justify-between">
             <span className="text-[11px] font-mono text-slate-500 dark:text-[#7C8189]">Last updated: September 2026</span>
-            <button
-              type="button"
+            <Button
+              size="sm"
+              variant="primary"
               onClick={() => setTermsOpen(false)}
-              className="px-4 py-2 rounded-lg bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-xs"
+              className="px-4 font-bold text-xs uppercase tracking-wider shadow-xs"
             >
               Acknowledge & Close
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>
@@ -690,13 +699,15 @@ export default function WelcomePage() {
                 <p className="text-xs text-slate-500 dark:text-[#7C8189] font-mono mt-0.5">Data Protection & Privacy Architecture</p>
               </div>
             </div>
-            <button
+            <motion.button
               type="button"
+              whileTap={{ scale: 0.90 }}
               onClick={() => setPrivacyOpen(false)}
-              className="w-8 h-8 rounded-lg border border-slate-200 dark:border-[#545963] hover:border-slate-300 dark:hover:border-[#B0B4BA] bg-white dark:bg-[#23262F] flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#B0B4BA] dark:hover:text-white transition-colors cursor-pointer shadow-2xs"
+              className="w-8 h-8 rounded-lg border border-slate-200 dark:border-[#545963] hover:border-slate-300 dark:hover:border-[#B0B4BA] bg-white dark:bg-[#23262F] flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#B0B4BA] dark:hover:text-white transition-colors cursor-pointer shadow-2xs outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E]"
+              aria-label="Close modal"
             >
               <X className="w-4 h-4" />
-            </button>
+            </motion.button>
           </div>
 
           {/* Scrollable Content */}
@@ -759,13 +770,14 @@ export default function WelcomePage() {
           {/* Footer */}
           <div className="p-4 border-t border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#181A20]/40 flex items-center justify-between">
             <span className="text-[11px] font-mono text-slate-500 dark:text-[#7C8189]">Compliance: SOC2 / ISO 27001 Ready</span>
-            <button
-              type="button"
+            <Button
+              size="sm"
+              variant="primary"
               onClick={() => setPrivacyOpen(false)}
-              className="px-4 py-2 rounded-lg bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-xs"
+              className="px-4 font-bold text-xs uppercase tracking-wider shadow-xs"
             >
               Acknowledge & Close
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>

@@ -1,13 +1,12 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { History, RefreshCw, ShieldCheck, Filter, User, FileText, CreditCard, Truck, Boxes, ShoppingCart, Building2, } from "lucide-react";
+import { History, ShieldCheck, Filter, User, FileText, CreditCard, Truck, Boxes, ShoppingCart, Building2, } from "lucide-react";
 import { fetchAuditLogs } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
-import { SpotlightCard } from "@/components/reactbits/SpotlightCard";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
+
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
@@ -109,7 +108,7 @@ export default function AuditPage() {
 
         {/* Metric Summary Cards */}
         <KpiGrid>
-          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+          <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
             <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] flex items-center justify-center shrink-0">
               <History className="w-4 h-4"/>
             </div>
@@ -117,9 +116,9 @@ export default function AuditPage() {
               <p className="text-xs font-medium text-slate-500 dark:text-[#9BA3AF] truncate">Total Audit Events</p>
               <p className="text-lg font-bold text-slate-900 dark:text-[#F4F5F7] font-mono mt-0.5">{audits.length}</p>
             </div>
-          </SpotlightCard>
+          </Card>
 
-          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+          <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
             <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] flex items-center justify-center shrink-0">
               <CreditCard className="w-4 h-4"/>
             </div>
@@ -129,9 +128,9 @@ export default function AuditPage() {
                 {audits.filter((a) => a.entity_type === "Invoice" || a.entity_type === "Payment").length}
               </p>
             </div>
-          </SpotlightCard>
+          </Card>
 
-          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+          <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
             <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] flex items-center justify-center shrink-0">
               <Boxes className="w-4 h-4"/>
             </div>
@@ -141,9 +140,9 @@ export default function AuditPage() {
                 {audits.filter((a) => a.entity_type === "Inventory").length}
               </p>
             </div>
-          </SpotlightCard>
+          </Card>
 
-          <SpotlightCard className="p-3.5 sm:p-4 flex items-center gap-3.5 shadow-2xs hover:shadow-sm">
+          <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
             <div className="w-9 h-9 rounded-lg bg-[#B6FF2E]/10 text-slate-900 dark:text-[#B6FF2E] border border-[#B6FF2E]/20 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4"/>
             </div>
@@ -154,11 +153,11 @@ export default function AuditPage() {
                 <Badge variant="success">Active</Badge>
               </div>
             </div>
-          </SpotlightCard>
+          </Card>
         </KpiGrid>
 
         {/* Filter & Search Bar */}
-        <Card spotlight={true} className="shadow-2xs">
+        <Card>
           <CardContent className="p-3.5 sm:p-4 space-y-3">
             {/* Entity Filter Tabs with Sliding Underline */}
             <Tabs tabs={entities.map((ent) => ({

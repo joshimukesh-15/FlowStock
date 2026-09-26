@@ -13,8 +13,11 @@ import {
   Globe,
   Zap,
   ShieldCheck,
+  Check,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/Button";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -28,6 +31,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [autoFilled, setAutoFilled] = useState(false);
 
   useEffect(() => {
     if (queryMode === "signup" || queryMode === "login") {
@@ -126,27 +130,41 @@ export default function LoginPage() {
         <div className="rounded-2xl border border-slate-200/80 dark:border-[#1E2028] bg-white dark:bg-[#13151B] shadow-sm dark:shadow-none">
           {/* Tab switcher — always visible at top of card */}
           <div className="px-6 pt-5 pb-0">
-            <div className="flex bg-slate-100 dark:bg-[#0B0D12] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#1E2028]">
+            <div className="flex bg-slate-100 dark:bg-[#0B0D12] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#1E2028] relative">
               <button
                 type="button"
                 onClick={() => switchMode("login")}
-                className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer ${
+                className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
                   mode === "login"
-                    ? "bg-white dark:bg-[#1E2028] text-slate-900 dark:text-white shadow-sm"
+                    ? "text-slate-900 dark:text-white"
                     : "text-slate-500 dark:text-[#555A66] hover:text-slate-700 dark:hover:text-[#9BA3AF]"
                 }`}
               >
+                {mode === "login" && (
+                  <motion.div
+                    layoutId="active-login-tab"
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    className="absolute inset-0 bg-white dark:bg-[#1E2028] rounded-md shadow-sm -z-10"
+                  />
+                )}
                 Log In
               </button>
               <button
                 type="button"
                 onClick={() => switchMode("signup")}
-                className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer ${
+                className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
                   mode === "signup"
-                    ? "bg-white dark:bg-[#1E2028] text-slate-900 dark:text-white shadow-sm"
+                    ? "text-slate-900 dark:text-white"
                     : "text-slate-500 dark:text-[#555A66] hover:text-slate-700 dark:hover:text-[#9BA3AF]"
                 }`}
               >
+                {mode === "signup" && (
+                  <motion.div
+                    layoutId="active-login-tab"
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    className="absolute inset-0 bg-white dark:bg-[#1E2028] rounded-md shadow-sm -z-10"
+                  />
+                )}
                 Create Account
               </button>
             </div>
@@ -334,24 +352,18 @@ export default function LoginPage() {
               )}
 
               {/* Submit */}
-              <button
+              <Button
                 type="submit"
-                disabled={loading}
-                className="group w-full h-10 bg-[#B6FF2E] hover:bg-[#a8ed1f] text-[#0B0D12] font-bold text-sm rounded-lg inline-flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer hover:scale-[1.005] active:scale-[0.995] mt-1"
+                variant="primary"
+                size="md"
+                isLoading={loading}
+                className="w-full h-10 font-bold text-sm rounded-lg mt-1"
               >
                 <span>
-                  {loading
-                    ? mode === "login"
-                      ? "Signing in…"
-                      : "Creating…"
-                    : mode === "login"
-                      ? "Log In"
-                      : "Create Account"}
+                  {mode === "login" ? "Log In" : "Create Account"}
                 </span>
-                {!loading && (
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                )}
-              </button>
+                <ArrowRight className="w-3.5 h-3.5 ml-1.5 shrink-0" />
+              </Button>
             </form>
 
             {/* Demo quick-fill — login mode only */}
@@ -371,17 +383,43 @@ export default function LoginPage() {
                     Pass: <code className="font-mono">admin123</code>
                   </span>
                 </div>
-                <button
+                <motion.button
                   type="button"
+                  whileTap={{ scale: 0.94 }}
                   onClick={() => {
                     setEmail("alice@acme.local");
                     setPassword("admin123");
                     setError("");
+                    setAutoFilled(true);
+                    setTimeout(() => setAutoFilled(false), 1400);
                   }}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#B6FF2E] hover:bg-[#a8ed1f] text-[#0B0D12] text-[11px] font-bold transition-colors cursor-pointer"
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#B6FF2E] hover:bg-[#a8ed1f] text-[#0B0D12] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E]"
                 >
-                  Auto Fill
-                </button>
+                  <AnimatePresence mode="wait" initial={false}>
+                    {autoFilled ? (
+                      <motion.span
+                        key="check"
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.5, opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                        className="inline-flex items-center gap-1"
+                      >
+                        <Check className="w-3 h-3 text-[#0B0D12]" strokeWidth={2.5} />
+                        <span>Filled</span>
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="idle"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        Auto Fill
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
               </div>
             )}
           </div>

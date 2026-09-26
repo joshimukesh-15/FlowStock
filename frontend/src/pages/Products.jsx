@@ -248,12 +248,26 @@ export default function ProductsPage() {
                           <Badge variant="warning">{p.reorder_point} {p.unit}</Badge>
                         </td>
                         <td className="py-2.5 px-3.5 text-right space-x-1 whitespace-nowrap">
-                          <button onClick={() => handleOpenEdit(p)} className="p-1 hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 rounded text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors" title="Edit Product">
-                            <Edit2 className="w-3.5 h-3.5"/>
-                          </button>
-                          <button onClick={() => handleDeleteProduct(p.id, p.name)} className="p-1 hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 text-slate-400 dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded transition-colors" title="Delete Product">
-                            <Trash2 className="w-3.5 h-3.5"/>
-                          </button>
+                          <motion.button
+                            type="button"
+                            whileTap={{ scale: 0.90 }}
+                            onClick={() => handleOpenEdit(p)}
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 rounded-md text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E]"
+                            title="Edit Product"
+                            aria-label={`Edit ${p.name}`}
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </motion.button>
+                          <motion.button
+                            type="button"
+                            whileTap={{ scale: 0.90 }}
+                            onClick={() => handleDeleteProduct(p.id, p.name)}
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 text-slate-400 dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            title="Delete Product"
+                            aria-label={`Delete ${p.name}`}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </motion.button>
                         </td>
                       </tr>);
         }))}

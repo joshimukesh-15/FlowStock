@@ -45,7 +45,7 @@ if ((-not (Test-Path $FE_ENV)) -and (Test-Path $FE_EXAMPLE)) {
 
 # Launch Backend in new window
 Write-Host "[+] Launching FlowStock Backend (FastAPI on port 8000)..." -ForegroundColor Green
-$backendCmd = "Set-Location '$PSScriptRoot'; Write-Host 'FlowStock Backend running on http://127.0.0.1:8000' -ForegroundColor Cyan; .\backend\venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000 --app-dir backend --reload"
+$backendCmd = "Set-Location '$PSScriptRoot'; Write-Host 'FlowStock Backend running on http://127.0.0.1:8000' -ForegroundColor Cyan; .\backend\venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --app-dir backend --reload"
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd
 
 # Launch Frontend in new window

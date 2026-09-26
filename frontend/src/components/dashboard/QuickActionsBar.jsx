@@ -1,5 +1,3 @@
-"use client";
-import React from "react";
 import { Link } from "react-router-dom";
 import {
   ShoppingCart,
@@ -10,7 +8,6 @@ import {
   Plus,
   Zap,
 } from "lucide-react";
-import { SpotlightCard } from "@/components/reactbits/SpotlightCard";
 
 export function QuickActionsBar({ summary }) {
   const lowStockCount = summary?.inventory?.low_stock_count || 0;

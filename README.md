@@ -1,16 +1,15 @@
 # FlowStock — Multi-Tenant B2B SaaS Operations Platform
 
-[![CI Status](https://img.shields.io/badge/CI-Passing-success?style=flat-square&logo=githubactions)](https://github.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.13-blue?style=flat-square&logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com)
-[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat-square&logo=next.js)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.4-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
+[![React](https://img.shields.io/badge/React-18.2-61DAFB?style=flat-square&logo=react)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8.2-646CFF?style=flat-square&logo=vite)](https://vitejs.dev)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
 [![Tests](https://img.shields.io/badge/Tests-70%2F70%20Passing-brightgreen?style=flat-square)](backend/tests/)
-[![Free-Only](https://img.shields.io/badge/Cost-Free--Only%20(No%20Paid%20SaaS)-orange?style=flat-square)](#free-only--no-docker-mandates)
+[![Architecture](https://img.shields.io/badge/Standard-Tier--1%20MNC%20Enterprise-success?style=flat-square)](#architecture)
 
-FlowStock is an enterprise-grade, multi-tenant B2B operations platform engineered for manufacturers, distributors, and wholesalers. It provides end-to-end management of inventory ledgers, multi-facility warehouse stock transfers, sales orders, purchase procurement, outbound shipments, tax invoicing with payment settlement, real-time WebSocket notifications, and strict Role-Based Access Control (RBAC).
+FlowStock is an enterprise-grade, multi-tenant B2B operations cockpit engineered for manufacturers, distributors, and logistics operations. It provides end-to-end management of inventory ledgers, multi-facility warehouse stock transfers, sales orders, purchase procurement, outbound shipments, tax invoicing with payment settlement, real-time WebSocket notifications, and strict Role-Based Access Control (RBAC).
 
 ---
 
@@ -19,6 +18,7 @@ FlowStock is an enterprise-grade, multi-tenant B2B operations platform engineere
 - **Free-Only Mandate**: Zero paid cloud services, zero credit card requirements, and zero vendor lock-in.
 - **Zero-Docker Local Development**: Runs natively on Windows, macOS, or Linux using standard Python and Node.js toolchains without container overhead.
 - **Zero-Redis Simplicity**: Real-time events operate via FastAPI in-memory WebSockets; background jobs run on an in-process native async task scheduler.
+- **Tier-1 MNC Enterprise UI**: Clean, high-performance UI architecture without consumer-style gimmicks, floating popups, or mouse-tracking overhead.
 - **Indian Rupee (₹ INR) Standard**: Native currency localization (`formatINR`) across all financials, orders, POs, and analytics.
 - **Strict Multi-Tenant Isolation**: Row-level tenant partitioning (`organization_id`) enforced across all queries and services, verified with automated anti-masquerading tests.
 - **Append-Only Inventory Ledger**: Stock changes are strictly recorded as immutable debit/credit movement records—never direct database mutations.
@@ -29,13 +29,13 @@ FlowStock is an enterprise-grade, multi-tenant B2B operations platform engineere
 
 ```mermaid
 graph TD
-    Client["Client Web Cockpit (Next.js 14 / TypeScript)"]
+    Client["Client Web Cockpit (React 18 / Vite / Tailwind CSS)"]
     API["FastAPI Async API Layer (v1)"]
     WS["Real-Time WebSocket Hub (Native In-Memory)"]
     Auth["RBAC & Tenant Isolation (deps.py)"]
     Services["Service Layer (Order, Transfer, PO, Invoice, Audit)"]
     Repos["Repository Layer (SQLAlchemy 2.0 Async)"]
-    DB[("PostgreSQL / SQLite Database")]
+    DB[("SQLite / PostgreSQL Database")]
     Jobs["In-Process Async Scheduler (Low-Stock, Maintenance)"]
 
     Client -->|REST API Requests| API
@@ -108,7 +108,7 @@ pip install -r backend/requirements.txt
 python -m app.core.seed
 ```
 
-### 4. Frontend Setup (Next.js)
+### 4. Frontend Setup (React + Vite)
 ```bash
 cd frontend
 npm install
@@ -117,13 +117,18 @@ npm install
 ### 5. Start Development Servers
 - **Backend**:
   ```bash
-  uvicorn app.main:app --host 127.0.0.1 --port 8000 --app-dir backend --reload
+  # Windows (via standalone bat)
+  .\backend\run_backend.bat
+
+  # Or manually via Python module
+  .\backend\venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --app-dir backend --reload
   ```
 - **Frontend**:
   ```bash
   cd frontend
   npm run dev
   ```
+  *(Vite will automatically launch `http://localhost:3000` in your default browser).*
 
 ---
 
@@ -131,7 +136,7 @@ npm install
 
 | Service | URL | Description |
 |---|---|---|
-| **Web Cockpit** | `http://localhost:3000` | Next.js operations cockpit with real-time updates |
+| **Web Cockpit** | `http://localhost:3000` | React + Vite operations cockpit with real-time updates |
 | **API Health** | `http://127.0.0.1:8000/api/v1/health` | Backend status & database connectivity check |
 | **Swagger UI** | `http://127.0.0.1:8000/docs` | Interactive OpenAPI documentation & test sandbox |
 | **ReDoc** | `http://127.0.0.1:8000/redoc` | Clean REST API specifications |
@@ -213,18 +218,10 @@ pytest backend/tests/ -v --durations=10
 
 ---
 
-## 🔄 CI/CD Pipeline
-
-Continuous Integration is executed on every push and pull request via GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)):
-1. **Backend Tests Job**: Runs on `ubuntu-latest` with Python 3.13, installing native dependencies and running the complete 70-test pytest suite.
-2. **Frontend Build Job**: Runs on `ubuntu-latest` with Node.js 20, executing type-checking and Next.js production build (`npm run build`).
-
----
-
 ## 📁 Repository Structure
 
 ```
-Invetory-Stock/
+Flow-Stock/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml                 # GitHub Actions CI pipeline
@@ -234,7 +231,7 @@ Invetory-Stock/
 │   │   │   ├── deps.py            # Authentication, RBAC & tenant resolution
 │   │   │   └── v1/
 │   │   │       ├── api.py         # Main router aggregator
-│   │   │       └── endpoints/     # Feature endpoint modules
+│   │   │       └── endpoints/     # Feature endpoint modules (auth, orders, etc.)
 │   │   ├── core/
 │   │   │   ├── config.py          # Environment settings & validation
 │   │   │   ├── database.py        # SQLAlchemy async engine & session maker
@@ -246,26 +243,30 @@ Invetory-Stock/
 │   │   ├── repositories/          # Data access layer
 │   │   ├── schemas/               # Pydantic validation schemas
 │   │   └── services/              # Domain business logic layer
-│   ├── tests/                     # Comprehensive pytest test suite (66 tests)
+│   ├── tests/                     # Comprehensive pytest test suite (70 tests)
+│   ├── run_backend.bat            # 1-click Windows backend launcher
 │   ├── alembic.ini                # Migration configuration
 │   └── requirements.txt           # Python dependencies
 ├── frontend/
 │   ├── src/
-│   │   ├── app/                   # Next.js 14 App Router routes
-│   │   ├── components/            # UI components (Header, Sidebar, Modals)
-│   │   ├── context/               # TenantContext & active state
-│   │   └── lib/                   # API client, types, currency utilities
+│   │   ├── components/            # UI primitives (Cards, Tables, Steppers, Modals)
+│   │   ├── context/               # TenantContext, AuthContext, ThemeContext
+│   │   ├── hooks/                 # Reusable domain and state hooks
+│   │   ├── lib/                   # API client, SWR config, formatting utils
+│   │   ├── pages/                 # Full feature views (Orders, Inventory, Invoices)
+│   │   ├── App.jsx                # Router & Provider hierarchy
+│   │   └── main.jsx               # Application entrypoint
 │   ├── package.json               # Node.js dependencies
+│   ├── vite.config.js             # Vite configuration with auto-open
 │   └── tailwind.config.js         # Design tokens & styling
 ├── .env.example                   # Environment configuration template
 ├── .gitignore                     # Git ignore rules (secrets, venv, caches)
-├── FLOWSTOCK_MASTER_SPEC.md       # Governing project master specification
-├── FLOWSTOCK_MOTION_SPEC.md       # UI motion and interaction design spec
+├── Project Architecture.md        # Comprehensive system design blueprint
 ├── setup.ps1                      # Windows automated setup script
 ├── start.ps1                      # Windows dual server launcher
 ├── setup.sh                       # POSIX automated setup script
 ├── start.sh                       # POSIX dual server launcher
-└── README.md                      # Project documentation (this file)
+└── README.md                      # Project documentation
 ```
 
 ---

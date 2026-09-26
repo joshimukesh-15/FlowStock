@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TenantProvider } from './context/TenantContext';
@@ -6,7 +5,6 @@ import { ToastProvider } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AppShell } from './components/layout/AppShell';
-import { AppProgressBar } from './components/layout/AppProgressBar';
 import { DURATION, EASING, useReducedMotion } from './motion';
 import OverviewPage from './pages/Dashboard';
 import ProductsPage from './pages/Products';
@@ -23,7 +21,6 @@ import LoginPage from './pages/Login';
 
 import { PageSkeleton } from './components/ui/Skeleton';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
-import { CookieConsent } from './components/ui/CookieConsent';
 import { SWRConfig } from 'swr';
 import { swrConfig } from './lib/swr';
 
@@ -79,13 +76,7 @@ function AppLayout() {
       </AnimatePresence>
     );
 
-    return (
-      <>
-        <AppProgressBar />
-        {isPublic ? content : <AppShell>{content}</AppShell>}
-        <CookieConsent />
-      </>
-    );
+    return isPublic ? content : <AppShell>{content}</AppShell>;
 }
 
 export default function App() {

@@ -1,57 +1,19 @@
-"use client";
-import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const Card = ({
   className,
   children,
-  spotlight = false,
-  spotlightColor = "rgba(182, 255, 46, 0.12)",
-  spotlightSize = 350,
   ...props
 }) => {
-  const divRef = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e) => {
-    if (!spotlight || !divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleMouseEnter = () => {
-    if (spotlight) setOpacity(1);
-  };
-
-  const handleMouseLeave = () => {
-    if (spotlight) setOpacity(0);
-  };
-
   return (
     <div
-      ref={divRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       className={cn(
-        "relative bg-white dark:bg-[#181A20] border border-slate-200 dark:border-[#323744] rounded-xl shadow-2xs transition-all overflow-hidden",
-        spotlight && "hover:shadow-md dark:hover:border-[#545963]",
+        "rounded-xl border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xs hover:border-slate-300 dark:hover:border-[#424857] transition-colors duration-150 overflow-hidden",
         className
       )}
       {...props}
     >
-      {spotlight && (
-        <div
-          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 z-0"
-          style={{
-            opacity,
-            background: `radial-gradient(${spotlightSize}px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 80%)`,
-          }}
-          aria-hidden="true"
-        />
-      )}
-      <div className="relative z-10">{children}</div>
+      {children}
     </div>
   );
 };
@@ -68,8 +30,22 @@ export const CardTitle = ({ className, children, ...props }) => (
   </h3>
 );
 
+export const CardDescription = ({ className, children, ...props }) => (
+  <p className={cn("text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5", className)} {...props}>
+    {children}
+  </p>
+);
+
 export const CardContent = ({ className, children, ...props }) => (
   <div className={cn("p-3.5 sm:p-4", className)} {...props}>
     {children}
   </div>
 );
+
+export const CardFooter = ({ className, children, ...props }) => (
+  <div className={cn("p-3.5 sm:p-4 border-t border-slate-100 dark:border-[#262A34] flex items-center justify-between", className)} {...props}>
+    {children}
+  </div>
+);
+
+export default Card;

@@ -1,26 +1,23 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Warehouse as WarehouseIcon, Plus, ArrowRight, Truck, CheckCircle2, Clock, Ban, MapPin, RefreshCw, X, Package, AlertCircle, } from "lucide-react";
+import { Warehouse as WarehouseIcon, Plus, ArrowRight, Truck, CheckCircle2, Clock, Ban, MapPin, X, Package, AlertCircle, } from "lucide-react";
 import { fetchWarehouses, createWarehouseApi, fetchTransfers, createTransferApi, dispatchTransferApi, receiveTransferApi, cancelTransferApi, fetchProducts, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { WarehouseTransferVisualizer } from "@/components/ui/WarehouseTransferVisualizer";
-import { Modal } from "@/components/ui/Modal";
 import { FormModal } from "@/components/ui/FormModal";
 import { FormField } from "@/components/ui/FormField";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { SpotlightCard } from "@/components/reactbits/SpotlightCard";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
-import { Alert } from "@/components/ui/Alert";
 import { formatDate, selectClass } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
@@ -247,14 +244,14 @@ export default function WarehousesPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {warehouses.map((wh) => (<SpotlightCard key={wh.id} className="p-4 shadow-2xs hover:shadow-sm">
+          {warehouses.map((wh) => (<Card key={wh.id} className="p-4">
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">{wh.name}</h3>
                       {wh.is_default && (<Badge variant="success" className="text-[10px] uppercase tracking-wide">
                           Default
-                        </Badge>)}
+                      </Badge>)}
                     </div>
                     <p className="text-xs font-mono text-slate-500 dark:text-[#9BA3AF] mt-0.5">{wh.code}</p>
                   </div>
@@ -280,7 +277,7 @@ export default function WarehousesPage() {
                     {formatDate(wh.created_at)}
                   </span>
                 </div>
-            </SpotlightCard>))}
+            </Card>))}
         </div>
       </motion.div>
 
@@ -542,9 +539,15 @@ export default function WarehousesPage() {
               <Truck className="w-5 h-5 text-slate-900"/>
               Stock Transit Route Visualizer
             </h3>
-            <button onClick={() => setSelectedVisualizerTransfer(null)} className="text-slate-400 hover:text-slate-700">
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.90 }}
+              onClick={() => setSelectedVisualizerTransfer(null)}
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23262F] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E]"
+              aria-label="Close dialog"
+            >
               <X className="w-5 h-5"/>
-            </button>
+            </motion.button>
           </div>
 
           {selectedVisualizerTransfer && (<div className="space-y-4 mt-4">

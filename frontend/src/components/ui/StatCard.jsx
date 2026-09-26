@@ -1,9 +1,6 @@
-"use client";
-import React from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { KpiTrend } from "@/components/ui/KpiTrend";
-import { SpotlightCard } from "@/components/reactbits/SpotlightCard";
 
 export function StatCard({
   title,
@@ -20,12 +17,11 @@ export function StatCard({
   className = "",
 }) {
   return (
-    <SpotlightCard
+    <div
       className={cn(
-        "rounded-xl border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] p-3.5 sm:p-4 flex flex-col justify-between shadow-2xs hover:shadow-sm transition-all group",
+        "relative rounded-xl border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs hover:border-slate-300 dark:hover:border-[#464D5D] transition-colors duration-150 overflow-hidden group",
         className
       )}
-      spotlightColor="rgba(182, 255, 46, 0.14)"
     >
       <div>
         {/* Header: Title + Icon / Badge */}
@@ -36,7 +32,7 @@ export function StatCard({
           <div className="flex items-center gap-1.5 shrink-0">
             {badge}
             {Icon && (
-              <div className="w-6 h-6 rounded-md bg-slate-100 dark:bg-[#23262F] border border-slate-200/50 dark:border-[#323744] flex items-center justify-center text-slate-600 dark:text-[#9BA3AF] group-hover:scale-105 group-hover:text-slate-900 dark:group-hover:text-[#B6FF2E] transition-all">
+              <div className="w-6 h-6 rounded-md bg-slate-100 dark:bg-[#23262F] border border-slate-200/50 dark:border-[#323744] flex items-center justify-center text-slate-600 dark:text-[#9BA3AF] group-hover:text-slate-900 dark:group-hover:text-[#B6FF2E] transition-colors">
                 <Icon className="w-3.5 h-3.5" />
               </div>
             )}
@@ -89,6 +85,8 @@ export function StatCard({
           />
         </div>
       )}
-    </SpotlightCard>
+    </div>
   );
 }
+
+export default StatCard;
