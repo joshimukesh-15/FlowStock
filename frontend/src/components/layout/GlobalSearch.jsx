@@ -115,31 +115,97 @@ export const GlobalSearch = ({ onOpen }) => {
         </div>
       </button>
 
-      <Modal isOpen={isOpen} onClose={close} maxWidth="xl">
-        <div className="border-b border-slate-100 dark:border-[#323744] p-4">
-          <label className="sr-only" htmlFor="global-search-input">Search products, orders, shipments, and invoices</label>
-          <div className="flex items-center gap-2">
-            <Search className="h-5 w-5 text-slate-500 dark:text-[#9BA3AF]"/>
-            <input id="global-search-input" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search products, orders, shipments, invoices..." className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 dark:text-[#F4F5F7] outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500"/>
+      <Modal isOpen={isOpen} onClose={close} maxWidth="xl" position="top">
+        <div className="border-b border-slate-100 dark:border-[#323744] p-3.5 sm:p-4 flex items-center justify-between gap-3 bg-slate-50/50 dark:bg-[#181A20]">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <Search className="h-5 w-5 text-slate-400 dark:text-[#7C8189] shrink-0" />
+            <input
+              id="global-search-input"
+              autoFocus
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search products, orders, shipments, invoices..."
+              className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 dark:text-[#F4F5F7] outline-none placeholder:text-slate-400 dark:placeholder:text-[#7C8189]"
+            />
           </div>
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-white px-1.5 py-0.5 rounded cursor-pointer"
+            >
+              Clear
+            </button>
+          )}
+          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] font-mono text-[10px] text-slate-400 dark:text-[#7C8189] shadow-2xs">
+            ESC
+          </kbd>
         </div>
 
         <div className="max-h-[55vh] overflow-y-auto p-2">
-          {loading ? (<p className="px-3 py-8 text-center text-sm text-slate-500 dark:text-[#9BA3AF]">Loading current organization records…</p>) : !query.trim() ? (<p className="px-3 py-8 text-center text-sm text-slate-500 dark:text-[#9BA3AF]">Start typing to search the current organization.</p>) : filteredResults.length === 0 ? (<p className="px-3 py-8 text-center text-sm text-slate-500 dark:text-[#9BA3AF]">No matching records.</p>) : (<motion.div variants={createStaggerContainer(undefined, undefined, prefersReducedMotion)} initial="hidden" animate="visible" className="space-y-1">
+          {loading ? (
+            <p className="px-3 py-8 text-center text-sm text-slate-500 dark:text-[#9BA3AF]">
+              Loading organization records…
+            </p>
+          ) : !query.trim() ? (
+            <div className="px-4 py-8 text-center text-xs text-slate-400 dark:text-[#7C8189] space-y-1">
+              <p className="font-medium text-slate-600 dark:text-[#CBD5E1]">Quick Organization Search</p>
+              <p>Search across products, purchase orders, shipments, and customer invoices</p>
+            </div>
+          ) : filteredResults.length === 0 ? (
+            <p className="px-3 py-8 text-center text-sm text-slate-500 dark:text-[#9BA3AF]">
+              No matching records found for "{query}".
+            </p>
+          ) : (
+            <motion.div
+              variants={createStaggerContainer(undefined, undefined, prefersReducedMotion)}
+              initial="hidden"
+              animate="visible"
+              className="space-y-1"
+            >
               {filteredResults.map((result) => {
                 const Icon = TYPE_ICONS[result.type];
-                return (<motion.div key={`${result.type}-${result.id}`} variants={slideUpVariants(prefersReducedMotion)}>
-                    <Link to={result.to} onClick={close} className="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
-                      <span className="rounded-md border border-slate-200 dark:border-[#3A404F] bg-slate-50 dark:bg-[#23262F] p-2 text-slate-700 dark:text-[#CBD5E1]"><Icon className="h-3.5 w-3.5"/></span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-medium text-slate-900 dark:text-[#F4F5F7]">{result.title}</span>
-                        <span className="block truncate text-xs text-slate-500 dark:text-[#9BA3AF]">{result.detail}</span>
+                return (
+                  <motion.div key={`${result.type}-${result.id}`} variants={slideUpVariants(prefersReducedMotion)}>
+                    <Link
+                      to={result.to}
+                      onClick={close}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-100 dark:hover:bg-[#23262F] group"
+                    >
+                      <span className="rounded-lg border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#1E222B] p-2 text-slate-600 dark:text-[#CBD5E1] shrink-0 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+                        <Icon className="h-4 w-4" />
                       </span>
-                      <span className="text-[11px] font-medium text-slate-400 dark:text-[#7C8189]">{result.type}</span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                          {result.title}
+                        </span>
+                        <span className="block truncate text-xs text-slate-500 dark:text-[#9BA3AF]">
+                          {result.detail}
+                        </span>
+                      </span>
+                      <span className="text-[11px] font-mono font-medium text-slate-400 dark:text-[#7C8189] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#181A20] border border-slate-200/80 dark:border-[#323744]">
+                        {result.type}
+                      </span>
                     </Link>
-                  </motion.div>);
-            })}
-            </motion.div>)}
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          )}
+        </div>
+
+        {/* Footer shortcuts hint */}
+        <div className="px-4 py-2 border-t border-slate-100 dark:border-[#323744] bg-slate-50 dark:bg-[#14171F] flex items-center justify-between text-[11px] text-slate-400 dark:text-[#7C8189]">
+          <span className="flex items-center gap-2">
+            <span>Navigation:</span>
+            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#23262F] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">↑</kbd>
+            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#23262F] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">↓</kbd>
+            <span>to select</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#23262F] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">ESC</kbd>
+            <span>to close</span>
+          </span>
         </div>
       </Modal>
     </>);
