@@ -259,14 +259,24 @@ export default function InventoryPage() {
                             Adequate
                           </Badge>)}
                       </td>
-                      <td className="py-2 px-3.5 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <Button size="sm" variant="outline" onClick={() => handleOpenMovementModal(s)} className="h-6.5 text-[11px] px-2 gap-1">
-                            <Plus className="w-3 h-3"/>
+                      <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            onClick={() => handleOpenMovementModal(s)}
+                            title="Adjust Stock Quantity"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
                             Adjust
                           </Button>
-                          <Button size="sm" variant="outline" onClick={() => handleOpenHistoryModal(s)} className="h-6.5 text-[11px] px-2 gap-1 text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7]">
-                            <History className="w-3 h-3"/>
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            onClick={() => handleOpenHistoryModal(s)}
+                            title="View Audit Ledger History"
+                          >
+                            <History className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                             Ledger
                           </Button>
                         </div>

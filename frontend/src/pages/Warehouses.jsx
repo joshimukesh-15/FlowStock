@@ -573,33 +573,70 @@ export default function WarehousesPage() {
                             </td>
                             <td className="py-2.5 px-3.5 text-right">
                               <div className="flex items-center justify-end gap-1.5">
-                                <Button variant="ghost" size="sm" onClick={() => setSelectedVisualizerTransfer(tr)} className="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs h-7 px-2" title="View Transfer Route Visualizer">
+                                <Button
+                                  variant="outline"
+                                  size="xs"
+                                  onClick={() => setSelectedVisualizerTransfer(tr)}
+                                  title="View Transfer Route Visualizer"
+                                >
                                   Visualizer
                                 </Button>
 
-                                {tr.status === "REQUESTED" && (<>
-                                    <Button size="sm" onClick={() => handleDispatch(tr.id)} disabled={isActing} className="bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 shadow-xs text-xs h-7 px-2.5">
-                                      <Truck className="w-3 h-3 mr-1"/>
+                                {tr.status === "REQUESTED" && (
+                                  <>
+                                    <Button
+                                      variant="solid"
+                                      size="xs"
+                                      onClick={() => handleDispatch(tr.id)}
+                                      disabled={isActing}
+                                      title="Dispatch Transfer"
+                                    >
+                                      <Truck className="w-3.5 h-3.5" />
                                       Dispatch
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-slate-500 hover:text-black dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 text-xs h-7 px-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      onClick={() => handleCancel(tr.id)}
+                                      disabled={isActing}
+                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      title="Cancel Transfer"
+                                    >
                                       Cancel
                                     </Button>
-                                  </>)}
+                                  </>
+                                )}
 
-                                {tr.status === "IN_TRANSIT" && (<>
-                                    <Button size="sm" onClick={() => handleReceive(tr.id)} disabled={isActing} className="bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 shadow-xs text-xs h-7 px-2.5">
-                                      <CheckCircle2 className="w-3 h-3 mr-1"/>
+                                {tr.status === "IN_TRANSIT" && (
+                                  <>
+                                    <Button
+                                      variant="solid"
+                                      size="xs"
+                                      onClick={() => handleReceive(tr.id)}
+                                      disabled={isActing}
+                                      title="Receive Goods"
+                                    >
+                                      <CheckCircle2 className="w-3.5 h-3.5" />
                                       Receive
                                     </Button>
-                                    <Button variant="ghost" size="sm" onClick={() => handleCancel(tr.id)} disabled={isActing} className="text-slate-500 hover:text-black dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 text-xs h-7 px-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      onClick={() => handleCancel(tr.id)}
+                                      disabled={isActing}
+                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      title="Cancel Transfer"
+                                    >
                                       Cancel
                                     </Button>
-                                  </>)}
+                                  </>
+                                )}
 
-                                {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (<span className="text-xs text-slate-400 dark:text-[#7C8189] font-medium italic">
+                                {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (
+                                  <span className="text-xs text-slate-400 dark:text-[#7C8189] font-medium italic">
                                     Archived
-                                  </span>)}
+                                  </span>
+                                )}
                               </div>
                             </td>
                           </tr>);
@@ -846,7 +883,7 @@ export default function WarehousesPage() {
           {selectedVisualizerTransfer && (<div className="space-y-4 mt-4">
               <WarehouseTransferVisualizer transfer={selectedVisualizerTransfer}/>
               <div className="flex justify-end pt-2">
-                <Button variant="outline" size="sm" onClick={() => setSelectedVisualizerTransfer(null)} className="border-slate-200 text-slate-700 hover:bg-slate-50">
+                <Button variant="outline" size="sm" onClick={() => setSelectedVisualizerTransfer(null)}>
                   Close
                 </Button>
               </div>

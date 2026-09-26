@@ -29,17 +29,21 @@ export const Button = React.forwardRef((
   const prefersReducedMotion = useReducedMotion();
 
   const baseStyles =
-    "relative inline-flex items-center justify-center font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#14171F] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed transition-all duration-150 ease-out";
+    "relative inline-flex items-center justify-center font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#14171F] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed transition-all duration-150 ease-out";
 
   const variants = {
     primary:
-      "bg-[#B6FF2E] hover:bg-[#a6ec22] active:bg-[#97d81c] text-[#111318] font-semibold border border-[#a6ec22]/60 dark:border-[#B6FF2E] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(182,255,46,0.2)] hover:shadow-[0_2px_8px_rgba(182,255,46,0.35)]",
+      "bg-[#B6FF2E] hover:bg-[#a6ec22] active:bg-[#97d81c] text-[#111318] font-semibold border border-[#a6ec22]/80 dark:border-[#B6FF2E] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(182,255,46,0.2)] hover:shadow-[0_2px_8px_rgba(182,255,46,0.35)]",
     default:
-      "bg-[#B6FF2E] hover:bg-[#a6ec22] active:bg-[#97d81c] text-[#111318] font-semibold border border-[#a6ec22]/60 dark:border-[#B6FF2E] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(182,255,46,0.2)] hover:shadow-[0_2px_8px_rgba(182,255,46,0.35)]",
+      "bg-[#B6FF2E] hover:bg-[#a6ec22] active:bg-[#97d81c] text-[#111318] font-semibold border border-[#a6ec22]/80 dark:border-[#B6FF2E] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(182,255,46,0.2)] hover:shadow-[0_2px_8px_rgba(182,255,46,0.35)]",
+    solid:
+      "bg-slate-900 hover:bg-black active:bg-slate-800 text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-slate-950 font-medium border border-slate-900 dark:border-white shadow-2xs",
+    dark:
+      "bg-slate-900 hover:bg-black active:bg-slate-800 text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-slate-950 font-medium border border-slate-900 dark:border-white shadow-2xs",
     secondary:
-      "bg-slate-100 hover:bg-slate-200/90 active:bg-slate-200 text-slate-800 dark:bg-[#1E222B] dark:hover:bg-[#282D37] dark:active:bg-[#181B22] dark:text-[#F4F5F7] border border-slate-200/80 dark:border-[#323744] shadow-2xs",
+      "bg-slate-100 hover:bg-slate-200/90 active:bg-slate-200 text-slate-700 hover:text-slate-900 dark:bg-[#1E222B] dark:hover:bg-[#282D37] dark:active:bg-[#181B22] dark:text-[#CBD5E1] dark:hover:text-white border border-slate-200/80 dark:border-[#323744] shadow-2xs",
     outline:
-      "bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-300 dark:bg-[#181A20] dark:hover:bg-[#20242D] dark:active:bg-[#14161C] dark:text-[#D1D5DB] dark:hover:text-white dark:border-[#323744] shadow-2xs",
+      "bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 dark:bg-[#181A20] dark:hover:bg-[#22252E] dark:active:bg-[#14161C] dark:text-[#D1D5DB] dark:hover:text-white dark:border-[#323744] dark:hover:border-[#424858] shadow-2xs",
     ghost:
       "text-slate-600 hover:text-slate-900 hover:bg-slate-100/90 active:bg-slate-200/70 dark:text-[#9BA3AF] dark:hover:text-[#F4F5F7] dark:hover:bg-[#23262F]/80 dark:active:bg-[#23262F]",
     danger:
@@ -51,7 +55,7 @@ export const Button = React.forwardRef((
   };
 
   const sizes = {
-    xs: "h-7 px-2.5 text-xs gap-1.5 rounded-md",
+    xs: "h-7 px-2.5 text-xs gap-1.5 rounded-md font-medium",
     sm: "h-8 px-3 text-xs gap-1.5 rounded-md font-medium",
     md: "h-9 px-3.5 text-xs sm:text-sm gap-2 rounded-lg font-medium",
     lg: "h-10 px-4 text-sm gap-2.5 rounded-lg font-medium",
@@ -94,7 +98,7 @@ export const Button = React.forwardRef((
       {isLoading && (
         <Loader2 className={cn("animate-spin shrink-0 text-current", spinnerSizeClass)} />
       )}
-      <span className="inline-flex items-center justify-center gap-[inherit] leading-none shrink-0 pointer-events-none">
+      <span className="inline-flex items-center justify-center gap-1.5 leading-none shrink-0 pointer-events-none">
         {children}
       </span>
     </motion.button>

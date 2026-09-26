@@ -396,19 +396,54 @@ export default function ShipmentsPage() {
                         <td className="py-2.5 px-3.5">
                           <StatusBadge status={s.status} type="shipment" />
                         </td>
-                        <td className="py-2.5 px-3.5 text-right space-x-1">
-                          <Button size="sm" variant="outline" onClick={() => setDetailShipment(s)} className="h-6.5 px-2 text-xs">
-                            <Eye className="w-3 h-3 mr-1"/> Track
-                          </Button>
-                          {s.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
-                              <Send className="w-3 h-3 mr-1"/> Dispatch
-                            </Button>)}
-                          {s.status === "IN_TRANSIT" && (<Button size="sm" onClick={() => handleOutForDelivery(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-slate-800 dark:bg-slate-200 hover:bg-slate-900 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-medium shadow-xs">
-                              <Truck className="w-3 h-3 mr-1"/> Out
-                            </Button>)}
-                          {s.status === "OUT_FOR_DELIVERY" && (<Button size="sm" onClick={() => handleDeliver(s.id)} disabled={actionLoading === s.id} className="h-6.5 px-2 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
-                              <CheckCircle2 className="w-3 h-3 mr-1"/> Deliver
-                            </Button>)}
+                        <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <Button
+                              size="xs"
+                              variant="outline"
+                              onClick={() => setDetailShipment(s)}
+                              title="Track Shipment Details"
+                            >
+                              <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                              Track
+                            </Button>
+                            {s.status === "PENDING" && (
+                              <Button
+                                size="xs"
+                                variant="solid"
+                                onClick={() => handleDispatch(s.id)}
+                                disabled={actionLoading === s.id}
+                                title="Dispatch Shipment"
+                              >
+                                <Send className="w-3.5 h-3.5" />
+                                Dispatch
+                              </Button>
+                            )}
+                            {s.status === "IN_TRANSIT" && (
+                              <Button
+                                size="xs"
+                                variant="solid"
+                                onClick={() => handleOutForDelivery(s.id)}
+                                disabled={actionLoading === s.id}
+                                title="Mark Out for Delivery"
+                              >
+                                <Truck className="w-3.5 h-3.5" />
+                                Out
+                              </Button>
+                            )}
+                            {s.status === "OUT_FOR_DELIVERY" && (
+                              <Button
+                                size="xs"
+                                variant="solid"
+                                onClick={() => handleDeliver(s.id)}
+                                disabled={actionLoading === s.id}
+                                title="Confirm Delivery"
+                              >
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                Deliver
+                              </Button>
+                            )}
+                          </div>
                         </td>
                       </tr>))}
                   </tbody>
@@ -603,25 +638,31 @@ export default function ShipmentsPage() {
                 </div>
 
                 {/* State Machine Transition Actions */}
-                <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                <div className="p-3.5 bg-slate-50 dark:bg-[#181A20] rounded-lg border border-slate-200 dark:border-[#323744] flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#7C8189]">
                     Workflow Actions:
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
-                    {detailShipment.status === "PENDING" && (<Button size="sm" onClick={() => handleDispatch(detailShipment.id)} className="bg-slate-900 hover:bg-black text-white text-xs h-8 font-medium shadow-xs">
-                        <Send className="w-3.5 h-3.5 mr-1.5"/> Mark Dispatched
-                      </Button>)}
-                    {["PENDING", "IN_TRANSIT"].includes(detailShipment.status) && (<Button size="sm" onClick={() => handleOutForDelivery(detailShipment.id)} className="bg-slate-800 hover:bg-slate-900 text-white text-xs h-8 font-medium shadow-xs">
-                        <Truck className="w-3.5 h-3.5 mr-1.5"/> Out for Delivery
-                      </Button>)}
-                    {detailShipment.status !== "DELIVERED" &&
-                detailShipment.status !== "CANCELLED" && (<Button size="sm" onClick={() => handleDeliver(detailShipment.id)} className="bg-slate-950 hover:bg-black text-white text-xs h-8 font-semibold shadow-xs">
-                          <CheckCircle2 className="w-3.5 h-3.5 mr-1.5"/> Confirm Delivery
-                        </Button>)}
-                    {detailShipment.status !== "DELIVERED" &&
-                detailShipment.status !== "CANCELLED" && (<Button size="sm" variant="outline" onClick={() => handleCancel(detailShipment.id)} className="border-slate-300 hover:bg-slate-100 hover:text-black text-slate-600 text-xs h-8">
-                          <Ban className="w-3.5 h-3.5 mr-1.5"/> Cancel Consignment
-                        </Button>)}
+                    {detailShipment.status === "PENDING" && (
+                      <Button size="sm" variant="solid" onClick={() => handleDispatch(detailShipment.id)}>
+                        <Send className="w-3.5 h-3.5" /> Mark Dispatched
+                      </Button>
+                    )}
+                    {["PENDING", "IN_TRANSIT"].includes(detailShipment.status) && (
+                      <Button size="sm" variant="solid" onClick={() => handleOutForDelivery(detailShipment.id)}>
+                        <Truck className="w-3.5 h-3.5" /> Out for Delivery
+                      </Button>
+                    )}
+                    {detailShipment.status !== "DELIVERED" && detailShipment.status !== "CANCELLED" && (
+                      <Button size="sm" variant="solid" onClick={() => handleDeliver(detailShipment.id)}>
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Confirm Delivery
+                      </Button>
+                    )}
+                    {detailShipment.status !== "DELIVERED" && detailShipment.status !== "CANCELLED" && (
+                      <Button size="sm" variant="outline" onClick={() => handleCancel(detailShipment.id)}>
+                        <Ban className="w-3.5 h-3.5" /> Cancel Consignment
+                      </Button>
+                    )}
                   </div>
                 </div>
 
@@ -686,7 +727,7 @@ export default function ShipmentsPage() {
                         <Input placeholder="Checkpoint scan details..." value={newCheckpointDesc} onChange={(e) => setNewCheckpointDesc(e.target.value)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
                       </div>
                       <div className="text-right">
-                        <Button type="submit" size="sm" isLoading={loggingCheckpoint} className="bg-slate-800 hover:bg-slate-700 text-white text-xs h-8">
+                        <Button type="submit" size="sm" variant="solid" isLoading={loggingCheckpoint}>
                           {loggingCheckpoint ? "Logging..." : "Log Checkpoint Scan"}
                         </Button>
                       </div>

@@ -402,32 +402,67 @@ export default function PurchasingPage() {
                           <td className="py-3.5 px-4 text-center">
                             <StatusBadge status={po.status} type="po" />
                           </td>
-                          <td className="py-3.5 px-4 text-right">
+                          <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
                             <div className="flex items-center justify-end gap-1.5">
-                              <Button variant="ghost" size="sm" onClick={() => setDetailPO(po)} className="text-slate-500 hover:text-slate-900 text-xs h-7 px-2" title="View Purchase Order">
-                                <Eye className="w-3.5 h-3.5 mr-1"/>
+                              <Button
+                                variant="outline"
+                                size="xs"
+                                onClick={() => setDetailPO(po)}
+                                title="View Purchase Order"
+                              >
+                                <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                                 Details
                               </Button>
 
-                              {po.status === "DRAFT" && (<>
-                                  <Button size="sm" onClick={() => handleIssuePO(po.id)} disabled={isActing} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
-                                    <Send className="w-3 h-3 mr-1"/>
+                              {po.status === "DRAFT" && (
+                                <>
+                                  <Button
+                                    variant="solid"
+                                    size="xs"
+                                    onClick={() => handleIssuePO(po.id)}
+                                    disabled={isActing}
+                                    title="Issue Purchase Order"
+                                  >
+                                    <Send className="w-3.5 h-3.5" />
                                     Issue PO
                                   </Button>
-                                  <Button variant="ghost" size="sm" onClick={() => handleCancelPO(po.id)} disabled={isActing} className="text-slate-500 hover:text-black hover:bg-slate-100 text-xs h-7 px-2">
+                                  <Button
+                                    variant="ghost"
+                                    size="xs"
+                                    onClick={() => handleCancelPO(po.id)}
+                                    disabled={isActing}
+                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                    title="Cancel PO"
+                                  >
                                     Cancel
                                   </Button>
-                                </>)}
+                                </>
+                              )}
 
-                              {po.status === "ISSUED" && (<>
-                                  <Button size="sm" onClick={() => handleReceivePO(po.id)} disabled={isActing} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs h-7 px-2.5">
-                                    <PackagePlus className="w-3 h-3 mr-1"/>
+                              {po.status === "ISSUED" && (
+                                <>
+                                  <Button
+                                    variant="solid"
+                                    size="xs"
+                                    onClick={() => handleReceivePO(po.id)}
+                                    disabled={isActing}
+                                    title="Receive Goods & Restock"
+                                  >
+                                    <PackagePlus className="w-3.5 h-3.5" />
                                     Receive Goods
                                   </Button>
-                                  <Button variant="ghost" size="sm" onClick={() => handleCancelPO(po.id)} disabled={isActing} className="text-slate-500 hover:text-black hover:bg-slate-100 text-xs h-7 px-2">
+                                  <Button
+                                    variant="ghost"
+                                    size="xs"
+                                    onClick={() => handleCancelPO(po.id)}
+                                    disabled={isActing}
+                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                    title="Cancel PO"
+                                  >
                                     Cancel
                                   </Button>
-                                </>)}
+                                </>
+                              )}
                             </div>
                           </td>
                         </tr>);
@@ -784,31 +819,57 @@ export default function PurchasingPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-4">
-                <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)} className="text-slate-400 hover:text-slate-700">
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#262A34] mt-4">
+                <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
                   Close
                 </Button>
 
                 <div className="flex items-center gap-2">
-                  {detailPO.status === "DRAFT" && (<>
-                      <Button variant="ghost" size="sm" onClick={() => handleCancelPO(detailPO.id)} disabled={actionLoading === detailPO.id} className="text-slate-500 hover:text-black text-xs">
+                  {detailPO.status === "DRAFT" && (
+                    <>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleCancelPO(detailPO.id)}
+                        disabled={actionLoading === detailPO.id}
+                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                      >
                         Cancel PO
                       </Button>
-                      <Button size="sm" onClick={() => handleIssuePO(detailPO.id)} disabled={actionLoading === detailPO.id} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs">
-                        <Send className="w-3.5 h-3.5 mr-1"/>
+                      <Button
+                        variant="solid"
+                        size="sm"
+                        onClick={() => handleIssuePO(detailPO.id)}
+                        disabled={actionLoading === detailPO.id}
+                      >
+                        <Send className="w-3.5 h-3.5" />
                         Issue PO to Vendor
                       </Button>
-                    </>)}
+                    </>
+                  )}
 
-                  {detailPO.status === "ISSUED" && (<>
-                      <Button variant="ghost" size="sm" onClick={() => handleCancelPO(detailPO.id)} disabled={actionLoading === detailPO.id} className="text-slate-500 hover:text-black text-xs">
+                  {detailPO.status === "ISSUED" && (
+                    <>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleCancelPO(detailPO.id)}
+                        disabled={actionLoading === detailPO.id}
+                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                      >
                         Cancel PO
                       </Button>
-                      <Button size="sm" onClick={() => handleReceivePO(detailPO.id)} disabled={actionLoading === detailPO.id} className="bg-slate-950 hover:bg-black text-white shadow-xs text-xs">
-                        <PackagePlus className="w-3.5 h-3.5 mr-1"/>
+                      <Button
+                        variant="solid"
+                        size="sm"
+                        onClick={() => handleReceivePO(detailPO.id)}
+                        disabled={actionLoading === detailPO.id}
+                      >
+                        <PackagePlus className="w-3.5 h-3.5" />
                         Receive Goods & Restock
                       </Button>
-                    </>)}
+                    </>
+                  )}
                 </div>
               </div>
             </>)}

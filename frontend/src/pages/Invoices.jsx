@@ -438,16 +438,43 @@ export default function InvoicesPage() {
                           {formatDate(inv.due_date)}
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap"><StatusBadge status={inv.status} type="invoice" /></td>
-                        <td className="py-2.5 px-3.5 text-right whitespace-nowrap space-x-1">
-                          <Button size="sm" variant="outline" onClick={() => handleViewInvoice(inv)} className="h-6.5 px-2 text-xs">
-                            <Eye className="w-3 h-3 mr-1"/> View
-                          </Button>
-                          {inv.balance_due > 0 && inv.status !== "VOID" && (<Button size="sm" onClick={() => openPaymentDialog(inv)} className="h-6.5 px-2 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
-                              <CreditCard className="w-3 h-3 mr-1"/> Pay
-                            </Button>)}
-                          {inv.paid_amount === 0 && inv.status !== "VOID" && (<Button size="sm" variant="outline" onClick={() => handleVoidInvoice(inv.id)} disabled={actionLoading === inv.id} className="h-6.5 px-1.5 text-xs border border-slate-300 dark:border-[#3A404F] text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white">
-                              <Ban className="w-3 h-3"/>
-                            </Button>)}
+                        <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <Button
+                              size="xs"
+                              variant="outline"
+                              onClick={() => handleViewInvoice(inv)}
+                              title="View Invoice Details"
+                            >
+                              <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                              View
+                            </Button>
+
+                            {inv.balance_due > 0 && inv.status !== "VOID" && (
+                              <Button
+                                size="xs"
+                                variant="solid"
+                                onClick={() => openPaymentDialog(inv)}
+                                title="Record Remittance Payment"
+                              >
+                                <CreditCard className="w-3.5 h-3.5" />
+                                Pay
+                              </Button>
+                            )}
+
+                            {inv.paid_amount === 0 && inv.status !== "VOID" && (
+                              <Button
+                                size="icon-xs"
+                                variant="ghost"
+                                onClick={() => handleVoidInvoice(inv.id)}
+                                disabled={actionLoading === inv.id}
+                                title="Void Invoice"
+                                className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                              >
+                                <Ban className="w-3.5 h-3.5" />
+                              </Button>
+                            )}
+                          </div>
                         </td>
                       </tr>))}
                   </tbody>
@@ -733,11 +760,11 @@ export default function InvoicesPage() {
                   <Input placeholder="Remittance received in corporate account" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9"/>
                 </div>
 
-                <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-100">
-                  <Button type="button" variant="outline" onClick={() => setPaymentModalOpen(false)} className="border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs h-8 px-3">
+                <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-100 dark:border-[#262A34]">
+                  <Button type="button" variant="outline" size="sm" onClick={() => setPaymentModalOpen(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit" isLoading={recordingPayment} disabled={payAmount <= 0} className="bg-slate-950 hover:bg-black text-white font-medium text-xs h-8 px-4 shadow-xs">
+                  <Button type="submit" variant="solid" size="sm" isLoading={recordingPayment} disabled={payAmount <= 0}>
                     {recordingPayment ? "Recording..." : "Record & Apply Payment"}
                   </Button>
                 </div>
@@ -760,12 +787,12 @@ export default function InvoicesPage() {
                     <StatusBadge status={viewInvoice.status} type="invoice" />
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button size="sm" variant="outline" onClick={() => window.print()} className="text-xs border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50">
+                    <Button size="sm" variant="outline" onClick={() => window.print()}>
                       Print / Export
                     </Button>
                     {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
-                      <Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium shadow-xs">
-                        <CreditCard className="w-3.5 h-3.5 mr-1"/> Record Payment
+                      <Button size="sm" variant="solid" onClick={() => openPaymentDialog(viewInvoice)}>
+                        <CreditCard className="w-3.5 h-3.5"/> Record Payment
                       </Button>
                     )}
                     <button onClick={() => setViewInvoice(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1">
@@ -1047,8 +1074,8 @@ export default function InvoicesPage() {
                         Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
                       </h4>
                       {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
-                        <Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="h-7 text-xs bg-slate-950 dark:bg-slate-100 hover:bg-black dark:hover:bg-white text-white dark:text-slate-900 font-medium">
-                          <CreditCard className="w-3.5 h-3.5 mr-1" /> Add Payment
+                        <Button size="sm" variant="solid" onClick={() => openPaymentDialog(viewInvoice)}>
+                          <CreditCard className="w-3.5 h-3.5" /> Add Payment
                         </Button>
                       )}
                     </div>
@@ -1060,8 +1087,8 @@ export default function InvoicesPage() {
                         description="This invoice is currently pending payment. Record the transaction reference and payment method to reconcile the balance."
                         action={
                           viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" ? (
-                            <Button size="sm" onClick={() => openPaymentDialog(viewInvoice)} className="text-xs mt-2">
-                              <CreditCard className="w-3.5 h-3.5 mr-1" /> Record Payment Remittance
+                            <Button size="sm" variant="solid" onClick={() => openPaymentDialog(viewInvoice)} className="mt-2">
+                              <CreditCard className="w-3.5 h-3.5" /> Record Payment Remittance
                             </Button>
                           ) : null
                         }
