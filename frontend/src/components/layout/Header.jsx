@@ -303,14 +303,17 @@ export const Header = () => {
           </AnimatePresence>
         </div>
 
-        {/* System & User Controls */}
-        <div className="flex items-center gap-3">
+        {/* Center: Global Search Command Bar (Top MNC Standard) */}
+        <div className="flex-1 max-w-xs sm:max-w-md md:max-w-lg mx-2 sm:mx-6 min-w-0">
           <GlobalSearch onOpen={closeAllPopovers} />
+        </div>
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#23262F]"/>
-
+        {/* System & User Controls */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Dark / Light Theme Toggle */}
           <ThemeToggle />
+
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#23262F]"/>
 
           {/* Notifications Bell Dropdown */}
           <div className="relative" ref={notifRef}>

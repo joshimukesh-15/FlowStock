@@ -96,14 +96,23 @@ export const GlobalSearch = ({ onOpen }) => {
       <button
         type="button"
         onClick={openSearch}
-        className="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#181A20] px-3 py-1.5 text-xs text-slate-600 dark:text-[#9BA3AF] transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-950 dark:hover:text-white cursor-pointer"
+        className="w-full flex items-center justify-between gap-2.5 h-8.5 px-3 rounded-xl border border-slate-200/90 dark:border-[#323744] bg-slate-100/70 hover:bg-slate-100 dark:bg-[#181A20] dark:hover:bg-[#20242D] text-xs text-slate-500 dark:text-[#9BA3AF] transition-all cursor-pointer shadow-2xs hover:border-slate-300 dark:hover:border-[#454C5E] group"
         aria-label="Search FlowStock records (Ctrl+K or /)"
       >
-        <Search className="h-3.5 w-3.5 text-slate-400 dark:text-[#7C8189]"/>
-        <span>Search</span>
-        <kbd className="rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] px-1.5 py-0.5 font-mono text-[10px] text-slate-400 dark:text-[#7C8189]">
-          Ctrl K
-        </kbd>
+        <div className="flex items-center gap-2 min-w-0">
+          <Search className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors"/>
+          <span className="truncate text-slate-400 dark:text-[#7C8189] group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors font-medium">
+            Search products, orders, invoices...
+          </span>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] font-mono text-[10px] text-slate-400 dark:text-[#7C8189] shadow-2xs">
+            Ctrl K
+          </kbd>
+          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] font-mono text-[10px] text-slate-400 dark:text-[#7C8189]">
+            /
+          </kbd>
+        </div>
       </button>
 
       <Modal isOpen={isOpen} onClose={close} maxWidth="xl">
