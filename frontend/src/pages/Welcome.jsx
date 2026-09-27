@@ -19,15 +19,6 @@ import { motion } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-function SparklesIcon({ className = "w-3 h-3" }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-      <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
-    </svg>
-  );
-}
-
 /* ── High-Performance Responsive Feature Row ── */
 function FeatureRow({
   tag,
@@ -59,23 +50,23 @@ function FeatureRow({
 
       {/* Text Column */}
       <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200 dark:border-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] text-xs font-mono font-semibold tracking-wider uppercase">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200/80 dark:border-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] text-[11px] font-mono font-medium tracking-tight">
           {tag}
         </div>
 
-        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-tight">
+        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-tight [text-wrap:balance]">
           {title}
         </h3>
 
-        <p className="text-base text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
+        <p className="text-base text-slate-600 dark:text-[#9BA3AF] leading-relaxed [text-wrap:balance]">
           {description}
         </p>
 
         <ul className="space-y-3 pt-2">
           {bullets.map((b, idx) => (
             <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200">
-              <span className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                ✓
+              <span className="w-5 h-5 rounded-md bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200/60 dark:border-[#B6FF2E]/20 text-emerald-600 dark:text-[#B6FF2E] flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5" />
               </span>
               <span>{b}</span>
             </li>
@@ -230,17 +221,17 @@ export default function WelcomePage() {
         {/* Hero Content Header */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
           {/* Status Pill */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-slate-300 dark:border-emerald-400/30 bg-white/60 dark:bg-black/80 text-xs mb-6 shadow-sm dark:shadow-lg">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-slate-300/80 dark:border-emerald-400/25 bg-white/70 dark:bg-[#181A20]/80 backdrop-blur-sm text-xs mb-6 shadow-2xs">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 dark:bg-[#B6FF2E] opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 dark:bg-[#B6FF2E]" />
             </span>
-            <span className="font-mono text-[11px] tracking-wider text-emerald-700 dark:text-[#B6FF2E] font-bold">PRODUCTION CORE v1.1.0</span>
-            <span className="w-px h-3.5 bg-slate-300 dark:bg-white/20" />
-            <span className="text-[11px] text-slate-600 dark:text-slate-300 font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY OS</span>
+            <span className="font-mono text-[11px] tracking-tight text-emerald-700 dark:text-[#B6FF2E] font-semibold">HIGH-THROUGHPUT CORE</span>
+            <span className="w-px h-3 bg-slate-300 dark:bg-[#323744]" />
+            <span className="text-[11px] text-slate-600 dark:text-[#9BA3AF] font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY LEDGER</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold tracking-[-0.03em] leading-[1.08] mb-6 text-slate-950 dark:text-white drop-shadow-sm dark:drop-shadow-md">
+          <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold tracking-[-0.035em] leading-[1.06] mb-6 text-slate-950 dark:text-white [text-wrap:balance]">
             The financial-grade{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-[#B6FF2E] dark:via-[#a3f01b] dark:to-teal-300">
               inventory ledger
@@ -248,8 +239,8 @@ export default function WelcomePage() {
             for high-velocity warehouses
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-200/90 max-w-2xl leading-relaxed mb-10 font-normal dark:drop-shadow-sm">
-            Zero-drift double-entry stock bookkeeping, real-time multi-carrier logistics orchestration, and automated GST tax invoices — engineered for physical supply chains.
+          <p className="text-base sm:text-lg text-slate-600 dark:text-[#CBD5E1] max-w-2xl leading-relaxed mb-10 font-normal [text-wrap:balance]">
+            Zero-drift double-entry stock bookkeeping, real-time multi-carrier logistics orchestration, and automated GST tax invoices, engineered for physical supply chains.
           </p>
 
           {/* CTA Buttons */}
@@ -262,7 +253,7 @@ export default function WelcomePage() {
                 className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
               >
                 <span>Go to Dashboard</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
+                <ArrowRight className="w-4 h-4" />
               </Button>
             ) : (
               <>
@@ -273,13 +264,13 @@ export default function WelcomePage() {
                   className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
                 >
                   <span>Get Started Free</span>
-                  <ArrowRight className="w-4 h-4 ml-1" />
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   onClick={() => scrollToSection("platform")}
-                  className="h-12 px-7 rounded-xl font-semibold text-sm border-slate-200 dark:border-white/25 bg-white dark:bg-white/10 hover:bg-slate-50 dark:hover:bg-white/20 text-slate-800 dark:text-white shadow-sm dark:shadow-none"
+                  className="h-12 px-7 rounded-xl font-medium text-sm"
                 >
                   <span>Explore Platform</span>
                 </Button>
@@ -308,14 +299,11 @@ export default function WelcomePage() {
       {/* 4. PLATFORM FEATURES (FULCRUM ALTERNATING ROWS WITH PARALLAX ZOOM) */}
       <section id="platform" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="max-w-2xl mb-16 text-left">
-          <div className="text-xs font-bold font-mono text-emerald-600 dark:text-[#B6FF2E] uppercase tracking-wider mb-3">
-            The Platform
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-tight mb-4 [text-wrap:balance]">
             Built around how warehouses actually run
           </h2>
-          <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
-            Not a generic inventory spreadsheet with a new coat of paint — FlowStock is built for the floor, from receiving dock to outbound truck.
+          <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] leading-relaxed [text-wrap:balance]">
+            Not a generic inventory spreadsheet with a new coat of paint: FlowStock is built for the floor, from receiving dock to outbound truck.
           </p>
         </div>
 
@@ -370,19 +358,19 @@ export default function WelcomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">99.99%</div>
-              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Inventory & Ledger Accuracy</div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight font-mono tabular-nums">99.98%</div>
+              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Ledger Reconciliation Rate</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-[#B6FF2E] tracking-tight">12ms</div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-[#B6FF2E] tracking-tight font-mono tabular-nums">14ms</div>
               <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Scan Settlement Latency</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">100%</div>
-              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">SKU Match & Verification</div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight font-mono tabular-nums">4.2M+</div>
+              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Stock Movements Verified</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-teal-400 tracking-tight">0.00%</div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-teal-400 tracking-tight font-mono tabular-nums">0.00%</div>
               <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Phantom Stock Drift</div>
             </div>
           </div>
@@ -393,14 +381,10 @@ export default function WelcomePage() {
       <section id="who-we-are" className="py-28 border-t border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] transition-colors relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#23262F] text-[11px] font-mono tracking-wider text-slate-500 dark:text-[#9BA3AF] mb-4">
-              <SparklesIcon className="w-3 h-3 text-emerald-500 dark:text-[#B6FF2E]" />
-              CORE CAPABILITIES
-            </div>
-            <p className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
-              Engineered for high-volume inventory operators and distributed warehouses.
-            </p>
-            <p className="text-sm text-slate-500 dark:text-[#7C8189] mt-4 leading-relaxed max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white [text-wrap:balance]">
+              Engineered for high-volume inventory operators and distributed warehouses
+            </h2>
+            <p className="text-sm text-slate-500 dark:text-[#7C8189] mt-4 leading-relaxed max-w-2xl mx-auto [text-wrap:balance]">
               Traditional inventory systems rely on mutable table counts that lead to desyncs, phantom stock, and manual audit nightmares. FlowStock solves this with an immutable financial-grade ledger.
             </p>
           </div>
@@ -456,7 +440,7 @@ export default function WelcomePage() {
               </div>
               <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#323744] text-[11px] text-slate-500 dark:text-[#9BA3AF] font-mono flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-teal-600 dark:text-[#14B8A6]" />
-                <span>Seamless Order-to-Cash & Automated GST Invoicing</span>
+                <span>Direct Order-to-Cash & Automated GST Invoicing</span>
               </div>
             </div>
           </div>
@@ -467,14 +451,14 @@ export default function WelcomePage() {
       <section id="workflow" className="py-28 border-t border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#14171F] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#23262F] text-[11px] font-mono tracking-wider text-slate-500 dark:text-[#9BA3AF] mb-4">
-              <ArrowRight className="w-3 h-3 text-emerald-500 dark:text-[#B6FF2E]" />
-              OPERATIONAL PIPELINE
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#23262F] text-[11px] font-mono font-medium tracking-tight text-slate-600 dark:text-[#9BA3AF] mb-4 shadow-2xs">
+              <ArrowRight className="w-3 h-3 text-emerald-600 dark:text-[#B6FF2E]" />
+              <span>OPERATIONAL PIPELINE</span>
             </div>
-            <p className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white [text-wrap:balance]">
               From Customer PO to Ledger Settlement
-            </p>
-            <p className="text-sm text-slate-500 dark:text-[#7C8189] mt-3">
+            </h2>
+            <p className="text-sm text-slate-500 dark:text-[#7C8189] mt-3 [text-wrap:balance]">
               How FlowStock automates your entire supply chain without manual intervention or spreadsheets.
             </p>
           </div>
@@ -507,28 +491,30 @@ export default function WelcomePage() {
 
       {/* 8. BOTTOM CALL TO ACTION BAND (FULCRUM-STYLE) */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4 [text-wrap:balance]">
           See your warehouse on one screen
         </h2>
-        <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] max-w-xl mx-auto mb-8 leading-relaxed">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] max-w-xl mx-auto mb-8 leading-relaxed [text-wrap:balance]">
           Experience financial-grade stock accounting and rapid multi-carrier dispatch tailored to your actual operational facilities.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <button
-            type="button"
+          <Button
+            size="lg"
+            variant="primary"
             onClick={() => navigate("/login?mode=signup")}
-            className="h-12 px-8 rounded-xl bg-[#B6FF2E] hover:bg-[#a3f01b] text-[#14171F] font-bold text-sm inline-flex items-center gap-2 transition-all shadow-[0_2px_16px_rgba(182,255,46,0.3)] hover:scale-[1.02] cursor-pointer"
+            className="h-12 px-8 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
           >
-            <span>Start Free Trial</span>
+            <span>Get Started Free</span>
             <ArrowRight className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
             onClick={() => scrollToSection("hero")}
-            className="h-12 px-7 rounded-xl border border-slate-300 dark:border-[#545963] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23262F] text-slate-800 dark:text-white font-medium text-sm transition-all cursor-pointer"
+            className="h-12 px-7 rounded-xl font-medium text-sm"
           >
             <span>Back to Top</span>
-          </button>
+          </Button>
         </div>
       </section>
 
