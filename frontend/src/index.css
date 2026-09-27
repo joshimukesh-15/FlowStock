@@ -29,19 +29,20 @@
     --color-ink-muted: #8a94a6;
     --color-ink-on-spark: #080813;
 
-    /* Accent & Status (Citrus & Frozen) */
-    --color-accent-spark: #E4FD97;
-    --color-accent-hover: #d5f57a;
-    --color-accent-muted: #c3e65c;
+    /* Accent & Status (Frozen Main Accent & Citrus Spark) */
+    --color-accent-spark: #A0BDDB;
+    --color-accent-hover: #b4cce3;
+    --color-accent-muted: #8eaecf;
     --color-accent-frozen: #A0BDDB;
-    --color-status-success: #E4FD97;
+    --color-status-success: #A0BDDB;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
     --color-status-info: #A0BDDB;
 
     /* Brand Tokens */
-    --brand-citrus: #E4FD97;
+    --brand-primary: #A0BDDB;
     --brand-frozen: #A0BDDB;
+    --brand-citrus: #E4FD97;
     --brand-black-iris: #080813;
   }
 
@@ -60,19 +61,20 @@
     --color-ink-muted: #7e889b;
     --color-ink-on-spark: #080813;
 
-    /* Accent & Status (Citrus & Frozen) */
-    --color-accent-spark: #E4FD97;
-    --color-accent-hover: #d5f57a;
-    --color-accent-muted: #c3e65c;
+    /* Accent & Status (Frozen Main Accent & Citrus Spark) */
+    --color-accent-spark: #A0BDDB;
+    --color-accent-hover: #b4cce3;
+    --color-accent-muted: #8eaecf;
     --color-accent-frozen: #A0BDDB;
-    --color-status-success: #E4FD97;
+    --color-status-success: #A0BDDB;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
     --color-status-info: #A0BDDB;
 
     /* Brand Tokens */
-    --brand-citrus: #E4FD97;
+    --brand-primary: #A0BDDB;
     --brand-frozen: #A0BDDB;
+    --brand-citrus: #E4FD97;
     --brand-black-iris: #080813;
   }
 
@@ -211,7 +213,7 @@ html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hove
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:first-child {
-  box-shadow: inset 3px 0 0 0 #B6FF2E;
+  box-shadow: inset 3px 0 0 0 #A0BDDB;
 }
 
 /* Graphite & Lime Spark Surface Mappings in Dark Mode */

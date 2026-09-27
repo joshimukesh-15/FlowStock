@@ -50,7 +50,7 @@ function FeatureRow({
 
       {/* Text Column */}
       <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-lime-50 dark:bg-[#E4FD97]/10 border border-lime-200/80 dark:border-[#E4FD97]/25 text-lime-800 dark:text-[#E4FD97] text-[11px] font-mono font-medium tracking-tight">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-sky-50 dark:bg-[#A0BDDB]/15 border border-sky-200/80 dark:border-[#A0BDDB]/30 text-sky-800 dark:text-[#A0BDDB] text-[11px] font-mono font-medium tracking-tight">
           {tag}
         </div>
 
@@ -65,7 +65,7 @@ function FeatureRow({
         <ul className="space-y-3 pt-2">
           {bullets.map((b, idx) => (
             <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-[#f0f3f8]">
-              <span className="w-5 h-5 rounded-md bg-lime-50 dark:bg-[#E4FD97]/10 border border-lime-200/60 dark:border-[#E4FD97]/25 text-lime-700 dark:text-[#E4FD97] flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
+              <span className="w-5 h-5 rounded-md bg-sky-50 dark:bg-[#A0BDDB]/15 border border-sky-200/60 dark:border-[#A0BDDB]/30 text-sky-700 dark:text-[#A0BDDB] flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
                 <Check className="w-3.5 h-3.5" />
               </span>
               <span>{b}</span>
@@ -93,26 +93,26 @@ export default function WelcomePage() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#f6f8fb] dark:bg-[#080813] text-[#080813] dark:text-[#f0f3f8] font-sans selection:bg-[#E4FD97] selection:text-[#080813] relative transition-colors">
+    <div className="min-h-[100dvh] bg-[#f6f8fb] dark:bg-[#080813] text-[#080813] dark:text-[#f0f3f8] font-sans selection:bg-[#A0BDDB] selection:text-[#080813] relative transition-colors">
       
       {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <div 
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[450px]" 
           style={{
-            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(228,253,151,0.09), transparent 70%)',
+            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(160,189,219,0.14), transparent 70%)',
           }} 
         />
         <div 
           className="absolute top-[35%] right-0 w-[500px] h-[500px]" 
           style={{
-            background: 'radial-gradient(circle at 100% 50%, rgba(160,189,219,0.07), transparent 70%)',
+            background: 'radial-gradient(circle at 100% 50%, rgba(160,189,219,0.08), transparent 70%)',
           }} 
         />
         <div 
           className="absolute top-[65%] left-0 w-[500px] h-[500px]" 
           style={{
-            background: 'radial-gradient(circle at 0% 50%, rgba(228,253,151,0.05), transparent 70%)',
+            background: 'radial-gradient(circle at 0% 50%, rgba(160,189,219,0.06), transparent 70%)',
           }} 
         />
       </div>
@@ -213,7 +213,7 @@ export default function WelcomePage() {
           <div
             className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] pointer-events-none opacity-80"
             style={{
-              background: 'radial-gradient(ellipse 60% 45% at 50% 25%, rgba(182,255,46,0.15), rgba(16,185,129,0.08), transparent 70%)',
+              background: 'radial-gradient(ellipse 60% 45% at 50% 25%, rgba(160,189,219,0.18), rgba(160,189,219,0.06), transparent 70%)',
             }}
           />
         </div>
@@ -221,19 +221,19 @@ export default function WelcomePage() {
         {/* Hero Content Header */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
           {/* Status Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-slate-300/80 dark:border-[#A0BDDB]/25 bg-white/70 dark:bg-[#121224]/80 backdrop-blur-sm text-xs mb-6 shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-slate-300/80 dark:border-[#A0BDDB]/30 bg-white/70 dark:bg-[#121224]/80 backdrop-blur-sm text-xs mb-6 shadow-2xs">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E4FD97] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E4FD97]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#A0BDDB] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#A0BDDB]" />
             </span>
-            <span className="font-mono text-[11px] tracking-tight text-lime-700 dark:text-[#E4FD97] font-semibold">HIGH-THROUGHPUT CORE</span>
+            <span className="font-mono text-[11px] tracking-tight text-sky-800 dark:text-[#A0BDDB] font-semibold">HIGH-THROUGHPUT CORE</span>
             <span className="w-px h-3 bg-slate-300 dark:bg-[#202138]" />
-            <span className="text-[11px] text-slate-600 dark:text-[#A0BDDB] font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY LEDGER</span>
+            <span className="text-[11px] text-slate-600 dark:text-[#c2cbda] font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY LEDGER</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold tracking-[-0.035em] leading-[1.06] mb-6 text-slate-950 dark:text-white [text-wrap:balance]">
             The financial-grade{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-600 via-emerald-500 to-sky-500 dark:from-[#E4FD97] dark:via-[#d5f57a] dark:to-[#A0BDDB]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-blue-500 to-indigo-500 dark:from-white dark:via-[#d8e6f3] dark:to-[#A0BDDB]">
               inventory ledger
             </span>{" "}
             for high-velocity warehouses
@@ -250,7 +250,7 @@ export default function WelcomePage() {
                 size="lg"
                 variant="primary"
                 onClick={() => navigate("/dashboard")}
-                className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_20px_rgba(228,253,151,0.35)]"
+                className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_20px_rgba(160,189,219,0.35)]"
               >
                 <span>Go to Dashboard</span>
                 <ArrowRight className="w-4 h-4" />
@@ -261,7 +261,7 @@ export default function WelcomePage() {
                   size="lg"
                   variant="primary"
                   onClick={() => navigate("/login?mode=signup")}
-                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_20px_rgba(228,253,151,0.35)]"
+                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_20px_rgba(160,189,219,0.35)]"
                 >
                   <span>Get Started Free</span>
                   <ArrowRight className="w-4 h-4" />
@@ -287,11 +287,11 @@ export default function WelcomePage() {
             Integrated Logistics Networks & Multi-Node Carrier Mesh
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-14 font-mono font-bold text-sm tracking-wider text-slate-600 dark:text-slate-300 opacity-75">
-            <span className="hover:text-slate-950 dark:hover:text-[#E4FD97] transition-colors">BLUE DART</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#E4FD97] transition-colors">DELHIVERY</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#E4FD97] transition-colors">DTDC</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#E4FD97] transition-colors">FEDEX</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#E4FD97] transition-colors">SHADOWFAX</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#A0BDDB] transition-colors">BLUE DART</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#A0BDDB] transition-colors">DELHIVERY</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#A0BDDB] transition-colors">DTDC</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#A0BDDB] transition-colors">FEDEX</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#A0BDDB] transition-colors">SHADOWFAX</span>
           </div>
         </div>
       </section>
@@ -362,7 +362,7 @@ export default function WelcomePage() {
               <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Ledger Reconciliation Rate</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-[#E4FD97] tracking-tight font-mono tabular-nums">14ms</div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-[#A0BDDB] tracking-tight font-mono tabular-nums">14ms</div>
               <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Scan Settlement Latency</div>
             </div>
             <div>
@@ -392,7 +392,7 @@ export default function WelcomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="capabilities">
             {/* Card 1 */}
             <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#202138] bg-slate-50/50 hover:bg-white dark:bg-[#121224]/70 dark:hover:bg-[#181832] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#E4FD97] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500 dark:via-[#A0BDDB] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div>
                 <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#121224] border border-slate-200 dark:border-[#202138] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
                   <Boxes className="w-5 h-5 text-slate-800 dark:text-white" />
@@ -403,14 +403,14 @@ export default function WelcomePage() {
                 </p>
               </div>
               <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#202138] text-[11px] text-slate-500 dark:text-[#A0BDDB] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#E4FD97]" />
+                <Check className="w-3.5 h-3.5 text-[#A0BDDB]" />
                 <span>Mathematical Consistency & Zero Race Conditions</span>
               </div>
             </div>
 
             {/* Card 2 */}
             <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#202138] bg-slate-50/50 hover:bg-white dark:bg-[#121224]/70 dark:hover:bg-[#181832] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#E4FD97] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500 dark:via-[#A0BDDB] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div>
                 <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#121224] border border-slate-200 dark:border-[#202138] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
                   <Truck className="w-5 h-5 text-slate-800 dark:text-white" />
@@ -421,14 +421,14 @@ export default function WelcomePage() {
                 </p>
               </div>
               <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#202138] text-[11px] text-slate-500 dark:text-[#A0BDDB] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#E4FD97]" />
+                <Check className="w-3.5 h-3.5 text-[#A0BDDB]" />
                 <span>Automated Manifests & Multi-Warehouse Routing</span>
               </div>
             </div>
 
             {/* Card 3 */}
             <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#202138] bg-slate-50/50 hover:bg-white dark:bg-[#121224]/70 dark:hover:bg-[#181832] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#E4FD97] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500 dark:via-[#A0BDDB] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div>
                 <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#121224] border border-slate-200 dark:border-[#202138] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
                   <ReceiptText className="w-5 h-5 text-slate-800 dark:text-white" />
@@ -439,7 +439,7 @@ export default function WelcomePage() {
                 </p>
               </div>
               <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#202138] text-[11px] text-slate-500 dark:text-[#A0BDDB] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-[#E4FD97]" />
+                <Check className="w-3.5 h-3.5 text-[#A0BDDB]" />
                 <span>Direct Order-to-Cash & Automated GST Invoicing</span>
               </div>
             </div>
@@ -452,7 +452,7 @@ export default function WelcomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-slate-200/90 dark:border-[#202138] bg-white dark:bg-[#121224] text-[11px] font-mono font-medium tracking-tight text-slate-600 dark:text-[#A0BDDB] mb-4 shadow-2xs">
-              <ArrowRight className="w-3 h-3 text-[#E4FD97]" />
+              <ArrowRight className="w-3 h-3 text-[#A0BDDB]" />
               <span>OPERATIONAL PIPELINE</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white [text-wrap:balance]">
@@ -465,7 +465,7 @@ export default function WelcomePage() {
 
           <div className="relative">
             {/* Connector Line (hidden on mobile) */}
-            <div className="hidden lg:block absolute top-8 left-[calc(12.5%+1rem)] right-[calc(12.5%+1rem)] h-px bg-gradient-to-r from-emerald-500/40 via-teal-500/30 to-emerald-500/40 dark:from-[#E4FD97]/30 dark:via-[#A0BDDB]/20 dark:to-[#E4FD97]/30" />
+            <div className="hidden lg:block absolute top-8 left-[calc(12.5%+1rem)] right-[calc(12.5%+1rem)] h-px bg-gradient-to-r from-sky-500/40 via-blue-500/20 to-sky-500/40 dark:from-[#A0BDDB]/40 dark:via-[#A0BDDB]/15 dark:to-[#A0BDDB]/40" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
@@ -475,10 +475,10 @@ export default function WelcomePage() {
                 { step: "04", label: "Settlement", title: "Invoice & Ledger Post", desc: "GST invoices issued, revenue velocity calculated, and ledger movements finalized with full audit integrity." },
               ].map((s, i) => (
                 <div key={i} className="group relative p-5 rounded-xl border border-slate-200 dark:border-[#202138] bg-white dark:bg-[#121224]/80 dark:hover:bg-[#181832] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#E4FD97] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500 dark:via-[#A0BDDB] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="flex items-center gap-2.5 mb-3">
-                    <span className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-[#E4FD97]/10 border border-emerald-200 dark:border-[#E4FD97]/25 flex items-center justify-center text-[11px] font-mono font-bold text-emerald-700 dark:text-[#E4FD97]">{s.step}</span>
-                    <span className="text-[11px] font-mono font-semibold text-emerald-700 dark:text-[#E4FD97] uppercase tracking-wider">{s.label}</span>
+                    <span className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-[#A0BDDB]/15 border border-sky-200 dark:border-[#A0BDDB]/30 flex items-center justify-center text-[11px] font-mono font-bold text-sky-700 dark:text-[#A0BDDB]">{s.step}</span>
+                    <span className="text-[11px] font-mono font-semibold text-sky-700 dark:text-[#A0BDDB] uppercase tracking-wider">{s.label}</span>
                   </div>
                   <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-1.5">{s.title}</h4>
                   <p className="text-xs text-slate-500 dark:text-[#9BA3AF] leading-relaxed">{s.desc}</p>
@@ -502,7 +502,7 @@ export default function WelcomePage() {
             size="lg"
             variant="primary"
             onClick={() => navigate("/login?mode=signup")}
-            className="h-12 px-8 rounded-xl font-bold text-sm shadow-[0_2px_20px_rgba(228,253,151,0.35)]"
+            className="h-12 px-8 rounded-xl font-bold text-sm shadow-[0_2px_20px_rgba(160,189,219,0.35)]"
           >
             <span>Get Started Free</span>
             <ArrowRight className="w-4 h-4" />
@@ -539,7 +539,7 @@ export default function WelcomePage() {
             <button
               type="button"
               onClick={() => setTermsOpen(true)}
-              className="hover:text-emerald-700 dark:hover:text-[#E4FD97] transition-colors cursor-pointer"
+              className="hover:text-emerald-700 dark:hover:text-[#A0BDDB] transition-colors cursor-pointer"
             >
               Terms & Conditions
             </button>
@@ -547,7 +547,7 @@ export default function WelcomePage() {
             <button
               type="button"
               onClick={() => setPrivacyOpen(true)}
-              className="hover:text-emerald-700 dark:hover:text-[#E4FD97] transition-colors cursor-pointer"
+              className="hover:text-emerald-700 dark:hover:text-[#A0BDDB] transition-colors cursor-pointer"
             >
               Privacy Policy
             </button>
@@ -568,7 +568,7 @@ export default function WelcomePage() {
           {/* Header */}
           <div className="p-6 border-b border-slate-200 dark:border-[#202138] flex items-center justify-between bg-slate-50 dark:bg-[#080813]/60">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-white dark:bg-[#181832] border border-slate-200 dark:border-[#202138] flex items-center justify-center text-emerald-700 dark:text-[#E4FD97] shadow-2xs">
+              <div className="w-9 h-9 rounded-xl bg-white dark:bg-[#181832] border border-slate-200 dark:border-[#202138] flex items-center justify-center text-sky-700 dark:text-[#A0BDDB] shadow-2xs">
                 <FileText className="w-5 h-5" />
               </div>
               <div>
@@ -589,7 +589,7 @@ export default function WelcomePage() {
           <div className="p-6 overflow-y-auto space-y-5 text-xs text-slate-600 dark:text-[#9BA3AF] leading-relaxed font-sans">
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-[11px] text-emerald-700 dark:text-[#E4FD97]">01.</span> Agreement & Platform Scope
+                <span className="font-mono text-[11px] text-sky-700 dark:text-[#A0BDDB]">01.</span> Agreement & Platform Scope
               </h4>
               <p>
                 By provisioning or accessing an organization workspace on the FlowStock platform, you agree to be bound by this Master Services Agreement. FlowStock provides multi-tenant warehouse management, stock reservation ledgers, and logistics dispatch orchestration APIs for commercial and enterprise entities.
@@ -598,7 +598,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-emerald-700 dark:text-[#E4FD97]">02.</span> Immutable Double-Entry Ledger System
+                <span className="font-mono text-sky-700 dark:text-[#A0BDDB]">02.</span> Immutable Double-Entry Ledger System
               </h4>
               <p>
                 FlowStock operates on an append-only double-entry bookkeeping architecture. Every stock receipt, customer order allocation, inter-facility transfer, and carrier dispatch creates an immutable transaction entry. Entries cannot be retrospectively deleted or mutated; corrections must be posted as offsetting adjustment transactions to preserve audit integrity.
@@ -607,7 +607,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-emerald-700 dark:text-[#E4FD97]">03.</span> Multi-Tenant Data Isolation & RLS Security
+                <span className="font-mono text-sky-700 dark:text-[#A0BDDB]">03.</span> Multi-Tenant Data Isolation & RLS Security
               </h4>
               <p>
                 All workspace data is strictly segregated using PostgreSQL Row-Level Security (RLS) policies tied to unique tenant organization UUIDs. Under no circumstances can operators from one tenant access, inspect, or query database rows belonging to another organization.
@@ -616,7 +616,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-emerald-700 dark:text-[#E4FD97]">04.</span> Carrier Dispatches & Third-Party Integrations
+                <span className="font-mono text-sky-700 dark:text-[#A0BDDB]">04.</span> Carrier Dispatches & Third-Party Integrations
               </h4>
               <p>
                 FlowStock facilitates automated dispatch tracking and Air Waybill (AWB) generation with third-party logistics carriers (including Blue Dart, Delhivery, and DTDC). Transit timelines and delivery checkpoint telemetry are synchronized directly from carrier APIs and represent real-time custody handoffs.
@@ -625,7 +625,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-emerald-700 dark:text-[#E4FD97]">05.</span> Tax Compliance & Automated GST Invoicing
+                <span className="font-mono text-sky-700 dark:text-[#A0BDDB]">05.</span> Tax Compliance & Automated GST Invoicing
               </h4>
               <p>
                 Invoices generated via the platform are structured according to Indian Goods and Services Tax (GST) statutes or regional value-added tax rules configured by your workspace administrators. Users are responsible for verifying accurate tax IDs and rate schedules.
@@ -634,7 +634,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-emerald-700 dark:text-[#E4FD97]">06.</span> Service Level Agreement (SLA) & Data Backups
+                <span className="font-mono text-sky-700 dark:text-[#A0BDDB]">06.</span> Service Level Agreement (SLA) & Data Backups
               </h4>
               <p>
                 FlowStock targets a 99.95% monthly uptime SLA for core ledger calculation endpoints and WebSocket telemetry channels. Automated encrypted snapshots are executed daily with point-in-time recovery capabilities.
@@ -643,7 +643,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-emerald-700 dark:text-[#E4FD97]">07.</span> Data Portability & Termination
+                <span className="font-mono text-sky-700 dark:text-[#A0BDDB]">07.</span> Data Portability & Termination
               </h4>
               <p>
                 You retain 100% ownership of your inventory data, SKU catalogs, and financial ledgers. Upon workspace termination, you have the right to execute a full export of all records in standard CSV and JSON formats prior to secure cryptographic sanitization.
@@ -689,7 +689,7 @@ export default function WelcomePage() {
               type="button"
               whileTap={{ scale: 0.90 }}
               onClick={() => setPrivacyOpen(false)}
-              className="w-8 h-8 rounded-lg border border-slate-200 dark:border-[#202138] hover:border-slate-300 dark:hover:border-[#A0BDDB] bg-white dark:bg-[#121224] flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#A0BDDB] dark:hover:text-white transition-colors cursor-pointer shadow-2xs outline-none focus-visible:ring-2 focus-visible:ring-[#E4FD97]"
+              className="w-8 h-8 rounded-lg border border-slate-200 dark:border-[#202138] hover:border-slate-300 dark:hover:border-[#A0BDDB] bg-white dark:bg-[#121224] flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#A0BDDB] dark:hover:text-white transition-colors cursor-pointer shadow-2xs outline-none focus-visible:ring-2 focus-visible:ring-[#A0BDDB]"
               aria-label="Close modal"
             >
               <X className="w-4 h-4" />

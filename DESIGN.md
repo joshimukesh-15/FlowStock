@@ -8,17 +8,17 @@ palette:
   frozen: "#A0BDDB"
 
 colors:
-  # Primary Brand Accent (Citrus)
-  primary: "#E4FD97"
-  primary-hover: "#d5f57a"
-  primary-active: "#c3e65c"
+  # Primary Brand Accent (Frozen)
+  primary: "#A0BDDB"
+  primary-hover: "#b4cce3"
+  primary-active: "#8eaecf"
   on-primary: "#080813"
 
-  # Secondary Accent (Frozen)
-  secondary: "#A0BDDB"
-  secondary-hover: "#b4cce3"
-  secondary-muted: "rgba(160, 189, 219, 0.12)"
-  secondary-border: "rgba(160, 189, 219, 0.25)"
+  # Secondary Spark Accent (Citrus)
+  secondary: "#E4FD97"
+  secondary-hover: "#d5f57a"
+  secondary-muted: "rgba(228, 253, 151, 0.12)"
+  secondary-border: "rgba(228, 253, 151, 0.28)"
 
   # Dark Mode Surfaces (Black Iris Void)
   canvas: "#080813"

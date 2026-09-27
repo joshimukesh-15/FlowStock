@@ -181,7 +181,7 @@ export default function ProductsPage() {
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium shrink-0">Category:</span>
-              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-slate-900 dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#B6FF2E] focus:outline-none">
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-slate-900 dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#A0BDDB] focus:outline-none">
                 <option value="">All Categories ({safeCategories.length})</option>
                 {safeCategories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
@@ -240,7 +240,7 @@ export default function ProductsPage() {
                           ₹{p.cost_price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </td>
                         <td className="py-2.5 px-3.5 text-right font-mono">
-                          <span className={Number(margin) >= 30 ? "text-emerald-600 dark:text-[#B6FF2E] font-semibold" : "text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1]"}>
+                          <span className={Number(margin) >= 30 ? "text-emerald-600 dark:text-[#A0BDDB] font-semibold" : "text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1]"}>
                             {margin}%
                           </span>
                         </td>
@@ -252,7 +252,7 @@ export default function ProductsPage() {
                             type="button"
                             whileTap={{ scale: 0.90 }}
                             onClick={() => handleOpenEdit(p)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 rounded-md text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#B6FF2E]"
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 rounded-md text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#A0BDDB]"
                             title="Edit Product"
                             aria-label={`Edit ${p.name}`}
                           >

@@ -85,13 +85,13 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
       {/* Top Meta Bar */}
       <CardHeader className="py-2.5 px-4 border-b border-slate-100 dark:border-[#262A34] bg-slate-50/60 dark:bg-[#14171F]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-[#B6FF2E] border border-emerald-500/20">
+          <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-600 dark:text-[#A0BDDB] border border-sky-500/20">
             <Zap className="w-3.5 h-3.5"/>
           </div>
           <div>
             <CardTitle className="text-[13px] font-semibold text-slate-900 dark:text-[#F4F5F7] tracking-tight flex items-center gap-2">
               Financial velocity & cash realization
-              <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-[#B6FF2E]/15 text-slate-900 dark:text-[#B6FF2E] border border-[#B6FF2E]/30">
+              <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-[#A0BDDB]/15 text-slate-900 dark:text-[#A0BDDB] border border-[#A0BDDB]/30">
                 Live
               </span>
             </CardTitle>
@@ -133,7 +133,7 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
               <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF]">
                 Cash realized
               </span>
-              <span className="text-[10px] font-mono font-medium text-emerald-700 dark:text-[#B6FF2E] bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200 dark:border-[#B6FF2E]/25 px-1.5 py-0.5 rounded">
+              <span className="text-[10px] font-mono font-medium text-sky-700 dark:text-[#A0BDDB] bg-sky-50 dark:bg-[#A0BDDB]/15 border border-sky-200 dark:border-[#A0BDDB]/30 px-1.5 py-0.5 rounded">
                 {metrics.efficiency}% collected
               </span>
             </div>
@@ -142,7 +142,7 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
             </div>
             {/* Minimalist Progress Line */}
             <div className="w-full bg-slate-100 dark:bg-[#23262F] h-1.5 rounded-full overflow-hidden">
-              <div className="bg-emerald-500 dark:bg-[#B6FF2E] h-full rounded-full transition-all duration-500" style={{ width: `${metrics.efficiency}%` }}/>
+              <div className="bg-sky-500 dark:bg-[#A0BDDB] h-full rounded-full transition-all duration-500" style={{ width: `${metrics.efficiency}%` }}/>
             </div>
           </div>
 
@@ -184,13 +184,13 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
             return (<div key={bar.shortDay} onMouseEnter={() => setHoveredBarIndex(idx)} onMouseLeave={() => setHoveredBarIndex(null)} className="relative flex-1 flex flex-col items-center justify-end h-full group cursor-pointer">
                     {/* The Slender Micro Bar */}
                     <motion.div initial={prefersReducedMotion ? false : { height: 0 }} animate={{ height: `${bar.heightPct}%` }} transition={{ duration: 0.5, delay: idx * 0.04 }} className={`w-full max-w-[14px] rounded-t-xs transition-colors duration-150 ${isHovered
-                    ? "bg-[#B6FF2E] shadow-[0_0_8px_rgba(182,255,46,0.6)]"
+                    ? "bg-[#A0BDDB] shadow-[0_0_8px_rgba(160,189,219,0.6)]"
                     : bar.isToday
-                        ? "bg-emerald-500 dark:bg-[#B6FF2E]"
+                        ? "bg-sky-500 dark:bg-[#A0BDDB]"
                         : "bg-slate-200 dark:bg-[#2B303C] hover:bg-slate-300 dark:hover:bg-[#3A404F]"}`}/>
 
                     {/* Micro Day Label */}
-                    <span className={`text-[9px] font-mono mt-1 transition-colors ${isHovered ? "font-bold text-slate-900 dark:text-[#B6FF2E]" : "text-slate-400 dark:text-[#7C8189]"}`}>
+                    <span className={`text-[9px] font-mono mt-1 transition-colors ${isHovered ? "font-bold text-slate-900 dark:text-[#A0BDDB]" : "text-slate-400 dark:text-[#7C8189]"}`}>
                       {bar.shortDay[0]}
                     </span>
                   </div>);

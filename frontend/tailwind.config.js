@@ -12,6 +12,15 @@ export default {
     },
     extend: {
       colors: {
+        frozen: {
+          DEFAULT: '#A0BDDB',
+          hover: '#b4cce3',
+          active: '#8eaecf',
+          muted: 'rgba(160, 189, 219, 0.15)',
+          border: 'rgba(160, 189, 219, 0.30)',
+          deep: '#789ec3',
+          text: '#080813',
+        },
         citrus: {
           DEFAULT: '#E4FD97',
           hover: '#d5f57a',
@@ -19,13 +28,6 @@ export default {
           muted: 'rgba(228, 253, 151, 0.12)',
           border: 'rgba(228, 253, 151, 0.28)',
           text: '#080813',
-        },
-        frozen: {
-          DEFAULT: '#A0BDDB',
-          hover: '#b4cce3',
-          muted: 'rgba(160, 189, 219, 0.12)',
-          border: 'rgba(160, 189, 219, 0.25)',
-          deep: '#789ec3',
         },
         iris: {
           DEFAULT: '#080813',
@@ -38,10 +40,10 @@ export default {
           hairline: '#202138',
         },
         lime: {
-          spark: '#E4FD97',
-          dim: '#d5f57a',
-          tint: '#f4fee0',
-          hover: '#d5f57a',
+          spark: '#A0BDDB',
+          dim: '#b4cce3',
+          tint: '#edf4fb',
+          hover: '#b4cce3',
         },
         graphite: '#121224',
         steel: '#181832',
@@ -52,7 +54,7 @@ export default {
         ash: '#7e889b',
         fog: '#c2cbda',
         semantic: {
-          success: '#E4FD97',
+          success: '#A0BDDB',
           warning: '#F5A623',
           error: '#EF4444',
           info: '#A0BDDB',
@@ -81,7 +83,8 @@ export default {
         'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
         'subtle': '0 4px 12px -2px rgba(0, 0, 0, 0.05)',
         'citrus-glow': '0 2px 20px -2px rgba(228, 253, 151, 0.35)',
-        'frozen-glow': '0 2px 20px -2px rgba(160, 189, 219, 0.25)',
+        'frozen-glow': '0 2px 20px -2px rgba(160, 189, 219, 0.35)',
+        'glow': '0 2px 20px -2px rgba(160, 189, 219, 0.35)',
       },
     },
   },

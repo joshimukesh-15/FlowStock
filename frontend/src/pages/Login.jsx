@@ -83,7 +83,7 @@ export default function LoginPage() {
   const inputBase =
     "w-full rounded-lg border bg-white dark:bg-[#080813] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
   const inputColors =
-    "border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#9BA3AF] focus:border-[#E4FD97] dark:focus:border-[#E4FD97] focus:ring-[#E4FD97]/20 dark:focus:ring-[#E4FD97]/15";
+    "border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#9BA3AF] focus:border-[#A0BDDB] dark:focus:border-[#A0BDDB] focus:ring-[#A0BDDB]/20 dark:focus:ring-[#A0BDDB]/15";
   const inputClass = `${inputBase} ${inputColors}`;
 
   const labelClass =
@@ -99,7 +99,7 @@ export default function LoginPage() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(228,253,151,0.08), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(160,189,219,0.12), transparent 60%)",
         }}
       />
       <div
@@ -325,7 +325,7 @@ export default function LoginPage() {
                   {orgSlug && (
                     <p className="text-[10px] text-slate-400 dark:text-[#9BA3AF] font-mono -mt-1 pl-0.5">
                       flowstock.app/
-                      <span className="text-emerald-600 dark:text-[#E4FD97]">
+                      <span className="text-sky-600 dark:text-[#A0BDDB]">
                         {orgSlug}
                       </span>
                     </p>
@@ -339,7 +339,7 @@ export default function LoginPage() {
                       <select
                         value={currency}
                         onChange={(e) => setCurrency(e.target.value)}
-                        className={`${inputBase} border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white focus:border-[#E4FD97] dark:focus:border-[#E4FD97] focus:ring-[#E4FD97]/20 dark:focus:ring-[#E4FD97]/15 appearance-none cursor-pointer`}
+                        className={`${inputBase} border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white focus:border-[#A0BDDB] dark:focus:border-[#A0BDDB] focus:ring-[#A0BDDB]/20 dark:focus:ring-[#A0BDDB]/15 appearance-none cursor-pointer`}
                       >
                         <option value="INR">INR — Indian Rupee</option>
                         <option value="USD">USD — US Dollar</option>
@@ -393,7 +393,7 @@ export default function LoginPage() {
                     setAutoFilled(true);
                     setTimeout(() => setAutoFilled(false), 1400);
                   }}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#E4FD97] hover:bg-[#d5f57a] text-[#080813] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(228,253,151,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#E4FD97]"
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#A0BDDB] hover:bg-[#b4cce3] text-[#080813] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(160,189,219,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#A0BDDB]"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     {autoFilled ? (
@@ -435,7 +435,7 @@ export default function LoginPage() {
                 onClick={() =>
                   switchMode(mode === "login" ? "signup" : "login")
                 }
-                className="text-emerald-600 dark:text-[#E4FD97] font-semibold hover:underline cursor-pointer"
+                className="text-sky-600 dark:text-[#A0BDDB] font-semibold hover:underline cursor-pointer"
               >
                 {mode === "login" ? "Sign up" : "Log in"}
               </button>
@@ -453,7 +453,7 @@ export default function LoginPage() {
         <div className="mt-3 text-center">
           <Link
             to="/"
-            className="text-[11px] text-slate-400 dark:text-[#A0BDDB]/70 hover:text-slate-600 dark:hover:text-[#E4FD97] transition-colors"
+            className="text-[11px] text-slate-400 dark:text-[#A0BDDB]/70 hover:text-slate-600 dark:hover:text-[#A0BDDB] transition-colors"
           >
             ← Back to Home
           </Link>

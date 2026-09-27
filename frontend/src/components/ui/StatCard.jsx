@@ -32,7 +32,7 @@ export function StatCard({
           <div className="flex items-center gap-1.5 shrink-0">
             {badge}
             {Icon && (
-              <div className="w-6 h-6 rounded-md bg-slate-100 dark:bg-[#23262F] border border-slate-200/50 dark:border-[#323744] flex items-center justify-center text-slate-600 dark:text-[#9BA3AF] group-hover:text-slate-900 dark:group-hover:text-[#B6FF2E] transition-colors">
+              <div className="w-6 h-6 rounded-md bg-slate-100 dark:bg-[#23262F] border border-slate-200/50 dark:border-[#323744] flex items-center justify-center text-slate-600 dark:text-[#9BA3AF] group-hover:text-slate-900 dark:group-hover:text-[#A0BDDB] transition-colors">
                 <Icon className="w-3.5 h-3.5" />
               </div>
             )}
@@ -80,7 +80,7 @@ export function StatCard({
       {progress !== undefined && (
         <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-100 dark:bg-[#23262F] overflow-hidden">
           <div
-            className="h-full bg-[#B6FF2E] transition-all duration-500 ease-out"
+            className="h-full bg-[#A0BDDB] transition-all duration-500 ease-out"
             style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
           />
         </div>
