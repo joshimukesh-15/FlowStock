@@ -37,7 +37,7 @@ function FeatureRow({
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
-        <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#14171F] relative aspect-[16/10]">
+        <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-[#3d3a39] bg-white dark:bg-[#101010] relative aspect-[16/10]">
           <img
             src={imgSrc}
             alt={imgAlt}
@@ -50,7 +50,7 @@ function FeatureRow({
 
       {/* Text Column */}
       <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200/80 dark:border-[#B6FF2E]/20 text-emerald-700 dark:text-[#B6FF2E] text-[11px] font-mono font-medium tracking-tight">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-50 dark:bg-[#00d992]/10 border border-emerald-200/80 dark:border-[#00d992]/25 text-emerald-700 dark:text-[#00d992] text-[11px] font-mono font-medium tracking-tight">
           {tag}
         </div>
 
@@ -58,14 +58,14 @@ function FeatureRow({
           {title}
         </h3>
 
-        <p className="text-base text-slate-600 dark:text-[#9BA3AF] leading-relaxed [text-wrap:balance]">
+        <p className="text-base text-slate-600 dark:text-[#bdbdbd] leading-relaxed [text-wrap:balance]">
           {description}
         </p>
 
         <ul className="space-y-3 pt-2">
           {bullets.map((b, idx) => (
-            <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200">
-              <span className="w-5 h-5 rounded-md bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200/60 dark:border-[#B6FF2E]/20 text-emerald-600 dark:text-[#B6FF2E] flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
+            <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-[#f2f2f2]">
+              <span className="w-5 h-5 rounded-md bg-emerald-50 dark:bg-[#00d992]/10 border border-emerald-200/60 dark:border-[#00d992]/25 text-emerald-600 dark:text-[#00d992] flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
                 <Check className="w-3.5 h-3.5" />
               </span>
               <span>{b}</span>
@@ -93,20 +93,20 @@ export default function WelcomePage() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-slate-50 dark:bg-[#14171F] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#B6FF2E] selection:text-[#14171F] relative transition-colors">
+    <div className="min-h-[100dvh] bg-slate-50 dark:bg-[#101010] text-slate-900 dark:text-[#f2f2f2] font-sans selection:bg-[#00d992] selection:text-[#101010] relative transition-colors">
       
-      {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS (Zero scroll repaint lag) */}
+      {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <div 
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[450px]" 
           style={{
-            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(182,255,46,0.06), transparent 70%)',
+            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,217,146,0.08), transparent 70%)',
           }} 
         />
         <div 
           className="absolute top-[35%] right-0 w-[500px] h-[500px]" 
           style={{
-            background: 'radial-gradient(circle at 100% 50%, rgba(16,185,129,0.04), transparent 70%)',
+            background: 'radial-gradient(circle at 100% 50%, rgba(0,217,146,0.04), transparent 70%)',
           }} 
         />
         <div 
@@ -118,7 +118,7 @@ export default function WelcomePage() {
       </div>
 
       {/* 1. FIXED TOP NAVBAR */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#14171F]/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#323744] transition-colors">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#101010]/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#3d3a39] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 relative z-10 cursor-pointer">
             <img 
@@ -130,13 +130,13 @@ export default function WelcomePage() {
               <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white block leading-none">
                 FlowStock
               </span>
-              <span className="text-[9px] uppercase font-semibold tracking-widest text-slate-500 dark:text-[#7C8189] font-mono">
+              <span className="text-[9px] uppercase font-semibold tracking-widest text-slate-500 dark:text-[#8b949e] font-mono">
                 Enterprise Core
               </span>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-6 text-xs text-slate-600 dark:text-[#9BA3AF] font-medium">
+          <nav className="hidden md:flex items-center gap-6 text-xs text-slate-600 dark:text-[#bdbdbd] font-medium">
             <button
               type="button"
               onClick={() => scrollToSection("platform")}
@@ -221,25 +221,25 @@ export default function WelcomePage() {
         {/* Hero Content Header */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
           {/* Status Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-slate-300/80 dark:border-emerald-400/25 bg-white/70 dark:bg-[#181A20]/80 backdrop-blur-sm text-xs mb-6 shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-slate-300/80 dark:border-[#00d992]/30 bg-white/70 dark:bg-[#181818]/90 backdrop-blur-sm text-xs mb-6 shadow-2xs">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 dark:bg-[#B6FF2E] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 dark:bg-[#B6FF2E]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d992] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00d992]" />
             </span>
-            <span className="font-mono text-[11px] tracking-tight text-emerald-700 dark:text-[#B6FF2E] font-semibold">HIGH-THROUGHPUT CORE</span>
-            <span className="w-px h-3 bg-slate-300 dark:bg-[#323744]" />
-            <span className="text-[11px] text-slate-600 dark:text-[#9BA3AF] font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY LEDGER</span>
+            <span className="font-mono text-[11px] tracking-tight text-emerald-700 dark:text-[#00d992] font-semibold">HIGH-THROUGHPUT CORE</span>
+            <span className="w-px h-3 bg-slate-300 dark:bg-[#3d3a39]" />
+            <span className="text-[11px] text-slate-600 dark:text-[#8b949e] font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY LEDGER</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold tracking-[-0.035em] leading-[1.06] mb-6 text-slate-950 dark:text-white [text-wrap:balance]">
             The financial-grade{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-[#B6FF2E] dark:via-[#a3f01b] dark:to-teal-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-[#00d992] dark:via-[#2fd6a1] dark:to-teal-300">
               inventory ledger
             </span>{" "}
             for high-velocity warehouses
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 dark:text-[#CBD5E1] max-w-2xl leading-relaxed mb-10 font-normal [text-wrap:balance]">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-[#bdbdbd] max-w-2xl leading-relaxed mb-10 font-normal [text-wrap:balance]">
             Zero-drift double-entry stock bookkeeping, real-time multi-carrier logistics orchestration, and automated GST tax invoices, engineered for physical supply chains.
           </p>
 
@@ -250,7 +250,7 @@ export default function WelcomePage() {
                 size="lg"
                 variant="primary"
                 onClick={() => navigate("/dashboard")}
-                className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
+                className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(0,217,146,0.3)]"
               >
                 <span>Go to Dashboard</span>
                 <ArrowRight className="w-4 h-4" />
@@ -261,7 +261,7 @@ export default function WelcomePage() {
                   size="lg"
                   variant="primary"
                   onClick={() => navigate("/login?mode=signup")}
-                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
+                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(0,217,146,0.3)]"
                 >
                   <span>Get Started Free</span>
                   <ArrowRight className="w-4 h-4" />
@@ -281,17 +281,17 @@ export default function WelcomePage() {
       </section>
 
       {/* 3. LOGISTICS CARRIER LOGO STRIP (FULCRUM-STYLE) */}
-      <section className="py-10 border-y border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] transition-colors relative z-20 shadow-xs">
+      <section className="py-10 border-y border-slate-200 dark:border-[#3d3a39] bg-white dark:bg-[#181818] transition-colors relative z-20 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xs font-mono font-medium text-slate-500 dark:text-[#7C8189] mb-5 tracking-wider uppercase">
+          <p className="text-xs font-mono font-medium text-slate-500 dark:text-[#8b949e] mb-5 tracking-wider uppercase">
             Integrated Logistics Networks & Multi-Node Carrier Mesh
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-14 font-mono font-bold text-sm tracking-wider text-slate-600 dark:text-slate-300 opacity-75">
-            <span className="hover:text-slate-950 dark:hover:text-[#B6FF2E] transition-colors">BLUE DART</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#B6FF2E] transition-colors">DELHIVERY</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#B6FF2E] transition-colors">DTDC</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#B6FF2E] transition-colors">FEDEX</span>
-            <span className="hover:text-slate-950 dark:hover:text-[#B6FF2E] transition-colors">SHADOWFAX</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#00d992] transition-colors">BLUE DART</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#00d992] transition-colors">DELHIVERY</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#00d992] transition-colors">DTDC</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#00d992] transition-colors">FEDEX</span>
+            <span className="hover:text-slate-950 dark:hover:text-[#00d992] transition-colors">SHADOWFAX</span>
           </div>
         </div>
       </section>
@@ -362,7 +362,7 @@ export default function WelcomePage() {
               <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Ledger Reconciliation Rate</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-[#B6FF2E] tracking-tight font-mono tabular-nums">14ms</div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-[#00d992] tracking-tight font-mono tabular-nums">14ms</div>
               <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Scan Settlement Latency</div>
             </div>
             <div>
@@ -378,68 +378,68 @@ export default function WelcomePage() {
       </section>
 
       {/* 3. WHO WE ARE & WHAT WE SERVE */}
-      <section id="who-we-are" className="py-28 border-t border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] transition-colors relative">
+      <section id="who-we-are" className="py-28 border-t border-slate-200 dark:border-[#3d3a39] bg-white dark:bg-[#101010] transition-colors relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white [text-wrap:balance]">
               Engineered for high-volume inventory operators and distributed warehouses
             </h2>
-            <p className="text-sm text-slate-500 dark:text-[#7C8189] mt-4 leading-relaxed max-w-2xl mx-auto [text-wrap:balance]">
+            <p className="text-sm text-slate-500 dark:text-[#8b949e] mt-4 leading-relaxed max-w-2xl mx-auto [text-wrap:balance]">
               Traditional inventory systems rely on mutable table counts that lead to desyncs, phantom stock, and manual audit nightmares. FlowStock solves this with an immutable financial-grade ledger.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="capabilities">
             {/* Card 1 */}
-            <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#323744] bg-slate-50/50 hover:bg-white dark:bg-[#23262F]/40 dark:hover:bg-[#23262F] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#B6FF2E] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#3d3a39] bg-slate-50/50 hover:bg-white dark:bg-[#181818]/60 dark:hover:bg-[#1a1a1a] shadow-xs hover:shadow-lg transition-all overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#00d992] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div>
-                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#181A20] border border-slate-200 dark:border-[#323744] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
+                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#101010] border border-slate-200 dark:border-[#3d3a39] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
                   <Boxes className="w-5 h-5 text-slate-800 dark:text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Append-Only Stock Ledger</h3>
-                <p className="text-xs text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-[#bdbdbd] leading-relaxed">
                   Every inbound delivery, outbound customer fulfillment, and warehouse transfer records an immutable transaction. Real-time on-hand stock is dynamically calculated with zero balance desyncs.
                 </p>
               </div>
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#323744] text-[11px] text-slate-500 dark:text-[#9BA3AF] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-teal-600 dark:text-[#14B8A6]" />
+              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#3d3a39] text-[11px] text-slate-500 dark:text-[#8b949e] font-mono flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-[#00d992]" />
                 <span>Mathematical Consistency & Zero Race Conditions</span>
               </div>
             </div>
 
             {/* Card 2 */}
-            <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#323744] bg-slate-50/50 hover:bg-white dark:bg-[#23262F]/40 dark:hover:bg-[#23262F] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#B6FF2E] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#3d3a39] bg-slate-50/50 hover:bg-white dark:bg-[#181818]/60 dark:hover:bg-[#1a1a1a] shadow-xs hover:shadow-lg transition-all overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#00d992] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div>
-                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#181A20] border border-slate-200 dark:border-[#323744] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
+                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#101010] border border-slate-200 dark:border-[#3d3a39] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
                   <Truck className="w-5 h-5 text-slate-800 dark:text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Multi-Facility Logistics & Transfers</h3>
-                <p className="text-xs text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-[#bdbdbd] leading-relaxed">
                   Route stock between distribution centers, manage consignment dispatches with nationwide carriers (Blue Dart, Delhivery, DTDC), and record live checkpoint timelines with full transit custody.
                 </p>
               </div>
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#323744] text-[11px] text-slate-500 dark:text-[#9BA3AF] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-teal-600 dark:text-[#14B8A6]" />
+              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#3d3a39] text-[11px] text-slate-500 dark:text-[#8b949e] font-mono flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-[#00d992]" />
                 <span>Automated Manifests & Multi-Warehouse Routing</span>
               </div>
             </div>
 
             {/* Card 3 */}
-            <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#323744] bg-slate-50/50 hover:bg-white dark:bg-[#23262F]/40 dark:hover:bg-[#23262F] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#B6FF2E] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="group relative p-6 rounded-2xl border border-slate-200 dark:border-[#3d3a39] bg-slate-50/50 hover:bg-white dark:bg-[#181818]/60 dark:hover:bg-[#1a1a1a] shadow-xs hover:shadow-lg transition-all overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#00d992] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div>
-                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#181A20] border border-slate-200 dark:border-[#323744] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
+                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#101010] border border-slate-200 dark:border-[#3d3a39] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs">
                   <ReceiptText className="w-5 h-5 text-slate-800 dark:text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">B2B Sales & Automated Accounts</h3>
-                <p className="text-xs text-slate-600 dark:text-[#9BA3AF] leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-[#bdbdbd] leading-relaxed">
                   Reserve stock on order confirmation, issue GST-compliant tax invoices, track supplier procurement PO cycles, and monitor receivables aging with real-time financial velocity analytics.
                 </p>
               </div>
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#323744] text-[11px] text-slate-500 dark:text-[#9BA3AF] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-teal-600 dark:text-[#14B8A6]" />
+              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#3d3a39] text-[11px] text-slate-500 dark:text-[#8b949e] font-mono flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-[#00d992]" />
                 <span>Direct Order-to-Cash & Automated GST Invoicing</span>
               </div>
             </div>
@@ -448,24 +448,24 @@ export default function WelcomePage() {
       </section>
 
       {/* 4. HOW IT HELPS: END-TO-END OPERATIONAL WORKFLOW */}
-      <section id="workflow" className="py-28 border-t border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#14171F] transition-colors">
+      <section id="workflow" className="py-28 border-t border-slate-200 dark:border-[#3d3a39] bg-slate-50 dark:bg-[#101010] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#23262F] text-[11px] font-mono font-medium tracking-tight text-slate-600 dark:text-[#9BA3AF] mb-4 shadow-2xs">
-              <ArrowRight className="w-3 h-3 text-emerald-600 dark:text-[#B6FF2E]" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-slate-200/90 dark:border-[#3d3a39] bg-white dark:bg-[#181818] text-[11px] font-mono font-medium tracking-tight text-slate-600 dark:text-[#bdbdbd] mb-4 shadow-2xs">
+              <ArrowRight className="w-3 h-3 text-[#00d992]" />
               <span>OPERATIONAL PIPELINE</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white [text-wrap:balance]">
               From Customer PO to Ledger Settlement
             </h2>
-            <p className="text-sm text-slate-500 dark:text-[#7C8189] mt-3 [text-wrap:balance]">
+            <p className="text-sm text-slate-500 dark:text-[#8b949e] mt-3 [text-wrap:balance]">
               How FlowStock automates your entire supply chain without manual intervention or spreadsheets.
             </p>
           </div>
 
           <div className="relative">
             {/* Connector Line (hidden on mobile) */}
-            <div className="hidden lg:block absolute top-8 left-[calc(12.5%+1rem)] right-[calc(12.5%+1rem)] h-px bg-gradient-to-r from-emerald-500/40 via-teal-500/30 to-emerald-500/40 dark:from-[#B6FF2E]/30 dark:via-[#14B8A6]/20 dark:to-[#B6FF2E]/30" />
+            <div className="hidden lg:block absolute top-8 left-[calc(12.5%+1rem)] right-[calc(12.5%+1rem)] h-px bg-gradient-to-r from-emerald-500/40 via-teal-500/30 to-emerald-500/40 dark:from-[#00d992]/30 dark:via-[#10b981]/20 dark:to-[#00d992]/30" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
@@ -474,14 +474,14 @@ export default function WelcomePage() {
                 { step: "03", label: "Dispatch", title: "Carrier Manifest & AWB", desc: "Consignments dispatched with tracking codes, waypoint timelines, and automated transit status updates." },
                 { step: "04", label: "Settlement", title: "Invoice & Ledger Post", desc: "GST invoices issued, revenue velocity calculated, and ledger movements finalized with full audit integrity." },
               ].map((s, i) => (
-                <div key={i} className="group relative p-5 rounded-xl border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#23262F] shadow-xs hover:shadow-lg transition-all overflow-hidden">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#B6FF2E] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div key={i} className="group relative p-5 rounded-xl border border-slate-200 dark:border-[#3d3a39] bg-white dark:bg-[#181818] shadow-xs hover:shadow-lg transition-all overflow-hidden">
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 dark:via-[#00d992] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="flex items-center gap-2.5 mb-3">
-                    <span className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-[#B6FF2E]/10 border border-emerald-200 dark:border-[#B6FF2E]/20 flex items-center justify-center text-[11px] font-mono font-bold text-emerald-700 dark:text-[#B6FF2E]">{s.step}</span>
-                    <span className="text-[11px] font-mono font-semibold text-emerald-700 dark:text-[#B6FF2E] uppercase tracking-wider">{s.label}</span>
+                    <span className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-[#00d992]/10 border border-emerald-200 dark:border-[#00d992]/25 flex items-center justify-center text-[11px] font-mono font-bold text-emerald-700 dark:text-[#00d992]">{s.step}</span>
+                    <span className="text-[11px] font-mono font-semibold text-emerald-700 dark:text-[#00d992] uppercase tracking-wider">{s.label}</span>
                   </div>
                   <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-1.5">{s.title}</h4>
-                  <p className="text-xs text-slate-500 dark:text-[#9BA3AF] leading-relaxed">{s.desc}</p>
+                  <p className="text-xs text-slate-500 dark:text-[#8b949e] leading-relaxed">{s.desc}</p>
                 </div>
               ))}
             </div>
@@ -494,7 +494,7 @@ export default function WelcomePage() {
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white mb-4 [text-wrap:balance]">
           See your warehouse on one screen
         </h2>
-        <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] max-w-xl mx-auto mb-8 leading-relaxed [text-wrap:balance]">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-[#8b949e] max-w-xl mx-auto mb-8 leading-relaxed [text-wrap:balance]">
           Experience financial-grade stock accounting and rapid multi-carrier dispatch tailored to your actual operational facilities.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
@@ -502,7 +502,7 @@ export default function WelcomePage() {
             size="lg"
             variant="primary"
             onClick={() => navigate("/login?mode=signup")}
-            className="h-12 px-8 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(182,255,46,0.3)]"
+            className="h-12 px-8 rounded-xl font-bold text-sm shadow-[0_2px_16px_rgba(0,217,146,0.3)]"
           >
             <span>Get Started Free</span>
             <ArrowRight className="w-4 h-4" />
@@ -519,23 +519,23 @@ export default function WelcomePage() {
       </section>
 
       {/* 6. PRODUCTION ENTERPRISE FOOTER */}
-      <footer className="py-10 border-t border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-xs text-slate-500 dark:text-[#7C8189] font-mono transition-colors">
+      <footer className="py-10 border-t border-slate-200 dark:border-[#3d3a39] bg-white dark:bg-[#181818] text-xs text-slate-500 dark:text-[#8b949e] font-mono transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-[#3A3E47] border border-slate-200 dark:border-[#545963] flex items-center justify-center p-1">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-[#242424] border border-slate-200 dark:border-[#3d3a39] flex items-center justify-center p-1">
               <Logomark className="w-5 h-5" />
             </div>
             <div>
               <span className="font-bold text-slate-900 dark:text-white block font-sans text-sm leading-none">
                 FlowStock
               </span>
-              <span className="text-[10px] text-slate-500 dark:text-[#7C8189] font-mono mt-0.5 block">
+              <span className="text-[10px] text-slate-500 dark:text-[#8b949e] font-mono mt-0.5 block">
                 © 2026 FlowStock Core. Production Multi-Tenant Platform.
               </span>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600 dark:text-[#B0B4BA]">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600 dark:text-[#bdbdbd]">
             <button
               type="button"
               onClick={() => setTermsOpen(true)}
