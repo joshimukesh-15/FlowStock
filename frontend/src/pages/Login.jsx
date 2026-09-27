@@ -81,32 +81,32 @@ export default function LoginPage() {
   };
 
   const inputBase =
-    "w-full rounded-lg border bg-white dark:bg-[#101010] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
+    "w-full rounded-lg border bg-white dark:bg-[#080813] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
   const inputColors =
-    "border-slate-200 dark:border-[#3d3a39] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#8b949e] focus:border-[#00d992] dark:focus:border-[#00d992] focus:ring-[#00d992]/20 dark:focus:ring-[#00d992]/15";
+    "border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#9BA3AF] focus:border-[#E4FD97] dark:focus:border-[#E4FD97] focus:ring-[#E4FD97]/20 dark:focus:ring-[#E4FD97]/15";
   const inputClass = `${inputBase} ${inputColors}`;
 
   const labelClass =
-    "block text-xs font-medium text-slate-600 dark:text-[#bdbdbd] mb-1";
+    "block text-xs font-medium text-slate-600 dark:text-[#A0BDDB] mb-1";
 
   const iconClass =
-    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#8b949e]";
+    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#A0BDDB]";
 
   return (
-    <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#101010] flex items-center justify-center px-4 py-8 relative overflow-hidden">
+    <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#080813] flex items-center justify-center px-4 py-8 relative overflow-hidden">
       {/* Background decoration */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(0,217,146,0.06), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(228,253,151,0.08), transparent 60%)",
         }}
       />
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
         style={{
           background:
-            "linear-gradient(90deg, transparent, rgba(0,217,146,0.12), transparent)",
+            "linear-gradient(90deg, transparent, rgba(160,189,219,0.18), transparent)",
         }}
       />
 
@@ -127,24 +127,24 @@ export default function LoginPage() {
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#3d3a39] bg-white dark:bg-[#181818] shadow-sm dark:shadow-none">
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#202138] bg-white dark:bg-[#121224] shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
           {/* Tab switcher — always visible at top of card */}
           <div className="px-6 pt-5 pb-0">
-            <div className="flex bg-slate-100 dark:bg-[#101010] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#3d3a39] relative">
+            <div className="flex bg-slate-100 dark:bg-[#080813] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#202138] relative">
               <button
                 type="button"
                 onClick={() => switchMode("login")}
                 className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
                   mode === "login"
                     ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-[#8b949e] hover:text-slate-700 dark:hover:text-[#f2f2f2]"
+                    : "text-slate-500 dark:text-[#9BA3AF] hover:text-slate-700 dark:hover:text-white"
                 }`}
               >
                 {mode === "login" && (
                   <motion.div
                     layoutId="active-login-tab"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white dark:bg-[#202020] rounded-md shadow-sm -z-10"
+                    className="absolute inset-0 bg-white dark:bg-[#181832] dark:border dark:border-[#202138] rounded-md shadow-sm -z-10"
                   />
                 )}
                 Log In
@@ -155,14 +155,14 @@ export default function LoginPage() {
                 className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
                   mode === "signup"
                     ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-[#8b949e] hover:text-slate-700 dark:hover:text-[#f2f2f2]"
+                    : "text-slate-500 dark:text-[#9BA3AF] hover:text-slate-700 dark:hover:text-white"
                 }`}
               >
                 {mode === "signup" && (
                   <motion.div
                     layoutId="active-login-tab"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white dark:bg-[#202020] rounded-md shadow-sm -z-10"
+                    className="absolute inset-0 bg-white dark:bg-[#181832] dark:border dark:border-[#202138] rounded-md shadow-sm -z-10"
                   />
                 )}
                 Create Account
@@ -177,7 +177,7 @@ export default function LoginPage() {
                 ? "Welcome back"
                 : "Get started with FlowStock"}
             </h1>
-            <p className="text-xs text-slate-500 dark:text-[#555A66] mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
               {mode === "login"
                 ? "Sign in to your workspace"
                 : "Create your organization in under a minute"}
@@ -241,7 +241,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#555A66] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#A0BDDB] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5"
                     aria-label={
                       showPassword ? "Hide password" : "Show password"
                     }
@@ -259,11 +259,11 @@ export default function LoginPage() {
                 <>
                   {/* Org section divider */}
                   <div className="flex items-center gap-2 pt-1">
-                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#1E2028]" />
-                    <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400 dark:text-[#3A3E47]">
+                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#202138]" />
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400 dark:text-[#A0BDDB]">
                       Organization
                     </span>
-                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#1E2028]" />
+                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#202138]" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-2.5">
@@ -323,9 +323,9 @@ export default function LoginPage() {
                   </div>
 
                   {orgSlug && (
-                    <p className="text-[10px] text-slate-400 dark:text-[#3A3E47] font-mono -mt-1 pl-0.5">
+                    <p className="text-[10px] text-slate-400 dark:text-[#9BA3AF] font-mono -mt-1 pl-0.5">
                       flowstock.app/
-                      <span className="text-emerald-600 dark:text-[#B6FF2E]">
+                      <span className="text-emerald-600 dark:text-[#E4FD97]">
                         {orgSlug}
                       </span>
                     </p>
@@ -339,7 +339,7 @@ export default function LoginPage() {
                       <select
                         value={currency}
                         onChange={(e) => setCurrency(e.target.value)}
-                        className={`${inputBase} border-slate-200 dark:border-[#2A2D37] text-slate-900 dark:text-white focus:border-[#B6FF2E] dark:focus:border-[#B6FF2E] focus:ring-[#B6FF2E]/20 dark:focus:ring-[#B6FF2E]/15 appearance-none cursor-pointer`}
+                        className={`${inputBase} border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white focus:border-[#E4FD97] dark:focus:border-[#E4FD97] focus:ring-[#E4FD97]/20 dark:focus:ring-[#E4FD97]/15 appearance-none cursor-pointer`}
                       >
                         <option value="INR">INR — Indian Rupee</option>
                         <option value="USD">USD — US Dollar</option>
@@ -368,7 +368,7 @@ export default function LoginPage() {
 
             {/* Demo quick-fill — login mode only */}
             {mode === "login" && (
-              <div className="mt-3 p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#1E2028] bg-slate-50/50 dark:bg-[#0B0D12]/50 flex items-center justify-between gap-2">
+              <div className="mt-3 p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#202138] bg-slate-50/50 dark:bg-[#080813]/60 flex items-center justify-between gap-2">
                 <div className="min-w-0">
                   <div className="flex items-center gap-1 mb-0.5">
                     <Zap className="w-3 h-3 text-amber-500" />
@@ -379,7 +379,7 @@ export default function LoginPage() {
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">
                     alice@acme.local
                   </span>
-                  <span className="text-[10px] text-slate-400 dark:text-[#555A66]">
+                  <span className="text-[10px] text-slate-400 dark:text-[#A0BDDB]">
                     Pass: <code className="font-mono">admin123</code>
                   </span>
                 </div>
@@ -393,7 +393,7 @@ export default function LoginPage() {
                     setAutoFilled(true);
                     setTimeout(() => setAutoFilled(false), 1400);
                   }}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#00d992] hover:bg-[#2fd6a1] text-[#101010] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-2xs outline-none focus-visible:ring-2 focus-visible:ring-[#00d992]"
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#E4FD97] hover:bg-[#d5f57a] text-[#080813] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(228,253,151,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#E4FD97]"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     {autoFilled ? (
@@ -405,7 +405,7 @@ export default function LoginPage() {
                         transition={{ type: "spring", stiffness: 500, damping: 25 }}
                         className="inline-flex items-center gap-1"
                       >
-                        <Check className="w-3 h-3 text-[#101010]" strokeWidth={2.5} />
+                        <Check className="w-3 h-3 text-[#080813]" strokeWidth={2.5} />
                         <span>Filled</span>
                       </motion.span>
                     ) : (
@@ -425,8 +425,8 @@ export default function LoginPage() {
           </div>
 
           {/* Footer toggle */}
-          <div className="px-6 py-3.5 border-t border-slate-100 dark:border-[#262626] text-center">
-            <p className="text-xs text-slate-500 dark:text-[#8b949e]">
+          <div className="px-6 py-3.5 border-t border-slate-100 dark:border-[#202138] text-center">
+            <p className="text-xs text-slate-500 dark:text-[#9BA3AF]">
               {mode === "login"
                 ? "Don't have an account? "
                 : "Already have an account? "}
@@ -435,7 +435,7 @@ export default function LoginPage() {
                 onClick={() =>
                   switchMode(mode === "login" ? "signup" : "login")
                 }
-                className="text-emerald-600 dark:text-[#00d992] font-semibold hover:underline cursor-pointer"
+                className="text-emerald-600 dark:text-[#E4FD97] font-semibold hover:underline cursor-pointer"
               >
                 {mode === "login" ? "Sign up" : "Log in"}
               </button>
@@ -444,7 +444,7 @@ export default function LoginPage() {
         </div>
 
         {/* Trust badge */}
-        <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#3A3E47]">
+        <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#A0BDDB]/70">
           <ShieldCheck className="w-3 h-3" />
           <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
         </div>
@@ -453,7 +453,7 @@ export default function LoginPage() {
         <div className="mt-3 text-center">
           <Link
             to="/"
-            className="text-[11px] text-slate-400 dark:text-[#3A3E47] hover:text-slate-600 dark:hover:text-[#9BA3AF] transition-colors"
+            className="text-[11px] text-slate-400 dark:text-[#A0BDDB]/70 hover:text-slate-600 dark:hover:text-[#E4FD97] transition-colors"
           >
             ← Back to Home
           </Link>

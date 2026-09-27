@@ -17,72 +17,63 @@
     --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
     /* Surfaces */
-    --color-surface-canvas: #f8fafc;
+    --color-surface-canvas: #f6f8fb;
     --color-surface-base: #ffffff;
-    --color-surface-raised: #f1f5f9;
-    --color-border-subtle: #e2e8f0;
-    --color-border-strong: #cbd5e1;
+    --color-surface-raised: #edf2f8;
+    --color-border-subtle: #d8e2ec;
+    --color-border-strong: #b8c9dc;
 
     /* Inks */
-    --color-ink-primary: #0f172a;
-    --color-ink-secondary: #64748b;
-    --color-ink-muted: #94a3b8;
-    --color-ink-on-spark: #101010;
+    --color-ink-primary: #080813;
+    --color-ink-secondary: #4a5568;
+    --color-ink-muted: #8a94a6;
+    --color-ink-on-spark: #080813;
 
-    /* Accent & Status (VoltAgent Electric Emerald) */
-    --color-accent-spark: #00d992;
-    --color-accent-hover: #2fd6a1;
-    --color-accent-muted: #10b981;
-    --color-status-success: #00d992;
+    /* Accent & Status (Citrus & Frozen) */
+    --color-accent-spark: #E4FD97;
+    --color-accent-hover: #d5f57a;
+    --color-accent-muted: #c3e65c;
+    --color-accent-frozen: #A0BDDB;
+    --color-status-success: #E4FD97;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #3b82f6;
+    --color-status-info: #A0BDDB;
 
-    /* Volt Tokens */
-    --volt-primary: #00d992;
-    --volt-primary-soft: #2fd6a1;
-    --volt-primary-deep: #10b981;
-    --volt-on-primary: #101010;
-    --volt-hairline: #e2e8f0;
+    /* Brand Tokens */
+    --brand-citrus: #E4FD97;
+    --brand-frozen: #A0BDDB;
+    --brand-black-iris: #080813;
   }
 
   html.dark {
-    /* VoltAgent Dark Void Canvas & Surfaces */
-    --color-surface-canvas: #101010;
-    --color-surface-base: #181818;
-    --color-surface-raised: #202020;
-    --color-surface-overlay: #262626;
-    --color-border-subtle: #2d2d2d;
-    --color-border-strong: #3d3a39;
+    /* Black Iris Dark Void Canvas & Surfaces */
+    --color-surface-canvas: #080813;
+    --color-surface-base: #121224;
+    --color-surface-raised: #181832;
+    --color-surface-overlay: #202040;
+    --color-border-subtle: #1c1d32;
+    --color-border-strong: #2c2d4c;
 
     /* Inks */
-    --color-ink-primary: #f2f2f2;
-    --color-ink-secondary: #bdbdbd;
-    --color-ink-muted: #8b949e;
-    --color-ink-on-spark: #101010;
+    --color-ink-primary: #f0f3f8;
+    --color-ink-secondary: #c2cbda;
+    --color-ink-muted: #7e889b;
+    --color-ink-on-spark: #080813;
 
-    /* Accent & Status */
-    --color-accent-spark: #00d992;
-    --color-accent-hover: #2fd6a1;
-    --color-accent-muted: #10b981;
-    --color-status-success: #00d992;
+    /* Accent & Status (Citrus & Frozen) */
+    --color-accent-spark: #E4FD97;
+    --color-accent-hover: #d5f57a;
+    --color-accent-muted: #c3e65c;
+    --color-accent-frozen: #A0BDDB;
+    --color-status-success: #E4FD97;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #3b82f6;
+    --color-status-info: #A0BDDB;
 
-    /* Volt Tokens */
-    --volt-primary: #00d992;
-    --volt-primary-soft: #2fd6a1;
-    --volt-primary-deep: #10b981;
-    --volt-on-primary: #101010;
-    --volt-canvas: #101010;
-    --volt-canvas-soft: #1a1a1a;
-    --volt-hairline: #3d3a39;
-    --volt-hairline-soft: #b8b3b0;
-    --volt-ink: #f2f2f2;
-    --volt-ink-strong: #ffffff;
-    --volt-body: #bdbdbd;
-    --volt-mute: #8b949e;
+    /* Brand Tokens */
+    --brand-citrus: #E4FD97;
+    --brand-frozen: #A0BDDB;
+    --brand-black-iris: #080813;
   }
 
   html {
@@ -90,7 +81,7 @@
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-[#101010] dark:text-[#f2f2f2] antialiased;
+    @apply bg-[#f6f8fb] text-[#080813] dark:bg-[#080813] dark:text-[#f0f3f8] antialiased;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
     font-variant-numeric: tabular-nums;
