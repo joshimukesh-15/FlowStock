@@ -81,19 +81,19 @@ export default function LoginPage() {
   };
 
   const inputBase =
-    "w-full rounded-lg border bg-white dark:bg-[#0F1117] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
+    "w-full rounded-lg border bg-white dark:bg-[#14171F] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
   const inputColors =
-    "border-slate-200 dark:border-[#2A2D37] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#555A66] focus:border-[#B6FF2E] dark:focus:border-[#B6FF2E] focus:ring-[#B6FF2E]/20 dark:focus:ring-[#B6FF2E]/15";
+    "border-slate-200 dark:border-[#323744] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#7C8189] focus:border-[#B6FF2E] dark:focus:border-[#B6FF2E] focus:ring-[#B6FF2E]/20 dark:focus:ring-[#B6FF2E]/15";
   const inputClass = `${inputBase} ${inputColors}`;
 
   const labelClass =
     "block text-xs font-medium text-slate-600 dark:text-[#9BA3AF] mb-1";
 
   const iconClass =
-    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#555A66]";
+    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189]";
 
   return (
-    <div className="min-h-screen bg-[#FAFBFC] dark:bg-[#0B0D12] flex items-center justify-center px-4 py-8 relative overflow-hidden">
+    <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#14171F] flex items-center justify-center px-4 py-8 relative overflow-hidden">
       {/* Background decoration */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -127,10 +127,10 @@ export default function LoginPage() {
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#1E2028] bg-white dark:bg-[#13151B] shadow-sm dark:shadow-none">
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-sm dark:shadow-none">
           {/* Tab switcher — always visible at top of card */}
           <div className="px-6 pt-5 pb-0">
-            <div className="flex bg-slate-100 dark:bg-[#0B0D12] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#1E2028] relative">
+            <div className="flex bg-slate-100 dark:bg-[#14171F] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#323744] relative">
               <button
                 type="button"
                 onClick={() => switchMode("login")}

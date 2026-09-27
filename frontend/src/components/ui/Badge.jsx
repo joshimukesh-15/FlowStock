@@ -3,33 +3,33 @@ import { cn } from "@/lib/utils";
 
 export const badgeVariants = {
   default:
-    "bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 border-slate-200/60 dark:border-slate-700 shadow-xs",
+    "bg-slate-100 dark:bg-[#1E222B] text-slate-700 dark:text-[#CBD5E1] border-slate-200/80 dark:border-[#323744]",
   brand:
-    "bg-slate-900 dark:bg-[#B6FF2E]/10 text-white dark:text-[#B6FF2E] border-slate-800 dark:border-[#B6FF2E]/20 shadow-sm",
+    "bg-slate-900 dark:bg-[#B6FF2E]/10 text-white dark:text-[#B6FF2E] border-slate-800 dark:border-[#B6FF2E]/20",
   success:
-    "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/60 dark:border-emerald-500/20 shadow-xs",
+    "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/70 dark:border-emerald-500/20",
   warning:
-    "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200/60 dark:border-amber-500/20 shadow-xs",
+    "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200/70 dark:border-amber-500/20",
   danger:
-    "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200/60 dark:border-rose-500/20 shadow-xs",
+    "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200/70 dark:border-rose-500/20",
   info:
-    "bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200/60 dark:border-blue-500/20 shadow-xs",
+    "bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200/70 dark:border-blue-500/20",
 };
 
 const dotColors = {
-  default: "bg-slate-400",
+  default: "bg-slate-400 dark:bg-slate-500",
   brand: "bg-[#B6FF2E]",
-  success: "bg-emerald-500",
-  warning: "bg-amber-500",
-  danger: "bg-rose-500",
-  info: "bg-blue-500",
+  success: "bg-emerald-500 dark:bg-emerald-400",
+  warning: "bg-amber-500 dark:bg-amber-400",
+  danger: "bg-rose-500 dark:bg-rose-400",
+  info: "bg-blue-500 dark:bg-blue-400",
 };
 
 export const Badge = ({ className, variant = "default", showDot = true, children, ...props }) => {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border transition-colors",
+        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium tracking-tight border transition-colors select-none",
         badgeVariants[variant],
         className
       )}

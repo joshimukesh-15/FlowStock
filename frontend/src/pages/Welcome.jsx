@@ -102,7 +102,7 @@ export default function WelcomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#14171F] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#B6FF2E] selection:text-[#14171F] relative transition-colors">
+    <div className="min-h-[100dvh] bg-slate-50 dark:bg-[#14171F] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#B6FF2E] selection:text-[#14171F] relative transition-colors">
       
       {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS (Zero scroll repaint lag) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
