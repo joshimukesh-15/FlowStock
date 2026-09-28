@@ -527,7 +527,7 @@ export default function PurchasingPage() {
               </Button>
             </div>
 
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
               {poItems.map((item, idx) => (
                 <div
                   key={idx}
