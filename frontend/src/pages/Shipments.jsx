@@ -23,7 +23,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { motion } from "framer-motion";
-import { useReducedMotion, pageEnterVariants } from "@/motion";
+import { useReducedMotion, pageEnterVariants, DISTANCE, DURATION, STAGGER } from "@/motion";
 const CARRIERS = [
     "Blue Dart",
     "Delhivery",
@@ -60,6 +60,7 @@ export default function ShipmentsPage() {
     const [detailShipment, setDetailShipment] = useState(null);
     const [newCheckpointLocation, setNewCheckpointLocation] = useState("");
     const [newCheckpointDesc, setNewCheckpointDesc] = useState("");
+    const [loggingCheckpoint, setLoggingCheckpoint] = useState(false);
     const selectOrderForCreation = (order, orderId) => {
         setSelectedOrderId(orderId);
         if (order) {

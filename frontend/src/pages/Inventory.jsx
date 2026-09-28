@@ -9,7 +9,7 @@ import { fetchProductMovements } from "@/lib/api";
 import { useToast } from "@/context/ToastContext";
 import { useInventoryData } from "@/hooks/useFlowStockData";
 import { motion } from "framer-motion";
-import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
+import { useReducedMotion, slideUpVariants, pageEnterVariants, getTransition } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
 import { TableSkeleton, ListSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";

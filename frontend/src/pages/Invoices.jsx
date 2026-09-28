@@ -7,7 +7,7 @@ import { ReceiptText, Plus, Trash2, CheckCircle2, Ban, X, Eye, CreditCard, India
 import { fetchInvoices, fetchInvoiceById, fetchOrders, fetchCustomers, fetchProducts, createInvoiceApi, createInvoiceFromOrderApi, voidInvoiceApi, recordPaymentApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
-import { formatINR, formatDate, selectClass } from "@/lib/utils";
+import { formatINR, formatDate } from "@/lib/utils";
 import { StatCard } from "@/components/ui/StatCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { TableSkeleton, PageSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
@@ -32,6 +32,7 @@ const PAYMENT_METHODS = [
 export default function InvoicesPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
+    const prefersReducedMotion = useReducedMotion();
     const [invoices, setInvoices] = useState([]);
     const [orders, setOrders] = useState([]);
     const [customers, setCustomers] = useState([]);

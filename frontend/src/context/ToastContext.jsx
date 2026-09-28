@@ -33,13 +33,14 @@ export const ToastProvider = ({ children }) => {
     }, []);
     const toastHelpers = useMemo(() => {
         const fn = (title, options) => showToast(title, options);
-        fn.success = (title, description, options) => showToast(title, { ...options, description, type: "success" });
-        fn.error = (title, description, options) => showToast(title, { ...options, description, type: "error" });
-        fn.warning = (title, description, options) => showToast(title, { ...options, description, type: "warning" });
-        fn.info = (title, description, options) => showToast(title, { ...options, description, type: "info" });
-        fn.dismiss = dismissToast;
-        fn.dismissAll = dismissAll;
-        return fn;
+        return Object.assign(fn, {
+            success: (title, description, options) => showToast(title, { ...options, description, type: "success" }),
+            error: (title, description, options) => showToast(title, { ...options, description, type: "error" }),
+            warning: (title, description, options) => showToast(title, { ...options, description, type: "warning" }),
+            info: (title, description, options) => showToast(title, { ...options, description, type: "info" }),
+            dismiss: dismissToast,
+            dismissAll: dismissAll,
+        });
     }, [showToast, dismissToast, dismissAll]);
     return (<ToastContext.Provider value={{
             toasts,

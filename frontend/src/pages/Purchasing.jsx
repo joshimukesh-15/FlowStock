@@ -27,6 +27,7 @@ import { useReducedMotion, pageEnterVariants } from "@/motion";
 export default function PurchasingPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
+    const prefersReducedMotion = useReducedMotion();
     const [purchaseOrders, setPurchaseOrders] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [products, setProducts] = useState([]);

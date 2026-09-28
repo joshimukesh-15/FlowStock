@@ -803,7 +803,7 @@ export async function loginApi(email, password) {
     } catch (err) {
         clearTimeout(timeoutId);
         if (err.name === "AbortError") {
-            throw new Error("Server took too long to respond. Please try again.");
+            throw new Error("Server took too long to respond. Please try again.", { cause: err });
         }
         throw err;
     }
@@ -829,7 +829,7 @@ export async function signupApi(data) {
     } catch (err) {
         clearTimeout(timeoutId);
         if (err.name === "AbortError") {
-            throw new Error("Server took too long to respond. Please try again.");
+            throw new Error("Server took too long to respond. Please try again.", { cause: err });
         }
         throw err;
     }

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useMotionValue, useTransform, animate, useReducedMotion } from "framer-motion";
 import { Modal } from "./Modal";
 import { Button } from "./Button";
