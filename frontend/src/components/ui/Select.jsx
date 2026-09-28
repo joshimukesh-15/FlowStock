@@ -270,13 +270,13 @@ export const Select = React.forwardRef(({
         onClick={toggleDropdown}
         onKeyDown={handleKeyDown}
         className={cn(
-          "w-full flex items-center justify-between text-left transition-all duration-150 rounded-xl cursor-pointer outline-none",
-          "border border-slate-300 dark:border-[#33372B]",
+          "w-full flex items-center justify-between text-left transition-all duration-150 rounded-xl cursor-pointer outline-none shadow-2xs",
+          "border border-slate-200 dark:border-[#33372B]",
           "bg-white dark:bg-[#181A20] text-slate-900 dark:text-[#FFFBF4]",
-          "hover:border-slate-400 dark:hover:border-[#565449]",
-          "focus:border-[#D8CFBC] dark:focus:border-[#D8CFBC] focus:ring-1 focus:ring-[#D8CFBC]",
+          "hover:border-slate-300 dark:hover:border-[#565449]",
+          "focus:border-[#565449] dark:focus:border-[#D8CFBC] focus:ring-2 focus:ring-[#D8CFBC]/25",
           disabled && "opacity-50 cursor-not-allowed bg-slate-50 dark:bg-[#11120D]",
-          isSmall ? "px-2.5 py-1.5 text-xs h-8" : "px-3.5 py-2.5 text-sm h-10",
+          isSmall ? "px-2.5 py-1.5 text-xs h-9" : "px-3.5 py-2 text-sm h-10",
           buttonClassName
         )}
       >

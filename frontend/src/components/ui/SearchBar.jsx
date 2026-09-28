@@ -20,22 +20,22 @@ export const SearchBar = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn("relative flex-1", className)}>
-      <Search className="w-4 h-4 text-slate-400 dark:text-[#7C8189] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none shrink-0" />
+    <form onSubmit={handleSubmit} className={cn("relative flex-1 group", className)}>
+      <Search className="w-4 h-4 text-slate-400 dark:text-[#9BA3AF] group-focus-within:text-[#565449] dark:group-focus-within:text-[#D8CFBC] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none shrink-0 transition-colors" />
       <input
         type="text"
         placeholder={placeholder}
         value={value}
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full h-9 pl-9 pr-8 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-[#33372B] bg-white dark:bg-[#191B15] text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-[#7C8189] shadow-2xs transition-colors focus:border-slate-400 dark:focus:border-[#565449] focus:outline-none focus:ring-2 focus:ring-[#D8CFBC]/30 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full h-9 pl-9 pr-8 text-xs sm:text-sm rounded-xl border border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#565449] bg-white dark:bg-[#181A20] text-slate-900 dark:text-[#FFFBF4] placeholder:text-slate-400 dark:placeholder:text-[#7C8189] shadow-2xs transition-all duration-150 focus:border-[#565449] dark:focus:border-[#D8CFBC] focus:outline-none focus:ring-2 focus:ring-[#D8CFBC]/25 disabled:opacity-50 disabled:cursor-not-allowed"
         {...props}
       />
       {value && !disabled && (
         <button
           type="button"
           onClick={() => onChange("")}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 dark:hover:text-white p-0.5 rounded transition-colors cursor-pointer"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 dark:hover:text-[#D8CFBC] p-1 rounded-md transition-colors cursor-pointer"
           title="Clear search"
           aria-label="Clear search"
         >

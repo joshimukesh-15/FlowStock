@@ -9,10 +9,10 @@ export const Input = React.forwardRef(({ className, label, error, id, ...props }
           id={id}
           ref={ref}
           className={cn(
-            "w-full rounded-lg border bg-white dark:bg-[#191B15] px-3 py-2 text-sm text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-slate-500 shadow-2xs transition-colors focus:outline-none disabled:bg-slate-50 dark:disabled:bg-slate-950 disabled:text-slate-400 dark:disabled:text-slate-600",
+            "w-full rounded-xl border bg-white dark:bg-[#181A20] px-3.5 py-2 text-sm text-slate-900 dark:text-[#FFFBF4] placeholder:text-slate-400 dark:placeholder:text-[#7C8189] shadow-2xs transition-all duration-150 focus:outline-none disabled:bg-slate-50 dark:disabled:bg-[#11120D] disabled:text-slate-400 dark:disabled:text-slate-600",
             error
-              ? "border-rose-500 dark:border-rose-500/80 focus:border-rose-600 dark:focus:border-rose-400 focus:ring-1 focus:ring-rose-500"
-              : "border-slate-300 dark:border-[#3A404F] focus:border-slate-900 dark:focus:border-white focus:ring-1 focus:ring-slate-900 dark:focus:ring-white",
+              ? "border-rose-500 dark:border-rose-500/80 focus:border-rose-600 dark:focus:border-rose-400 focus:ring-2 focus:ring-rose-500/20"
+              : "border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#565449] focus:border-[#565449] dark:focus:border-[#D8CFBC] focus:ring-2 focus:ring-[#D8CFBC]/25",
             className
           )}
           {...props}

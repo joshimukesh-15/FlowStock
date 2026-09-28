@@ -349,25 +349,34 @@ export default function WelcomePage() {
         />
       </section>
 
-      {/* 5. STATS BAND (FULCRUM-STYLE) */}
-      <section id="stats" className="py-20 bg-slate-900 dark:bg-[#191B15] text-white border-y border-slate-800 dark:border-[#33372B]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight font-mono tabular-nums">99.98%</div>
-              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Ledger Reconciliation Rate</div>
+      {/* 5. STATS BAND (LUXURY SMOKY BLACK PRECISION COCKPIT) */}
+      <section id="stats" className="py-16 sm:py-20 bg-[#11120D] text-[#FFFBF4] border-y border-[#23261E] dark:border-[#33372B] relative overflow-hidden">
+        {/* Subtle Ambient Atmosphere */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#D8CFBC]/25 to-transparent" />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[260px] pointer-events-none opacity-30"
+          style={{
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(216,207,188,0.14), transparent 75%)",
+          }}
+        />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#23261E] dark:divide-[#2B2E25]">
+            <div className="py-4 sm:py-2 px-3 sm:px-6 text-center">
+              <div className="text-3xl sm:text-5xl font-extrabold text-[#FFFBF4] tracking-tight font-mono tabular-nums">99.98%</div>
+              <div className="text-[11px] sm:text-xs text-[#D8CFBC]/75 mt-2.5 font-mono uppercase tracking-wider">Ledger Reconciliation Rate</div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-[#D8CFBC] tracking-tight font-mono tabular-nums">14ms</div>
-              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Scan Settlement Latency</div>
+            <div className="py-4 sm:py-2 px-3 sm:px-6 text-center">
+              <div className="text-3xl sm:text-5xl font-extrabold text-[#D8CFBC] tracking-tight font-mono tabular-nums">14ms</div>
+              <div className="text-[11px] sm:text-xs text-[#D8CFBC]/75 mt-2.5 font-mono uppercase tracking-wider">Scan Settlement Latency</div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight font-mono tabular-nums">4.2M+</div>
-              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Stock Movements Verified</div>
+            <div className="py-4 sm:py-2 px-3 sm:px-6 text-center">
+              <div className="text-3xl sm:text-5xl font-extrabold text-[#FFFBF4] tracking-tight font-mono tabular-nums">4.2M+</div>
+              <div className="text-[11px] sm:text-xs text-[#D8CFBC]/75 mt-2.5 font-mono uppercase tracking-wider">Stock Movements Verified</div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-extrabold text-[#D8CFBC] tracking-tight font-mono tabular-nums">0.00%</div>
-              <div className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">Phantom Stock Drift</div>
+            <div className="py-4 sm:py-2 px-3 sm:px-6 text-center">
+              <div className="text-3xl sm:text-5xl font-extrabold text-[#D8CFBC] tracking-tight font-mono tabular-nums">0.00%</div>
+              <div className="text-[11px] sm:text-xs text-[#D8CFBC]/75 mt-2.5 font-mono uppercase tracking-wider">Phantom Stock Drift</div>
             </div>
           </div>
         </div>

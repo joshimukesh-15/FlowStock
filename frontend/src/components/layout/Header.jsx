@@ -225,13 +225,29 @@ export const Header = () => {
     const getNotifIcon = (type) => {
         switch (type) {
             case "WARNING":
-                return <AlertTriangle className="w-3.5 h-3.5 text-slate-700 shrink-0"/>;
+                return (
+                  <div className="w-6 h-6 rounded-lg bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                );
             case "SUCCESS":
-                return <CheckCircle2 className="w-3.5 h-3.5 text-slate-950 shrink-0"/>;
+                return (
+                  <div className="w-6 h-6 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                );
             case "DANGER":
-                return <AlertCircle className="w-3.5 h-3.5 text-slate-800 shrink-0"/>;
+                return (
+                  <div className="w-6 h-6 rounded-lg bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/25 flex items-center justify-center shrink-0 mt-0.5">
+                    <AlertCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                  </div>
+                );
             default:
-                return <Info className="w-3.5 h-3.5 text-slate-600 shrink-0"/>;
+                return (
+                  <div className="w-6 h-6 rounded-lg bg-[#565449]/10 dark:bg-[#D8CFBC]/10 border border-[#565449]/20 dark:border-[#D8CFBC]/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <Info className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC]" />
+                  </div>
+                );
         }
     };
     return (<>
@@ -395,22 +411,27 @@ export const Header = () => {
                   variants={tenantMenuVariants}
                   className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-[#191B15] rounded-2xl border border-slate-200 dark:border-[#33372B] shadow-2xl shadow-black/10 dark:shadow-black/50 py-2 z-50 text-xs origin-top-right"
                 >
-                <div className="px-4 py-2.5 border-b border-slate-100 dark:border-[#33372B] flex items-center justify-between">
+                <div className="px-4 py-3 border-b border-slate-100 dark:border-[#33372B] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">Notifications</span>
-                    {unreadCount > 0 && (<Badge variant="danger" className="text-[10px] py-0 px-1.5">
+                    {unreadCount > 0 && (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-[#11120D]/5 text-[#565449] border border-[#565449]/20 dark:bg-[#D8CFBC]/10 dark:text-[#D8CFBC] dark:border-[#D8CFBC]/25">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                         {unreadCount} unread
-                      </Badge>)}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
-                    {unreadCount > 0 && (<button onClick={handleMarkAllRead} className="text-[11px] text-slate-700 dark:text-[#CBD5E1] hover:text-black dark:hover:text-white font-medium flex items-center gap-1 cursor-pointer transition-colors">
+                    {unreadCount > 0 && (
+                      <button onClick={handleMarkAllRead} className="text-[11px] text-[#565449] dark:text-[#D8CFBC] hover:text-black dark:hover:text-white font-medium flex items-center gap-1 cursor-pointer transition-colors">
                         <CheckCheck className="w-3 h-3"/>
                         Mark all read
-                      </button>)}
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => setNotifOpen(false)}
-                      className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-md hover:bg-slate-100 dark:hover:bg-[#23261E] transition-colors cursor-pointer"
+                      className="text-slate-400 hover:text-slate-700 dark:hover:text-[#D8CFBC] p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-[#23261E] transition-colors cursor-pointer"
                       title="Close notifications (Esc)"
                       aria-label="Close notifications"
                     >
@@ -421,36 +442,54 @@ export const Header = () => {
 
                 {/* Notifications List */}
                 <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-[#2B2E25]">
-                  {loadingNotifs ? (<div className="p-4 text-center text-slate-400 dark:text-[#7C8189]">Loading notifications...</div>) : notifications.length > 0 ? (notifications.map((notif) => (<div key={notif.id} onClick={() => {
-                    if (!notif.is_read)
-                        handleMarkAsRead(notif.id);
-                }} className={`p-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-2.5 cursor-pointer ${!notif.is_read ? "bg-slate-100/70 dark:bg-[#23261E]/50" : ""}`}>
+                  {loadingNotifs ? (
+                    <div className="p-4 text-center text-slate-400 dark:text-[#7C8189]">Loading notifications...</div>
+                  ) : notifications.length > 0 ? (
+                    notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        onClick={() => {
+                          if (!notif.is_read) handleMarkAsRead(notif.id);
+                        }}
+                        className={`p-3.5 hover:bg-[#D8CFBC]/15 dark:hover:bg-[#23261E] transition-colors flex items-start gap-3 cursor-pointer ${
+                          !notif.is_read ? "bg-[#D8CFBC]/10 dark:bg-[#D8CFBC]/[0.05]" : ""
+                        }`}
+                      >
                         {getNotifIcon(notif.type)}
                         <div className="flex-1 min-w-0 space-y-0.5">
-                          <div className="flex items-center justify-between gap-1">
-                            <p className={`font-semibold truncate ${!notif.is_read ? "text-slate-900 dark:text-[#F4F5F7]" : "text-slate-700 dark:text-[#CBD5E1]"}`}>
+                          <div className="flex items-center justify-between gap-1.5">
+                            <p className={`font-semibold truncate text-xs ${!notif.is_read ? "text-slate-900 dark:text-[#F4F5F7]" : "text-slate-700 dark:text-[#CBD5E1]"}`}>
                               {notif.title}
                             </p>
-                            {!notif.is_read && (<span className="w-2 h-2 rounded-full bg-slate-950 dark:bg-slate-100 shrink-0"/>)}
+                            {!notif.is_read && (
+                              <span className="w-2 h-2 rounded-full bg-[#565449] dark:bg-[#D8CFBC] shadow-[0_0_6px_rgba(86,84,73,0.4)] dark:shadow-[0_0_6px_rgba(216,207,188,0.5)] shrink-0"/>
+                            )}
                           </div>
                           <p className="text-slate-600 dark:text-[#9BA3AF] line-clamp-2 leading-relaxed text-[11px]">{notif.message}</p>
                           <div className="flex items-center justify-between pt-1 text-[10px] text-slate-400 dark:text-[#7C8189]">
-                            <span>{new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                            {notif.link && (<Link to={notif.link} onClick={() => setNotifOpen(false)} className="text-slate-950 dark:text-[#F4F5F7] hover:underline flex items-center gap-0.5 font-medium">
+                            <span className="font-mono">{new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            {notif.link && (
+                              <Link to={notif.link} onClick={() => setNotifOpen(false)} className="text-[#565449] dark:text-[#D8CFBC] hover:underline flex items-center gap-1 font-medium transition-colors">
                                 View Details <ExternalLink className="w-2.5 h-2.5"/>
-                              </Link>)}
+                              </Link>
+                            )}
                           </div>
                         </div>
-                      </div>))) : (<div className="p-6 text-center text-slate-500 dark:text-[#9BA3AF]">
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-6 text-center text-slate-500 dark:text-[#9BA3AF]">
                       <Bell className="w-6 h-6 mx-auto mb-1.5 text-slate-300 dark:text-slate-600"/>
                       <p className="font-medium text-slate-700 dark:text-[#CBD5E1]">No notifications</p>
                       <p className="text-[11px] text-slate-400 dark:text-[#7C8189] mt-0.5">You are all caught up!</p>
-                    </div>)}
+                    </div>
+                  )}
                 </div>
 
-                <div className="p-2 border-t border-slate-100 dark:border-[#33372B] bg-slate-50 dark:bg-[#11120D]/60 text-center">
-                  <Link to="/audit" onClick={() => setNotifOpen(false)} className="text-xs text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-slate-100 font-medium">
-                    View Full Audit Trails & System Logs →
+                <div className="p-2.5 border-t border-slate-100 dark:border-[#33372B] bg-slate-50/80 dark:bg-[#11120D] text-center">
+                  <Link to="/audit" onClick={() => setNotifOpen(false)} className="text-xs text-[#565449] dark:text-[#D8CFBC] hover:text-black dark:hover:text-white font-medium inline-flex items-center gap-1 transition-colors">
+                    <span>View Full Audit Trails & System Logs</span>
+                    <span>→</span>
                   </Link>
                 </div>
                 </motion.div>)}
