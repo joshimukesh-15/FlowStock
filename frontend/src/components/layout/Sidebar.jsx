@@ -92,20 +92,20 @@ export const Sidebar = () => {
       <aside
         className={`${
           collapsed ? "w-16" : "w-64"
-        } bg-white dark:bg-[#04222B] text-slate-700 dark:text-[#9BA3AF] flex flex-col shrink-0 border-r border-slate-200 dark:border-[#10606F] select-none transition-[width] duration-200 ease-out relative z-20 overflow-hidden`}
+        } bg-[#F7F3EA] dark:bg-[#1B2A20] text-[#4C6B55] dark:text-[#9BA3AF] flex flex-col shrink-0 border-r border-[#BDC9B8] dark:border-[#4C6B55] select-none transition-[width] duration-200 ease-out relative z-20 overflow-hidden`}
         aria-label="Primary navigation"
       >
         {/* Brand Header */}
-        <div className="h-12 flex items-center px-2 border-b border-slate-200 dark:border-[#10606F] shrink-0 overflow-hidden">
+        <div className="h-12 flex items-center px-2 border-b border-[#BDC9B8] dark:border-[#4C6B55] shrink-0 overflow-hidden">
           <button
             onClick={() => setCollapsed(!collapsed)}
             onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })}
             onMouseLeave={handleMouseLeave}
-            className="flex items-center min-w-0 w-full text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-[#4FB8B4] rounded p-0 cursor-pointer"
+            className="flex items-center min-w-0 w-full text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97] rounded p-0 cursor-pointer"
             aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
-              <span className="w-7 h-7 rounded-lg bg-[#1D8B94] border border-[#1D8B94] flex items-center justify-center shadow-xs p-0.5">
+              <span className="w-7 h-7 rounded-lg bg-[#6D8C73] border border-[#6D8C73] flex items-center justify-center shadow-xs p-0.5">
                 <Logomark className="w-5 h-5" />
               </span>
             </span>
@@ -115,10 +115,10 @@ export const Sidebar = () => {
                 collapsed ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
-              <span className="font-semibold text-xs text-slate-900 dark:text-[#F4F5F7] tracking-tight leading-none">
+              <span className="font-semibold text-xs text-[#314C3B] dark:text-[#F4F5F7] tracking-tight leading-none">
                 FlowStock
               </span>
-              <span className="text-[10px] text-slate-500 dark:text-[#9BA3AF] mt-0.5 leading-none">
+              <span className="text-[10px] text-[#6D8C73] dark:text-[#9BA3AF] mt-0.5 leading-none">
                 Operations Ledger
               </span>
             </div>
@@ -127,7 +127,7 @@ export const Sidebar = () => {
           {!collapsed && (
             <button
               onClick={() => setCollapsed(true)}
-              className="p-1 rounded text-slate-400 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#0A3D4A] transition-colors shrink-0 ml-auto mr-1 cursor-pointer"
+              className="p-1 rounded text-[#6D8C73] dark:text-[#9BA3AF] hover:text-[#314C3B] dark:hover:text-[#F4F5F7] hover:bg-[#E2DED2] dark:hover:bg-[#314C3B] transition-colors shrink-0 ml-auto mr-1 cursor-pointer"
               aria-label="Collapse sidebar"
               title="Collapse sidebar ([)"
             >
@@ -144,9 +144,9 @@ export const Sidebar = () => {
           {NAV_GROUPS.map((group) => (
             <div key={group.label} className="mb-3 last:mb-0">
               {collapsed ? (
-                <div className="mx-2 my-2 h-px bg-slate-200 dark:bg-[#10606F]" />
+                <div className="mx-2 my-2 h-px bg-[#BDC9B8] dark:bg-[#4C6B55]" />
               ) : (
-                <p className="px-2.5 mb-1 text-[11px] font-medium text-slate-500 dark:text-[#9BA3AF] whitespace-nowrap overflow-hidden">
+                <p className="px-2.5 mb-1 text-[11px] font-medium text-[#6D8C73] dark:text-[#9BA3AF] whitespace-nowrap overflow-hidden">
                   {group.label}
                 </p>
               )}
@@ -160,7 +160,7 @@ export const Sidebar = () => {
                       {active && (
                         <motion.span
                           layoutId="active-navigation-item"
-                          className="absolute inset-0 rounded-lg border border-[#4FB8B4]/30 bg-[#4FB8B4]/10 dark:bg-[#4FB8B4]/15"
+                          className="absolute inset-0 rounded-lg border border-[#92AA97]/30 bg-[#92AA97]/10 dark:bg-[#92AA97]/15"
                           transition={getTransition("normal", prefersReducedMotion)}
                           aria-hidden="true"
                         />
@@ -170,10 +170,10 @@ export const Sidebar = () => {
                         onMouseEnter={(e) => handleMouseEnter(e, item.label, { active })}
                         onMouseLeave={handleMouseLeave}
                         aria-current={active ? "page" : undefined}
-                        className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#4FB8B4] ${
+                        className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97] ${
                           active
-                            ? "text-slate-950 dark:text-[#4FB8B4] font-semibold"
-                            : "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#0A3D4A] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
+                            ? "text-[#1B2A20] dark:text-[#92AA97] font-semibold"
+                            : "text-[#4C6B55] dark:text-[#9BA3AF] hover:bg-[#E2DED2] dark:hover:bg-[#314C3B] hover:text-[#1B2A20] dark:hover:text-[#F4F5F7]"
                         }`}
                       >
                         {/* Fixed Icon slot - exact same 32px center in both collapsed & expanded */}
@@ -181,8 +181,8 @@ export const Sidebar = () => {
                           <Icon
                             className={`w-4 h-4 shrink-0 transition-colors ${
                               active
-                                ? "text-slate-950 dark:text-[#4FB8B4]"
-                                : "text-slate-400 dark:text-[#9BA3AF] group-hover:text-slate-700 dark:group-hover:text-slate-200"
+                                ? "text-[#1B2A20] dark:text-[#92AA97]"
+                                : "text-[#6D8C73] dark:text-[#9BA3AF] group-hover:text-[#4C6B55] dark:group-hover:text-slate-200"
                             }`}
                           />
                         </span>
@@ -200,7 +200,7 @@ export const Sidebar = () => {
                         </span>
 
                         {active && !collapsed && (
-                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#4FB8B4] shrink-0 mr-2" />
+                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#92AA97] shrink-0 mr-2" />
                         )}
                       </Link>
                     </li>
@@ -212,13 +212,13 @@ export const Sidebar = () => {
         </nav>
 
         {/* Bottom Sign Out */}
-        <div className="p-2 border-t border-slate-200 dark:border-[#10606F] shrink-0 overflow-hidden">
+        <div className="p-2 border-t border-[#BDC9B8] dark:border-[#4C6B55] shrink-0 overflow-hidden">
           <button
             onClick={() => {
               logout();
               navigate("/");
             }}
-            className="h-9 w-full flex items-center rounded-lg text-[13px] font-medium text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            className="h-9 w-full flex items-center rounded-lg text-[13px] font-medium text-[#6D8C73] hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-red-500"
             title="Sign Out & Return to Landing Page"
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
@@ -243,13 +243,13 @@ export const Sidebar = () => {
                 duration: prefersReducedMotion ? 0 : DURATION.micro,
                 ease: EASING.standard,
             }} style={{ top: hoveredTooltip.top }} className="fixed left-[72px] -translate-y-1/2 z-50 pointer-events-none">
-            <div className="relative bg-[#0A3D4A] text-[#F4F5F7] text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-[#10606F] whitespace-nowrap flex items-center gap-2">
-              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#0A3D4A] border-l border-b border-[#10606F] rotate-45"/>
+            <div className="relative bg-[#314C3B] text-[#F4F5F7] text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-[#4C6B55] whitespace-nowrap flex items-center gap-2">
+              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#314C3B] border-l border-b border-[#4C6B55] rotate-45"/>
               <span className="relative z-10">{hoveredTooltip.label}</span>
-              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#04222B] border border-[#10606F] rounded px-1 text-[#9BA3AF] font-mono">
+              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#1B2A20] border border-[#4C6B55] rounded px-1 text-[#9BA3AF] font-mono">
                   {hoveredTooltip.shortcut}
                 </kbd>)}
-              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#4FB8B4] shrink-0"/>)}
+              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#92AA97] shrink-0"/>)}
             </div>
           </motion.div>)}
       </AnimatePresence>

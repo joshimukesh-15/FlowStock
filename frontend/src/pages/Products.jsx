@@ -165,7 +165,7 @@ export default function ProductsPage() {
         <PageHeader title="Products & SKU Catalog" badge={currentOrg && <Badge variant="info" className="capitalize">{currentOrg.name}</Badge>} subtitle="Master catalog of stock items, selling rates, and classification" actions={<>
               <RefreshButton onClick={() => mutate()} />
               <Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)} className="gap-1.5">
-                <Tag className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
+                <Tag className="w-3.5 h-3.5 text-[#6D8C73] dark:text-[#9BA3AF]"/>
                 New Category
               </Button>
               <Button size="sm" onClick={handleOpenAdd} className="gap-1.5">
@@ -180,8 +180,8 @@ export default function ProductsPage() {
             <SearchBar placeholder="Search products by name or SKU..." value={searchTerm} onChange={setSearchTerm} onSubmit={(e) => e?.preventDefault()}/>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium shrink-0">Category:</span>
-              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-slate-200 dark:border-[#10606F] bg-white dark:bg-[#04222B] text-slate-900 dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#4FB8B4] focus:outline-none">
+              <span className="text-xs text-[#6D8C73] dark:text-[#9BA3AF] font-medium shrink-0">Category:</span>
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-[#BDC9B8] dark:border-[#4C6B55] bg-[#F7F3EA] dark:bg-[#1B2A20] text-[#314C3B] dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#92AA97] focus:outline-none">
                 <option value="">All Categories ({safeCategories.length})</option>
                 {safeCategories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
@@ -193,7 +193,7 @@ export default function ProductsPage() {
         <Card spotlight={true} className="overflow-hidden shadow-2xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-slate-50 dark:bg-[#04222B] border-b border-slate-100 dark:border-[#10606F] text-slate-500 dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-[#E2DED2] dark:bg-[#1B2A20] border-b border-[#E2DED2] dark:border-[#4C6B55] text-[#6D8C73] dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-2.5 px-3.5">SKU / Code</th>
                   <th className="py-2.5 px-3.5">Product Name</th>
@@ -206,7 +206,7 @@ export default function ProductsPage() {
                   <th className="py-2.5 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-[#10606F]">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#4C6B55]">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-14", "w-16", "w-16", "w-12", "w-24", "w-20"]}/>
@@ -221,26 +221,26 @@ export default function ProductsPage() {
                     </td>
                   </tr>) : (safeProducts.map((p) => {
             const margin = p.price > 0 ? (((p.price - p.cost_price) / p.price) * 100).toFixed(0) : "0";
-            return (<tr key={p.id} className="hover:bg-slate-50 dark:bg-[#04222B]/70 dark:hover:bg-[#0A3D4A]/50 transition-colors">
-                        <td className="py-2.5 px-3.5 font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">{p.sku}</td>
+            return (<tr key={p.id} className="hover:bg-[#E2DED2] dark:bg-[#1B2A20]/70 dark:hover:bg-[#314C3B]/50 transition-colors">
+                        <td className="py-2.5 px-3.5 font-mono font-semibold text-[#314C3B] dark:text-[#F4F5F7]">{p.sku}</td>
                         <td className="py-2.5 px-3.5">
-                          <p className="font-medium text-slate-900 dark:text-[#F4F5F7]">{p.name}</p>
-                          {p.description && <p className="text-[10px] text-slate-400 dark:text-[#7C8189] dark:text-slate-500 dark:text-[#9BA3AF] truncate max-w-xs">{p.description}</p>}
+                          <p className="font-medium text-[#314C3B] dark:text-[#F4F5F7]">{p.name}</p>
+                          {p.description && <p className="text-[10px] text-[#6D8C73] dark:text-[#7C8189] dark:text-[#6D8C73] dark:text-[#9BA3AF] truncate max-w-xs">{p.description}</p>}
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <span className="inline-block px-1.5 py-0.5 bg-slate-100 dark:bg-[#0A3D4A] dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1] rounded text-[10px] border border-slate-200 dark:border-[#10606F]">
+                          <span className="inline-block px-1.5 py-0.5 bg-[#E2DED2] dark:bg-[#314C3B] dark:bg-[#314C3B] text-[#4C6B55] dark:text-[#CBD5E1] dark:text-[#CBD5E1] rounded text-[10px] border border-[#BDC9B8] dark:border-[#4C6B55]">
                             {p.category?.name || "Uncategorized"}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3.5 text-center font-mono text-slate-500 dark:text-[#9BA3AF]">{p.unit}</td>
-                        <td className="py-2.5 px-3.5 text-right font-semibold text-slate-900 dark:text-[#F4F5F7] font-mono">
+                        <td className="py-2.5 px-3.5 text-center font-mono text-[#6D8C73] dark:text-[#9BA3AF]">{p.unit}</td>
+                        <td className="py-2.5 px-3.5 text-right font-semibold text-[#314C3B] dark:text-[#F4F5F7] font-mono">
                           ₹{p.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </td>
-                        <td className="py-2.5 px-3.5 text-right text-slate-500 dark:text-[#9BA3AF] font-mono">
+                        <td className="py-2.5 px-3.5 text-right text-[#6D8C73] dark:text-[#9BA3AF] font-mono">
                           ₹{p.cost_price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                         </td>
                         <td className="py-2.5 px-3.5 text-right font-mono">
-                          <span className={Number(margin) >= 30 ? "text-emerald-600 dark:text-[#4FB8B4] font-semibold" : "text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1]"}>
+                          <span className={Number(margin) >= 30 ? "text-emerald-600 dark:text-[#92AA97] font-semibold" : "text-[#4C6B55] dark:text-[#CBD5E1] dark:text-[#CBD5E1]"}>
                             {margin}%
                           </span>
                         </td>
@@ -252,7 +252,7 @@ export default function ProductsPage() {
                             type="button"
                             whileTap={{ scale: 0.90 }}
                             onClick={() => handleOpenEdit(p)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#0A3D4A] dark:hover:bg-slate-800 rounded-md text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#4FB8B4]"
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-[#E2DED2] dark:bg-[#314C3B] dark:hover:bg-slate-800 rounded-md text-[#6D8C73] dark:text-[#9BA3AF] hover:text-[#314C3B] dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97]"
                             title="Edit Product"
                             aria-label={`Edit ${p.name}`}
                           >
@@ -262,7 +262,7 @@ export default function ProductsPage() {
                             type="button"
                             whileTap={{ scale: 0.90 }}
                             onClick={() => handleDeleteProduct(p.id, p.name)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#0A3D4A] dark:hover:bg-slate-800 text-slate-400 dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-[#E2DED2] dark:bg-[#314C3B] dark:hover:bg-slate-800 text-[#6D8C73] dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Delete Product"
                             aria-label={`Delete ${p.name}`}
                           >
@@ -405,7 +405,7 @@ export default function ProductsPage() {
             }
         }} title="Delete Product" description={<>
                 Are you sure you want to delete{" "}
-                <strong className="text-slate-900 dark:text-white font-semibold">{deleteTarget?.name}</strong>?
+                <strong className="text-[#314C3B] dark:text-white font-semibold">{deleteTarget?.name}</strong>?
                 This will permanently remove the product and its SKU tracking from this organization.
               </>} confirmText="Delete Product" variant="danger"/>
       </motion.div>);

@@ -73,19 +73,19 @@ export default function AuditPage() {
     const getEntityIcon = (entity) => {
         switch (entity) {
             case "Order":
-                return <ShoppingCart className="w-3.5 h-3.5 text-slate-900"/>;
+                return <ShoppingCart className="w-3.5 h-3.5 text-[#314C3B]"/>;
             case "Invoice":
-                return <FileText className="w-3.5 h-3.5 text-slate-900"/>;
+                return <FileText className="w-3.5 h-3.5 text-[#314C3B]"/>;
             case "Payment":
-                return <CreditCard className="w-3.5 h-3.5 text-slate-900"/>;
+                return <CreditCard className="w-3.5 h-3.5 text-[#314C3B]"/>;
             case "Shipment":
-                return <Truck className="w-3.5 h-3.5 text-slate-900"/>;
+                return <Truck className="w-3.5 h-3.5 text-[#314C3B]"/>;
             case "Inventory":
-                return <Boxes className="w-3.5 h-3.5 text-slate-900"/>;
+                return <Boxes className="w-3.5 h-3.5 text-[#314C3B]"/>;
             case "PurchaseOrder":
-                return <Building2 className="w-3.5 h-3.5 text-slate-900"/>;
+                return <Building2 className="w-3.5 h-3.5 text-[#314C3B]"/>;
             default:
-                return <History className="w-3.5 h-3.5 text-slate-500"/>;
+                return <History className="w-3.5 h-3.5 text-[#6D8C73]"/>;
         }
     };
     const entities = [
@@ -109,47 +109,47 @@ export default function AuditPage() {
         {/* Metric Summary Cards */}
         <KpiGrid>
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#E2DED2] dark:bg-[#314C3B] text-[#4C6B55] dark:text-[#CBD5E1] border border-[#BDC9B8] dark:border-[#4C6B55] flex items-center justify-center shrink-0">
               <History className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-slate-500 dark:text-[#9BA3AF] truncate">Total Audit Events</p>
-              <p className="text-lg font-bold text-slate-900 dark:text-[#F4F5F7] font-mono mt-0.5">{audits.length}</p>
+              <p className="text-xs font-medium text-[#6D8C73] dark:text-[#9BA3AF] truncate">Total Audit Events</p>
+              <p className="text-lg font-bold text-[#314C3B] dark:text-[#F4F5F7] font-mono mt-0.5">{audits.length}</p>
             </div>
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#E2DED2] dark:bg-[#314C3B] text-[#4C6B55] dark:text-[#CBD5E1] border border-[#BDC9B8] dark:border-[#4C6B55] flex items-center justify-center shrink-0">
               <CreditCard className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-slate-500 dark:text-[#9BA3AF] truncate">Financial & Invoices</p>
-              <p className="text-lg font-bold text-slate-900 dark:text-[#F4F5F7] font-mono mt-0.5">
+              <p className="text-xs font-medium text-[#6D8C73] dark:text-[#9BA3AF] truncate">Financial & Invoices</p>
+              <p className="text-lg font-bold text-[#314C3B] dark:text-[#F4F5F7] font-mono mt-0.5">
                 {audits.filter((a) => a.entity_type === "Invoice" || a.entity_type === "Payment").length}
               </p>
             </div>
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#E2DED2] dark:bg-[#314C3B] text-[#4C6B55] dark:text-[#CBD5E1] border border-[#BDC9B8] dark:border-[#4C6B55] flex items-center justify-center shrink-0">
               <Boxes className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-slate-500 dark:text-[#9BA3AF] truncate">Inventory Movements</p>
-              <p className="text-lg font-bold text-slate-900 dark:text-[#F4F5F7] font-mono mt-0.5">
+              <p className="text-xs font-medium text-[#6D8C73] dark:text-[#9BA3AF] truncate">Inventory Movements</p>
+              <p className="text-lg font-bold text-[#314C3B] dark:text-[#F4F5F7] font-mono mt-0.5">
                 {audits.filter((a) => a.entity_type === "Inventory").length}
               </p>
             </div>
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-[#4FB8B4]/10 text-slate-900 dark:text-[#4FB8B4] border border-[#4FB8B4]/20 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#92AA97]/10 text-[#314C3B] dark:text-[#92AA97] border border-[#92AA97]/20 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-slate-500 dark:text-[#9BA3AF] truncate">Tenant Isolation</p>
+              <p className="text-xs font-medium text-[#6D8C73] dark:text-[#9BA3AF] truncate">Tenant Isolation</p>
               <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">Enforced</span>
+                <span className="text-sm font-semibold text-[#314C3B] dark:text-[#F4F5F7]">Enforced</span>
                 <Badge variant="success">Active</Badge>
               </div>
             </div>
@@ -178,21 +178,21 @@ export default function AuditPage() {
 
         {/* Audit Log Table */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#10606F] flex flex-row items-center justify-between">
+          <CardHeader className="py-3 px-4 border-b border-[#E2DED2] dark:border-[#4C6B55] flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">Audit Trail Records</CardTitle>
-              <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+              <CardTitle className="text-sm font-semibold text-[#314C3B] dark:text-[#F4F5F7]">Audit Trail Records</CardTitle>
+              <p className="text-xs text-[#6D8C73] dark:text-[#9BA3AF] mt-0.5">
                 Sorted chronologically by event timestamp (UTC)
               </p>
             </div>
-            <span className="text-xs font-mono text-slate-400 dark:text-[#7C8189]">
+            <span className="text-xs font-mono text-[#6D8C73] dark:text-[#7C8189]">
               Showing {audits.length} entries
             </span>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
-                <thead className="bg-slate-50 dark:bg-[#1C1F27] text-slate-500 dark:text-[#9BA3AF] font-semibold border-b border-slate-100 dark:border-[#2A2E39] text-[11px] uppercase tracking-wider">
+              <table className="w-full text-left text-xs text-[#4C6B55] dark:text-[#CBD5E1]">
+                <thead className="bg-[#E2DED2] dark:bg-[#1C1F27] text-[#6D8C73] dark:text-[#9BA3AF] font-semibold border-b border-[#E2DED2] dark:border-[#2A2E39] text-[11px] uppercase tracking-wider">
                   <tr>
                     <th className="py-2.5 px-3.5">Timestamp</th>
                     <th className="py-2.5 px-3.5">Action</th>
@@ -203,38 +203,38 @@ export default function AuditPage() {
                     <th className="py-2.5 px-3.5 text-right">Host IP</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-[#10606F]">
+                <tbody className="divide-y divide-slate-100 dark:divide-[#4C6B55]">
                   {loading ? (<tr>
                       <td colSpan={7} className="p-4">
                         <TableSkeleton rows={5} columns={["w-36", "w-24", "w-24", "w-32", "w-28", "w-56", "w-24"]}/>
                         <SkeletonAnnouncer label="Loading audit trails"/>
                       </td>
-                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-slate-50/70 dark:hover:bg-[#0A3D4A]/50 transition-colors">
-                        <td className="py-2.5 px-3.5 font-mono text-slate-500 dark:text-[#9BA3AF] whitespace-nowrap">
+                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-[#E2DED2]/70 dark:hover:bg-[#314C3B]/50 transition-colors">
+                        <td className="py-2.5 px-3.5 font-mono text-[#6D8C73] dark:text-[#9BA3AF] whitespace-nowrap">
                           {formatDate(item.created_at, true)}
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap">
                           {getActionBadge(item.action)}
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1.5 font-medium text-slate-700 dark:text-[#CBD5E1]">
+                          <span className="inline-flex items-center gap-1.5 font-medium text-[#4C6B55] dark:text-[#CBD5E1]">
                             {getEntityIcon(item.entity_type)}
                             {item.entity_type}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3.5 font-mono font-semibold text-slate-900 dark:text-[#F4F5F7] whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-mono font-semibold text-[#314C3B] dark:text-[#F4F5F7] whitespace-nowrap">
                           {item.entity_name || "—"}
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1 text-slate-700 dark:text-[#CBD5E1] font-medium">
-                            <User className="w-3 h-3 text-slate-400"/>
+                          <span className="inline-flex items-center gap-1 text-[#4C6B55] dark:text-[#CBD5E1] font-medium">
+                            <User className="w-3 h-3 text-[#6D8C73]"/>
                             {item.user_name || "System"}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3.5 text-slate-600 dark:text-[#9BA3AF] max-w-md">
+                        <td className="py-2.5 px-3.5 text-[#4C6B55] dark:text-[#9BA3AF] max-w-md">
                           <p className="line-clamp-2 leading-relaxed text-[11px]">{item.details || "No details"}</p>
                         </td>
-                        <td className="py-2.5 px-3.5 font-mono text-slate-400 dark:text-[#7C8189] text-right whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-mono text-[#6D8C73] dark:text-[#7C8189] text-right whitespace-nowrap">
                           {item.ip_address || "127.0.0.1"}
                         </td>
                       </tr>))) : (<tr>

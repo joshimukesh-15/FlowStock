@@ -66,16 +66,16 @@ export function RefreshButton({
       whileTap={!disabled && !isSpinning && !prefersReducedMotion ? { scale: 0.98 } : undefined}
       transition={{ type: "spring", stiffness: 500, damping: 30 }}
       className={cn(
-        "group relative inline-flex items-center justify-center gap-1.5 rounded-lg border font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight transition-all duration-150 ease-out outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4FB8B4] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#04222B] disabled:opacity-50 disabled:pointer-events-none",
+        "group relative inline-flex items-center justify-center gap-1.5 rounded-lg border font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight transition-all duration-150 ease-out outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1B2A20] disabled:opacity-50 disabled:pointer-events-none",
         size === "xs" && "h-7 px-2.5 text-xs",
         size === "sm" && "h-8 px-3 text-xs",
         size === "md" && "h-9 px-3.5 text-xs sm:text-sm",
         size === "lg" && "h-10 px-4 text-sm font-medium",
         size === "xl" && "h-11 px-5 text-base font-semibold",
         variant === "outline" &&
-          "border-slate-300 dark:border-[#10606F] bg-white dark:bg-[#04222B] text-slate-700 dark:text-[#D1D5DB] hover:bg-slate-50 dark:hover:bg-[#0A3D4A] hover:text-slate-900 dark:hover:text-white shadow-2xs",
+          "border-[#BDC9B8] dark:border-[#4C6B55] bg-[#F7F3EA] dark:bg-[#1B2A20] text-[#4C6B55] dark:text-[#D1D5DB] hover:bg-[#E2DED2] dark:hover:bg-[#314C3B] hover:text-[#314C3B] dark:hover:text-white shadow-2xs",
         variant === "primary" &&
-          "bg-[#4FB8B4] text-[#04222B] border border-[#98D8D0] font-semibold hover:bg-[#98D8D0] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(79,184,180,0.2)] hover:shadow-[0_2px_8px_rgba(79,184,180,0.35)]",
+          "bg-[#92AA97] text-[#1B2A20] border border-[#BDC9B8] font-semibold hover:bg-[#BDC9B8] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(146,170,151,0.2)] hover:shadow-[0_2px_8px_rgba(146,170,151,0.35)]",
         isSpinning && "cursor-wait",
         className
       )}
@@ -87,8 +87,8 @@ export function RefreshButton({
             iconClassName,
             "origin-center transition-colors duration-200",
             isSpinning && !prefersReducedMotion
-              ? "animate-spin text-slate-900 dark:text-[#4FB8B4]"
-              : "text-slate-500 dark:text-[#9BA3AF] transition-transform duration-300 ease-out group-hover:rotate-45 group-hover:text-slate-900 dark:group-hover:text-white"
+              ? "animate-spin text-[#314C3B] dark:text-[#92AA97]"
+              : "text-[#6D8C73] dark:text-[#9BA3AF] transition-transform duration-300 ease-out group-hover:rotate-45 group-hover:text-[#314C3B] dark:group-hover:text-white"
           )}
         />
       </span>

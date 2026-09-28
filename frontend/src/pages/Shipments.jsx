@@ -273,7 +273,7 @@ export default function ShipmentsPage() {
     return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <Truck className="w-7 h-7 text-slate-900 dark:text-[#F4F5F7]"/>
+            <Truck className="w-7 h-7 text-[#314C3B] dark:text-[#F4F5F7]"/>
             Shipments & Logistics Tracking
           </span>} subtitle="Consignment dispatch, carrier manifests, real-time AWB tracking, and checkpoint timelines." actions={<>
             <RefreshButton onClick={loadData} />
@@ -321,7 +321,7 @@ export default function ShipmentsPage() {
 
         {/* Table & Controls Card */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="p-4 pb-3 border-b border-slate-100 dark:border-[#10606F]">
+          <CardHeader className="p-4 pb-3 border-b border-[#E2DED2] dark:border-[#4C6B55]">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={[
@@ -346,8 +346,8 @@ export default function ShipmentsPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Shipment
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
-                  <thead className="bg-slate-50 dark:bg-[#1C1F27] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#2A2E39]">
+                <table className="w-full text-left text-xs text-[#4C6B55] dark:text-[#CBD5E1]">
+                  <thead className="bg-[#E2DED2] dark:bg-[#1C1F27] text-[11px] text-[#6D8C73] dark:text-[#9BA3AF] uppercase tracking-wider border-b border-[#E2DED2] dark:border-[#2A2E39]">
                     <tr>
                       <th className="py-2.5 px-3.5 font-semibold">Shipment #</th>
                       <th className="py-2.5 px-3.5 font-semibold">Order / Customer</th>
@@ -358,39 +358,39 @@ export default function ShipmentsPage() {
                       <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-[#10606F]">
-                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-slate-50/70 dark:hover:bg-[#0A3D4A]/50 transition-colors group">
-                        <td className="py-2.5 px-3.5 font-mono font-medium text-slate-900 dark:text-[#F4F5F7]">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#4C6B55]">
+                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-[#E2DED2]/70 dark:hover:bg-[#314C3B]/50 transition-colors group">
+                        <td className="py-2.5 px-3.5 font-mono font-medium text-[#314C3B] dark:text-[#F4F5F7]">
                           {s.shipment_number}
-                          <div className="text-[10px] text-slate-400 dark:text-[#7C8189] font-sans mt-0.5">
+                          <div className="text-[10px] text-[#6D8C73] dark:text-[#7C8189] font-sans mt-0.5">
                             {formatDate(s.created_at)}
                           </div>
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <span className="font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                          <span className="font-semibold text-[#314C3B] dark:text-[#F4F5F7]">
                             {s.order?.order_number || "Order"}
                           </span>
-                          <div className="text-xs text-slate-500 dark:text-[#9BA3AF]">
+                          <div className="text-xs text-[#6D8C73] dark:text-[#9BA3AF]">
                             {s.order?.customer?.name || "B2B Consignee"}
                           </div>
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <div className="font-medium text-slate-800 dark:text-[#E2E8F0]">
+                          <div className="font-medium text-[#314C3B] dark:text-[#E2E8F0]">
                             {s.carrier}
                           </div>
-                          <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-slate-100 dark:bg-[#0A3D4A] px-1.5 py-0.5 rounded text-slate-600 dark:text-[#9BA3AF] border border-slate-200 dark:border-[#10606F] mt-0.5">
+                          <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-[#E2DED2] dark:bg-[#314C3B] px-1.5 py-0.5 rounded text-[#4C6B55] dark:text-[#9BA3AF] border border-[#BDC9B8] dark:border-[#4C6B55] mt-0.5">
                             {s.tracking_number}
                           </span>
                         </td>
                         <td className="py-2.5 px-3.5 max-w-[220px]">
-                          <div className="text-xs truncate text-slate-700 dark:text-[#CBD5E1] font-medium">
+                          <div className="text-xs truncate text-[#4C6B55] dark:text-[#CBD5E1] font-medium">
                             {s.destination_address}
                           </div>
-                          <div className="text-[10px] text-slate-400 dark:text-[#7C8189] truncate mt-0.5">
+                          <div className="text-[10px] text-[#6D8C73] dark:text-[#7C8189] truncate mt-0.5">
                             From: {s.origin_address || "Fulfillment Center"}
                           </div>
                         </td>
-                        <td className="py-2.5 px-3.5 font-semibold text-slate-900 dark:text-[#F4F5F7] font-mono">
+                        <td className="py-2.5 px-3.5 font-semibold text-[#314C3B] dark:text-[#F4F5F7] font-mono">
                           {formatINR(s.shipping_cost || 0)}
                         </td>
                         <td className="py-2.5 px-3.5">
@@ -404,7 +404,7 @@ export default function ShipmentsPage() {
                               onClick={() => setDetailShipment(s)}
                               title="Track Shipment Details"
                             >
-                              <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                              <Eye className="w-3.5 h-3.5 text-[#6D8C73] dark:text-[#6D8C73]" />
                               Track
                             </Button>
                             {s.status === "PENDING" && (
@@ -469,7 +469,7 @@ export default function ShipmentsPage() {
           {/* Select Sales Order */}
           <FormField label="Sales Order to Ship *">
             {eligibleOrdersForShipping.length === 0 ? (
-              <div className="p-3 text-xs bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#10606F] text-slate-700 dark:text-[#CBD5E1] rounded-lg">
+              <div className="p-3 text-xs bg-[#E2DED2] dark:bg-[#1C1F27] border border-[#BDC9B8] dark:border-[#4C6B55] text-[#4C6B55] dark:text-[#CBD5E1] rounded-lg">
                 No confirmed or fulfilled sales orders available to ship. Please confirm a draft sales order first in Orders & Sales.
               </div>
             ) : (
@@ -510,7 +510,7 @@ export default function ShipmentsPage() {
                   <button
                     type="button"
                     onClick={handleGenerateTracking}
-                    className="text-[11px] text-slate-900 dark:text-[#F4F5F7] hover:underline font-normal"
+                    className="text-[11px] text-[#314C3B] dark:text-[#F4F5F7] hover:underline font-normal"
                   >
                     Auto-generate
                   </button>
@@ -551,7 +551,7 @@ export default function ShipmentsPage() {
           {/* Freight Cost */}
           <FormField label="Shipping & Logistics Cost (₹)">
             <div className="relative">
-              <span className="absolute left-3 top-2.5 text-slate-500 text-sm">₹</span>
+              <span className="absolute left-3 top-2.5 text-[#6D8C73] text-sm">₹</span>
               <Input
                 type="number"
                 step="0.01"
@@ -578,20 +578,20 @@ export default function ShipmentsPage() {
         <Modal isOpen={!!detailShipment} onClose={() => setDetailShipment(null)} maxWidth="2xl" className="flex flex-col max-h-[90vh] overflow-hidden">
           {detailShipment && (<>
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/40">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2DED2] bg-[#E2DED2]/40">
                 <div>
                   <div className="flex items-center gap-2.5">
-                    <h2 className="text-lg font-bold text-slate-900 font-mono">
+                    <h2 className="text-lg font-bold text-[#314C3B] font-mono">
                       {detailShipment.shipment_number}
                     </h2>
                     <StatusBadge status={detailShipment.status} type="shipment" />
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Carrier: <span className="text-slate-900 font-medium">{detailShipment.carrier}</span> &bull; AWB:{" "}
-                    <span className="font-mono text-slate-900">{detailShipment.tracking_number}</span>
+                  <p className="text-xs text-[#6D8C73] mt-0.5">
+                    Carrier: <span className="text-[#314C3B] font-medium">{detailShipment.carrier}</span> &bull; AWB:{" "}
+                    <span className="font-mono text-[#314C3B]">{detailShipment.tracking_number}</span>
                   </p>
                 </div>
-                <button onClick={() => setDetailShipment(null)} className="text-slate-400 hover:text-slate-700">
+                <button onClick={() => setDetailShipment(null)} className="text-[#6D8C73] hover:text-[#4C6B55]">
                   <X className="w-5 h-5"/>
                 </button>
               </div>
@@ -600,46 +600,46 @@ export default function ShipmentsPage() {
                 {/* Consignment Lifecycle Stepper (Real backend status) */}
                 <ShipmentLifecycleStepper status={detailShipment.status} carrier={detailShipment.carrier} trackingNumber={detailShipment.tracking_number}/>
                 {/* Route & Consignment Info Banner */}
-                <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-4 rounded-lg bg-[#E2DED2] border border-[#BDC9B8] grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-[#6D8C73] block uppercase tracking-wider text-[10px]">
                       Origin Dispatch Hub
                     </span>
-                    <span className="text-slate-900 font-medium flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0"/>
+                    <span className="text-[#314C3B] font-medium flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3.5 h-3.5 text-[#6D8C73] shrink-0"/>
                       {detailShipment.origin_address || "Central DC"}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-[#6D8C73] block uppercase tracking-wider text-[10px]">
                       Destination Consignee
                     </span>
-                    <span className="text-slate-900 font-medium flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3.5 h-3.5 text-slate-900 shrink-0"/>
+                    <span className="text-[#314C3B] font-medium flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3.5 h-3.5 text-[#314C3B] shrink-0"/>
                       {detailShipment.destination_address}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-[#6D8C73] block uppercase tracking-wider text-[10px]">
                       Sales Order Reference
                     </span>
-                    <span className="text-slate-900 font-medium mt-0.5 block">
+                    <span className="text-[#314C3B] font-medium mt-0.5 block">
                       {detailShipment.order?.order_number} &bull; {detailShipment.order?.customer?.name}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block uppercase tracking-wider text-[10px]">
+                    <span className="text-[#6D8C73] block uppercase tracking-wider text-[10px]">
                       Freight Cost (₹)
                     </span>
-                    <span className="text-slate-900 font-bold mt-0.5 block">
+                    <span className="text-[#314C3B] font-bold mt-0.5 block">
                       {formatINR(detailShipment.shipping_cost || 0)}
                     </span>
                   </div>
                 </div>
 
                 {/* State Machine Transition Actions */}
-                <div className="p-3.5 bg-slate-50 dark:bg-[#04222B] rounded-lg border border-slate-200 dark:border-[#10606F] flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#7C8189]">
+                <div className="p-3.5 bg-[#E2DED2] dark:bg-[#1B2A20] rounded-lg border border-[#BDC9B8] dark:border-[#4C6B55] flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#6D8C73] dark:text-[#7C8189]">
                     Workflow Actions:
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
@@ -668,12 +668,12 @@ export default function ShipmentsPage() {
 
                 {/* Visual Timeline Section */}
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-1.5">
-                    <Navigation className="w-4 h-4 text-slate-900"/>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6D8C73] mb-4 flex items-center gap-1.5">
+                    <Navigation className="w-4 h-4 text-[#314C3B]"/>
                     Tracking Journey Timeline ({detailShipment.events?.length || 0} Checkpoints)
                   </h4>
 
-                  <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                  <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#BDC9B8]">
                     {(detailShipment.events || []).map((ev, idx) => (<motion.div key={ev.id || idx} className="relative group" initial={{ opacity: 0, y: prefersReducedMotion ? 0 : DISTANCE.normal }} animate={{ opacity: 1, y: 0 }} transition={{
                     duration: prefersReducedMotion ? 0 : DURATION.normal,
                     delay: prefersReducedMotion ? 0 : idx * STAGGER.timeline,
@@ -682,23 +682,23 @@ export default function ShipmentsPage() {
                         <div className={`absolute -left-6 top-1 w-5 h-5 rounded-full border-2 flex items-center justify-center ${ev.status === "DELIVERED"
                     ? "bg-slate-950 border-zinc-950 text-white"
                     : ev.status === "CANCELLED"
-                        ? "bg-slate-200 border-zinc-400 text-slate-700"
+                        ? "bg-[#BDC9B8] border-zinc-400 text-[#4C6B55]"
                         : ev.status === "OUT_FOR_DELIVERY"
                             ? "bg-slate-800 border-zinc-800 text-white"
                             : ev.status === "IN_TRANSIT"
                                 ? "bg-zinc-600 border-zinc-600 text-white"
-                                : "bg-slate-100 border-slate-300 text-slate-500"}`}>
+                                : "bg-[#E2DED2] border-[#BDC9B8] text-[#6D8C73]"}`}>
                           <div className="w-1.5 h-1.5 rounded-full bg-current"/>
                         </div>
 
                         {/* Timeline Card */}
-                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs">
+                        <div className="bg-[#E2DED2] border border-[#BDC9B8] rounded-lg p-3 text-xs">
                           <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="font-semibold text-slate-900 flex items-center gap-1.5">
-                              <MapPin className="w-3.5 h-3.5 text-slate-400"/>
+                            <span className="font-semibold text-[#314C3B] flex items-center gap-1.5">
+                              <MapPin className="w-3.5 h-3.5 text-[#6D8C73]"/>
                               {ev.location}
                             </span>
-                            <span className="text-[11px] text-slate-500 font-mono">
+                            <span className="text-[11px] text-[#6D8C73] font-mono">
                               {new Date(ev.created_at).toLocaleString("en-IN", {
                     month: "short",
                     day: "2-digit",
@@ -707,7 +707,7 @@ export default function ShipmentsPage() {
                 })}
                             </span>
                           </div>
-                          <p className="text-slate-700">{ev.description}</p>
+                          <p className="text-[#4C6B55]">{ev.description}</p>
                           <div className="mt-1.5 flex items-center gap-2">
                             <StatusBadge status={ev.status} type="shipment" />
                           </div>
@@ -718,13 +718,13 @@ export default function ShipmentsPage() {
 
                 {/* Add Custom Transit Checkpoint Form */}
                 {detailShipment.status !== "DELIVERED" &&
-                detailShipment.status !== "CANCELLED" && (<form onSubmit={handleAddCheckpoint} className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
-                      <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                detailShipment.status !== "CANCELLED" && (<form onSubmit={handleAddCheckpoint} className="p-4 bg-[#E2DED2] border border-[#BDC9B8] rounded-lg space-y-3">
+                      <h5 className="text-xs font-semibold uppercase tracking-wider text-[#6D8C73]">
                         + Log Real-Time Checkpoint Scan
                       </h5>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <Input placeholder="Location (e.g. Pune Gateway Hub)" value={newCheckpointLocation} onChange={(e) => setNewCheckpointLocation(e.target.value)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
-                        <Input placeholder="Checkpoint scan details..." value={newCheckpointDesc} onChange={(e) => setNewCheckpointDesc(e.target.value)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
+                        <Input placeholder="Location (e.g. Pune Gateway Hub)" value={newCheckpointLocation} onChange={(e) => setNewCheckpointLocation(e.target.value)} className="bg-[#F7F3EA] border-[#BDC9B8] text-xs h-8 text-[#314C3B]" required/>
+                        <Input placeholder="Checkpoint scan details..." value={newCheckpointDesc} onChange={(e) => setNewCheckpointDesc(e.target.value)} className="bg-[#F7F3EA] border-[#BDC9B8] text-xs h-8 text-[#314C3B]" required/>
                       </div>
                       <div className="text-right">
                         <Button type="submit" size="sm" variant="solid" isLoading={loggingCheckpoint}>

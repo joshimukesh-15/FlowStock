@@ -270,7 +270,7 @@ export default function OrdersPage() {
     return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <ShoppingCart className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
+            <ShoppingCart className="w-6 h-6 text-[#314C3B] dark:text-[#F4F5F7]"/>
             Sales Orders & Stock Allocation
           </span>} subtitle="B2B customer order lifecycle, inventory reservation, and dispatch fulfillment." actions={<>
             <RefreshButton onClick={() => mutate()} />
@@ -317,7 +317,7 @@ export default function OrdersPage() {
 
         {/* Orders Table Container */}
         <Card className="">
-          <CardHeader className="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <CardHeader className="border-b border-[#BDC9B8] pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by order # or customer..." className="w-64"/>
 
@@ -325,8 +325,8 @@ export default function OrdersPage() {
               <Tabs tabs={["ALL", "DRAFT", "CONFIRMED", "FULFILLED", "CANCELLED"]} activeTab={statusFilter} onChange={setStatusFilter} layoutId="orders-status-tabs" variant="pill"/>
             </div>
 
-            <div className="text-xs text-slate-500">
-              Showing <span className="font-semibold text-slate-900">{filteredOrders.length}</span> orders
+            <div className="text-xs text-[#6D8C73]">
+              Showing <span className="font-semibold text-[#314C3B]">{filteredOrders.length}</span> orders
             </div>
           </CardHeader>
 
@@ -338,8 +338,8 @@ export default function OrdersPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Sales Order
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-700">
-                  <thead className="bg-slate-50 text-xs uppercase font-medium text-slate-500 border-b border-slate-200">
+                <table className="w-full text-left text-sm text-[#4C6B55]">
+                  <thead className="bg-[#E2DED2] text-xs uppercase font-medium text-[#6D8C73] border-b border-[#BDC9B8]">
                     <tr>
                       <th className="py-3.5 px-4">Order #</th>
                       <th className="py-3.5 px-4">Customer</th>
@@ -354,36 +354,36 @@ export default function OrdersPage() {
                     {filteredOrders.map((o) => {
                 const isActing = actionLoading === o.id;
                 const itemCount = o.items.reduce((acc, it) => acc + it.quantity, 0);
-                return (<tr key={o.id} className="hover:bg-slate-50 transition-colors">
-                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-slate-900">
+                return (<tr key={o.id} className="hover:bg-[#E2DED2] transition-colors">
+                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-[#314C3B]">
                             {o.order_number}
-                            <div className="text-[10px] font-normal text-slate-500 mt-0.5">
+                            <div className="text-[10px] font-normal text-[#6D8C73] mt-0.5">
                               {formatDate(o.created_at)}
                             </div>
                           </td>
                           <td className="py-3.5 px-4">
-                            <div className="font-medium text-slate-900">{o.customer?.name || "Customer"}</div>
-                            <div className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
-                              {o.customer?.company && (<span className="font-medium text-slate-700">
+                            <div className="font-medium text-[#314C3B]">{o.customer?.name || "Customer"}</div>
+                            <div className="text-xs text-[#6D8C73] flex items-center gap-1.5 mt-0.5">
+                              {o.customer?.company && (<span className="font-medium text-[#4C6B55]">
                                   {o.customer.company}
                                 </span>)}
-                              <span className="text-slate-500 font-mono text-[11px]">
+                              <span className="text-[#6D8C73] font-mono text-[11px]">
                                 {o.customer?.email}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3.5 px-4 text-xs text-slate-400">
+                          <td className="py-3.5 px-4 text-xs text-[#6D8C73]">
                             {o.warehouse ? (<div>
-                                <span className="text-slate-700">{o.warehouse.name}</span>
-                                <span className="font-mono text-[10px] text-slate-500 block">
+                                <span className="text-[#4C6B55]">{o.warehouse.name}</span>
+                                <span className="font-mono text-[10px] text-[#6D8C73] block">
                                   {o.warehouse.code}
                                 </span>
                               </div>) : ("Default Facility")}
                           </td>
-                          <td className="py-3.5 px-4 text-center font-mono text-xs text-slate-700">
+                          <td className="py-3.5 px-4 text-center font-mono text-xs text-[#4C6B55]">
                             {o.items.length} lines ({itemCount} units)
                           </td>
-                          <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900">
+                          <td className="py-3.5 px-4 text-right font-mono font-bold text-[#314C3B]">
                             ₹{o.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3.5 px-4 text-center">
@@ -397,7 +397,7 @@ export default function OrdersPage() {
                                 onClick={() => setDetailOrder(o)}
                                 title="View Order Details"
                               >
-                                <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                                <Eye className="w-3.5 h-3.5 text-[#6D8C73] dark:text-[#6D8C73]" />
                                 Details
                               </Button>
 
@@ -418,7 +418,7 @@ export default function OrdersPage() {
                                     size="xs"
                                     onClick={() => handleCancelOrder(o.id)}
                                     disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                    className="text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                     title="Cancel Order"
                                   >
                                     Cancel
@@ -443,7 +443,7 @@ export default function OrdersPage() {
                                     size="xs"
                                     onClick={() => handleCancelOrder(o.id)}
                                     disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                    className="text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                     title="Cancel Order"
                                   >
                                     Cancel
@@ -507,7 +507,7 @@ export default function OrdersPage() {
           {/* Line Items Section */}
           <div className="pt-2">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF]">
+              <label className="text-xs font-semibold uppercase tracking-wider text-[#6D8C73] dark:text-[#9BA3AF]">
                 Order Line Items
               </label>
               <Button
@@ -526,7 +526,7 @@ export default function OrdersPage() {
               {orderItems.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#10606F] text-xs"
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-[#E2DED2] dark:bg-[#1C1F27] border border-[#BDC9B8] dark:border-[#4C6B55] text-xs"
                 >
                   <div className="flex-1">
                     <select
@@ -555,7 +555,7 @@ export default function OrdersPage() {
 
                   <div className="w-24">
                     <div className="relative">
-                      <span className="absolute left-2.5 top-2 text-slate-500 text-xs">₹</span>
+                      <span className="absolute left-2.5 top-2 text-[#6D8C73] text-xs">₹</span>
                       <Input
                         type="number"
                         step="0.01"
@@ -568,7 +568,7 @@ export default function OrdersPage() {
                     </div>
                   </div>
 
-                  <div className="w-24 text-right font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                  <div className="w-24 text-right font-mono font-semibold text-[#314C3B] dark:text-[#F4F5F7]">
                     ₹{(item.quantity * item.unit_price).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                   </div>
 
@@ -578,8 +578,8 @@ export default function OrdersPage() {
                     disabled={orderItems.length <= 1}
                     className={`p-1.5 rounded transition-colors ${
                       orderItems.length <= 1
-                        ? "text-slate-400 cursor-not-allowed"
-                        : "text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                        ? "text-[#6D8C73] cursor-not-allowed"
+                        : "text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                     }`}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -589,11 +589,11 @@ export default function OrdersPage() {
             </div>
 
             {/* Total Summary */}
-            <div className="flex items-center justify-between p-3 mt-3 bg-slate-50 dark:bg-[#1C1F27] rounded-lg border border-slate-200 dark:border-[#10606F]">
-              <span className="text-xs text-slate-500 dark:text-[#9BA3AF]">
+            <div className="flex items-center justify-between p-3 mt-3 bg-[#E2DED2] dark:bg-[#1C1F27] rounded-lg border border-[#BDC9B8] dark:border-[#4C6B55]">
+              <span className="text-xs text-[#6D8C73] dark:text-[#9BA3AF]">
                 Total Order Amount ({orderItems.length} items):
               </span>
-              <span className="text-base font-bold font-mono text-slate-950 dark:text-[#F4F5F7]">
+              <span className="text-base font-bold font-mono text-[#1B2A20] dark:text-[#F4F5F7]">
                 ₹{orderCalculatedTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </span>
             </div>
@@ -668,23 +668,23 @@ export default function OrdersPage() {
         {/* Modal: Order Details & Status Workflow */}
         <Modal isOpen={!!detailOrder} onClose={() => setDetailOrder(null)} maxWidth="2xl" className="p-6 max-h-[90vh] flex flex-col">
           {detailOrder && (<>
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-4 border-b border-[#E2DED2]">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-slate-900/10 text-slate-900 flex items-center justify-center border border-zinc-900/20">
+                  <div className="w-9 h-9 rounded-lg bg-slate-900/10 text-[#314C3B] flex items-center justify-center border border-zinc-900/20">
                     <ShoppingCart className="w-5 h-5"/>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900 text-lg font-mono">
+                    <h3 className="font-semibold text-[#314C3B] text-lg font-mono">
                       {detailOrder.order_number}
                     </h3>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-[#6D8C73]">
                       Created on {formatDate(detailOrder.created_at)} &bull; {detailOrder.customer?.name}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={detailOrder.status} type="order" />
-                  <button onClick={() => setDetailOrder(null)} className="text-slate-400 hover:text-slate-700 ml-2">
+                  <button onClick={() => setDetailOrder(null)} className="text-[#6D8C73] hover:text-[#4C6B55] ml-2">
                     <X className="w-5 h-5"/>
                   </button>
                 </div>
@@ -695,24 +695,24 @@ export default function OrdersPage() {
                 <OrderLifecycleStepper status={detailOrder.status} createdAt={detailOrder.created_at} updatedAt={detailOrder.updated_at}/>
 
                 {/* Customer Info Card */}
-                <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 grid grid-cols-2 gap-3 text-xs">
+                <div className="p-3.5 rounded-lg bg-[#E2DED2] border border-[#BDC9B8] grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-slate-500 block">Customer</span>
-                    <span className="font-semibold text-slate-900">{detailOrder.customer?.name}</span>
-                    {detailOrder.customer?.company && (<span className="text-slate-500 block">{detailOrder.customer.company}</span>)}
-                    <span className="text-slate-500 font-mono block mt-0.5">
+                    <span className="text-[#6D8C73] block">Customer</span>
+                    <span className="font-semibold text-[#314C3B]">{detailOrder.customer?.name}</span>
+                    {detailOrder.customer?.company && (<span className="text-[#6D8C73] block">{detailOrder.customer.company}</span>)}
+                    <span className="text-[#6D8C73] font-mono block mt-0.5">
                       {detailOrder.customer?.email}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Fulfillment Facility</span>
-                    <span className="font-semibold text-slate-900">
+                    <span className="text-[#6D8C73] block">Fulfillment Facility</span>
+                    <span className="font-semibold text-[#314C3B]">
                       {detailOrder.warehouse?.name || "Acme Central DC"}
                     </span>
-                    <span className="text-slate-500 font-mono block">
+                    <span className="text-[#6D8C73] font-mono block">
                       {detailOrder.warehouse?.code || "WH-MAIN"}
                     </span>
-                    {detailOrder.customer?.shipping_address && (<span className="text-slate-600 block mt-1 truncate">
+                    {detailOrder.customer?.shipping_address && (<span className="text-[#4C6B55] block mt-1 truncate">
                         Ship To: {detailOrder.customer.shipping_address}
                       </span>)}
                   </div>
@@ -720,12 +720,12 @@ export default function OrdersPage() {
 
                 {/* Line Items Table */}
                 <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#6D8C73] mb-2">
                     Itemized Order Lines ({detailOrder.items?.length || 0})
                   </h4>
-                  <div className="border border-slate-200 rounded-lg overflow-hidden">
-                    <table className="w-full text-left text-xs text-slate-700">
-                      <thead className="bg-slate-50 text-slate-500 uppercase font-medium border-b border-slate-200">
+                  <div className="border border-[#BDC9B8] rounded-lg overflow-hidden">
+                    <table className="w-full text-left text-xs text-[#4C6B55]">
+                      <thead className="bg-[#E2DED2] text-[#6D8C73] uppercase font-medium border-b border-[#BDC9B8]">
                         <tr>
                           <th className="py-2.5 px-3">Product</th>
                           <th className="py-2.5 px-3 text-right">Quantity</th>
@@ -733,33 +733,33 @@ export default function OrdersPage() {
                           <th className="py-2.5 px-3 text-right">Subtotal (₹)</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 bg-white">
+                      <tbody className="divide-y divide-slate-100 bg-[#F7F3EA]">
                         {detailOrder.items?.map((it) => (<tr key={it.id}>
                             <td className="py-2.5 px-3">
-                              <span className="font-medium text-slate-900 block">
+                              <span className="font-medium text-[#314C3B] block">
                                 {it.product?.name || "Product"}
                               </span>
-                              <span className="font-mono text-[11px] text-slate-500">
+                              <span className="font-mono text-[11px] text-[#6D8C73]">
                                 {it.product?.sku || "SKU"}
                               </span>
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-slate-900">
+                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-[#314C3B]">
                               {it.quantity} {it.product?.unit || "units"}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono text-slate-500">
+                            <td className="py-2.5 px-3 text-right font-mono text-[#6D8C73]">
                               ₹{it.unit_price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-950">
+                            <td className="py-2.5 px-3 text-right font-mono font-bold text-[#1B2A20]">
                               ₹{it.subtotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
                           </tr>))}
                       </tbody>
-                      <tfoot className="bg-slate-50 font-semibold border-t border-slate-200">
+                      <tfoot className="bg-[#E2DED2] font-semibold border-t border-[#BDC9B8]">
                         <tr>
-                          <td colSpan={3} className="py-2.5 px-3 text-right text-slate-500">
+                          <td colSpan={3} className="py-2.5 px-3 text-right text-[#6D8C73]">
                             Total Order Value:
                           </td>
-                          <td className="py-2.5 px-3 text-right font-mono text-sm text-slate-950 font-bold">
+                          <td className="py-2.5 px-3 text-right font-mono text-sm text-[#1B2A20] font-bold">
                             ₹{detailOrder.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                         </tr>
@@ -769,31 +769,31 @@ export default function OrdersPage() {
                 </div>
 
                 {/* State Machine Explainer Card */}
-                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
-                  <div className="font-medium text-slate-700 flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-slate-900"/>
+                <div className="p-3 rounded-lg bg-[#E2DED2] border border-[#BDC9B8]/80 text-xs space-y-1.5">
+                  <div className="font-medium text-[#4C6B55] flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-[#314C3B]"/>
                     Inventory Reservation Status:
                   </div>
-                  {detailOrder.status === "DRAFT" && (<p className="text-slate-400 text-[11px]">
+                  {detailOrder.status === "DRAFT" && (<p className="text-[#6D8C73] text-[11px]">
                       This order is currently a <strong>DRAFT</strong>. Stock has not yet been reserved.
                       Clicking &quot;Confirm & Reserve&quot; checks available inventory and allocates it.
                     </p>)}
-                  {detailOrder.status === "CONFIRMED" && (<p className="text-slate-700 text-[11px]">
+                  {detailOrder.status === "CONFIRMED" && (<p className="text-[#4C6B55] text-[11px]">
                       This order is <strong>CONFIRMED</strong>. Stock is safely reserved in the warehouse and cannot be sold to other orders.
                       Clicking &quot;Fulfill & Dispatch&quot; appends OUT ledger entries and reduces on-hand inventory.
                     </p>)}
-                  {detailOrder.status === "FULFILLED" && (<p className="text-slate-900 text-[11px]">
+                  {detailOrder.status === "FULFILLED" && (<p className="text-[#314C3B] text-[11px]">
                       This order is <strong>FULFILLED</strong>. Goods have been dispatched from the warehouse and corresponding ledger entries were recorded.
                     </p>)}
-                  {detailOrder.status === "CANCELLED" && (<p className="text-slate-400 text-[11px]">
+                  {detailOrder.status === "CANCELLED" && (<p className="text-[#6D8C73] text-[11px]">
                       This order is <strong>CANCELLED</strong>. Any reserved inventory was returned to the available selling pool.
                     </p>)}
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#10606F] mt-4">
-                <Button variant="ghost" size="sm" onClick={() => setDetailOrder(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+              <div className="flex items-center justify-between pt-4 border-t border-[#E2DED2] dark:border-[#4C6B55] mt-4">
+                <Button variant="ghost" size="sm" onClick={() => setDetailOrder(null)} className="text-[#6D8C73] hover:text-[#4C6B55] dark:hover:text-slate-200">
                   Close
                 </Button>
 
@@ -805,7 +805,7 @@ export default function OrdersPage() {
                         size="sm"
                         onClick={() => handleCancelOrder(detailOrder.id)}
                         disabled={actionLoading === detailOrder.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        className="text-[#6D8C73] hover:text-rose-600 dark:hover:text-rose-400 text-xs"
                       >
                         Cancel Order
                       </Button>
@@ -828,7 +828,7 @@ export default function OrdersPage() {
                         size="sm"
                         onClick={() => handleCancelOrder(detailOrder.id)}
                         disabled={actionLoading === detailOrder.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        className="text-[#6D8C73] hover:text-rose-600 dark:hover:text-rose-400 text-xs"
                       >
                         Cancel Order
                       </Button>

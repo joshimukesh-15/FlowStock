@@ -281,7 +281,7 @@ export default function PurchasingPage() {
     return (<motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Top Header */}
       <PageHeader title={<span className="flex items-center gap-2.5">
-            <Truck className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
+            <Truck className="w-6 h-6 text-[#314C3B] dark:text-[#F4F5F7]"/>
             Suppliers & Purchasing
           </span>} subtitle="Vendor purchase orders, inbound goods receiving, and warehouse restocking." actions={<>
             <RefreshButton onClick={loadData} />
@@ -328,7 +328,7 @@ export default function PurchasingPage() {
 
         {/* Purchase Orders Table Container */}
         <Card className="">
-          <CardHeader className="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <CardHeader className="border-b border-[#BDC9B8] pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by PO # or vendor..." className="w-64"/>
 
@@ -336,8 +336,8 @@ export default function PurchasingPage() {
               <Tabs tabs={["ALL", "DRAFT", "ISSUED", "RECEIVED", "CANCELLED"]} activeTab={statusFilter} onChange={setStatusFilter} layoutId="purchasing-status-tabs" variant="pill"/>
             </div>
 
-            <div className="text-xs text-slate-400">
-              Showing <span className="font-semibold text-slate-900">{filteredPOs.length}</span> purchase orders
+            <div className="text-xs text-[#6D8C73]">
+              Showing <span className="font-semibold text-[#314C3B]">{filteredPOs.length}</span> purchase orders
             </div>
           </CardHeader>
 
@@ -349,8 +349,8 @@ export default function PurchasingPage() {
                     <Plus className="w-3.5 h-3.5"/>
                     Create Purchase Order
                   </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-700">
-                  <thead className="bg-slate-50 text-xs uppercase font-medium text-slate-500 border-b border-slate-200">
+                <table className="w-full text-left text-sm text-[#4C6B55]">
+                  <thead className="bg-[#E2DED2] text-xs uppercase font-medium text-[#6D8C73] border-b border-[#BDC9B8]">
                     <tr>
                       <th className="py-3.5 px-4">PO Number</th>
                       <th className="py-3.5 px-4">Vendor / Supplier</th>
@@ -365,38 +365,38 @@ export default function PurchasingPage() {
                     {filteredPOs.map((po) => {
                 const isActing = actionLoading === po.id;
                 const itemCount = po.items.reduce((acc, it) => acc + it.quantity, 0);
-                return (<tr key={po.id} className="hover:bg-slate-50 transition-colors">
-                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-slate-900">
+                return (<tr key={po.id} className="hover:bg-[#E2DED2] transition-colors">
+                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-[#314C3B]">
                             {po.po_number}
-                            <div className="text-[10px] font-normal text-slate-500 mt-0.5">
+                            <div className="text-[10px] font-normal text-[#6D8C73] mt-0.5">
                               {formatDate(po.created_at)}
                             </div>
                           </td>
                           <td className="py-3.5 px-4">
-                            <div className="font-medium text-slate-900">{po.supplier?.name || "Supplier"}</div>
-                            <div className="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
-                              {po.supplier?.company && (<span className="font-medium text-slate-600">
+                            <div className="font-medium text-[#314C3B]">{po.supplier?.name || "Supplier"}</div>
+                            <div className="text-xs text-[#6D8C73] flex items-center gap-1.5 mt-0.5">
+                              {po.supplier?.company && (<span className="font-medium text-[#4C6B55]">
                                   {po.supplier.company}
                                 </span>)}
-                              <span className="text-slate-400 font-mono text-[11px]">
+                              <span className="text-[#6D8C73] font-mono text-[11px]">
                                 {po.supplier?.email}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3.5 px-4 text-xs text-slate-500">
+                          <td className="py-3.5 px-4 text-xs text-[#6D8C73]">
                             <div>
-                              <span className="text-slate-700 font-medium">
+                              <span className="text-[#4C6B55] font-medium">
                                 {po.destination_warehouse?.name || "Acme Central DC"}
                               </span>
-                              <span className="font-mono text-[10px] text-slate-400 block">
+                              <span className="font-mono text-[10px] text-[#6D8C73] block">
                                 {po.destination_warehouse?.code || "WH-MAIN"}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3.5 px-4 text-center font-mono text-xs text-slate-600">
+                          <td className="py-3.5 px-4 text-center font-mono text-xs text-[#4C6B55]">
                             {po.items.length} lines ({itemCount} units)
                           </td>
-                          <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900">
+                          <td className="py-3.5 px-4 text-right font-mono font-bold text-[#314C3B]">
                             ₹{po.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3.5 px-4 text-center">
@@ -410,7 +410,7 @@ export default function PurchasingPage() {
                                 onClick={() => setDetailPO(po)}
                                 title="View Purchase Order"
                               >
-                                <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                                <Eye className="w-3.5 h-3.5 text-[#6D8C73] dark:text-[#6D8C73]" />
                                 Details
                               </Button>
 
@@ -431,7 +431,7 @@ export default function PurchasingPage() {
                                     size="xs"
                                     onClick={() => handleCancelPO(po.id)}
                                     disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                    className="text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                     title="Cancel PO"
                                   >
                                     Cancel
@@ -456,7 +456,7 @@ export default function PurchasingPage() {
                                     size="xs"
                                     onClick={() => handleCancelPO(po.id)}
                                     disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                    className="text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                     title="Cancel PO"
                                   >
                                     Cancel
@@ -521,7 +521,7 @@ export default function PurchasingPage() {
           {/* Line Items Section */}
           <div className="pt-2">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF]">
+              <label className="text-xs font-semibold uppercase tracking-wider text-[#6D8C73] dark:text-[#9BA3AF]">
                 Procurement Items
               </label>
               <Button
@@ -540,7 +540,7 @@ export default function PurchasingPage() {
               {poItems.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#10606F] text-xs"
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-[#E2DED2] dark:bg-[#1C1F27] border border-[#BDC9B8] dark:border-[#4C6B55] text-xs"
                 >
                   <div className="flex-1">
                     <select
@@ -569,7 +569,7 @@ export default function PurchasingPage() {
 
                   <div className="w-24">
                     <div className="relative">
-                      <span className="absolute left-2.5 top-2 text-slate-500 text-xs">₹</span>
+                      <span className="absolute left-2.5 top-2 text-[#6D8C73] text-xs">₹</span>
                       <Input
                         type="number"
                         step="0.01"
@@ -582,7 +582,7 @@ export default function PurchasingPage() {
                     </div>
                   </div>
 
-                  <div className="w-24 text-right font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                  <div className="w-24 text-right font-mono font-semibold text-[#314C3B] dark:text-[#F4F5F7]">
                     ₹{(item.quantity * item.unit_cost).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                   </div>
 
@@ -592,8 +592,8 @@ export default function PurchasingPage() {
                     disabled={poItems.length <= 1}
                     className={`p-1.5 rounded transition-colors ${
                       poItems.length <= 1
-                        ? "text-slate-400 cursor-not-allowed"
-                        : "text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                        ? "text-[#6D8C73] cursor-not-allowed"
+                        : "text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                     }`}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -603,9 +603,9 @@ export default function PurchasingPage() {
             </div>
 
             {/* PO Total Preview */}
-            <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#10606F] flex items-center justify-between">
-              <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium">Estimated PO Cost:</span>
-              <span className="text-base font-bold text-slate-900 dark:text-[#F4F5F7] font-mono">
+            <div className="mt-3 p-3 rounded-lg bg-[#E2DED2] dark:bg-[#1C1F27] border border-[#BDC9B8] dark:border-[#4C6B55] flex items-center justify-between">
+              <span className="text-xs text-[#6D8C73] dark:text-[#9BA3AF] font-medium">Estimated PO Cost:</span>
+              <span className="text-base font-bold text-[#314C3B] dark:text-[#F4F5F7] font-mono">
                 ₹{poCalculatedTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </span>
             </div>
@@ -693,23 +693,23 @@ export default function PurchasingPage() {
         {/* Modal: PO Details & Inbound Receiving */}
         <Modal isOpen={!!detailPO} onClose={() => setDetailPO(null)} maxWidth="2xl" className="p-6 max-h-[90vh] flex flex-col">
           {detailPO && (<>
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-4 border-b border-[#E2DED2]">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-slate-900/10 text-slate-900 flex items-center justify-center border border-zinc-900/20">
+                  <div className="w-9 h-9 rounded-lg bg-slate-900/10 text-[#314C3B] flex items-center justify-center border border-zinc-900/20">
                     <Truck className="w-5 h-5"/>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900 text-lg font-mono">
+                    <h3 className="font-semibold text-[#314C3B] text-lg font-mono">
                       {detailPO.po_number}
                     </h3>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-[#6D8C73]">
                       Created on {formatDate(detailPO.created_at, true)}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={detailPO.status} type="po" />
-                  <button onClick={() => setDetailPO(null)} className="text-slate-400 hover:text-slate-700 ml-2">
+                  <button onClick={() => setDetailPO(null)} className="text-[#6D8C73] hover:text-[#4C6B55] ml-2">
                     <X className="w-5 h-5"/>
                   </button>
                 </div>
@@ -720,27 +720,27 @@ export default function PurchasingPage() {
                 <POLifecycleStepper status={detailPO.status} createdAt={detailPO.created_at} updatedAt={detailPO.updated_at}/>
 
                 {/* Supplier & Receiving Warehouse Cards */}
-                <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 grid grid-cols-2 gap-3 text-xs">
+                <div className="p-3.5 rounded-lg bg-[#E2DED2] border border-[#BDC9B8] grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="text-slate-500 block">Vendor / Supplier</span>
-                    <span className="font-semibold text-slate-900">{detailPO.supplier?.name}</span>
-                    {detailPO.supplier?.company && (<span className="text-slate-400 block">{detailPO.supplier.company}</span>)}
-                    <span className="text-slate-400 font-mono block mt-0.5">
+                    <span className="text-[#6D8C73] block">Vendor / Supplier</span>
+                    <span className="font-semibold text-[#314C3B]">{detailPO.supplier?.name}</span>
+                    {detailPO.supplier?.company && (<span className="text-[#6D8C73] block">{detailPO.supplier.company}</span>)}
+                    <span className="text-[#6D8C73] font-mono block mt-0.5">
                       {detailPO.supplier?.email}
                     </span>
-                    <span className="text-slate-500 text-[11px] block mt-1">
+                    <span className="text-[#6D8C73] text-[11px] block mt-1">
                       Terms: {detailPO.supplier?.payment_terms || "Net 30"}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Receiving Destination Depot</span>
-                    <span className="font-semibold text-slate-900">
+                    <span className="text-[#6D8C73] block">Receiving Destination Depot</span>
+                    <span className="font-semibold text-[#314C3B]">
                       {detailPO.destination_warehouse?.name || "Acme Central DC"}
                     </span>
-                    <span className="text-slate-500 font-mono block">
+                    <span className="text-[#6D8C73] font-mono block">
                       {detailPO.destination_warehouse?.code || "WH-MAIN"}
                     </span>
-                    {detailPO.destination_warehouse?.location && (<span className="text-slate-400 block mt-1 truncate">
+                    {detailPO.destination_warehouse?.location && (<span className="text-[#6D8C73] block mt-1 truncate">
                         Location: {detailPO.destination_warehouse.location}
                       </span>)}
                   </div>
@@ -748,12 +748,12 @@ export default function PurchasingPage() {
 
                 {/* Line Items Table */}
                 <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#6D8C73] mb-2">
                     Procured Goods Breakdown ({detailPO.items.length})
                   </h4>
-                  <div className="border border-slate-200 rounded-lg overflow-hidden">
-                    <table className="w-full text-left text-xs text-slate-700">
-                      <thead className="bg-slate-50 text-slate-400 uppercase font-medium border-b border-slate-100">
+                  <div className="border border-[#BDC9B8] rounded-lg overflow-hidden">
+                    <table className="w-full text-left text-xs text-[#4C6B55]">
+                      <thead className="bg-[#E2DED2] text-[#6D8C73] uppercase font-medium border-b border-[#E2DED2]">
                         <tr>
                           <th className="py-2.5 px-3">Product</th>
                           <th className="py-2.5 px-3 text-right">Quantity</th>
@@ -761,33 +761,33 @@ export default function PurchasingPage() {
                           <th className="py-2.5 px-3 text-right">Subtotal (₹)</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 bg-white">
+                      <tbody className="divide-y divide-slate-100 bg-[#F7F3EA]">
                         {detailPO.items.map((it) => (<tr key={it.id}>
                             <td className="py-2.5 px-3">
-                              <span className="font-medium text-slate-900 block">
+                              <span className="font-medium text-[#314C3B] block">
                                 {it.product?.name || "Product"}
                               </span>
-                              <span className="font-mono text-[11px] text-slate-500">
+                              <span className="font-mono text-[11px] text-[#6D8C73]">
                                 {it.product?.sku || "SKU"}
                               </span>
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-slate-900">
+                            <td className="py-2.5 px-3 text-right font-mono font-semibold text-[#314C3B]">
                               {it.quantity} {it.product?.unit || "units"}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono text-slate-500">
+                            <td className="py-2.5 px-3 text-right font-mono text-[#6D8C73]">
                               ₹{it.unit_cost.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-950">
+                            <td className="py-2.5 px-3 text-right font-mono font-bold text-[#1B2A20]">
                               ₹{it.subtotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                             </td>
                           </tr>))}
                       </tbody>
-                      <tfoot className="bg-slate-50 font-semibold border-t border-slate-100">
+                      <tfoot className="bg-[#E2DED2] font-semibold border-t border-[#E2DED2]">
                         <tr>
-                          <td colSpan={3} className="py-2.5 px-3 text-right text-slate-400">
+                          <td colSpan={3} className="py-2.5 px-3 text-right text-[#6D8C73]">
                             Total Procurement Value:
                           </td>
-                          <td className="py-2.5 px-3 text-right font-mono text-sm text-slate-900">
+                          <td className="py-2.5 px-3 text-right font-mono text-sm text-[#314C3B]">
                             ₹{detailPO.total_amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                           </td>
                         </tr>
@@ -797,30 +797,30 @@ export default function PurchasingPage() {
                 </div>
 
                 {/* State Machine Status Card */}
-                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
-                  <div className="font-medium text-slate-700 flex items-center gap-1.5">
-                    <Boxes className="w-3.5 h-3.5 text-slate-900"/>
+                <div className="p-3 rounded-lg bg-[#E2DED2] border border-[#BDC9B8]/80 text-xs space-y-1.5">
+                  <div className="font-medium text-[#4C6B55] flex items-center gap-1.5">
+                    <Boxes className="w-3.5 h-3.5 text-[#314C3B]"/>
                     Inventory Restocking Impact:
                   </div>
-                  {detailPO.status === "DRAFT" && (<p className="text-slate-400 text-[11px]">
+                  {detailPO.status === "DRAFT" && (<p className="text-[#6D8C73] text-[11px]">
                       This PO is currently in <strong>DRAFT</strong>. Click &quot;Issue PO&quot; to send it to the supplier.
                     </p>)}
-                  {detailPO.status === "ISSUED" && (<p className="text-slate-700 text-[11px]">
+                  {detailPO.status === "ISSUED" && (<p className="text-[#4C6B55] text-[11px]">
                       This PO has been <strong>ISSUED</strong> to the vendor. Awaiting shipment arrival at destination facility.
                       Click &quot;Receive Goods&quot; upon delivery to automatically append IN movements to the warehouse ledger.
                     </p>)}
-                  {detailPO.status === "RECEIVED" && (<p className="text-slate-900 text-[11px]">
+                  {detailPO.status === "RECEIVED" && (<p className="text-[#314C3B] text-[11px]">
                       Goods have been <strong>RECEIVED</strong>! Inventory records have been appended with positive IN changes.
                     </p>)}
-                  {detailPO.status === "CANCELLED" && (<p className="text-slate-400 text-[11px]">
+                  {detailPO.status === "CANCELLED" && (<p className="text-[#6D8C73] text-[11px]">
                       This purchase order was <strong>CANCELLED</strong>. No inventory was touched.
                     </p>)}
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#10606F] mt-4">
-                <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+              <div className="flex items-center justify-between pt-4 border-t border-[#E2DED2] dark:border-[#4C6B55] mt-4">
+                <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)} className="text-[#6D8C73] hover:text-[#4C6B55] dark:hover:text-slate-200">
                   Close
                 </Button>
 
@@ -832,7 +832,7 @@ export default function PurchasingPage() {
                         size="sm"
                         onClick={() => handleCancelPO(detailPO.id)}
                         disabled={actionLoading === detailPO.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        className="text-[#6D8C73] hover:text-rose-600 dark:hover:text-rose-400 text-xs"
                       >
                         Cancel PO
                       </Button>
@@ -855,7 +855,7 @@ export default function PurchasingPage() {
                         size="sm"
                         onClick={() => handleCancelPO(detailPO.id)}
                         disabled={actionLoading === detailPO.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        className="text-[#6D8C73] hover:text-rose-600 dark:hover:text-rose-400 text-xs"
                       >
                         Cancel PO
                       </Button>

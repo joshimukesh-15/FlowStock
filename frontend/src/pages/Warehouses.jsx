@@ -307,7 +307,7 @@ export default function WarehousesPage() {
       <motion.div className="space-y-6" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
         {/* Top Header */}
         <PageHeader title={<span className="flex items-center gap-2.5">
-              <WarehouseIcon className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
+              <WarehouseIcon className="w-6 h-6 text-[#314C3B] dark:text-[#F4F5F7]"/>
               Warehouses & Stock Transfers
             </span>} subtitle="Multi-facility inventory nodes, physical stock routing, and inter-depot logistics." actions={<>
               <RefreshButton onClick={loadData} />
@@ -365,10 +365,10 @@ export default function WarehousesPage() {
         {/* Warehouses Grid */}
         <motion.div variants={itemVariants}>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#6D8C73]">
             Storage Facilities ({warehouses.length})
           </h2>
-          {warehouses.length < 2 && (<span className="text-xs text-slate-700 flex items-center gap-1">
+          {warehouses.length < 2 && (<span className="text-xs text-[#4C6B55] flex items-center gap-1">
               <AlertCircle className="w-3.5 h-3.5"/>
               Add at least 2 warehouses to initiate inter-depot transfers.
             </span>)}
@@ -394,13 +394,13 @@ export default function WarehousesPage() {
               ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30"
               : isHigh
               ? "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30"
-              : "text-emerald-600 dark:text-[#4FB8B4] bg-emerald-500/10 dark:bg-[#4FB8B4]/10 border-emerald-500/30 dark:border-[#4FB8B4]/30";
+              : "text-emerald-600 dark:text-[#92AA97] bg-[#E2DED2]0/10 dark:bg-[#92AA97]/10 border-emerald-500/30 dark:border-[#92AA97]/30";
 
             const barFillColor = isCritical
               ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"
               : isHigh
               ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]"
-              : "bg-emerald-500 dark:bg-[#4FB8B4] shadow-[0_0_8px_rgba(79,184,180,0.35)]";
+              : "bg-[#E2DED2]0 dark:bg-[#92AA97] shadow-[0_0_8px_rgba(146,170,151,0.35)]";
 
             const statusLabel = isCritical
               ? "Near Limit"
@@ -411,12 +411,12 @@ export default function WarehousesPage() {
               : "Optimal";
 
             return (
-              <Card key={wh.id} className="p-4 flex flex-col justify-between hover:border-slate-300 dark:hover:border-[#1D8B94] transition-colors group">
+              <Card key={wh.id} className="p-4 flex flex-col justify-between hover:border-[#BDC9B8] dark:hover:border-[#6D8C73] transition-colors group">
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm truncate">
+                        <h3 className="font-semibold text-[#314C3B] dark:text-[#F4F5F7] text-sm truncate">
                           {wh.name}
                         </h3>
                         {wh.is_default && (
@@ -425,7 +425,7 @@ export default function WarehousesPage() {
                           </Badge>
                         )}
                       </div>
-                      <p className="text-xs font-mono text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+                      <p className="text-xs font-mono text-[#6D8C73] dark:text-[#9BA3AF] mt-0.5">
                         {wh.code}
                       </p>
                     </div>
@@ -434,32 +434,32 @@ export default function WarehousesPage() {
                       <button
                         type="button"
                         onClick={() => handleOpenEdit(wh)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#10606F] transition-colors cursor-pointer"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-[#6D8C73] hover:text-[#4C6B55] dark:hover:text-white hover:bg-[#E2DED2] dark:hover:bg-[#4C6B55] transition-colors cursor-pointer"
                         title="Configure Facility & Capacity"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F]">
+                      <div className="w-8 h-8 rounded-lg bg-[#E2DED2] dark:bg-[#314C3B] flex items-center justify-center text-[#4C6B55] dark:text-[#CBD5E1] border border-[#BDC9B8] dark:border-[#4C6B55]">
                         <WarehouseIcon className="w-4 h-4" />
                       </div>
                     </div>
                   </div>
 
                   {/* Realistic Capacity Metrics & Visualization */}
-                  <div className="mt-3.5 p-3 rounded-xl bg-slate-50/70 dark:bg-[#15171E] border border-slate-200/60 dark:border-[#10606F]">
+                  <div className="mt-3.5 p-3 rounded-xl bg-[#E2DED2]/70 dark:bg-[#15171E] border border-[#BDC9B8]/60 dark:border-[#4C6B55]">
                     <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-medium text-slate-600 dark:text-[#9BA3AF] flex items-center gap-1.5">
-                        <Gauge className="w-3.5 h-3.5 text-slate-400" />
+                      <span className="font-medium text-[#4C6B55] dark:text-[#9BA3AF] flex items-center gap-1.5">
+                        <Gauge className="w-3.5 h-3.5 text-[#6D8C73]" />
                         Storage Capacity
                       </span>
-                      <span className="font-mono text-xs font-semibold text-slate-800 dark:text-slate-200">
+                      <span className="font-mono text-xs font-semibold text-[#314C3B] dark:text-slate-200">
                         {currentStock.toLocaleString()}{" "}
-                        <span className="font-normal text-slate-400">/ {capacity.toLocaleString()} units</span>
+                        <span className="font-normal text-[#6D8C73]">/ {capacity.toLocaleString()} units</span>
                       </span>
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-2 w-full rounded-full bg-slate-200/70 dark:bg-[#0A3D4A] overflow-hidden p-0.5">
+                    <div className="h-2 w-full rounded-full bg-[#BDC9B8]/70 dark:bg-[#314C3B] overflow-hidden p-0.5">
                       <div
                         className={`h-full rounded-full transition-all duration-700 ease-out ${barFillColor}`}
                         style={{ width: `${Math.min(100, Math.max(currentStock > 0 ? 3 : 0, pct))}%` }}
@@ -467,8 +467,8 @@ export default function WarehousesPage() {
                     </div>
 
                     {/* Capacity Footer: Remaining Units & Status Pill */}
-                    <div className="flex items-center justify-between text-[11px] mt-2 pt-1.5 border-t border-slate-200/40 dark:border-white/5">
-                      <span className="text-slate-500 dark:text-[#7C8189] font-mono">
+                    <div className="flex items-center justify-between text-[11px] mt-2 pt-1.5 border-t border-[#BDC9B8]/40 dark:border-white/5">
+                      <span className="text-[#6D8C73] dark:text-[#7C8189] font-mono">
                         {availableUnits.toLocaleString()} units free
                       </span>
                       <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold border ${badgeStyle}`}>
@@ -478,12 +478,12 @@ export default function WarehousesPage() {
                   </div>
                 </div>
 
-                <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-[#10606F] flex items-center justify-between text-xs text-slate-400 dark:text-[#7C8189]">
+                <div className="mt-3.5 pt-3 border-t border-[#E2DED2] dark:border-[#4C6B55] flex items-center justify-between text-xs text-[#6D8C73] dark:text-[#7C8189]">
                   <span className="flex items-center gap-1.5 truncate">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-[#6D8C73] dark:text-[#7C8189] shrink-0" />
                     {wh.location || "General Logistics Zone"}
                   </span>
-                  <span className="text-[11px] text-slate-400 dark:text-[#7C8189] shrink-0">
+                  <span className="text-[11px] text-[#6D8C73] dark:text-[#7C8189] shrink-0">
                     {formatDate(wh.created_at)}
                   </span>
                 </div>
@@ -496,13 +496,13 @@ export default function WarehousesPage() {
         {/* Stock Transfers Table */}
         <motion.div variants={itemVariants}>
           <Card spotlight={true} className="shadow-2xs">
-            <CardHeader className="border-b border-slate-100 dark:border-[#10606F] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <CardHeader className="border-b border-[#E2DED2] dark:border-[#4C6B55] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7] flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-slate-900 dark:text-[#F4F5F7]"/>
+                <CardTitle className="text-sm font-semibold text-[#314C3B] dark:text-[#F4F5F7] flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-[#314C3B] dark:text-[#F4F5F7]"/>
                   Inter-Warehouse Stock Transfers
                 </CardTitle>
-                <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+                <p className="text-xs text-[#6D8C73] dark:text-[#9BA3AF] mt-0.5">
                   Lifecycle audit: REQUESTED → IN_TRANSIT → RECEIVED.
                 </p>
               </div>
@@ -518,8 +518,8 @@ export default function WarehousesPage() {
               </div>) : filteredTransfers.length === 0 ? (<EmptyState compact icon={Package} title="No transfers found" description={filterStatus !== "ALL"
                 ? `No transfers with status ${filterStatus.replace("_", " ")}.`
                 : "Create an inter-warehouse transfer to balance facility stock."}/>) : (<div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
-                    <thead className="bg-slate-50 dark:bg-[#1C1F27] text-[11px] uppercase font-medium text-slate-500 dark:text-[#9BA3AF] border-b border-slate-100 dark:border-[#2A2E39]">
+                  <table className="w-full text-left text-xs text-[#4C6B55] dark:text-[#CBD5E1]">
+                    <thead className="bg-[#E2DED2] dark:bg-[#1C1F27] text-[11px] uppercase font-medium text-[#6D8C73] dark:text-[#9BA3AF] border-b border-[#E2DED2] dark:border-[#2A2E39]">
                       <tr>
                         <th className="py-2.5 px-3.5">Transfer #</th>
                         <th className="py-2.5 px-3.5">Product</th>
@@ -530,45 +530,45 @@ export default function WarehousesPage() {
                         <th className="py-2.5 px-3.5 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-[#10606F]">
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#4C6B55]">
                       {filteredTransfers.map((tr) => {
                 const isActing = actionLoading === tr.id;
-                return (<tr key={tr.id} className="hover:bg-slate-50/70 dark:hover:bg-[#0A3D4A]/50 transition-colors">
-                            <td className="py-2.5 px-3.5 font-mono text-xs font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                return (<tr key={tr.id} className="hover:bg-[#E2DED2]/70 dark:hover:bg-[#314C3B]/50 transition-colors">
+                            <td className="py-2.5 px-3.5 font-mono text-xs font-semibold text-[#314C3B] dark:text-[#F4F5F7]">
                               {tr.transfer_number}
-                              <div className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] mt-0.5">
+                              <div className="text-[10px] font-normal text-[#6D8C73] dark:text-[#7C8189] mt-0.5">
                                 {formatDate(tr.created_at)}
                               </div>
                             </td>
                             <td className="py-2.5 px-3.5">
-                              <div className="font-medium text-slate-900 dark:text-[#F4F5F7]">
+                              <div className="font-medium text-[#314C3B] dark:text-[#F4F5F7]">
                                 {tr.product?.name || "Product"}
                               </div>
-                              <span className="font-mono text-[11px] text-slate-400 dark:text-[#7C8189]">
+                              <span className="font-mono text-[11px] text-[#6D8C73] dark:text-[#7C8189]">
                                 {tr.product?.sku || "SKU-UNKNOWN"}
                               </span>
                             </td>
                             <td className="py-2.5 px-3.5">
                               <button type="button" onClick={() => setSelectedVisualizerTransfer(tr)} className="group flex items-center gap-1.5 text-xs text-left hover:text-black dark:hover:text-white transition-colors" title="Click to view transit visualizer">
-                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
+                                <span className="font-medium text-[#4C6B55] dark:text-[#CBD5E1] group-hover:text-[#1B2A20] dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
                                   {tr.source_warehouse?.name || "Source WH"}
                                 </span>
-                                <ArrowRight className="w-3 h-3 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white shrink-0 transition-transform group-hover:translate-x-0.5"/>
-                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
+                                <ArrowRight className="w-3 h-3 text-[#6D8C73] group-hover:text-[#314C3B] dark:group-hover:text-white shrink-0 transition-transform group-hover:translate-x-0.5"/>
+                                <span className="font-medium text-[#4C6B55] dark:text-[#CBD5E1] group-hover:text-[#1B2A20] dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
                                   {tr.destination_warehouse?.name || "Dest WH"}
                                 </span>
                               </button>
                             </td>
-                            <td className="py-2.5 px-3.5 text-right font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">
+                            <td className="py-2.5 px-3.5 text-right font-mono font-semibold text-[#314C3B] dark:text-[#F4F5F7]">
                               {tr.quantity}{" "}
-                              <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-normal">
+                              <span className="text-[11px] text-[#6D8C73] dark:text-[#7C8189] font-normal">
                                 {tr.product?.unit || "units"}
                               </span>
                             </td>
                             <td className="py-2.5 px-3.5 text-center">
                               {getStatusBadge(tr.status)}
                             </td>
-                            <td className="py-2.5 px-3.5 text-xs text-slate-400 dark:text-[#7C8189] max-w-xs truncate">
+                            <td className="py-2.5 px-3.5 text-xs text-[#6D8C73] dark:text-[#7C8189] max-w-xs truncate">
                               {tr.notes || "—"}
                             </td>
                             <td className="py-2.5 px-3.5 text-right">
@@ -599,7 +599,7 @@ export default function WarehousesPage() {
                                       size="xs"
                                       onClick={() => handleCancel(tr.id)}
                                       disabled={isActing}
-                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      className="text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                       title="Cancel Transfer"
                                     >
                                       Cancel
@@ -624,7 +624,7 @@ export default function WarehousesPage() {
                                       size="xs"
                                       onClick={() => handleCancel(tr.id)}
                                       disabled={isActing}
-                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      className="text-[#6D8C73] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                       title="Cancel Transfer"
                                     >
                                       Cancel
@@ -633,7 +633,7 @@ export default function WarehousesPage() {
                                 )}
 
                                 {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (
-                                  <span className="text-xs text-slate-400 dark:text-[#7C8189] font-medium italic">
+                                  <span className="text-xs text-[#6D8C73] dark:text-[#7C8189] font-medium italic">
                                     Archived
                                   </span>
                                 )}
@@ -707,9 +707,9 @@ export default function WarehousesPage() {
               id="whDefault"
               checked={warehouseIsDefault}
               onChange={(e) => setWarehouseIsDefault(e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#0A3D4A] text-slate-900 focus:ring-zinc-950"
+              className="w-4 h-4 rounded border-[#BDC9B8] dark:border-zinc-700 bg-[#E2DED2] dark:bg-[#314C3B] text-[#314C3B] focus:ring-zinc-950"
             />
-            <label htmlFor="whDefault" className="text-xs text-slate-700 dark:text-[#CBD5E1] cursor-pointer">
+            <label htmlFor="whDefault" className="text-xs text-[#4C6B55] dark:text-[#CBD5E1] cursor-pointer">
               Set as default receiving facility for new inventory
             </label>
           </div>
@@ -773,9 +773,9 @@ export default function WarehousesPage() {
               id="editWhDefault"
               checked={editIsDefault}
               onChange={(e) => setEditIsDefault(e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#0A3D4A] text-slate-900 focus:ring-zinc-950"
+              className="w-4 h-4 rounded border-[#BDC9B8] dark:border-zinc-700 bg-[#E2DED2] dark:bg-[#314C3B] text-[#314C3B] focus:ring-zinc-950"
             />
-            <label htmlFor="editWhDefault" className="text-xs text-slate-700 dark:text-[#CBD5E1] cursor-pointer">
+            <label htmlFor="editWhDefault" className="text-xs text-[#4C6B55] dark:text-[#CBD5E1] cursor-pointer">
               Set as primary default facility for receiving stock
             </label>
           </div>
@@ -864,16 +864,16 @@ export default function WarehousesPage() {
 
         {/* Modal: Transfer Visualizer */}
         <Modal isOpen={!!selectedVisualizerTransfer} onClose={() => setSelectedVisualizerTransfer(null)} maxWidth="lg" className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-            <h3 className="font-semibold text-slate-900 text-lg flex items-center gap-2">
-              <Truck className="w-5 h-5 text-slate-900"/>
+          <div className="flex items-center justify-between pb-4 border-b border-[#E2DED2]">
+            <h3 className="font-semibold text-[#314C3B] text-lg flex items-center gap-2">
+              <Truck className="w-5 h-5 text-[#314C3B]"/>
               Stock Transit Route Visualizer
             </h3>
             <motion.button
               type="button"
               whileTap={{ scale: 0.90 }}
               onClick={() => setSelectedVisualizerTransfer(null)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#0A3D4A] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#4FB8B4]"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-[#6D8C73] hover:text-[#4C6B55] dark:hover:text-white hover:bg-[#E2DED2] dark:hover:bg-[#314C3B] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97]"
               aria-label="Close dialog"
             >
               <X className="w-5 h-5"/>

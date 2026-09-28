@@ -143,7 +143,7 @@ export default function InventoryPage() {
     return (<motion.div className="space-y-4" initial="hidden" animate="visible" variants={pageEnterVariants(prefersReducedMotion)}>
       {/* Header */}
       <PageHeader title={<span className="flex items-center gap-2">
-            <Boxes className="w-5 h-5 text-slate-900 dark:text-[#F4F5F7]"/>
+            <Boxes className="w-5 h-5 text-[#314C3B] dark:text-[#F4F5F7]"/>
             Inventory Ledger & Valuations
           </span>} subtitle="Perpetual FIFO stock counts, reorder thresholds, and transactional audit trails." actions={<>
             <RefreshButton onClick={() => mutate()} label="Sync Ledger" />
@@ -190,8 +190,8 @@ export default function InventoryPage() {
       {/* Inventory Table */}
       <motion.div variants={itemVariants}>
         <Card className="overflow-hidden">
-          <CardHeader className="py-2.5 px-3.5 bg-slate-50/60 dark:bg-[#04222B]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
-            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-[#9BA3AF]">
+          <CardHeader className="py-2.5 px-3.5 bg-[#E2DED2]/60 dark:bg-[#1B2A20]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-[#4C6B55] dark:text-[#9BA3AF]">
               Live On-Hand Stock Levels & Reorder Thresholds
             </CardTitle>
             <SearchBar placeholder="Search by SKU, product, category..." value={searchQuery} onChange={setSearchQuery} className="w-full sm:w-64"/>
@@ -199,7 +199,7 @@ export default function InventoryPage() {
 
           <div className="overflow-auto max-h-[60vh] relative custom-scrollbar">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-slate-50 dark:bg-[#04222B] border-b border-slate-200 dark:border-[#10606F] text-slate-500 dark:text-[#9BA3AF] font-medium uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-sm">
+              <thead className="bg-[#E2DED2] dark:bg-[#1B2A20] border-b border-[#BDC9B8] dark:border-[#4C6B55] text-[#6D8C73] dark:text-[#9BA3AF] font-medium uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-sm">
                 <tr>
                   <th className="py-2 px-3.5">SKU</th>
                   <th className="py-2 px-3.5">Product Name</th>
@@ -212,7 +212,7 @@ export default function InventoryPage() {
                   <th className="py-2 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-[#10606F]">
+              <tbody className="divide-y divide-slate-200 dark:divide-[#4C6B55]">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-16", "w-16", "w-20", "w-24", "w-24", "w-20"]}/>
@@ -226,30 +226,30 @@ export default function InventoryPage() {
                     safeSummaries.map((s) => {
                       if (!s || !s.product) return null;
                       return (
-                    <tr key={s.product.id} className={`hover:bg-slate-50 dark:bg-[#04222B] dark:hover:bg-slate-800/40 transition-colors ${s.is_low_stock ? "bg-amber-500/5 dark:bg-amber-500/5" : ""}`}>
-                      <td className="py-2 px-3.5 font-mono font-bold text-slate-900 dark:text-[#F4F5F7]">
+                    <tr key={s.product.id} className={`hover:bg-[#E2DED2] dark:bg-[#1B2A20] dark:hover:bg-slate-800/40 transition-colors ${s.is_low_stock ? "bg-amber-500/5 dark:bg-amber-500/5" : ""}`}>
+                      <td className="py-2 px-3.5 font-mono font-bold text-[#314C3B] dark:text-[#F4F5F7]">
                         {s.product.sku}
                       </td>
                       <td className="py-2 px-3.5">
-                        <span className="font-medium text-slate-900 dark:text-[#F4F5F7]">{s.product.name}</span>
+                        <span className="font-medium text-[#314C3B] dark:text-[#F4F5F7]">{s.product.name}</span>
                       </td>
-                      <td className="py-2 px-3.5 text-slate-500 dark:text-[#9BA3AF]">
+                      <td className="py-2 px-3.5 text-[#6D8C73] dark:text-[#9BA3AF]">
                         {s.product.category?.name || "General"}
                       </td>
                       <td className="py-2 px-3.5 text-center">
                         <span className={`inline-block font-mono font-bold px-2 py-0.5 rounded text-xs ${s.is_low_stock
                 ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30"
-                : "bg-slate-100 dark:bg-[#0A3D4A] text-slate-800 dark:text-[#E2E8F0]"}`}>
+                : "bg-[#E2DED2] dark:bg-[#314C3B] text-[#314C3B] dark:text-[#E2E8F0]"}`}>
                           {s.on_hand_quantity} {s.product.unit}
                         </span>
                       </td>
-                      <td className="py-2 px-3.5 text-center font-mono text-slate-500 dark:text-[#9BA3AF]">
+                      <td className="py-2 px-3.5 text-center font-mono text-[#6D8C73] dark:text-[#9BA3AF]">
                         {s.reorder_point} {s.product.unit}
                       </td>
-                      <td className="py-2 px-3.5 text-right font-mono text-slate-600 dark:text-[#9BA3AF]">
+                      <td className="py-2 px-3.5 text-right font-mono text-[#4C6B55] dark:text-[#9BA3AF]">
                         ₹{Number(s.product.cost_price).toFixed(2)}
                       </td>
-                      <td className="py-2 px-3.5 text-right font-mono font-bold text-slate-900 dark:text-[#F4F5F7]">
+                      <td className="py-2 px-3.5 text-right font-mono font-bold text-[#314C3B] dark:text-[#F4F5F7]">
                         ₹{Number(s.total_cost_value).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                       </td>
                       <td className="py-2 px-3.5 text-center">
@@ -276,7 +276,7 @@ export default function InventoryPage() {
                             onClick={() => handleOpenHistoryModal(s)}
                             title="View Audit Ledger History"
                           >
-                            <History className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                            <History className="w-3.5 h-3.5 text-[#6D8C73] dark:text-[#6D8C73]" />
                             Ledger
                           </Button>
                         </div>
@@ -294,16 +294,16 @@ export default function InventoryPage() {
       {/* Record Movement Modal */}
       <Modal isOpen={movementModalOpen && !!selectedProduct} onClose={() => setMovementModalOpen(false)} maxWidth="md" className="p-6">
         {selectedProduct && (<div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#10606F]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2DED2] dark:border-[#4C6B55]">
               <div>
-                <h3 className="font-semibold text-slate-900 dark:text-white text-sm">
+                <h3 className="font-semibold text-[#314C3B] dark:text-white text-sm">
                   Record Stock Movement
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-[#9BA3AF]">
+                <p className="text-xs text-[#6D8C73] dark:text-[#9BA3AF]">
                   Appends an immutable entry to the inventory movement ledger
                 </p>
               </div>
-              <button onClick={() => setMovementModalOpen(false)} className="text-slate-400 dark:text-[#7C8189] hover:text-slate-600">
+              <button onClick={() => setMovementModalOpen(false)} className="text-[#6D8C73] dark:text-[#7C8189] hover:text-[#4C6B55]">
                 <X className="w-4 h-4"/>
               </button>
             </div>
@@ -333,7 +333,7 @@ export default function InventoryPage() {
 
               {/* Movement Type Tabs with Fluid Indicator */}
               <FormField label="Movement Type">
-                <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 dark:bg-[#0A3D4A] rounded-lg border border-slate-200 dark:border-[#10606F]">
+                <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#E2DED2] dark:bg-[#314C3B] rounded-lg border border-[#BDC9B8] dark:border-[#4C6B55]">
                   {[
                     { type: "IN", label: "Stock IN", icon: TrendingUp },
                     { type: "OUT", label: "Stock OUT", icon: TrendingDown },
@@ -347,7 +347,7 @@ export default function InventoryPage() {
                         type="button"
                         onClick={() => setMovementType(tab.type)}
                         className={`relative text-xs py-2 px-2.5 rounded-md font-medium flex items-center justify-center gap-1.5 transition-colors z-10 ${
-                          isSelected ? "text-white font-semibold" : "text-slate-600 hover:text-slate-950 dark:text-[#9BA3AF] dark:hover:text-white"
+                          isSelected ? "text-white font-semibold" : "text-[#4C6B55] hover:text-[#1B2A20] dark:text-[#9BA3AF] dark:hover:text-white"
                         }`}
                       >
                         {isSelected && (
@@ -357,7 +357,7 @@ export default function InventoryPage() {
                             transition={getTransition("normal", prefersReducedMotion)}
                           />
                         )}
-                        <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-slate-500 dark:text-[#9BA3AF]"}`} />
+                        <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-[#6D8C73] dark:text-[#9BA3AF]"}`} />
                         <span>{tab.label}</span>
                       </button>
                     );
@@ -380,8 +380,8 @@ export default function InventoryPage() {
                   <div
                     className={`px-3 py-2 text-sm font-mono font-bold rounded-md border ${
                       previewNewStock < 0
-                        ? "bg-slate-100 dark:bg-[#0A3D4A] text-slate-950 border-zinc-400 font-bold"
-                        : "bg-slate-50 dark:bg-[#04222B] text-slate-800 dark:text-[#F4F5F7] border-slate-200 dark:border-[#10606F]"
+                        ? "bg-[#E2DED2] dark:bg-[#314C3B] text-[#1B2A20] border-zinc-400 font-bold"
+                        : "bg-[#E2DED2] dark:bg-[#1B2A20] text-[#314C3B] dark:text-[#F4F5F7] border-[#BDC9B8] dark:border-[#4C6B55]"
                     }`}
                   >
                     {previewNewStock} {selectedProduct?.product?.unit || "units"}
@@ -393,11 +393,11 @@ export default function InventoryPage() {
 
               <Input label="Notes (Optional)" placeholder="Additional context or batch info..." value={notes} onChange={(e) => setNotes(e.target.value)}/>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#10606F]">
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#E2DED2] dark:border-[#4C6B55]">
                 <Button type="button" variant="outline" size="sm" onClick={() => setMovementModalOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" isLoading={submitting} disabled={previewNewStock < 0} className="bg-[#4FB8B4] hover:bg-[#98D8D0] text-[#04222B] font-bold">
+                <Button type="submit" size="sm" isLoading={submitting} disabled={previewNewStock < 0} className="bg-[#92AA97] hover:bg-[#BDC9B8] text-[#1B2A20] font-bold">
                   {submitting ? "Writing Ledger..." : "Confirm & Post Ledger"}
                 </Button>
               </div>
@@ -408,19 +408,19 @@ export default function InventoryPage() {
       {/* Movement History Audit Drawer Modal */}
       <Modal isOpen={historyModalOpen && !!historyItem} onClose={() => setHistoryModalOpen(false)} maxWidth="2xl" className="p-6">
         {historyItem && (<div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#10606F]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2DED2] dark:border-[#4C6B55]">
               <div>
-                <h3 className="font-semibold text-slate-900 dark:text-white text-sm">
+                <h3 className="font-semibold text-[#314C3B] dark:text-white text-sm">
                   Ledger Audit Trail: {historyItem.product.name}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-[#9BA3AF] font-mono">
+                <p className="text-xs text-[#6D8C73] dark:text-[#9BA3AF] font-mono">
                   SKU: {historyItem.product.sku} — Current On-Hand:{" "}
-                  <span className="font-bold text-slate-800 dark:text-[#F4F5F7]">
+                  <span className="font-bold text-[#314C3B] dark:text-[#F4F5F7]">
                     {historyItem.on_hand_quantity} {historyItem.product.unit}
                   </span>
                 </p>
               </div>
-              <button onClick={() => setHistoryModalOpen(false)} className="text-slate-400 dark:text-[#7C8189] hover:text-slate-600">
+              <button onClick={() => setHistoryModalOpen(false)} className="text-[#6D8C73] dark:text-[#7C8189] hover:text-[#4C6B55]">
                 <X className="w-4 h-4"/>
               </button>
             </div>
@@ -430,7 +430,7 @@ export default function InventoryPage() {
                 <SkeletonAnnouncer label="Loading movement transactions"/>
               </div>) : movements.length === 0 ? (<EmptyState compact icon={History} title="No movements recorded yet" description="Stock changes are recorded as append-only ledger movements. Record an IN or OUT movement to see the timeline."/>) : (<div className="max-h-80 overflow-y-auto">
                 <table className="w-full text-left text-xs border-collapse">
-                  <thead className="bg-slate-50 dark:bg-[#04222B] border-b border-slate-200 dark:border-[#10606F] text-slate-600 font-semibold sticky top-0">
+                  <thead className="bg-[#E2DED2] dark:bg-[#1B2A20] border-b border-[#BDC9B8] dark:border-[#4C6B55] text-[#4C6B55] font-semibold sticky top-0">
                     <tr>
                       <th className="py-2.5 px-3">Date / Time</th>
                       <th className="py-2.5 px-3">Type</th>
@@ -439,29 +439,29 @@ export default function InventoryPage() {
                       <th className="py-2.5 px-3">Notes</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-[#10606F]">
-                    {movements.map((m) => (<tr key={m.id} className="hover:bg-slate-50 dark:bg-[#04222B]">
-                        <td className="py-2.5 px-3 text-slate-500 dark:text-[#9BA3AF] font-mono">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#4C6B55]">
+                    {movements.map((m) => (<tr key={m.id} className="hover:bg-[#E2DED2] dark:bg-[#1B2A20]">
+                        <td className="py-2.5 px-3 text-[#6D8C73] dark:text-[#9BA3AF] font-mono">
                           {formatDate(m.created_at, true)}
                         </td>
                         <td className="py-2.5 px-3">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${m.movement_type === "IN"
-                        ? "bg-emerald-500 text-white dark:bg-[#4FB8B4] dark:text-[#04222B] font-bold font-semibold"
+                        ? "bg-[#E2DED2]0 text-white dark:bg-[#92AA97] dark:text-[#1B2A20] font-bold font-semibold"
                         : m.movement_type === "OUT"
-                            ? "bg-slate-200 text-slate-900 dark:text-white border border-slate-300 dark:border-[#1D8B94] font-semibold"
-                            : "bg-slate-100 dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F] font-semibold"}`}>
+                            ? "bg-[#BDC9B8] text-[#314C3B] dark:text-white border border-[#BDC9B8] dark:border-[#6D8C73] font-semibold"
+                            : "bg-[#E2DED2] dark:bg-[#314C3B] text-[#4C6B55] dark:text-[#CBD5E1] border border-[#BDC9B8] dark:border-[#4C6B55] font-semibold"}`}>
                             {m.movement_type}
                           </span>
                         </td>
-                        <td className={`py-2.5 px-3 text-right font-mono font-bold ${m.quantity_change > 0 ? "text-slate-950 font-bold" : "text-slate-600 font-bold"}`}>
+                        <td className={`py-2.5 px-3 text-right font-mono font-bold ${m.quantity_change > 0 ? "text-[#1B2A20] font-bold" : "text-[#4C6B55] font-bold"}`}>
                           {m.quantity_change > 0
                         ? `+${m.quantity_change}`
                         : m.quantity_change}
                         </td>
-                        <td className="py-2.5 px-3 font-medium text-slate-800 dark:text-[#F4F5F7]">
+                        <td className="py-2.5 px-3 font-medium text-[#314C3B] dark:text-[#F4F5F7]">
                           {m.reference}
                         </td>
-                        <td className="py-2.5 px-3 text-slate-400 dark:text-[#7C8189] truncate max-w-xs">
+                        <td className="py-2.5 px-3 text-[#6D8C73] dark:text-[#7C8189] truncate max-w-xs">
                           {m.notes || "—"}
                         </td>
                       </tr>))}
@@ -469,7 +469,7 @@ export default function InventoryPage() {
                 </table>
               </div>)}
 
-            <div className="flex justify-end pt-3 border-t border-slate-100 dark:border-[#10606F]">
+            <div className="flex justify-end pt-3 border-t border-[#E2DED2] dark:border-[#4C6B55]">
               <Button variant="outline" size="sm" onClick={() => setHistoryModalOpen(false)}>
                 Close
               </Button>

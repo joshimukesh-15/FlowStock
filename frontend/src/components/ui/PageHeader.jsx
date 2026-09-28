@@ -9,12 +9,12 @@ export const PageHeader = ({ title, subtitle, badge, actions, className, }) => {
     return (<motion.div variants={itemVariants} className={cn("flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3", className)}>
       <div>
         <div className="flex items-center gap-2 flex-wrap">
-          {typeof title === "string" ? (<h1 className="text-lg font-semibold sm:text-xl text-slate-950 dark:text-[#F4F5F7] tracking-tight">
+          {typeof title === "string" ? (<h1 className="text-lg font-semibold sm:text-xl text-[#1B2A20] dark:text-[#F4F5F7] tracking-tight">
               {title}
             </h1>) : (title)}
           {badge}
         </div>
-        {subtitle && (<p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+        {subtitle && (<p className="text-xs text-[#6D8C73] dark:text-[#9BA3AF] mt-0.5">
             {subtitle}
           </p>)}
       </div>

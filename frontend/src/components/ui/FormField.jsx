@@ -19,7 +19,7 @@ export function FormField({
       {label && (
         <label
           htmlFor={htmlFor}
-          className="block text-xs font-medium text-slate-700 dark:text-[#CBD5E1]"
+          className="block text-xs font-medium text-[#4C6B55] dark:text-[#CBD5E1]"
         >
           {label}
           {required && !String(label).includes("*") && (
@@ -29,7 +29,7 @@ export function FormField({
       )}
       {children}
       {hint && !error && (
-        <p className="text-[11px] text-slate-500 dark:text-[#9BA3AF] mt-0.5">{hint}</p>
+        <p className="text-[11px] text-[#6D8C73] dark:text-[#9BA3AF] mt-0.5">{hint}</p>
       )}
       {error && (
         <p className="text-[11px] font-medium text-rose-600 dark:text-rose-400 mt-0.5">
