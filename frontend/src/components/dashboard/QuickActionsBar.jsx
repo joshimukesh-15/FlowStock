@@ -51,14 +51,14 @@ export function QuickActionsBar({ summary }) {
       icon: ReceiptText,
       href: "/invoices",
       color: "hover:border-sky-500/40 hover:bg-sky-50/30 dark:hover:bg-sky-950/20",
-      accent: "text-sky-600 dark:text-[#A0BDDB]",
+      accent: "text-sky-600 dark:text-[#8EB69B]",
     },
   ];
 
   return (
     <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
       <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-100/80 dark:bg-[#181A20] border border-slate-200/80 dark:border-[#323744] text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] shrink-0">
-        <Zap className="w-3.5 h-3.5 text-[#A0BDDB]" />
+        <Zap className="w-3.5 h-3.5 text-[#8EB69B]" />
         <span>Quick Actions</span>
       </div>
 

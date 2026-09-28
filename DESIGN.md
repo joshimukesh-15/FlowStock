@@ -1,18 +1,22 @@
 ---
-version: 2.0.0
+version: 3.0.0
 name: FlowStock-Design-System
-description: Official design system and tokens for FlowStock — a financial-grade inventory ledger and logistics platform. Built on the signature Black Iris (#080813), Citrus (#E4FD97), and Frozen (#A0BDDB) palette.
+description: Official design system and tokens for FlowStock — a financial-grade inventory ledger and logistics platform. Built on the signature Forest-to-Mint green palette with Deep Forest (#051F20) canvas and Sage (#8EB69B) accent.
 palette:
-  black_iris: "#080813"
+  deep_forest: "#051F20"
+  dark_forest: "#0B2B26"
+  forest: "#163832"
+  forest_border: "#235347"
+  sage: "#8EB69B"
+  mint: "#DAF1DE"
   citrus: "#E4FD97"
-  frozen: "#A0BDDB"
 
 colors:
-  # Primary Brand Accent (Frozen)
-  primary: "#A0BDDB"
-  primary-hover: "#b4cce3"
-  primary-active: "#8eaecf"
-  on-primary: "#080813"
+  # Primary Brand Accent (Sage)
+  primary: "#8EB69B"
+  primary-hover: "#DAF1DE"
+  primary-active: "#7AA38A"
+  on-primary: "#051F20"
 
   # Secondary Spark Accent (Citrus)
   secondary: "#E4FD97"
@@ -20,17 +24,17 @@ colors:
   secondary-muted: "rgba(228, 253, 151, 0.12)"
   secondary-border: "rgba(228, 253, 151, 0.28)"
 
-  # Dark Mode Surfaces (Black Iris Void)
-  canvas: "#080813"
-  canvas-soft: "#101020"
-  canvas-overlay: "#16162a"
-  surface-card: "#121224"
-  surface-hover: "#181832"
+  # Dark Mode Surfaces (Forest Void)
+  canvas: "#051F20"
+  canvas-soft: "#081E1F"
+  canvas-overlay: "#0D2924"
+  surface-card: "#0B2B26"
+  surface-hover: "#163832"
 
   # Hairlines & Borders
-  hairline: "#202138"
-  hairline-strong: "#2c2d4c"
-  hairline-frozen: "rgba(160, 189, 219, 0.22)"
+  hairline: "#235347"
+  hairline-strong: "#2E6A5A"
+  hairline-sage: "rgba(142, 182, 155, 0.22)"
 
   # Text / Inks (Dark Mode)
   ink-strong: "#ffffff"
@@ -41,15 +45,15 @@ colors:
   # Light Mode Counterparts
   light-canvas: "#f6f8fb"
   light-surface: "#ffffff"
-  light-surface-raised: "#edf2f8"
-  light-hairline: "#d8e2ec"
-  light-ink: "#080813"
+  light-surface-raised: "#EEF7F0"
+  light-hairline: "#B8D4BF"
+  light-ink: "#051F20"
   light-body: "#4a5568"
   light-mute: "#8a94a6"
 
   # Status & Semantics
-  semantic-success: "#E4FD97"
-  semantic-info: "#A0BDDB"
+  semantic-success: "#8EB69B"
+  semantic-info: "#8EB69B"
   semantic-warning: "#f5a623"
   semantic-error: "#ef4444"
 
@@ -118,29 +122,41 @@ rounded:
 
 shadows:
   citrus-glow: "0 2px 18px -2px rgba(228, 253, 151, 0.35)"
-  frozen-glow: "0 2px 18px -2px rgba(160, 189, 219, 0.25)"
+  sage-glow: "0 2px 18px -2px rgba(142, 182, 155, 0.30)"
   card-elevation: "0 4px 20px -2px rgba(0, 0, 0, 0.5)"
 ---
 
 # FlowStock Design System Specification
 
 ## 1. Overview & Philosophy
-FlowStock uses a signature three-color harmony engineered for high-velocity supply chain management:
-- **Black Iris (`#080813`)**: The deep midnight void surface. It replaces generic gray with a rich, refined indigo-tinged dark canvas.
-- **Citrus (`#E4FD97`)**: High-luminance lemon-lime accent. Carries primary CTAs, active confirmation states, and key ledger metrics.
-- **Frozen (`#A0BDDB`)**: Calming ice-blue accent. Used for secondary metadata, subtle borders, carrier logistics indicators, and waypoint telemetry.
+FlowStock uses a signature forest-to-mint green harmony engineered for high-velocity supply chain management:
+- **Deep Forest (`#051F20`)**: The deep emerald void canvas. Replaces generic gray with a rich, organic dark surface that evokes stability and precision.
+- **Sage (`#8EB69B`)**: The muted sage-green primary accent. Carries active indicators, live status glows, badges, metrics, and interactive highlights.
+- **Mint (`#DAF1DE`)**: Soft mint for hover states, secondary highlights, and elevated accent moments.
+- **Citrus (`#E4FD97`)**: High-luminance lemon-lime kept as a secondary spark variant for special CTAs.
 
-## 2. Token Registry
+## 2. Palette Gradient (Dark to Light)
+
+| Step | Hex | Role |
+|------|-----|------|
+| 1 | `#051F20` | Canvas void / deepest background |
+| 2 | `#0B2B26` | Base card surfaces, modals |
+| 3 | `#163832` | Raised surfaces, active tabs, hover states |
+| 4 | `#235347` | Borders, hairlines, dividers |
+| 5 | `#8EB69B` | Primary accent: buttons, badges, active states |
+| 6 | `#DAF1DE` | Accent hover, light highlights, on-dark text emphasis |
+
+## 3. Token Registry
 
 | Token | Hex / Value | Semantic Role |
 |-------|-------------|---------------|
-| `citrus` | `#E4FD97` | Primary action buttons, ledger verification, active state |
-| `citrus-hover` | `#d5f57a` | Primary button hover elevation |
-| `frozen` | `#A0BDDB` | Secondary accent, route badges, transit telemetry |
-| `black-iris` | `#080813` | Root canvas void background in dark mode |
-| `iris-surface` | `#121224` | Feature cards, modals, table rows |
-| `iris-raised` | `#181832` | Elevated popovers, active tabs, hover states |
-| `iris-hairline` | `#202138` | Universal 1px border on cards and dividers |
+| `sage` | `#8EB69B` | Primary accent: buttons, active indicators, live metrics |
+| `sage-hover` | `#DAF1DE` | Primary button hover, elevated accent |
+| `sage-active` | `#7AA38A` | Pressed/active button state |
+| `deep-forest` | `#051F20` | Root canvas void background in dark mode |
+| `forest-surface` | `#0B2B26` | Feature cards, modals, table rows |
+| `forest-raised` | `#163832` | Elevated popovers, active tabs, hover states |
+| `forest-hairline` | `#235347` | Universal 1px border on cards and dividers |
 | `ink-strong` | `#ffffff` | Hero headlines, primary KPI metrics |
 | `ink` | `#f0f3f8` | Primary body typography |
 | `body` | `#c2cbda` | Secondary descriptions and paragraphs |

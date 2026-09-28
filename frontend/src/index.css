@@ -24,58 +24,58 @@
     --color-border-strong: #b8c9dc;
 
     /* Inks */
-    --color-ink-primary: #080813;
+    --color-ink-primary: #051F20;
     --color-ink-secondary: #4a5568;
     --color-ink-muted: #8a94a6;
-    --color-ink-on-spark: #080813;
+    --color-ink-on-spark: #051F20;
 
-    /* Accent & Status (Frozen Main Accent & Citrus Spark) */
-    --color-accent-spark: #A0BDDB;
-    --color-accent-hover: #b4cce3;
-    --color-accent-muted: #8eaecf;
-    --color-accent-frozen: #A0BDDB;
-    --color-status-success: #A0BDDB;
+    /* Accent & Status (Sage Main Accent & Citrus Spark) */
+    --color-accent-spark: #8EB69B;
+    --color-accent-hover: #DAF1DE;
+    --color-accent-muted: #7AA38A;
+    --color-accent-frozen: #8EB69B;
+    --color-status-success: #8EB69B;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #A0BDDB;
+    --color-status-info: #8EB69B;
 
     /* Brand Tokens */
-    --brand-primary: #A0BDDB;
-    --brand-frozen: #A0BDDB;
+    --brand-primary: #8EB69B;
+    --brand-frozen: #8EB69B;
     --brand-citrus: #E4FD97;
-    --brand-black-iris: #080813;
+    --brand-black-iris: #051F20;
   }
 
   html.dark {
-    /* Black Iris Dark Void Canvas & Surfaces */
-    --color-surface-canvas: #080813;
-    --color-surface-base: #121224;
-    --color-surface-raised: #181832;
-    --color-surface-overlay: #202040;
-    --color-border-subtle: #1c1d32;
-    --color-border-strong: #2c2d4c;
+    /* Deep Forest Dark Void Canvas & Surfaces */
+    --color-surface-canvas: #051F20;
+    --color-surface-base: #0B2B26;
+    --color-surface-raised: #163832;
+    --color-surface-overlay: #1A4A3D;
+    --color-border-subtle: #235347;
+    --color-border-strong: #2E6A5A;
 
     /* Inks */
     --color-ink-primary: #f0f3f8;
     --color-ink-secondary: #c2cbda;
     --color-ink-muted: #7e889b;
-    --color-ink-on-spark: #080813;
+    --color-ink-on-spark: #051F20;
 
-    /* Accent & Status (Frozen Main Accent & Citrus Spark) */
-    --color-accent-spark: #A0BDDB;
-    --color-accent-hover: #b4cce3;
-    --color-accent-muted: #8eaecf;
-    --color-accent-frozen: #A0BDDB;
-    --color-status-success: #A0BDDB;
+    /* Accent & Status (Sage Main Accent & Citrus Spark) */
+    --color-accent-spark: #8EB69B;
+    --color-accent-hover: #DAF1DE;
+    --color-accent-muted: #7AA38A;
+    --color-accent-frozen: #8EB69B;
+    --color-status-success: #8EB69B;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #A0BDDB;
+    --color-status-info: #8EB69B;
 
     /* Brand Tokens */
-    --brand-primary: #A0BDDB;
-    --brand-frozen: #A0BDDB;
+    --brand-primary: #8EB69B;
+    --brand-frozen: #8EB69B;
     --brand-citrus: #E4FD97;
-    --brand-black-iris: #080813;
+    --brand-black-iris: #051F20;
   }
 
   html {
@@ -83,7 +83,7 @@
   }
 
   body {
-    @apply bg-[#f6f8fb] text-[#080813] dark:bg-[#080813] dark:text-[#f0f3f8] antialiased;
+    @apply bg-[#f6f8fb] text-[#051F20] dark:bg-[#051F20] dark:text-[#f0f3f8] antialiased;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
     font-variant-numeric: tabular-nums;
@@ -213,7 +213,7 @@ html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hove
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:first-child {
-  box-shadow: inset 3px 0 0 0 #A0BDDB;
+  box-shadow: inset 3px 0 0 0 #8EB69B;
 }
 
 /* Graphite & Lime Spark Surface Mappings in Dark Mode */
