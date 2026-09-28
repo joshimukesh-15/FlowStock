@@ -23,6 +23,8 @@
       <stop offset="100%" stop-color="#0284c7"/>
     </linearGradient>
   </defs>
+  <!-- White Background Squircle -->
+  <rect x="95" y="95" width="310" height="310" rx="64" fill="#ffffff"/>
   <!-- Beige Base -->
   <path d="M 125,250 A 125,125 0 0,0 375,250 Z" fill="url(#fg-beige)"/>
   <!-- Main Blue Leaf -->

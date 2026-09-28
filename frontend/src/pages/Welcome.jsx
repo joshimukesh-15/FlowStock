@@ -518,7 +518,7 @@ export default function WelcomePage() {
       <footer className="py-10 border-t border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#11120D] text-xs text-slate-500 dark:text-[#D8CFBC] font-mono transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-[#191B15] border border-slate-200 dark:border-[#33372B] flex items-center justify-center p-1">
+            <div className="w-7 h-7 rounded-lg bg-white border border-slate-200/90 shadow-xs flex items-center justify-center p-1">
               <Logomark className="w-5 h-5" />
             </div>
             <div>

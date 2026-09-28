@@ -116,11 +116,13 @@ export default function LoginPage() {
           to="/"
           className="flex items-center justify-center gap-2.5 mb-8 group outline-none"
         >
-          <img
-            src="/assets/flowstock-reveal.svg"
-            alt="FlowStock"
-            className="w-9 h-9 group-hover:scale-105 transition-transform duration-200"
-          />
+          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform duration-200">
+            <img
+              src="/assets/flowstock-reveal.svg"
+              alt="FlowStock"
+              className="w-7 h-7"
+            />
+          </div>
           <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">
             FlowStock
           </span>
