@@ -1,21 +1,20 @@
 ---
-version: 6.0.0
+version: 7.0.0
 name: FlowStock-Design-System
-description: Official design system for FlowStock. Built on the Holst Sage palette chosen from the bottom of the swatch (#F7F3EA, #E2DED2, #BDC9B8, #92AA97) paired with the signature Black Iris (#080813) obsidian dark mode.
+description: Official luxury design system for FlowStock. Built on the Smoky Black (#11120D), Olive Drab (#565449), Bone (#D8CFBC), and Floral White (#FFFBF4) palette.
 palette:
-  cream: "#F7F3EA"
-  sand: "#E2DED2"
-  soft_sage: "#BDC9B8"
-  sage_primary: "#92AA97"
-  black_iris: "#080813"
+  smoky_black: "#11120D"
+  olive_drab: "#565449"
+  bone: "#D8CFBC"
+  floral_white: "#FFFBF4"
   citrus: "#E4FD97"
 
 colors:
-  # Primary Brand Accent (Holst Sage)
-  primary: "#92AA97"
-  primary-hover: "#BDC9B8"
-  primary-active: "#7C9581"
-  on-primary: "#080813"
+  # Primary Brand Accent (Bone)
+  primary: "#D8CFBC"
+  primary-hover: "#FFFBF4"
+  primary-active: "#C5BBA4"
+  on-primary: "#11120D"
 
   # Secondary Spark Accent (Citrus)
   secondary: "#E4FD97"
@@ -23,36 +22,36 @@ colors:
   secondary-muted: "rgba(228, 253, 151, 0.12)"
   secondary-border: "rgba(228, 253, 151, 0.28)"
 
-  # Dark Mode Surfaces (Black Iris Obsidian - NO DARK GREEN)
-  canvas: "#080813"
-  canvas-soft: "#101020"
-  canvas-overlay: "#16162a"
-  surface-card: "#121224"
-  surface-hover: "#181832"
+  # Dark Mode Surfaces (Smoky Black Luxury Void)
+  canvas: "#11120D"
+  canvas-soft: "#141510"
+  canvas-overlay: "#2B2E25"
+  surface-card: "#191B15"
+  surface-hover: "#23261E"
 
   # Hairlines & Borders
-  hairline: "#202138"
-  hairline-strong: "#2c2d4c"
-  hairline-sage: "rgba(146, 170, 151, 0.25)"
+  hairline: "#33372B"
+  hairline-strong: "#565449"
+  hairline-bone: "rgba(216, 207, 188, 0.25)"
 
   # Text / Inks (Dark Mode)
-  ink-strong: "#ffffff"
-  ink: "#f0f3f8"
-  body: "#c2cbda"
-  mute: "#7e889b"
+  ink-strong: "#FFFBF4"
+  ink: "#D8CFBC"
+  body: "#A69E8D"
+  mute: "#807D6E"
 
   # Light Mode Luxury Counterparts
-  light-canvas: "#F7F3EA"
+  light-canvas: "#FFFBF4"
   light-surface: "#ffffff"
-  light-surface-raised: "#E2DED2"
-  light-hairline: "#BDC9B8"
-  light-ink: "#080813"
-  light-body: "#4a5568"
-  light-mute: "#8a94a6"
+  light-surface-raised: "#EBE5D8"
+  light-hairline: "#E2DED2"
+  light-ink: "#11120D"
+  light-body: "#565449"
+  light-mute: "#807D6E"
 
   # Status & Semantics
-  semantic-success: "#92AA97"
-  semantic-info: "#92AA97"
+  semantic-success: "#D8CFBC"
+  semantic-info: "#D8CFBC"
   semantic-warning: "#f5a623"
   semantic-error: "#ef4444"
 
@@ -120,7 +119,7 @@ rounded:
   pill: 9999px
 
 shadows:
-  sage-glow: "0 2px 20px -2px rgba(146, 170, 151, 0.35)"
+  bone-glow: "0 2px 20px -2px rgba(216, 207, 188, 0.35)"
   citrus-glow: "0 2px 18px -2px rgba(228, 253, 151, 0.35)"
   card-elevation: "0 4px 20px -2px rgba(0, 0, 0, 0.5)"
 ---
@@ -128,27 +127,20 @@ shadows:
 # FlowStock Design System Specification
 
 ## 1. Overview & Philosophy
-FlowStock combines a signature **Black Iris (`#080813`) obsidian dark mode** with an organic, bespoke **Holst Sage palette** chosen from the bottom of the swatch:
-- **Black Iris (`#080813`)**: The deep midnight void surface. It replaces generic gray with a rich, refined obsidian dark canvas without ANY muddy green background tint.
-- **Sage (`#92AA97`)**: The crisp primary brand accent. Carries primary CTAs, active route indicators, live telemetry badges, and focused highlights.
-- **Soft Sage (`#BDC9B8`)**: High-fidelity hover states and secondary interactive elements.
-- **Warm Cream (`#F7F3EA`)**: The luxurious editorial canvas for Light Mode, eliminating sterile white/gray for a tailored, premium feel.
-- **Soft Sand (`#E2DED2`)**: Secondary card surface and pill backgrounds in Light Mode.
-- **Citrus (`#E4FD97`)**: High-luminance lemon-lime secondary spark for special alerts and ledger confirmations.
+FlowStock uses a signature luxury palette engineered for high-velocity supply chain management, inspired by editorial timepiece design:
+- **Smoky Black (`#11120D`)**: The rich, warm obsidian dark canvas void. Deep, sophisticated, and zero dark green tint.
+- **Olive Drab (`#565449`)**: Structural hairline borders, secondary tags, and elegant midtone contrast.
+- **Bone (`#D8CFBC`)**: The primary brand accent. Carries primary CTAs, active route indicators, live telemetry badges, and glowing focus rings with striking contrast against Smoky Black.
+- **Floral White (`#FFFBF4`)**: The editorial canvas for Light Mode, button hover elevations, and crisp dark-mode typography.
 
 ## 2. Token Registry
 
 | Token | Hex / Value | Semantic Role |
 |-------|-------------|---------------|
-| `sage` | `#92AA97` | Primary action buttons, ledger verification, active state |
-| `sage-hover` | `#BDC9B8` | Primary button hover elevation |
-| `cream` | `#F7F3EA` | Light mode canvas void background |
-| `sand` | `#E2DED2` | Light mode card elevation & secondary surfaces |
-| `black-iris` | `#080813` | Root canvas void background in dark mode |
-| `iris-surface` | `#121224` | Feature cards, modals, table rows (Dark Mode) |
-| `iris-raised` | `#181832` | Elevated popovers, active tabs, hover states |
-| `iris-hairline` | `#202138` | Universal 1px border on cards and dividers |
-| `ink-strong` | `#ffffff` | Hero headlines, primary KPI metrics (Dark Mode) |
-| `ink` | `#f0f3f8` | Primary body typography (Dark Mode) |
-| `body` | `#c2cbda` | Secondary descriptions and paragraphs (Dark Mode) |
-| `mute` | `#7e889b` | Monospace tags, timestamps, captions |
+| `bone` | `#D8CFBC` | Primary action buttons, ledger verification, active state |
+| `bone-hover` | `#FFFBF4` | Primary button hover elevation |
+| `smoky-black` | `#11120D` | Root canvas void background in dark mode |
+| `smoky-surface` | `#191B15` | Feature cards, modals, table rows (Dark Mode) |
+| `smoky-raised` | `#23261E` | Elevated popovers, active tabs, hover states |
+| `olive-drab` | `#565449` | Strong borders, hairline accents, secondary badges |
+| `floral-white` | `#FFFBF4` | Light mode canvas void & dark mode headlines |

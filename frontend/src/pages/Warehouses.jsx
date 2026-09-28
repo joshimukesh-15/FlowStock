@@ -394,13 +394,13 @@ export default function WarehousesPage() {
               ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30"
               : isHigh
               ? "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30"
-              : "text-emerald-600 dark:text-[#92AA97] bg-emerald-500/10 dark:bg-[#92AA97]/10 border-emerald-500/30 dark:border-[#92AA97]/30";
+              : "text-emerald-600 dark:text-[#D8CFBC] bg-emerald-500/10 dark:bg-[#D8CFBC]/10 border-emerald-500/30 dark:border-[#D8CFBC]/30";
 
             const barFillColor = isCritical
               ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"
               : isHigh
               ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]"
-              : "bg-emerald-500 dark:bg-[#92AA97] shadow-[0_0_8px_rgba(146,170,151,0.35)]";
+              : "bg-emerald-500 dark:bg-[#D8CFBC] shadow-[0_0_8px_rgba(216,207,188,0.35)]";
 
             const statusLabel = isCritical
               ? "Near Limit"
@@ -873,7 +873,7 @@ export default function WarehousesPage() {
               type="button"
               whileTap={{ scale: 0.90 }}
               onClick={() => setSelectedVisualizerTransfer(null)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23262F] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97]"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23262F] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
               aria-label="Close dialog"
             >
               <X className="w-5 h-5"/>

@@ -29,7 +29,7 @@ export const PageSkeleton = ({ className }) => {
       </div>
       <div className="flex flex-col items-center space-y-2">
         <div className="h-1.5 w-32 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-          <div className="h-full bg-[#92AA97] w-full animate-[pulse_1.5s_ease-in-out_infinite]" />
+          <div className="h-full bg-[#D8CFBC] w-full animate-[pulse_1.5s_ease-in-out_infinite]" />
         </div>
         <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 tracking-wide uppercase">
           Initializing Workspace

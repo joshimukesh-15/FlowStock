@@ -66,7 +66,7 @@ export function RefreshButton({
       whileTap={!disabled && !isSpinning && !prefersReducedMotion ? { scale: 0.98 } : undefined}
       transition={{ type: "spring", stiffness: 500, damping: 30 }}
       className={cn(
-        "group relative inline-flex items-center justify-center gap-1.5 rounded-lg border font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight transition-all duration-150 ease-out outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#080813] disabled:opacity-50 disabled:pointer-events-none",
+        "group relative inline-flex items-center justify-center gap-1.5 rounded-lg border font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight transition-all duration-150 ease-out outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#11120D] disabled:opacity-50 disabled:pointer-events-none",
         size === "xs" && "h-7 px-2.5 text-xs",
         size === "sm" && "h-8 px-3 text-xs",
         size === "md" && "h-9 px-3.5 text-xs sm:text-sm",
@@ -75,7 +75,7 @@ export function RefreshButton({
         variant === "outline" &&
           "border-slate-300 dark:border-[#323744] bg-white dark:bg-[#181A20] text-slate-700 dark:text-[#D1D5DB] hover:bg-slate-50 dark:hover:bg-[#20242D] hover:text-slate-900 dark:hover:text-white shadow-2xs",
         variant === "primary" &&
-          "bg-[#92AA97] text-[#080813] border border-[#BDC9B8] font-semibold hover:bg-[#BDC9B8] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(146,170,151,0.2)] hover:shadow-[0_2px_8px_rgba(146,170,151,0.35)]",
+          "bg-[#D8CFBC] text-[#11120D] border border-[#FFFBF4] font-semibold hover:bg-[#FFFBF4] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(216,207,188,0.2)] hover:shadow-[0_2px_8px_rgba(216,207,188,0.35)]",
         isSpinning && "cursor-wait",
         className
       )}
@@ -87,7 +87,7 @@ export function RefreshButton({
             iconClassName,
             "origin-center transition-colors duration-200",
             isSpinning && !prefersReducedMotion
-              ? "animate-spin text-slate-900 dark:text-[#92AA97]"
+              ? "animate-spin text-slate-900 dark:text-[#D8CFBC]"
               : "text-slate-500 dark:text-[#9BA3AF] transition-transform duration-300 ease-out group-hover:rotate-45 group-hover:text-slate-900 dark:group-hover:text-white"
           )}
         />

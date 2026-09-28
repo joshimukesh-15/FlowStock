@@ -29,27 +29,29 @@ export const Button = React.forwardRef((
   const prefersReducedMotion = useReducedMotion();
 
   const baseStyles =
-    "relative inline-flex items-center justify-center font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#080813] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed transition-all duration-150 ease-out";
+    "relative inline-flex items-center justify-center font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#11120D] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed transition-all duration-150 ease-out";
 
   const variants = {
     primary:
-      "bg-[#92AA97] hover:bg-[#BDC9B8] active:bg-[#7C9581] text-[#080813] font-semibold border border-[#BDC9B8] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_16px_rgba(146,170,151,0.30)] hover:shadow-[0_4px_22px_rgba(146,170,151,0.45)]",
+      "bg-[#D8CFBC] hover:bg-[#FFFBF4] active:bg-[#C5BBA4] text-[#11120D] font-semibold border border-[#FFFBF4] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_16px_rgba(216,207,188,0.30)] hover:shadow-[0_4px_22px_rgba(216,207,188,0.45)]",
     default:
-      "bg-[#92AA97] hover:bg-[#BDC9B8] active:bg-[#7C9581] text-[#080813] font-semibold border border-[#BDC9B8] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_16px_rgba(146,170,151,0.30)] hover:shadow-[0_4px_22px_rgba(146,170,151,0.45)]",
+      "bg-[#D8CFBC] hover:bg-[#FFFBF4] active:bg-[#C5BBA4] text-[#11120D] font-semibold border border-[#FFFBF4] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_16px_rgba(216,207,188,0.30)] hover:shadow-[0_4px_22px_rgba(216,207,188,0.45)]",
     citrus:
-      "bg-[#E4FD97] hover:bg-[#d5f57a] active:bg-[#c3e65c] text-[#080813] font-semibold border border-[#d5f57a] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_12px_rgba(228,253,151,0.3)] hover:shadow-[0_4px_18px_rgba(228,253,151,0.45)]",
+      "bg-[#E4FD97] hover:bg-[#d5f57a] active:bg-[#c3e65c] text-[#11120D] font-semibold border border-[#d5f57a] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_12px_rgba(228,253,151,0.3)] hover:shadow-[0_4px_18px_rgba(228,253,151,0.45)]",
     solid:
-      "bg-[#080813] hover:bg-black active:bg-[#121224] text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-[#080813] font-medium border border-[#080813] dark:border-white shadow-2xs",
+      "bg-[#11120D] hover:bg-black active:bg-[#191B15] text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-[#11120D] font-medium border border-[#11120D] dark:border-white shadow-2xs",
     dark:
-      "bg-[#080813] hover:bg-black active:bg-[#121224] text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-[#080813] font-medium border border-[#080813] dark:border-white shadow-2xs",
+      "bg-[#11120D] hover:bg-black active:bg-[#191B15] text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-[#11120D] font-medium border border-[#11120D] dark:border-white shadow-2xs",
     secondary:
-      "bg-slate-100 hover:bg-slate-200/90 active:bg-slate-200 text-slate-700 hover:text-slate-900 dark:bg-[#121224] dark:hover:bg-[#181832] dark:active:bg-[#101020] dark:text-[#c2cbda] dark:hover:text-white border border-slate-200/80 dark:border-[#202138] shadow-2xs",
+      "bg-slate-100 hover:bg-slate-200/90 active:bg-slate-200 text-slate-700 hover:text-slate-900 dark:bg-[#191B15] dark:hover:bg-[#23261E] dark:active:bg-[#101020] dark:text-[#c2cbda] dark:hover:text-white border border-slate-200/80 dark:border-[#33372B] shadow-2xs",
     outline:
-      "bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 dark:bg-[#080813] dark:hover:bg-[#121224] dark:active:bg-[#101020] dark:text-[#f0f3f8] dark:hover:text-white dark:border-[#202138] dark:hover:border-[#2c2d4c] shadow-2xs",
+      "bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 dark:bg-[#11120D] dark:hover:bg-[#191B15] dark:active:bg-[#101020] dark:text-[#f0f3f8] dark:hover:text-white dark:border-[#33372B] dark:hover:border-[#565449] shadow-2xs",
+    bone:
+      "bg-[#D8CFBC]/15 hover:bg-[#D8CFBC]/25 text-[#D8CFBC] border border-[#D8CFBC]/30 font-medium",
     frozen:
-      "bg-[#92AA97]/15 hover:bg-[#92AA97]/25 text-[#92AA97] border border-[#92AA97]/30 font-medium",
+      "bg-[#D8CFBC]/15 hover:bg-[#D8CFBC]/25 text-[#D8CFBC] border border-[#D8CFBC]/30 font-medium",
     ghost:
-      "text-slate-600 hover:text-slate-900 hover:bg-slate-100/90 active:bg-slate-200/70 dark:text-[#7e889b] dark:hover:text-[#f0f3f8] dark:hover:bg-[#121224]/80 dark:active:bg-[#121224]",
+      "text-slate-600 hover:text-slate-900 hover:bg-slate-100/90 active:bg-slate-200/70 dark:text-[#7e889b] dark:hover:text-[#f0f3f8] dark:hover:bg-[#191B15]/80 dark:active:bg-[#191B15]",
     danger:
       "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-medium border border-rose-600 shadow-2xs",
     "danger-subtle":

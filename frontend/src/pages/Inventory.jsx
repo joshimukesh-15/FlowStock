@@ -397,7 +397,7 @@ export default function InventoryPage() {
                 <Button type="button" variant="outline" size="sm" onClick={() => setMovementModalOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" isLoading={submitting} disabled={previewNewStock < 0} className="bg-[#92AA97] hover:bg-[#BDC9B8] text-[#080813] font-bold">
+                <Button type="submit" size="sm" isLoading={submitting} disabled={previewNewStock < 0} className="bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold">
                   {submitting ? "Writing Ledger..." : "Confirm & Post Ledger"}
                 </Button>
               </div>
@@ -446,7 +446,7 @@ export default function InventoryPage() {
                         </td>
                         <td className="py-2.5 px-3">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${m.movement_type === "IN"
-                        ? "bg-emerald-500 text-white dark:bg-[#92AA97] dark:text-[#080813] font-bold font-semibold"
+                        ? "bg-emerald-500 text-white dark:bg-[#D8CFBC] dark:text-[#11120D] font-bold font-semibold"
                         : m.movement_type === "OUT"
                             ? "bg-slate-200 text-slate-900 dark:text-white border border-slate-300 dark:border-[#545963] font-semibold"
                             : "bg-slate-100 dark:bg-[#23262F] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] font-semibold"}`}>

@@ -327,7 +327,7 @@ export const Header = () => {
               aria-label="Notifications"
             >
               <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (<span className="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#92AA97] text-[10px] font-bold text-[#080813] shadow-xs">
+              {unreadCount > 0 && (<span className="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#D8CFBC] text-[10px] font-bold text-[#11120D] shadow-xs">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>)}
             </button>
@@ -411,7 +411,7 @@ export const Header = () => {
                   <ChevronDown className="w-3 h-3 text-slate-400"/>
                 </p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#23262F] text-slate-800 dark:text-[#92AA97] border border-slate-200 dark:border-[#323744] uppercase tracking-wider">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#23262F] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#323744] uppercase tracking-wider">
                     {currentUser?.role?.replace("_", " ") || "Operator"}
                   </span>
                 </div>

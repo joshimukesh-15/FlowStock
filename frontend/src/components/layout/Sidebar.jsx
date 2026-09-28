@@ -101,7 +101,7 @@ export const Sidebar = () => {
             onClick={() => setCollapsed(!collapsed)}
             onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })}
             onMouseLeave={handleMouseLeave}
-            className="flex items-center min-w-0 w-full text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97] rounded p-0 cursor-pointer"
+            className="flex items-center min-w-0 w-full text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] rounded p-0 cursor-pointer"
             aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
@@ -160,7 +160,7 @@ export const Sidebar = () => {
                       {active && (
                         <motion.span
                           layoutId="active-navigation-item"
-                          className="absolute inset-0 rounded-lg border border-[#92AA97]/30 bg-[#92AA97]/10 dark:bg-[#92AA97]/15"
+                          className="absolute inset-0 rounded-lg border border-[#D8CFBC]/30 bg-[#D8CFBC]/10 dark:bg-[#D8CFBC]/15"
                           transition={getTransition("normal", prefersReducedMotion)}
                           aria-hidden="true"
                         />
@@ -170,9 +170,9 @@ export const Sidebar = () => {
                         onMouseEnter={(e) => handleMouseEnter(e, item.label, { active })}
                         onMouseLeave={handleMouseLeave}
                         aria-current={active ? "page" : undefined}
-                        className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97] ${
+                        className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
                           active
-                            ? "text-slate-950 dark:text-[#92AA97] font-semibold"
+                            ? "text-slate-950 dark:text-[#D8CFBC] font-semibold"
                             : "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#23262F] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
                         }`}
                       >
@@ -181,7 +181,7 @@ export const Sidebar = () => {
                           <Icon
                             className={`w-4 h-4 shrink-0 transition-colors ${
                               active
-                                ? "text-slate-950 dark:text-[#92AA97]"
+                                ? "text-slate-950 dark:text-[#D8CFBC]"
                                 : "text-slate-400 dark:text-[#9BA3AF] group-hover:text-slate-700 dark:group-hover:text-slate-200"
                             }`}
                           />
@@ -200,7 +200,7 @@ export const Sidebar = () => {
                         </span>
 
                         {active && !collapsed && (
-                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#92AA97] shrink-0 mr-2" />
+                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#D8CFBC] shrink-0 mr-2" />
                         )}
                       </Link>
                     </li>
@@ -249,7 +249,7 @@ export const Sidebar = () => {
               {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#14171F] border border-[#323744] rounded px-1 text-[#9BA3AF] font-mono">
                   {hoveredTooltip.shortcut}
                 </kbd>)}
-              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#92AA97] shrink-0"/>)}
+              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#D8CFBC] shrink-0"/>)}
             </div>
           </motion.div>)}
       </AnimatePresence>
