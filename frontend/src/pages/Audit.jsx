@@ -109,7 +109,7 @@ export default function AuditPage() {
         {/* Metric Summary Cards */}
         <KpiGrid>
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F] flex items-center justify-center shrink-0">
               <History className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
@@ -119,7 +119,7 @@ export default function AuditPage() {
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F] flex items-center justify-center shrink-0">
               <CreditCard className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
@@ -131,7 +131,7 @@ export default function AuditPage() {
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F] flex items-center justify-center shrink-0">
               <Boxes className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
@@ -143,7 +143,7 @@ export default function AuditPage() {
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-[#8EB69B]/10 text-slate-900 dark:text-[#8EB69B] border border-[#8EB69B]/20 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#4FB8B4]/10 text-slate-900 dark:text-[#4FB8B4] border border-[#4FB8B4]/20 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
@@ -178,7 +178,7 @@ export default function AuditPage() {
 
         {/* Audit Log Table */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#262A34] flex flex-row items-center justify-between">
+          <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#10606F] flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">Audit Trail Records</CardTitle>
               <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
@@ -203,13 +203,13 @@ export default function AuditPage() {
                     <th className="py-2.5 px-3.5 text-right">Host IP</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
+                <tbody className="divide-y divide-slate-100 dark:divide-[#10606F]">
                   {loading ? (<tr>
                       <td colSpan={7} className="p-4">
                         <TableSkeleton rows={5} columns={["w-36", "w-24", "w-24", "w-32", "w-28", "w-56", "w-24"]}/>
                         <SkeletonAnnouncer label="Loading audit trails"/>
                       </td>
-                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
+                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-slate-50/70 dark:hover:bg-[#0A3D4A]/50 transition-colors">
                         <td className="py-2.5 px-3.5 font-mono text-slate-500 dark:text-[#9BA3AF] whitespace-nowrap">
                           {formatDate(item.created_at, true)}
                         </td>

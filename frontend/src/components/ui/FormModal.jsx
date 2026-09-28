@@ -39,7 +39,7 @@ export function FormModal({
       )}
       {children}
       {showFooter && !footer && (
-        <div className="flex items-center justify-between gap-2 pt-4 border-t border-slate-100 dark:border-[#262A34]">
+        <div className="flex items-center justify-between gap-2 pt-4 border-t border-slate-100 dark:border-[#10606F]">
           <div>{footerExtra}</div>
           <div className="flex items-center gap-2">
             <Button
@@ -77,10 +77,10 @@ export function FormModal({
       className={cn("overflow-hidden", className)}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-[#262A34] bg-slate-50/60 dark:bg-[#181A20]">
+      <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-[#10606F] bg-slate-50/60 dark:bg-[#04222B]">
         <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-base sm:text-lg flex items-center gap-2.5">
           {Icon && (
-            <div className="w-7 h-7 rounded-lg bg-slate-200/70 dark:bg-[#262A34] flex items-center justify-center text-slate-800 dark:text-[#F4F5F7] shrink-0 shadow-2xs">
+            <div className="w-7 h-7 rounded-lg bg-slate-200/70 dark:bg-[#10606F] flex items-center justify-center text-slate-800 dark:text-[#F4F5F7] shrink-0 shadow-2xs">
               <Icon className="w-4 h-4" />
             </div>
           )}
@@ -90,7 +90,7 @@ export function FormModal({
           type="button"
           whileTap={{ scale: 0.90 }}
           onClick={onClose}
-          className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md p-1.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#8EB69B]"
+          className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md p-1.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#4FB8B4]"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />

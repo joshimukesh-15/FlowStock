@@ -24,58 +24,58 @@
     --color-border-strong: #b8c9dc;
 
     /* Inks */
-    --color-ink-primary: #051F20;
+    --color-ink-primary: #04222B;
     --color-ink-secondary: #4a5568;
     --color-ink-muted: #8a94a6;
-    --color-ink-on-spark: #051F20;
+    --color-ink-on-spark: #04222B;
 
-    /* Accent & Status (Sage Main Accent & Citrus Spark) */
-    --color-accent-spark: #8EB69B;
-    --color-accent-hover: #DAF1DE;
-    --color-accent-muted: #7AA38A;
-    --color-accent-frozen: #8EB69B;
-    --color-status-success: #8EB69B;
+    /* Accent & Status (Holst Teal Primary & Citrus Spark) */
+    --color-accent-spark: #4FB8B4;
+    --color-accent-hover: #98D8D0;
+    --color-accent-muted: #3BA5A0;
+    --color-accent-frozen: #4FB8B4;
+    --color-status-success: #4FB8B4;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #8EB69B;
+    --color-status-info: #4FB8B4;
 
     /* Brand Tokens */
-    --brand-primary: #8EB69B;
-    --brand-frozen: #8EB69B;
+    --brand-primary: #4FB8B4;
+    --brand-frozen: #4FB8B4;
     --brand-citrus: #E4FD97;
-    --brand-black-iris: #051F20;
+    --brand-black-iris: #04222B;
   }
 
   html.dark {
-    /* Deep Forest Dark Void Canvas & Surfaces */
-    --color-surface-canvas: #051F20;
-    --color-surface-base: #0B2B26;
-    --color-surface-raised: #163832;
-    --color-surface-overlay: #1A4A3D;
-    --color-border-subtle: #235347;
-    --color-border-strong: #2E6A5A;
+    /* Holst Ocean Dark Void Canvas & Surfaces */
+    --color-surface-canvas: #04222B;
+    --color-surface-base: #0A3D4A;
+    --color-surface-raised: #10606F;
+    --color-surface-overlay: #0D5260;
+    --color-border-subtle: #1D8B94;
+    --color-border-strong: #157A85;
 
     /* Inks */
     --color-ink-primary: #f0f3f8;
     --color-ink-secondary: #c2cbda;
     --color-ink-muted: #7e889b;
-    --color-ink-on-spark: #051F20;
+    --color-ink-on-spark: #04222B;
 
-    /* Accent & Status (Sage Main Accent & Citrus Spark) */
-    --color-accent-spark: #8EB69B;
-    --color-accent-hover: #DAF1DE;
-    --color-accent-muted: #7AA38A;
-    --color-accent-frozen: #8EB69B;
-    --color-status-success: #8EB69B;
+    /* Accent & Status (Holst Teal Primary & Citrus Spark) */
+    --color-accent-spark: #4FB8B4;
+    --color-accent-hover: #98D8D0;
+    --color-accent-muted: #3BA5A0;
+    --color-accent-frozen: #4FB8B4;
+    --color-status-success: #4FB8B4;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #8EB69B;
+    --color-status-info: #4FB8B4;
 
     /* Brand Tokens */
-    --brand-primary: #8EB69B;
-    --brand-frozen: #8EB69B;
+    --brand-primary: #4FB8B4;
+    --brand-frozen: #4FB8B4;
     --brand-citrus: #E4FD97;
-    --brand-black-iris: #051F20;
+    --brand-black-iris: #04222B;
   }
 
   html {
@@ -83,7 +83,7 @@
   }
 
   body {
-    @apply bg-[#f6f8fb] text-[#051F20] dark:bg-[#051F20] dark:text-[#f0f3f8] antialiased;
+    @apply bg-[#f6f8fb] text-[#04222B] dark:bg-[#04222B] dark:text-[#f0f3f8] antialiased;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
     font-variant-numeric: tabular-nums;
@@ -213,7 +213,7 @@ html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hove
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:first-child {
-  box-shadow: inset 3px 0 0 0 #8EB69B;
+  box-shadow: inset 3px 0 0 0 #4FB8B4;
 }
 
 /* Graphite & Lime Spark Surface Mappings in Dark Mode */
@@ -248,28 +248,28 @@ html.dark [class*="text-zinc-400"]:not([class*="dark:text-"]) {
 
 /* Surfaces */
 html.dark [class*="bg-zinc-950"]:not([class*="dark:bg-"]) {
-  background-color: #14171F;
+  background-color: #04222B;
 }
 
 html.dark [class*="bg-zinc-900"]:not([class*="dark:bg-"]) {
-  background-color: #23262F;
+  background-color: #0A3D4A;
 }
 
 html.dark [class*="bg-zinc-800"]:not([class*="dark:bg-"]) {
-  background-color: #2C303B;
+  background-color: #10606F;
 }
 
 html.dark [class*="bg-zinc-100"]:not([class*="dark:bg-"]) {
-  background-color: #2C303B;
+  background-color: #10606F;
 }
 
 html.dark [class*="bg-zinc-50"]:not([class*="dark:bg-"]) {
-  background-color: #181A20;
+  background-color: #04222B;
 }
 
 /* Structural Borders */
 html.dark [class*="border-zinc-800"]:not([class*="dark:border-"]) {
-  border-color: #323744;
+  border-color: #10606F;
 }
 
 html.dark [class*="border-zinc-700"]:not([class*="dark:border-"]) {
@@ -281,7 +281,7 @@ html.dark [class*="border-zinc-300"]:not([class*="dark:border-"]) {
 }
 
 html.dark [class*="border-zinc-200"]:not([class*="dark:border-"]) {
-  border-color: #323744;
+  border-color: #10606F;
 }
 
 html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {

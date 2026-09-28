@@ -394,13 +394,13 @@ export default function WarehousesPage() {
               ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30"
               : isHigh
               ? "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30"
-              : "text-emerald-600 dark:text-[#8EB69B] bg-emerald-500/10 dark:bg-[#8EB69B]/10 border-emerald-500/30 dark:border-[#8EB69B]/30";
+              : "text-emerald-600 dark:text-[#4FB8B4] bg-emerald-500/10 dark:bg-[#4FB8B4]/10 border-emerald-500/30 dark:border-[#4FB8B4]/30";
 
             const barFillColor = isCritical
               ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"
               : isHigh
               ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]"
-              : "bg-emerald-500 dark:bg-[#8EB69B] shadow-[0_0_8px_rgba(142,182,155,0.35)]";
+              : "bg-emerald-500 dark:bg-[#4FB8B4] shadow-[0_0_8px_rgba(79,184,180,0.35)]";
 
             const statusLabel = isCritical
               ? "Near Limit"
@@ -411,7 +411,7 @@ export default function WarehousesPage() {
               : "Optimal";
 
             return (
-              <Card key={wh.id} className="p-4 flex flex-col justify-between hover:border-slate-300 dark:hover:border-[#464D5D] transition-colors group">
+              <Card key={wh.id} className="p-4 flex flex-col justify-between hover:border-slate-300 dark:hover:border-[#1D8B94] transition-colors group">
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
@@ -434,19 +434,19 @@ export default function WarehousesPage() {
                       <button
                         type="button"
                         onClick={() => handleOpenEdit(wh)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#262A34] transition-colors cursor-pointer"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#10606F] transition-colors cursor-pointer"
                         title="Configure Facility & Capacity"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#20242D] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744]">
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#0A3D4A] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#10606F]">
                         <WarehouseIcon className="w-4 h-4" />
                       </div>
                     </div>
                   </div>
 
                   {/* Realistic Capacity Metrics & Visualization */}
-                  <div className="mt-3.5 p-3 rounded-xl bg-slate-50/70 dark:bg-[#15171E] border border-slate-200/60 dark:border-[#262A34]">
+                  <div className="mt-3.5 p-3 rounded-xl bg-slate-50/70 dark:bg-[#15171E] border border-slate-200/60 dark:border-[#10606F]">
                     <div className="flex items-center justify-between text-xs mb-1.5">
                       <span className="font-medium text-slate-600 dark:text-[#9BA3AF] flex items-center gap-1.5">
                         <Gauge className="w-3.5 h-3.5 text-slate-400" />
@@ -459,7 +459,7 @@ export default function WarehousesPage() {
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-2 w-full rounded-full bg-slate-200/70 dark:bg-[#23262F] overflow-hidden p-0.5">
+                    <div className="h-2 w-full rounded-full bg-slate-200/70 dark:bg-[#0A3D4A] overflow-hidden p-0.5">
                       <div
                         className={`h-full rounded-full transition-all duration-700 ease-out ${barFillColor}`}
                         style={{ width: `${Math.min(100, Math.max(currentStock > 0 ? 3 : 0, pct))}%` }}
@@ -478,7 +478,7 @@ export default function WarehousesPage() {
                   </div>
                 </div>
 
-                <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-[#262A34] flex items-center justify-between text-xs text-slate-400 dark:text-[#7C8189]">
+                <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-[#10606F] flex items-center justify-between text-xs text-slate-400 dark:text-[#7C8189]">
                   <span className="flex items-center gap-1.5 truncate">
                     <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0" />
                     {wh.location || "General Logistics Zone"}
@@ -496,7 +496,7 @@ export default function WarehousesPage() {
         {/* Stock Transfers Table */}
         <motion.div variants={itemVariants}>
           <Card spotlight={true} className="shadow-2xs">
-            <CardHeader className="border-b border-slate-100 dark:border-[#262A34] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <CardHeader className="border-b border-slate-100 dark:border-[#10606F] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
                 <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7] flex items-center gap-2">
                   <Truck className="w-4 h-4 text-slate-900 dark:text-[#F4F5F7]"/>
@@ -530,10 +530,10 @@ export default function WarehousesPage() {
                         <th className="py-2.5 px-3.5 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#10606F]">
                       {filteredTransfers.map((tr) => {
                 const isActing = actionLoading === tr.id;
-                return (<tr key={tr.id} className="hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
+                return (<tr key={tr.id} className="hover:bg-slate-50/70 dark:hover:bg-[#0A3D4A]/50 transition-colors">
                             <td className="py-2.5 px-3.5 font-mono text-xs font-semibold text-slate-900 dark:text-[#F4F5F7]">
                               {tr.transfer_number}
                               <div className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] mt-0.5">
@@ -707,7 +707,7 @@ export default function WarehousesPage() {
               id="whDefault"
               checked={warehouseIsDefault}
               onChange={(e) => setWarehouseIsDefault(e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#20242D] text-slate-900 focus:ring-zinc-950"
+              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#0A3D4A] text-slate-900 focus:ring-zinc-950"
             />
             <label htmlFor="whDefault" className="text-xs text-slate-700 dark:text-[#CBD5E1] cursor-pointer">
               Set as default receiving facility for new inventory
@@ -773,7 +773,7 @@ export default function WarehousesPage() {
               id="editWhDefault"
               checked={editIsDefault}
               onChange={(e) => setEditIsDefault(e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#20242D] text-slate-900 focus:ring-zinc-950"
+              className="w-4 h-4 rounded border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-[#0A3D4A] text-slate-900 focus:ring-zinc-950"
             />
             <label htmlFor="editWhDefault" className="text-xs text-slate-700 dark:text-[#CBD5E1] cursor-pointer">
               Set as primary default facility for receiving stock
@@ -873,7 +873,7 @@ export default function WarehousesPage() {
               type="button"
               whileTap={{ scale: 0.90 }}
               onClick={() => setSelectedVisualizerTransfer(null)}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23262F] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#8EB69B]"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#0A3D4A] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#4FB8B4]"
               aria-label="Close dialog"
             >
               <X className="w-5 h-5"/>

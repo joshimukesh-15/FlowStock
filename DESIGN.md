@@ -1,22 +1,23 @@
 ---
-version: 3.0.0
+version: 4.0.0
 name: FlowStock-Design-System
-description: Official design system and tokens for FlowStock — a financial-grade inventory ledger and logistics platform. Built on the signature Forest-to-Mint green palette with Deep Forest (#051F20) canvas and Sage (#8EB69B) accent.
+description: Official design system for FlowStock. Built on the Holst ocean-teal palette with Deep Ocean (#04222B) canvas and Teal (#4FB8B4) primary accent.
 palette:
-  deep_forest: "#051F20"
-  dark_forest: "#0B2B26"
-  forest: "#163832"
-  forest_border: "#235347"
-  sage: "#8EB69B"
-  mint: "#DAF1DE"
+  deep_ocean: "#04222B"
+  ocean_surface: "#0A3D4A"
+  ocean_raised: "#10606F"
+  teal_accent: "#1D8B94"
+  teal_primary: "#4FB8B4"
+  teal_hover: "#98D8D0"
+  teal_light: "#E2F4F0"
   citrus: "#E4FD97"
 
 colors:
-  # Primary Brand Accent (Sage)
-  primary: "#8EB69B"
-  primary-hover: "#DAF1DE"
-  primary-active: "#7AA38A"
-  on-primary: "#051F20"
+  # Primary Brand Accent (Holst Teal)
+  primary: "#4FB8B4"
+  primary-hover: "#98D8D0"
+  primary-active: "#3BA5A0"
+  on-primary: "#04222B"
 
   # Secondary Spark Accent (Citrus)
   secondary: "#E4FD97"
@@ -24,17 +25,17 @@ colors:
   secondary-muted: "rgba(228, 253, 151, 0.12)"
   secondary-border: "rgba(228, 253, 151, 0.28)"
 
-  # Dark Mode Surfaces (Forest Void)
-  canvas: "#051F20"
-  canvas-soft: "#081E1F"
-  canvas-overlay: "#0D2924"
-  surface-card: "#0B2B26"
-  surface-hover: "#163832"
+  # Dark Mode Surfaces (Holst Ocean Void)
+  canvas: "#04222B"
+  canvas-soft: "#061E26"
+  canvas-overlay: "#0D5260"
+  surface-card: "#0A3D4A"
+  surface-hover: "#10606F"
 
   # Hairlines & Borders
-  hairline: "#235347"
-  hairline-strong: "#2E6A5A"
-  hairline-sage: "rgba(142, 182, 155, 0.22)"
+  hairline: "#10606F"
+  hairline-strong: "#1D8B94"
+  hairline-accent: "rgba(79, 184, 180, 0.22)"
 
   # Text / Inks (Dark Mode)
   ink-strong: "#ffffff"
@@ -45,15 +46,15 @@ colors:
   # Light Mode Counterparts
   light-canvas: "#f6f8fb"
   light-surface: "#ffffff"
-  light-surface-raised: "#EEF7F0"
-  light-hairline: "#B8D4BF"
-  light-ink: "#051F20"
+  light-surface-raised: "#E2F4F0"
+  light-hairline: "#98D8D0"
+  light-ink: "#04222B"
   light-body: "#4a5568"
   light-mute: "#8a94a6"
 
   # Status & Semantics
-  semantic-success: "#8EB69B"
-  semantic-info: "#8EB69B"
+  semantic-success: "#4FB8B4"
+  semantic-info: "#4FB8B4"
   semantic-warning: "#f5a623"
   semantic-error: "#ef4444"
 
@@ -121,42 +122,43 @@ rounded:
   pill: 9999px
 
 shadows:
+  holst-glow: "0 2px 18px -2px rgba(79, 184, 180, 0.30)"
   citrus-glow: "0 2px 18px -2px rgba(228, 253, 151, 0.35)"
-  sage-glow: "0 2px 18px -2px rgba(142, 182, 155, 0.30)"
   card-elevation: "0 4px 20px -2px rgba(0, 0, 0, 0.5)"
 ---
 
 # FlowStock Design System Specification
 
 ## 1. Overview & Philosophy
-FlowStock uses a signature forest-to-mint green harmony engineered for high-velocity supply chain management:
-- **Deep Forest (`#051F20`)**: The deep emerald void canvas. Replaces generic gray with a rich, organic dark surface that evokes stability and precision.
-- **Sage (`#8EB69B`)**: The muted sage-green primary accent. Carries active indicators, live status glows, badges, metrics, and interactive highlights.
-- **Mint (`#DAF1DE`)**: Soft mint for hover states, secondary highlights, and elevated accent moments.
-- **Citrus (`#E4FD97`)**: High-luminance lemon-lime kept as a secondary spark variant for special CTAs.
+FlowStock uses the **Holst** ocean-teal palette -- a 7-step gradient from deep ocean to arctic ice, engineered for a premium financial-grade cockpit:
+- **Deep Ocean (`#04222B`)**: The darkest void canvas. A rich, blue-teal black that feels like a deep-water command center.
+- **Teal (`#4FB8B4`)**: The vibrant primary accent. Carries buttons, active indicators, live metrics, badges, and interactive highlights with confident energy.
+- **Seafoam (`#98D8D0`)**: Soft hover states and secondary highlights. Elegant elevation.
+- **Arctic (`#E2F4F0`)**: The lightest highlight for on-dark text emphasis and whisper-thin accents.
 
 ## 2. Palette Gradient (Dark to Light)
 
 | Step | Hex | Role |
 |------|-----|------|
-| 1 | `#051F20` | Canvas void / deepest background |
-| 2 | `#0B2B26` | Base card surfaces, modals |
-| 3 | `#163832` | Raised surfaces, active tabs, hover states |
-| 4 | `#235347` | Borders, hairlines, dividers |
-| 5 | `#8EB69B` | Primary accent: buttons, badges, active states |
-| 6 | `#DAF1DE` | Accent hover, light highlights, on-dark text emphasis |
+| 1 | `#04222B` | Canvas void, deepest background |
+| 2 | `#0A3D4A` | Base card surfaces, modals, inputs |
+| 3 | `#10606F` | Borders, dividers, raised surfaces |
+| 4 | `#1D8B94` | Strong borders, secondary accent, sidebar active |
+| 5 | `#4FB8B4` | **Primary accent**: buttons, badges, active metrics |
+| 6 | `#98D8D0` | Hover states, light accent |
+| 7 | `#E2F4F0` | Lightest highlight, on-dark emphasis |
 
 ## 3. Token Registry
 
 | Token | Hex / Value | Semantic Role |
 |-------|-------------|---------------|
-| `sage` | `#8EB69B` | Primary accent: buttons, active indicators, live metrics |
-| `sage-hover` | `#DAF1DE` | Primary button hover, elevated accent |
-| `sage-active` | `#7AA38A` | Pressed/active button state |
-| `deep-forest` | `#051F20` | Root canvas void background in dark mode |
-| `forest-surface` | `#0B2B26` | Feature cards, modals, table rows |
-| `forest-raised` | `#163832` | Elevated popovers, active tabs, hover states |
-| `forest-hairline` | `#235347` | Universal 1px border on cards and dividers |
+| `holst` | `#4FB8B4` | Primary accent: buttons, active indicators, live metrics |
+| `holst-hover` | `#98D8D0` | Primary button hover, elevated accent |
+| `holst-active` | `#3BA5A0` | Pressed/active button state |
+| `deep-ocean` | `#04222B` | Root canvas void background in dark mode |
+| `ocean-surface` | `#0A3D4A` | Feature cards, modals, table rows |
+| `ocean-raised` | `#10606F` | Borders, active tabs, hover states |
+| `ocean-accent` | `#1D8B94` | Strong borders, secondary teal indicator |
 | `ink-strong` | `#ffffff` | Hero headlines, primary KPI metrics |
 | `ink` | `#f0f3f8` | Primary body typography |
 | `body` | `#c2cbda` | Secondary descriptions and paragraphs |

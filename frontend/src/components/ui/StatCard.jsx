@@ -19,7 +19,7 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "relative rounded-xl border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs hover:border-slate-300 dark:hover:border-[#464D5D] transition-colors duration-150 overflow-hidden group",
+        "relative rounded-xl border border-slate-200/90 dark:border-[#10606F] bg-white dark:bg-[#04222B] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs hover:border-slate-300 dark:hover:border-[#1D8B94] transition-colors duration-150 overflow-hidden group",
         className
       )}
     >
@@ -32,7 +32,7 @@ export function StatCard({
           <div className="flex items-center gap-1.5 shrink-0">
             {badge}
             {Icon && (
-              <div className="w-6 h-6 rounded-md bg-slate-100 dark:bg-[#23262F] border border-slate-200/50 dark:border-[#323744] flex items-center justify-center text-slate-600 dark:text-[#9BA3AF] group-hover:text-slate-900 dark:group-hover:text-[#8EB69B] transition-colors">
+              <div className="w-6 h-6 rounded-md bg-slate-100 dark:bg-[#0A3D4A] border border-slate-200/50 dark:border-[#10606F] flex items-center justify-center text-slate-600 dark:text-[#9BA3AF] group-hover:text-slate-900 dark:group-hover:text-[#4FB8B4] transition-colors">
                 <Icon className="w-3.5 h-3.5" />
               </div>
             )}
@@ -71,16 +71,16 @@ export function StatCard({
 
       {/* Subtext */}
       {subText && (
-        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-[#262A34] text-xs text-slate-500 dark:text-[#9BA3AF]">
+        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-[#10606F] text-xs text-slate-500 dark:text-[#9BA3AF]">
           {subText}
         </div>
       )}
 
       {/* Micro 2px Progress Bar at bottom edge */}
       {progress !== undefined && (
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-100 dark:bg-[#23262F] overflow-hidden">
+        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-100 dark:bg-[#0A3D4A] overflow-hidden">
           <div
-            className="h-full bg-[#8EB69B] transition-all duration-500 ease-out"
+            className="h-full bg-[#4FB8B4] transition-all duration-500 ease-out"
             style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
           />
         </div>

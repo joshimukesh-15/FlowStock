@@ -9,8 +9,8 @@ export function StatRow({ items, children, columns = 4, className = "", }) {
         5: "sm:grid-cols-3 lg:grid-cols-5",
         6: "sm:grid-cols-3 lg:grid-cols-6",
     };
-    return (<div className={cn("rounded-lg border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-none overflow-hidden", className)}>
-      <div className={cn("grid grid-cols-1 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-[#262A34]", colClassMap[columns])}>
+    return (<div className={cn("rounded-lg border border-slate-200 dark:border-[#10606F] bg-white dark:bg-[#04222B] shadow-none overflow-hidden", className)}>
+      <div className={cn("grid grid-cols-1 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-[#10606F]", colClassMap[columns])}>
         {items
             ? items.map((item, idx) => (<StatCol key={item.id || idx} label={item.label} value={item.value} subtext={item.subtext} badge={item.badge} icon={item.icon} progress={item.progress}/>))
             : children}
@@ -39,7 +39,7 @@ export function StatCol({ label, value, subtext, badge, icon: Icon, progress, cl
           {subtext}
         </div>)}
 
-      {progress !== undefined && (<div className="mt-2 w-full bg-slate-100 dark:bg-[#23262F] h-1 rounded-full overflow-hidden">
+      {progress !== undefined && (<div className="mt-2 w-full bg-slate-100 dark:bg-[#0A3D4A] h-1 rounded-full overflow-hidden">
           <div className="h-full bg-slate-900 dark:bg-slate-100 rounded-full transition-all duration-500" style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}/>
         </div>)}
     </div>);
