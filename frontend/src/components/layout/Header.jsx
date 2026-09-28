@@ -570,92 +570,159 @@ export const Header = () => {
 
       {/* Add Organization Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} maxWidth="md">
-          <div className="p-5 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#33372B]">
-              <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">Create New Organization</h3>
-              <button onClick={() => setModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
-                <X className="w-4 h-4"/>
-              </button>
+        <div className="p-6 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#33372B]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0">
+                <Building2 className="w-4 h-4 text-slate-700 dark:text-[#D8CFBC]" />
+              </div>
+              <h3 className="font-bold text-slate-900 dark:text-[#F4F5F7] text-base tracking-tight">Create New Organization</h3>
+            </div>
+            <button
+              type="button"
+              onClick={() => setModalOpen(false)}
+              className="w-7 h-7 rounded-lg border border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#D8CFBC] bg-slate-50 dark:bg-[#23261E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
+              title="Close"
+              aria-label="Close modal"
+            >
+              <X className="w-3.5 h-3.5"/>
+            </button>
+          </div>
+
+          {createError && (
+            <p className="text-xs text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 p-2.5 rounded-xl font-medium">
+              {createError}
+            </p>
+          )}
+
+          <form onSubmit={handleCreateSubmit} className="space-y-3.5">
+            <Input label="Organization Name" placeholder="e.g. Apex Industrial Supplies" value={newOrgName} onChange={handleNameChange} required/>
+            <Input label="Identifier Slug" placeholder="e.g. apex-industrial" value={newOrgSlug} onChange={(e) => setNewOrgSlug(e.target.value)} required/>
+            <div>
+              <label className="block text-xs font-medium text-slate-700 dark:text-[#CBD5E1] mb-1">
+                Default Currency
+              </label>
+              <Select
+                value={newOrgCurrency}
+                onChange={(val) => setNewOrgCurrency(val)}
+                options={[
+                  { value: "INR", label: "INR (₹) - Indian Rupee" },
+                  { value: "USD", label: "USD ($) - US Dollar" },
+                  { value: "EUR", label: "EUR (€) - Euro" },
+                  { value: "GBP", label: "GBP (£) - British Pound" },
+                ]}
+              />
             </div>
 
-            {createError && (<p className="text-xs text-slate-950 dark:text-[#F4F5F7] bg-slate-100 dark:bg-[#23261E] border border-slate-300 dark:border-[#3A404F] p-2.5 rounded font-medium">
-                {createError}
-              </p>)}
-
-            <form onSubmit={handleCreateSubmit} className="space-y-3">
-              <Input label="Organization Name" placeholder="e.g. Apex Industrial Supplies" value={newOrgName} onChange={handleNameChange} required/>
-              <Input label="Identifier Slug" placeholder="e.g. apex-industrial" value={newOrgSlug} onChange={(e) => setNewOrgSlug(e.target.value)} required/>
-              <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-[#CBD5E1] mb-1">
-                  Default Currency
-                </label>
-                <Select
-                  value={newOrgCurrency}
-                  onChange={(val) => setNewOrgCurrency(val)}
-                  options={[
-                    { value: "INR", label: "INR (₹) - Indian Rupee" },
-                    { value: "USD", label: "USD ($) - US Dollar" },
-                    { value: "EUR", label: "EUR (€) - Euro" },
-                    { value: "GBP", label: "GBP (£) - British Pound" },
-                  ]}
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setModalOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit" size="sm" isLoading={creating}>
-                  {creating ? "Creating..." : "Create Tenant"}
-                </Button>
-              </div>
-            </form>
-          </div>
+            <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-[#33372B]">
+              <Button type="button" variant="secondary" size="sm" onClick={() => setModalOpen(false)} className="rounded-xl px-4 py-2 text-xs font-semibold cursor-pointer">
+                Cancel
+              </Button>
+              <Button type="submit" variant="primary" size="sm" isLoading={creating} className="rounded-xl px-4 py-2 text-xs font-semibold cursor-pointer">
+                {creating ? "Creating..." : "Create Tenant"}
+              </Button>
+            </div>
+          </form>
+        </div>
       </Modal>
 
       {/* Delete Organization Confirmation Modal */}
-      <Modal isOpen={deleteModalOpen} onClose={() => {
-            if (!deleting) {
-                setDeleteModalOpen(false);
-                setOrgToDelete(null);
-                setDeleteError("");
-            }
-        }} maxWidth="sm">
-        <div className="p-6">
-          <div className="flex items-center gap-3 text-red-600 dark:text-red-400 mb-3">
-            <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-950/50 flex items-center justify-center shrink-0">
-              <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400"/>
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-slate-900 dark:text-[#F4F5F7]">Delete Organization</h3>
-              <p className="text-xs text-slate-500 dark:text-[#9BA3AF] font-mono">{orgToDelete?.slug}</p>
-            </div>
-          </div>
-
-          <p className="text-sm text-slate-600 dark:text-[#CBD5E1] mb-4 leading-relaxed">
-            Are you sure you want to permanently delete{" "}
-            <strong className="text-slate-900 dark:text-[#F4F5F7] font-semibold">{orgToDelete?.name}</strong>?
-            This will permanently erase all associated products, warehouses, orders, invoices, payments, and data from the database.
-          </p>
-
-          <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-lg text-xs text-red-700 dark:text-red-300 mb-5 flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5"/>
-            <span>This action is destructive and cannot be undone.</span>
-          </div>
-
-          {deleteError && (<div className="p-3 bg-red-100 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-700 dark:text-red-300 text-xs rounded-lg mb-4">
-              {deleteError}
-            </div>)}
-
-          <div className="flex justify-end gap-2.5">
-            <Button type="button" variant="outline" size="sm" disabled={deleting} onClick={() => {
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          if (!deleting) {
             setDeleteModalOpen(false);
             setOrgToDelete(null);
             setDeleteError("");
-        }}>
+          }
+        }}
+        maxWidth="sm"
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#33372B]">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-[#FFFBF4] tracking-tight">
+                    Delete Organization
+                  </h3>
+                  {orgToDelete?.slug && (
+                    <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] text-[11px] font-mono text-slate-600 dark:text-[#D8CFBC]">
+                      {orgToDelete.slug}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+                  Permanent tenant ledger purge
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={() => {
+                setDeleteModalOpen(false);
+                setOrgToDelete(null);
+                setDeleteError("");
+              }}
+              className="w-8 h-8 rounded-lg border border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#D8CFBC] bg-slate-50 dark:bg-[#23261E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+              title="Close"
+              aria-label="Close modal"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="py-4 space-y-3.5">
+            <p className="text-sm text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
+              Are you sure you want to permanently delete{" "}
+              <strong className="text-slate-950 dark:text-white font-semibold">
+                {orgToDelete?.name}
+              </strong>
+              ? This will permanently erase all associated products, warehouses, orders, invoices, payments, and data from the database.
+            </p>
+
+            <div className="p-3.5 bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-xl text-xs text-rose-700 dark:text-rose-300 flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+              <span className="font-medium leading-snug">
+                This action is destructive and cannot be undone. All database records will be erased.
+              </span>
+            </div>
+
+            {deleteError && (
+              <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs rounded-xl flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{deleteError}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-[#33372B]">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              disabled={deleting}
+              onClick={() => {
+                setDeleteModalOpen(false);
+                setOrgToDelete(null);
+                setDeleteError("");
+              }}
+              className="rounded-xl px-4 py-2 text-xs font-semibold cursor-pointer"
+            >
               Cancel
             </Button>
-            <Button type="button" size="sm" isLoading={deleting} onClick={handleConfirmDelete} className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-500">
+            <Button
+              type="button"
+              variant="danger"
+              size="sm"
+              isLoading={deleting}
+              onClick={handleConfirmDelete}
+              className="rounded-xl px-4 py-2 text-xs font-semibold shadow-xs cursor-pointer"
+            >
               {deleting ? "Deleting..." : "Delete Permanently"}
             </Button>
           </div>
