@@ -1,17 +1,20 @@
 ---
-version: 2.0.0
+version: 6.0.0
 name: FlowStock-Design-System
-description: Official design system and tokens for FlowStock — a financial-grade inventory ledger and logistics platform. Built on the signature Black Iris (#080813), Citrus (#E4FD97), and Frozen (#A0BDDB) palette.
+description: Official design system for FlowStock. Built on the Holst Sage palette chosen from the bottom of the swatch (#F7F3EA, #E2DED2, #BDC9B8, #92AA97) paired with the signature Black Iris (#080813) obsidian dark mode.
 palette:
+  cream: "#F7F3EA"
+  sand: "#E2DED2"
+  soft_sage: "#BDC9B8"
+  sage_primary: "#92AA97"
   black_iris: "#080813"
   citrus: "#E4FD97"
-  frozen: "#A0BDDB"
 
 colors:
-  # Primary Brand Accent (Frozen)
-  primary: "#A0BDDB"
-  primary-hover: "#b4cce3"
-  primary-active: "#8eaecf"
+  # Primary Brand Accent (Holst Sage)
+  primary: "#92AA97"
+  primary-hover: "#BDC9B8"
+  primary-active: "#7C9581"
   on-primary: "#080813"
 
   # Secondary Spark Accent (Citrus)
@@ -20,7 +23,7 @@ colors:
   secondary-muted: "rgba(228, 253, 151, 0.12)"
   secondary-border: "rgba(228, 253, 151, 0.28)"
 
-  # Dark Mode Surfaces (Black Iris Void)
+  # Dark Mode Surfaces (Black Iris Obsidian - NO DARK GREEN)
   canvas: "#080813"
   canvas-soft: "#101020"
   canvas-overlay: "#16162a"
@@ -30,7 +33,7 @@ colors:
   # Hairlines & Borders
   hairline: "#202138"
   hairline-strong: "#2c2d4c"
-  hairline-frozen: "rgba(160, 189, 219, 0.22)"
+  hairline-sage: "rgba(146, 170, 151, 0.25)"
 
   # Text / Inks (Dark Mode)
   ink-strong: "#ffffff"
@@ -38,18 +41,18 @@ colors:
   body: "#c2cbda"
   mute: "#7e889b"
 
-  # Light Mode Counterparts
-  light-canvas: "#f6f8fb"
+  # Light Mode Luxury Counterparts
+  light-canvas: "#F7F3EA"
   light-surface: "#ffffff"
-  light-surface-raised: "#edf2f8"
-  light-hairline: "#d8e2ec"
+  light-surface-raised: "#E2DED2"
+  light-hairline: "#BDC9B8"
   light-ink: "#080813"
   light-body: "#4a5568"
   light-mute: "#8a94a6"
 
   # Status & Semantics
-  semantic-success: "#E4FD97"
-  semantic-info: "#A0BDDB"
+  semantic-success: "#92AA97"
+  semantic-info: "#92AA97"
   semantic-warning: "#f5a623"
   semantic-error: "#ef4444"
 
@@ -117,31 +120,35 @@ rounded:
   pill: 9999px
 
 shadows:
+  sage-glow: "0 2px 20px -2px rgba(146, 170, 151, 0.35)"
   citrus-glow: "0 2px 18px -2px rgba(228, 253, 151, 0.35)"
-  frozen-glow: "0 2px 18px -2px rgba(160, 189, 219, 0.25)"
   card-elevation: "0 4px 20px -2px rgba(0, 0, 0, 0.5)"
 ---
 
 # FlowStock Design System Specification
 
 ## 1. Overview & Philosophy
-FlowStock uses a signature three-color harmony engineered for high-velocity supply chain management:
-- **Black Iris (`#080813`)**: The deep midnight void surface. It replaces generic gray with a rich, refined indigo-tinged dark canvas.
-- **Citrus (`#E4FD97`)**: High-luminance lemon-lime accent. Carries primary CTAs, active confirmation states, and key ledger metrics.
-- **Frozen (`#A0BDDB`)**: Calming ice-blue accent. Used for secondary metadata, subtle borders, carrier logistics indicators, and waypoint telemetry.
+FlowStock combines a signature **Black Iris (`#080813`) obsidian dark mode** with an organic, bespoke **Holst Sage palette** chosen from the bottom of the swatch:
+- **Black Iris (`#080813`)**: The deep midnight void surface. It replaces generic gray with a rich, refined obsidian dark canvas without ANY muddy green background tint.
+- **Sage (`#92AA97`)**: The crisp primary brand accent. Carries primary CTAs, active route indicators, live telemetry badges, and focused highlights.
+- **Soft Sage (`#BDC9B8`)**: High-fidelity hover states and secondary interactive elements.
+- **Warm Cream (`#F7F3EA`)**: The luxurious editorial canvas for Light Mode, eliminating sterile white/gray for a tailored, premium feel.
+- **Soft Sand (`#E2DED2`)**: Secondary card surface and pill backgrounds in Light Mode.
+- **Citrus (`#E4FD97`)**: High-luminance lemon-lime secondary spark for special alerts and ledger confirmations.
 
 ## 2. Token Registry
 
 | Token | Hex / Value | Semantic Role |
 |-------|-------------|---------------|
-| `citrus` | `#E4FD97` | Primary action buttons, ledger verification, active state |
-| `citrus-hover` | `#d5f57a` | Primary button hover elevation |
-| `frozen` | `#A0BDDB` | Secondary accent, route badges, transit telemetry |
+| `sage` | `#92AA97` | Primary action buttons, ledger verification, active state |
+| `sage-hover` | `#BDC9B8` | Primary button hover elevation |
+| `cream` | `#F7F3EA` | Light mode canvas void background |
+| `sand` | `#E2DED2` | Light mode card elevation & secondary surfaces |
 | `black-iris` | `#080813` | Root canvas void background in dark mode |
-| `iris-surface` | `#121224` | Feature cards, modals, table rows |
+| `iris-surface` | `#121224` | Feature cards, modals, table rows (Dark Mode) |
 | `iris-raised` | `#181832` | Elevated popovers, active tabs, hover states |
 | `iris-hairline` | `#202138` | Universal 1px border on cards and dividers |
-| `ink-strong` | `#ffffff` | Hero headlines, primary KPI metrics |
-| `ink` | `#f0f3f8` | Primary body typography |
-| `body` | `#c2cbda` | Secondary descriptions and paragraphs |
+| `ink-strong` | `#ffffff` | Hero headlines, primary KPI metrics (Dark Mode) |
+| `ink` | `#f0f3f8` | Primary body typography (Dark Mode) |
+| `body` | `#c2cbda` | Secondary descriptions and paragraphs (Dark Mode) |
 | `mute` | `#7e889b` | Monospace tags, timestamps, captions |

@@ -26,7 +26,7 @@ const ROLE_OPTIONS = [
 const roleBadgeClass = (role) => {
     switch (role) {
         case "admin":
-            return "bg-[#A0BDDB]/15 text-slate-800 dark:text-[#A0BDDB] border-slate-300 dark:border-[#A0BDDB]/30 font-semibold";
+            return "bg-[#92AA97]/15 text-slate-800 dark:text-[#92AA97] border-slate-300 dark:border-[#92AA97]/30 font-semibold";
         case "warehouse_manager":
             return "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800/40 font-medium";
         case "sales_rep":
@@ -114,7 +114,7 @@ export default function SettingsPage() {
         : health?.status === "degraded"
             ? { label: "Degraded", cls: "warning" }
             : { label: "Unreachable", cls: "danger" };
-    const Switch = ({ checked, onChange, label }) => (<button role="switch" aria-checked={checked} aria-label={label} onClick={onChange} className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer active:scale-95 ${checked ? "bg-[#A0BDDB]" : "bg-slate-200 dark:bg-[#323744]"}`}>
+    const Switch = ({ checked, onChange, label }) => (<button role="switch" aria-checked={checked} aria-label={label} onClick={onChange} className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer active:scale-95 ${checked ? "bg-[#92AA97]" : "bg-slate-200 dark:bg-[#323744]"}`}>
       <span className={`inline-block h-4 w-4 transform rounded-full shadow transition-transform ${checked ? "translate-x-[22px] bg-[#080813]" : "translate-x-[3px] bg-white dark:bg-zinc-400"}`}/>
     </button>);
 
@@ -161,7 +161,7 @@ export default function SettingsPage() {
             </div>
             <div className="p-3 rounded-xl border border-slate-200 dark:border-[#323744] bg-slate-50/70 dark:bg-[#14171F]/70">
               <p className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] font-semibold">Slug</p>
-              <p className="text-sm font-mono font-semibold text-slate-900 dark:text-[#A0BDDB] mt-1">{currentOrg?.slug || "—"}</p>
+              <p className="text-sm font-mono font-semibold text-slate-900 dark:text-[#92AA97] mt-1">{currentOrg?.slug || "—"}</p>
             </div>
             <div className="p-3 rounded-xl border border-slate-200 dark:border-[#323744] bg-slate-50/70 dark:bg-[#14171F]/70">
               <p className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] font-semibold">Base Currency</p>
@@ -190,7 +190,7 @@ export default function SettingsPage() {
                 Members of {currentOrg?.name || "this tenant"} and assigned permission levels.
               </p>
             </div>
-            {isAdmin && (<Button size="sm" variant="primary" onClick={() => setProvisionOpen(true)} className="gap-1.5 text-xs bg-[#A0BDDB] hover:bg-[#b4cce3] text-[#080813] font-semibold">
+            {isAdmin && (<Button size="sm" variant="primary" onClick={() => setProvisionOpen(true)} className="gap-1.5 text-xs bg-[#92AA97] hover:bg-[#BDC9B8] text-[#080813] font-semibold">
                 <Plus className="w-3.5 h-3.5"/>
                 Provision User
               </Button>)}
@@ -204,12 +204,12 @@ export default function SettingsPage() {
                 return (<li key={u.id} className="flex items-center justify-between gap-3 px-4 sm:px-5 py-2.5 hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors">
                       <div className="flex items-center gap-3 min-w-0">
                         <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-[#14171F] border border-slate-200 dark:border-[#323744] flex items-center justify-center shrink-0">
-                          {u.role === "admin" ? (<ShieldCheck className="w-4 h-4 text-[#A0BDDB]"/>) : (<UserIcon className="w-4 h-4 text-slate-600 dark:text-[#9BA3AF]"/>)}
+                          {u.role === "admin" ? (<ShieldCheck className="w-4 h-4 text-[#92AA97]"/>) : (<UserIcon className="w-4 h-4 text-slate-600 dark:text-[#9BA3AF]"/>)}
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7] truncate">{u.name}</p>
-                            {isSelf && (<Badge variant="default" className="text-[10px] py-0 px-1.5 bg-[#A0BDDB]/15 text-slate-800 dark:text-[#A0BDDB] border-slate-300 dark:border-[#A0BDDB]/30">
+                            {isSelf && (<Badge variant="default" className="text-[10px] py-0 px-1.5 bg-[#92AA97]/15 text-slate-800 dark:text-[#92AA97] border-slate-300 dark:border-[#92AA97]/30">
                                 You
                               </Badge>)}
                           </div>
@@ -258,7 +258,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5 rounded-xl border border-slate-200 dark:border-[#323744] bg-slate-50/50 dark:bg-[#14171F]/60 p-3.5 hover:bg-slate-50/80 dark:hover:bg-[#14171F] transition-colors">
               <div className="flex items-start gap-3">
                 <span className="p-2 rounded-lg bg-slate-100 dark:bg-[#181A20] text-slate-800 dark:text-[#F4F5F7] border border-slate-200 dark:border-[#323744] shrink-0">
-                  {theme === "dark" ? (<Moon className="w-4 h-4 text-[#A0BDDB]"/>) : theme === "light" ? (<Sun className="w-4 h-4 text-amber-500"/>) : (<Monitor className="w-4 h-4 text-blue-400"/>)}
+                  {theme === "dark" ? (<Moon className="w-4 h-4 text-[#92AA97]"/>) : theme === "light" ? (<Sun className="w-4 h-4 text-amber-500"/>) : (<Monitor className="w-4 h-4 text-blue-400"/>)}
                 </span>
                 <div>
                   <span className="block text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">Interface Theme</span>
@@ -276,7 +276,7 @@ export default function SettingsPage() {
             const Icon = item.icon;
             const isActive = theme === item.key;
             return (<button key={item.key} type="button" onClick={() => setTheme(item.key)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium transition-all cursor-pointer ${isActive
-                    ? "bg-white dark:bg-[#20242D] text-slate-900 dark:text-[#A0BDDB] shadow-sm"
+                    ? "bg-white dark:bg-[#20242D] text-slate-900 dark:text-[#92AA97] shadow-sm"
                     : "text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7]"}`}>
                       <Icon className="w-3.5 h-3.5"/>
                       <span>{item.label}</span>
@@ -351,9 +351,9 @@ export default function SettingsPage() {
             <div className="rounded-xl border border-slate-200 dark:border-[#323744] bg-slate-50/50 dark:bg-[#14171F]/60 p-3.5 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] font-semibold flex items-center gap-1.5">
-                  <Database className="w-3 h-3 text-[#A0BDDB]"/> Database
+                  <Database className="w-3 h-3 text-[#92AA97]"/> Database
                 </span>
-                <span className={`w-2 h-2 rounded-full ${health?.database?.connected ? "bg-[#A0BDDB] shadow-[0_0_8px_rgba(160,189,219,0.6)]" : "bg-zinc-400 dark:bg-zinc-600"}`}/>
+                <span className={`w-2 h-2 rounded-full ${health?.database?.connected ? "bg-[#92AA97] shadow-[0_0_8px_rgba(146,170,151,0.6)]" : "bg-zinc-400 dark:bg-zinc-600"}`}/>
               </div>
               <p className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">
                 {health?.database?.connected ? "Connected" : health?.database?.error ? "Failed" : "Unknown"}
@@ -365,9 +365,9 @@ export default function SettingsPage() {
             <div className="rounded-xl border border-slate-200 dark:border-[#323744] bg-slate-50/50 dark:bg-[#14171F]/60 p-3.5 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] font-semibold flex items-center gap-1.5">
-                  <Zap className="w-3 h-3 text-[#A0BDDB]"/> Cache
+                  <Zap className="w-3 h-3 text-[#92AA97]"/> Cache
                 </span>
-                <span className={`w-2 h-2 rounded-full ${health?.cache?.status === "healthy" ? "bg-[#A0BDDB] shadow-[0_0_8px_rgba(160,189,219,0.6)]" : "bg-zinc-400 dark:bg-zinc-600"}`}/>
+                <span className={`w-2 h-2 rounded-full ${health?.cache?.status === "healthy" ? "bg-[#92AA97] shadow-[0_0_8px_rgba(146,170,151,0.6)]" : "bg-zinc-400 dark:bg-zinc-600"}`}/>
               </div>
               <p className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">{health?.cache?.status || "unknown"}</p>
               <p className="text-xs text-slate-500 dark:text-[#9BA3AF] font-mono">{health?.cache?.provider || "in_memory"}</p>

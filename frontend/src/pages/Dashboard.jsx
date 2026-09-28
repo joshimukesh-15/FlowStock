@@ -343,7 +343,7 @@ export default function HomePage() {
                         <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0"/>
                         <span>All stock levels healthy across {summary?.inventory.total_skus || 0} catalog items.</span>
                       </div>
-                      <Link to="/inventory" className="mt-2 text-xs text-emerald-600 dark:text-[#A0BDDB] hover:underline inline-flex items-center gap-1">
+                      <Link to="/inventory" className="mt-2 text-xs text-emerald-600 dark:text-[#92AA97] hover:underline inline-flex items-center gap-1">
                         View Inventory Ledger <ArrowUpRight className="w-3 h-3"/>
                       </Link>
                     </div>)}
@@ -374,7 +374,7 @@ export default function HomePage() {
                             {wh.pct_of_total_stock}% ({wh.total_units} units)
                           </span>
                         </div>
-                        <AnimatedProgressBar value={wh.pct_of_total_stock} label={`${wh.name} share of stock units`} className="bg-[#A0BDDB] h-1.5"/>
+                        <AnimatedProgressBar value={wh.pct_of_total_stock} label={`${wh.name} share of stock units`} className="bg-[#92AA97] h-1.5"/>
                         <div className="flex justify-between text-[11px] text-slate-500 dark:text-[#9BA3AF] pt-0.5">
                           <span className="truncate max-w-[140px]">{wh.location || "Central Facility"}</span>
                           <span>

@@ -143,7 +143,7 @@ export default function AuditPage() {
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-[#A0BDDB]/10 text-slate-900 dark:text-[#A0BDDB] border border-[#A0BDDB]/20 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#92AA97]/10 text-slate-900 dark:text-[#92AA97] border border-[#92AA97]/20 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4"/>
             </div>
             <div className="min-w-0">

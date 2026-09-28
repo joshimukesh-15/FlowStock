@@ -83,14 +83,14 @@ export default function LoginPage() {
   const inputBase =
     "w-full rounded-lg border bg-white dark:bg-[#080813] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
   const inputColors =
-    "border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#9BA3AF] focus:border-[#A0BDDB] dark:focus:border-[#A0BDDB] focus:ring-[#A0BDDB]/20 dark:focus:ring-[#A0BDDB]/15";
+    "border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#9BA3AF] focus:border-[#92AA97] dark:focus:border-[#92AA97] focus:ring-[#92AA97]/20 dark:focus:ring-[#92AA97]/15";
   const inputClass = `${inputBase} ${inputColors}`;
 
   const labelClass =
-    "block text-xs font-medium text-slate-600 dark:text-[#A0BDDB] mb-1";
+    "block text-xs font-medium text-slate-600 dark:text-[#92AA97] mb-1";
 
   const iconClass =
-    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#A0BDDB]";
+    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#92AA97]";
 
   return (
     <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#080813] flex items-center justify-center px-4 py-8 relative overflow-hidden">
@@ -99,14 +99,14 @@ export default function LoginPage() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(160,189,219,0.12), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(146,170,151,0.12), transparent 60%)",
         }}
       />
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
         style={{
           background:
-            "linear-gradient(90deg, transparent, rgba(160,189,219,0.18), transparent)",
+            "linear-gradient(90deg, transparent, rgba(146,170,151,0.18), transparent)",
         }}
       />
 
@@ -241,7 +241,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#A0BDDB] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#92AA97] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5"
                     aria-label={
                       showPassword ? "Hide password" : "Show password"
                     }
@@ -260,7 +260,7 @@ export default function LoginPage() {
                   {/* Org section divider */}
                   <div className="flex items-center gap-2 pt-1">
                     <div className="flex-1 h-px bg-slate-150 dark:bg-[#202138]" />
-                    <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400 dark:text-[#A0BDDB]">
+                    <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400 dark:text-[#92AA97]">
                       Organization
                     </span>
                     <div className="flex-1 h-px bg-slate-150 dark:bg-[#202138]" />
@@ -325,7 +325,7 @@ export default function LoginPage() {
                   {orgSlug && (
                     <p className="text-[10px] text-slate-400 dark:text-[#9BA3AF] font-mono -mt-1 pl-0.5">
                       flowstock.app/
-                      <span className="text-sky-600 dark:text-[#A0BDDB]">
+                      <span className="text-sky-600 dark:text-[#92AA97]">
                         {orgSlug}
                       </span>
                     </p>
@@ -339,7 +339,7 @@ export default function LoginPage() {
                       <select
                         value={currency}
                         onChange={(e) => setCurrency(e.target.value)}
-                        className={`${inputBase} border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white focus:border-[#A0BDDB] dark:focus:border-[#A0BDDB] focus:ring-[#A0BDDB]/20 dark:focus:ring-[#A0BDDB]/15 appearance-none cursor-pointer`}
+                        className={`${inputBase} border-slate-200 dark:border-[#202138] text-slate-900 dark:text-white focus:border-[#92AA97] dark:focus:border-[#92AA97] focus:ring-[#92AA97]/20 dark:focus:ring-[#92AA97]/15 appearance-none cursor-pointer`}
                       >
                         <option value="INR">INR — Indian Rupee</option>
                         <option value="USD">USD — US Dollar</option>
@@ -379,7 +379,7 @@ export default function LoginPage() {
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">
                     alice@acme.local
                   </span>
-                  <span className="text-[10px] text-slate-400 dark:text-[#A0BDDB]">
+                  <span className="text-[10px] text-slate-400 dark:text-[#92AA97]">
                     Pass: <code className="font-mono">admin123</code>
                   </span>
                 </div>
@@ -393,7 +393,7 @@ export default function LoginPage() {
                     setAutoFilled(true);
                     setTimeout(() => setAutoFilled(false), 1400);
                   }}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#A0BDDB] hover:bg-[#b4cce3] text-[#080813] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(160,189,219,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#A0BDDB]"
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#92AA97] hover:bg-[#BDC9B8] text-[#080813] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(146,170,151,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97]"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     {autoFilled ? (
@@ -435,7 +435,7 @@ export default function LoginPage() {
                 onClick={() =>
                   switchMode(mode === "login" ? "signup" : "login")
                 }
-                className="text-sky-600 dark:text-[#A0BDDB] font-semibold hover:underline cursor-pointer"
+                className="text-sky-600 dark:text-[#92AA97] font-semibold hover:underline cursor-pointer"
               >
                 {mode === "login" ? "Sign up" : "Log in"}
               </button>
@@ -444,7 +444,7 @@ export default function LoginPage() {
         </div>
 
         {/* Trust badge */}
-        <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#A0BDDB]/70">
+        <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#92AA97]/70">
           <ShieldCheck className="w-3 h-3" />
           <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
         </div>
@@ -453,7 +453,7 @@ export default function LoginPage() {
         <div className="mt-3 text-center">
           <Link
             to="/"
-            className="text-[11px] text-slate-400 dark:text-[#A0BDDB]/70 hover:text-slate-600 dark:hover:text-[#A0BDDB] transition-colors"
+            className="text-[11px] text-slate-400 dark:text-[#92AA97]/70 hover:text-slate-600 dark:hover:text-[#92AA97] transition-colors"
           >
             ← Back to Home
           </Link>

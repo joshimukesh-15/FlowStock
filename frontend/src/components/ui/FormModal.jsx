@@ -90,7 +90,7 @@ export function FormModal({
           type="button"
           whileTap={{ scale: 0.90 }}
           onClick={onClose}
-          className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md p-1.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#A0BDDB]"
+          className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md p-1.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#92AA97]"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
