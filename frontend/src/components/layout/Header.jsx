@@ -372,15 +372,15 @@ export const Header = () => {
           <div className="relative" ref={notifRef}>
             <button
               onClick={toggleNotifDrawer}
-              className={`btn-tactile relative p-2 rounded-xl text-slate-500 dark:text-[#9BA3AF] hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23261E] transition-all cursor-pointer ${
-                notifOpen ? "bg-slate-100 dark:bg-[#23261E] text-slate-900 dark:text-white" : ""
+              className={`btn-tactile relative w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23261E] hover:border-slate-300 dark:hover:border-[#565449] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#FFFBF4] transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
+                notifOpen ? "bg-slate-50 dark:bg-[#23261E] text-slate-900 dark:text-white border-[#D8CFBC]/60" : ""
               }`}
               title="Notifications (Esc to close)"
               aria-expanded={notifOpen}
               aria-label="Notifications"
             >
               <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (<span className="absolute top-1 right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#D8CFBC] text-[10px] font-bold text-[#11120D] shadow-xs">
+              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#11120D] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#11120D] text-[10px] font-mono font-bold shadow-xs">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>)}
             </button>
@@ -463,21 +463,28 @@ export const Header = () => {
           <div className="relative" ref={userMenuRef}>
             <button
               onClick={toggleUserMenu}
-              className="btn-tactile flex items-center gap-2 text-sm text-slate-700 dark:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23261E] p-1.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-[#33372B] transition-all cursor-pointer text-left"
-              title="Click to switch active user / role"
+              className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23261E] border border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#565449] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs hover:shadow-xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC] text-left outline-none"
+              title="Click to switch active operator / role"
               aria-expanded={userMenuOpen}
               aria-label="User menu"
             >
-              <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-[#2B2E25] border border-slate-300 dark:border-[#565449] flex items-center justify-center">
-                <User className="w-4 h-4 text-slate-600 dark:text-[#F4F5F7]"/>
+              <div className="w-7 h-7 rounded-lg bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/25 flex items-center justify-center shrink-0 text-[#565449] dark:text-[#D8CFBC] font-mono font-bold text-[11px] shadow-2xs">
+                {currentUser?.name ? (
+                  currentUser.name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase()
+                ) : (
+                  <User className="w-3.5 h-3.5" />
+                )}
               </div>
-              <div>
-                <p suppressHydrationWarning className="text-xs font-semibold leading-none text-slate-900 dark:text-white flex items-center gap-1">
-                  {currentUser?.name || "Admin Operator"}
-                  <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${userMenuOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
-                </p>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#33372B] uppercase tracking-wider">
+              <div className="flex flex-col text-left min-w-0">
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] truncate max-w-[130px]">
+                    {currentUser?.name || "Admin Operator"}
+                  </span>
+                  <ChevronDown className={`w-3 h-3 text-slate-400 dark:text-[#9BA3AF] shrink-0 transition-transform duration-200 ${userMenuOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
+                </div>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="text-[10px] font-mono font-medium text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider truncate max-w-[130px]">
                     {currentUser?.role?.replace("_", " ") || "Operator"}
                   </span>
                 </div>
@@ -560,8 +567,9 @@ export const Header = () => {
               logout();
               navigate("/");
             }}
-            className="p-2 rounded-lg text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#181A20] hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-200 dark:hover:border-red-900/50 text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-red-500"
             title="Sign Out & Return to Landing Page"
+            aria-label="Sign out"
           >
             <LogOut className="w-4 h-4" />
           </button>
