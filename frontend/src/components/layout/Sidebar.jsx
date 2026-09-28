@@ -99,10 +99,10 @@ export const Sidebar = () => {
         <div className="h-12 flex items-center px-2 border-b border-slate-200 dark:border-[#33372B] shrink-0 overflow-hidden">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })}
+            onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar")}
             onMouseLeave={handleMouseLeave}
             className="flex items-center min-w-0 w-full text-left group/logo outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] rounded p-0 cursor-pointer"
-            aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
               <span className="w-7 h-7 rounded-lg bg-white border border-slate-200/90 shadow-xs flex items-center justify-center p-0.5">
@@ -129,7 +129,7 @@ export const Sidebar = () => {
               onClick={() => setCollapsed(true)}
               className="p-1 rounded text-slate-400 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23261E] transition-colors shrink-0 ml-auto mr-1 cursor-pointer"
               aria-label="Collapse sidebar"
-              title="Collapse sidebar ([)"
+              title="Collapse sidebar"
             >
               <PanelLeftClose className="w-3.5 h-3.5" />
             </button>
