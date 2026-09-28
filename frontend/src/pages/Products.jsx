@@ -257,7 +257,7 @@ export default function ProductsPage() {
                             type="button"
                             whileTap={{ scale: 0.90 }}
                             onClick={() => handleOpenEdit(p)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23261E] dark:hover:bg-slate-800 rounded-md text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#18191E] dark:hover:bg-[#22242B] rounded-md text-slate-500 dark:text-[#A0A5B2] hover:text-slate-900 dark:text-white dark:hover:text-[#D8CFBC] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
                             title="Edit Product"
                             aria-label={`Edit ${p.name}`}
                           >
@@ -267,7 +267,7 @@ export default function ProductsPage() {
                             type="button"
                             whileTap={{ scale: 0.90 }}
                             onClick={() => handleDeleteProduct(p.id, p.name)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23261E] dark:hover:bg-slate-800 text-slate-400 dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#18191E] dark:hover:bg-[#22242B] text-slate-400 dark:text-[#808594] hover:text-rose-500 dark:hover:text-rose-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Delete Product"
                             aria-label={`Delete ${p.name}`}
                           >

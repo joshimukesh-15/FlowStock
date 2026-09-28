@@ -1003,7 +1003,7 @@ export default function InvoicesPage() {
                         <button
                           type="button"
                           onClick={() => setInvoiceModalTab("payments")}
-                          className="text-xs text-blue-600 dark:text-blue-400 font-medium hover:underline flex items-center gap-1"
+                          className="text-xs text-[#565449] dark:text-[#D8CFBC] font-medium hover:underline flex items-center gap-1"
                         >
                           Open Ledger Tab &rarr;
                         </button>

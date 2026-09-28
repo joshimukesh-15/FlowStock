@@ -512,117 +512,151 @@ export default function HomePage() {
               {availableJobs.map((job) => {
                 const isRunning = runningJob === job.name;
                 const lastRun = job.last_run;
-                return (<Card key={job.name} spotlight className="flex flex-col justify-between">
+                return (
+                  <Card key={job.name} spotlight className="flex flex-col justify-between dark:bg-[#121316] dark:border-[#22242B]">
                     <CardHeader className="p-4 pb-2 space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-slate-600 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23261E] px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F]">
+                        <span className="text-[10px] font-mono text-slate-600 dark:text-[#D8CFBC] bg-slate-100 dark:bg-[#18191E] px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#22242B]">
                           {job.schedule_interval}
                         </span>
-                        {lastRun ? (<Badge variant={lastRun.status === "SUCCESS"
-                            ? "success"
-                            : lastRun.status === "RUNNING"
-                                ? "info"
-                                : "danger"} className="text-[10px] py-0 px-1.5">
+                        {lastRun ? (
+                          <Badge
+                            variant={
+                              lastRun.status === "SUCCESS"
+                                ? "success"
+                                : lastRun.status === "RUNNING"
+                                ? "warning"
+                                : "danger"
+                            }
+                            className="text-[10px] py-0 px-1.5 font-mono"
+                          >
                             {lastRun.status}
-                          </Badge>) : (<Badge variant="default" className="text-[10px] py-0 px-1.5 text-slate-500 dark:text-[#9BA3AF]">
+                          </Badge>
+                        ) : (
+                          <Badge variant="default" className="text-[10px] py-0 px-1.5 text-slate-500 dark:text-[#808594] font-mono">
                             NEVER RUN
-                          </Badge>)}
+                          </Badge>
+                        )}
                       </div>
                       <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">
                         {job.title}
                       </CardTitle>
-                      <p className="text-xs text-slate-500 dark:text-[#9BA3AF] truncate" title={job.description}>
+                      <p className="text-xs text-slate-500 dark:text-[#808594] truncate" title={job.description}>
                         {job.description}
                       </p>
                     </CardHeader>
                     <CardContent className="p-4 pt-0 space-y-2">
-                      {lastRun ? (<div className="p-2 rounded bg-slate-50 dark:bg-[#11120D]/60 border border-slate-100 dark:border-[#2B2E25] text-[11px] space-y-0.5">
-                          <div className="flex items-center justify-between text-slate-500 dark:text-[#9BA3AF]">
-                            <span>Last ({lastRun.triggered_by})</span>
-                            <span className="font-mono tabular-nums">
+                      {lastRun ? (
+                        <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-[#090A0C] border border-slate-100 dark:border-[#22242B] text-[11px] space-y-1">
+                          <div className="flex items-center justify-between text-slate-500 dark:text-[#808594]">
+                            <span className="font-mono">Last ({lastRun.triggered_by})</span>
+                            <span className="font-mono tabular-nums text-slate-700 dark:text-[#D8CFBC]">
                               {lastRun.duration_ms !== null && lastRun.duration_ms !== undefined
-                            ? `${lastRun.duration_ms}ms`
-                            : "-"}
+                                ? `${lastRun.duration_ms}ms`
+                                : "-"}
                             </span>
                           </div>
-                          <p className="text-slate-700 dark:text-[#CBD5E1] font-medium truncate" title={lastRun.result_summary || ""}>
+                          <p className="text-slate-700 dark:text-[#D8CFBC] font-medium truncate" title={lastRun.result_summary || ""}>
                             {lastRun.result_summary || "Completed"}
                           </p>
-                        </div>) : (<div className="p-2 rounded bg-slate-50/50 dark:bg-[#191B15]/60 border border-dashed border-slate-200 dark:border-[#33372B] text-[11px] text-slate-400 dark:text-[#7C8189] text-center">
+                        </div>
+                      ) : (
+                        <div className="p-2.5 rounded-lg bg-slate-50/50 dark:bg-[#090A0C] border border-dashed border-slate-200 dark:border-[#22242B] text-[11px] text-slate-400 dark:text-[#808594] text-center font-mono">
                           Ready for initial trigger
-                        </div>)}
-                      <Button variant="outline" size="sm" className="w-full text-xs gap-1.5 h-8 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => handleRunJob(job.name)} disabled={isRunning || runningJob !== null}>
-                        {isRunning ? (<>
-                            <RefreshCw className="w-3.5 h-3.5 animate-spin"/>
-                            Executing...
-                          </>) : (<>
-                            <Zap className="w-3.5 h-3.5 text-slate-800 dark:text-[#E2E8F0]"/>
-                            Run Job Now
-                          </>)}
+                        </div>
+                      )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full text-xs gap-1.5 h-8 dark:bg-[#121316] hover:bg-slate-100 dark:hover:bg-[#1E2026] dark:border-[#22242B] dark:hover:border-[#D8CFBC]/40 dark:text-[#F4F5F7] transition-all font-medium"
+                        onClick={() => handleRunJob(job.name)}
+                        disabled={isRunning || runningJob !== null}
+                      >
+                        {isRunning ? (
+                          <>
+                            <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#D8CFBC]"/>
+                            <span>Executing...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Zap className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC]"/>
+                            <span>Run Job Now</span>
+                          </>
+                        )}
                       </Button>
                     </CardContent>
-                  </Card>);
-            })}
+                  </Card>
+                );
+              })}
             </div>
 
             {/* Recent Execution Log Table */}
-            {jobExecutions.length > 0 && (<Card className="rounded-lg border-slate-200 dark:border-[#33372B] shadow-none">
-                <CardHeader className="p-4 pb-2">
-                  <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-slate-500"/>
+            {jobExecutions.length > 0 && (
+              <Card className="rounded-xl border border-slate-200 dark:border-[#22242B] dark:bg-[#121316] shadow-none overflow-hidden">
+                <CardHeader className="p-4 pb-2 border-b border-slate-100 dark:border-[#22242B]">
+                  <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-[#D8CFBC] flex items-center gap-1.5 font-mono">
+                    <Clock className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC]"/>
                     Recent Background Execution Log
                   </CardTitle>
-                  <p className="text-xs text-slate-500 dark:text-[#9BA3AF]">
+                  <p className="text-xs text-slate-500 dark:text-[#808594] mt-0.5">
                     Audit history of automated and on-demand background job runs
                   </p>
                 </CardHeader>
                 <CardContent className="p-0 overflow-x-auto">
-                  <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-50 dark:bg-[#11120D] text-slate-500 dark:text-[#9BA3AF] border-b border-slate-200 dark:border-[#33372B] font-medium">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead className="bg-slate-50 dark:bg-[#090A0C] text-slate-500 dark:text-[#808594] border-b border-slate-200 dark:border-[#22242B] font-medium uppercase text-[11px] font-mono tracking-wider">
                       <tr>
-                        <th className="py-2 px-4">Job Name</th>
-                        <th className="py-2 px-4">Trigger</th>
-                        <th className="py-2 px-4">Status</th>
-                        <th className="py-2 px-4">Execution Result</th>
-                        <th className="py-2 px-4 text-right">Duration</th>
-                        <th className="py-2 px-4 text-right">Timestamp</th>
+                        <th className="py-2.5 px-4">Job Name</th>
+                        <th className="py-2.5 px-4">Trigger</th>
+                        <th className="py-2.5 px-4">Status</th>
+                        <th className="py-2.5 px-4">Execution Result</th>
+                        <th className="py-2.5 px-4 text-right">Duration</th>
+                        <th className="py-2.5 px-4 text-right">Timestamp</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
-                      {jobExecutions.slice(0, 5).map((exec) => (<tr key={exec.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
-                          <td className="py-2 px-4 font-mono font-medium text-slate-800 dark:text-[#E2E8F0]">
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#22242B]">
+                      {jobExecutions.slice(0, 5).map((exec) => (
+                        <tr key={exec.id} className="hover:bg-slate-50/60 dark:hover:bg-[#18191E] transition-colors">
+                          <td className="py-2.5 px-4 font-mono font-medium text-slate-800 dark:text-[#F4F5F7]">
                             {exec.job_name}
                           </td>
-                          <td className="py-2 px-4">
-                            <span className="text-[10px] font-mono text-slate-500 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23261E] border dark:border-[#3A404F]/60 px-1.5 py-0.5 rounded">
+                          <td className="py-2.5 px-4">
+                            <span className="text-[10px] font-mono text-slate-500 dark:text-[#D8CFBC] bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] px-1.5 py-0.5 rounded">
                               {exec.triggered_by}
                             </span>
                           </td>
-                          <td className="py-2 px-4">
-                            <Badge variant={exec.status === "SUCCESS"
-                        ? "success"
-                        : exec.status === "RUNNING"
-                            ? "info"
-                            : "danger"} className="text-[10px] py-0 px-1.5">
+                          <td className="py-2.5 px-4">
+                            <Badge
+                              variant={
+                                exec.status === "SUCCESS"
+                                  ? "success"
+                                  : exec.status === "RUNNING"
+                                  ? "warning"
+                                  : "danger"
+                              }
+                              className="text-[10px] py-0 px-1.5 font-mono"
+                            >
                               {exec.status}
                             </Badge>
                           </td>
-                          <td className="py-2 px-4 text-slate-600 dark:text-[#CBD5E1] max-w-xs truncate">
+                          <td className="py-2.5 px-4 text-slate-600 dark:text-[#A0A5B2] max-w-xs truncate font-mono text-xs">
                             {exec.result_summary || exec.error_message || "—"}
                           </td>
-                          <td className="py-2 px-4 text-right font-mono tabular-nums text-slate-500 dark:text-[#9BA3AF]">
+                          <td className="py-2.5 px-4 text-right font-mono tabular-nums text-slate-500 dark:text-[#D8CFBC]">
                             {exec.duration_ms !== null && exec.duration_ms !== undefined
-                        ? `${exec.duration_ms}ms`
-                        : "—"}
+                              ? `${exec.duration_ms}ms`
+                              : "—"}
                           </td>
-                          <td className="py-2 px-4 text-right font-mono tabular-nums text-slate-400 dark:text-[#7C8189]">
+                          <td className="py-2.5 px-4 text-right font-mono tabular-nums text-slate-400 dark:text-[#808594]">
                             {new Date(exec.started_at).toLocaleTimeString()}
                           </td>
-                        </tr>))}
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </CardContent>
-              </Card>)}
+              </Card>
+            )}
           </div>)}
 
         {/* Tab 4: Activity Stream */}

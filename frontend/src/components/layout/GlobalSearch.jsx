@@ -182,11 +182,11 @@ export const GlobalSearch = ({ onOpen }) => {
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#33372B] bg-slate-50 dark:bg-[#23261E] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC] shadow-2xs tracking-tight group-hover:border-slate-300 dark:group-hover:border-[#565449] transition-colors">
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC] shadow-2xs tracking-tight group-hover:border-slate-300 dark:group-hover:border-[#343742] transition-colors">
             <span className="text-[9px] opacity-75">Ctrl</span>
             <span>K</span>
           </kbd>
-          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-[#33372B] bg-slate-50 dark:bg-[#23261E] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC]">
+          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC]">
             /
           </kbd>
         </div>
@@ -196,10 +196,10 @@ export const GlobalSearch = ({ onOpen }) => {
       <Modal isOpen={isOpen} onClose={close} maxWidth="xl" position="top">
         <div
           onKeyDown={handleKeyDown}
-          className="flex flex-col bg-white dark:bg-[#191B15] text-slate-900 dark:text-[#F4F5F7] overflow-hidden"
+          className="flex flex-col bg-white dark:bg-[#121316] text-slate-900 dark:text-[#F4F5F7] overflow-hidden"
         >
           {/* Search Header Bar */}
-          <div className="border-b border-slate-100 dark:border-[#33372B] p-3.5 sm:p-4 flex items-center justify-between gap-3 bg-white dark:bg-[#191B15]">
+          <div className="border-b border-slate-100 dark:border-[#22242B] p-3.5 sm:p-4 flex items-center justify-between gap-3 bg-white dark:bg-[#121316]">
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <Search className="h-5 w-5 text-slate-400 dark:text-[#D8CFBC] shrink-0" />
               <input
@@ -216,19 +216,19 @@ export const GlobalSearch = ({ onOpen }) => {
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                className="w-6 h-6 rounded-md hover:bg-slate-100 dark:hover:bg-[#23261E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
+                className="w-6 h-6 rounded-md hover:bg-slate-100 dark:hover:bg-[#18191E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
                 title="Clear input"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
-            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-[#33372B] bg-slate-50 dark:bg-[#23261E] font-mono text-[10px] text-slate-500 dark:text-[#D8CFBC] shadow-2xs font-semibold">
+            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E] font-mono text-[10px] text-slate-500 dark:text-[#D8CFBC] shadow-2xs font-semibold">
               ESC
             </kbd>
           </div>
 
           {/* Results / Navigation Body */}
-          <div className="max-h-[58vh] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#33372B]">
+          <div className="max-h-[58vh] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#22242B]">
             {loading ? (
               <div className="py-12 flex flex-col items-center justify-center gap-2 text-slate-400 dark:text-[#7C8189]">
                 <Loader2 className="w-5 h-5 animate-spin text-[#565449] dark:text-[#D8CFBC]" />
@@ -258,15 +258,15 @@ export const GlobalSearch = ({ onOpen }) => {
                       className={`group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition-all duration-100 cursor-pointer ${
                         isSelected
                           ? "bg-[#D8CFBC]/20 dark:bg-[#D8CFBC]/15 text-slate-950 dark:text-[#FFFBF4] border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/25 shadow-2xs"
-                          : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100/70 dark:hover:bg-[#23261E] border border-transparent"
+                          : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100/70 dark:hover:bg-[#18191E] border border-transparent"
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0 flex-1">
                         <div
                           className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                             isSelected
-                              ? "bg-[#11120D] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#11120D]"
-                              : "bg-slate-100 dark:bg-[#23261E] text-slate-500 dark:text-[#9BA3AF] group-hover:bg-slate-200 dark:group-hover:bg-[#2D3025]"
+                              ? "bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C]"
+                              : "bg-slate-100 dark:bg-[#18191E] text-slate-500 dark:text-[#9BA3AF] group-hover:bg-slate-200 dark:group-hover:bg-[#1E2026]"
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -288,12 +288,12 @@ export const GlobalSearch = ({ onOpen }) => {
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[10px] font-mono font-medium text-slate-400 dark:text-[#7C8189] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B]">
+                        <span className="text-[10px] font-mono font-medium text-slate-400 dark:text-[#7C8189] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B]">
                           {item.type}
                         </span>
                         {isSelected && (
                           <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono font-semibold text-slate-500 dark:text-[#D8CFBC]">
-                            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#11120D] border border-slate-200 dark:border-[#33372B] shadow-2xs">
+                            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#090A0C] border border-slate-200 dark:border-[#22242B] shadow-2xs">
                               ↵
                             </kbd>
                           </span>
@@ -307,27 +307,27 @@ export const GlobalSearch = ({ onOpen }) => {
           </div>
 
           {/* Footer Shortcuts Hint */}
-          <div className="px-4 py-2.5 border-t border-slate-100 dark:border-[#33372B] bg-slate-50/70 dark:bg-[#11120D] flex items-center justify-between text-[11px] text-slate-500 dark:text-[#9BA3AF] font-mono">
+          <div className="px-4 py-2.5 border-t border-slate-100 dark:border-[#22242B] bg-slate-50/70 dark:bg-[#090A0C] flex items-center justify-between text-[11px] text-slate-500 dark:text-[#9BA3AF] font-mono">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] text-[10px] shadow-2xs font-semibold">
+                <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] text-[10px] shadow-2xs font-semibold">
                   ↑
                 </kbd>
-                <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] text-[10px] shadow-2xs font-semibold">
+                <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] text-[10px] shadow-2xs font-semibold">
                   ↓
                 </kbd>
                 <span className="font-sans text-xs">Navigate</span>
               </span>
-              <span className="text-slate-300 dark:text-[#33372B]">•</span>
+              <span className="text-slate-300 dark:text-[#22242B]">•</span>
               <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] text-[10px] shadow-2xs font-semibold">
+                <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] text-[10px] shadow-2xs font-semibold">
                   ↵
                 </kbd>
                 <span className="font-sans text-xs">Open</span>
               </span>
             </div>
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] text-[10px] shadow-2xs font-semibold">
+              <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] text-[10px] shadow-2xs font-semibold">
                 ESC
               </kbd>
               <span className="font-sans text-xs">Close</span>

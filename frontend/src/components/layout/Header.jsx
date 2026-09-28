@@ -256,11 +256,11 @@ export const Header = () => {
         <div className="relative" ref={tenantMenuRef}>
           <button
             onClick={toggleDropdown}
-            className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23261E] border border-slate-300 dark:border-[#33372B] hover:border-slate-400 dark:hover:border-[#565449] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+            className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#121316] hover:bg-slate-50 dark:hover:bg-[#18191E] border border-slate-300 dark:border-[#22242B] hover:border-slate-400 dark:hover:border-[#343742] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
             aria-expanded={dropdownOpen}
             aria-label="Select organization"
           >
-            <div className="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0">
+            <div className="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] flex items-center justify-center shrink-0">
               <Building2 className="w-3.5 h-3.5 text-slate-600 dark:text-[#D8CFBC]"/>
             </div>
             <div className="flex flex-col text-left min-w-0">
@@ -282,15 +282,15 @@ export const Header = () => {
                 animate="visible"
                 exit="exit"
                 variants={tenantMenuVariants}
-                className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-[#191B15] border border-slate-200 dark:border-[#33372B] rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-left"
+                className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-[#121316] border border-slate-200 dark:border-[#22242B] rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-left"
               >
-                <div className="px-3 py-2 text-[11px] font-mono font-semibold tracking-wider text-slate-500 dark:text-[#9BA3AF] uppercase flex items-center justify-between border-b border-slate-100 dark:border-[#33372B]/60 mb-1.5">
+                <div className="px-3 py-2 text-[11px] font-mono font-semibold tracking-wider text-slate-500 dark:text-[#9BA3AF] uppercase flex items-center justify-between border-b border-slate-100 dark:border-[#22242B] mb-1.5">
                   <span>Select Active Organization</span>
                   <span className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] lowercase font-sans">
                     {organizations.length} {organizations.length === 1 ? "organization" : "organizations"}
                   </span>
                 </div>
-                <div className="max-h-60 overflow-y-auto space-y-1 p-0.5 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#33372B]">
+                <div className="max-h-60 overflow-y-auto space-y-1 p-0.5 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#22242B]">
                   {organizations.map((org) => {
                     const isActive = currentOrg?.id === org.id;
                     const canDelete = organizations.length > 1;
@@ -304,15 +304,15 @@ export const Header = () => {
                         className={`group relative flex items-center justify-between rounded-xl px-3 py-2.5 transition-all duration-150 cursor-pointer ${
                           isActive
                             ? "bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 text-slate-950 dark:text-[#FFFBF4] border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/25 shadow-2xs"
-                            : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100 dark:hover:bg-[#23261E] border border-transparent"
+                            : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100 dark:hover:bg-[#18191E] border border-transparent"
                         }`}
                       >
                         <div className="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
                           <div
                             className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                               isActive
-                                ? "bg-[#11120D] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#11120D]"
-                                : "bg-slate-100 dark:bg-[#23261E] text-slate-500 dark:text-[#9BA3AF] group-hover:bg-slate-200 dark:group-hover:bg-[#2D3025]"
+                                ? "bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C]"
+                                : "bg-slate-100 dark:bg-[#18191E] text-slate-500 dark:text-[#9BA3AF] group-hover:bg-slate-200 dark:group-hover:bg-[#1E2026]"
                             }`}
                           >
                             <Building2 className="w-4 h-4" />
@@ -329,7 +329,7 @@ export const Header = () => {
 
                         <div className="flex items-center gap-1.5 shrink-0">
                           {isActive && (
-                            <span className="w-5 h-5 rounded-full bg-[#11120D]/10 dark:bg-[#D8CFBC]/20 flex items-center justify-center">
+                            <span className="w-5 h-5 rounded-full bg-[#090A0C]/10 dark:bg-[#D8CFBC]/20 flex items-center justify-center">
                               <Check className="w-3.5 h-3.5 text-slate-950 dark:text-[#D8CFBC]" />
                             </span>
                           )}
@@ -354,14 +354,14 @@ export const Header = () => {
                     );
                   })}
                 </div>
-                <div className="pt-2 mt-1.5 border-t border-slate-100 dark:border-[#33372B]/60">
+                <div className="pt-2 mt-1.5 border-t border-slate-100 dark:border-[#22242B]">
                   <button
                     type="button"
                     onClick={() => {
                       setModalOpen(true);
                       setDropdownOpen(false);
                     }}
-                    className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-[#D8CFBC] hover:text-slate-950 dark:hover:text-white bg-slate-100/80 hover:bg-slate-200/80 dark:bg-[#23261E] dark:hover:bg-[#2B2E25] border border-slate-200 dark:border-[#33372B] transition-all cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-[#D8CFBC] hover:text-slate-950 dark:hover:text-white bg-slate-100/80 hover:bg-slate-200/80 dark:bg-[#18191E] dark:hover:bg-[#1E2026] border border-slate-200 dark:border-[#22242B] transition-all cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC]" />
                     <span>Add Organization</span>
@@ -382,21 +382,21 @@ export const Header = () => {
           {/* Dark / Light Theme Toggle */}
           <ThemeToggle />
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#23261E]"/>
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#18191E]"/>
 
           {/* Notifications Bell Dropdown */}
           <div className="relative" ref={notifRef}>
             <button
               onClick={toggleNotifDrawer}
-              className={`btn-tactile relative w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23261E] hover:border-slate-300 dark:hover:border-[#565449] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#FFFBF4] transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
-                notifOpen ? "bg-slate-50 dark:bg-[#23261E] text-slate-900 dark:text-white border-[#D8CFBC]/60" : ""
+              className={`btn-tactile relative w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#22242B] bg-white dark:bg-[#121316] hover:bg-slate-50 dark:hover:bg-[#18191E] hover:border-slate-300 dark:hover:border-[#343742] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#FFFBF4] transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
+                notifOpen ? "bg-slate-50 dark:bg-[#18191E] text-slate-900 dark:text-white border-[#D8CFBC]/60" : ""
               }`}
               title="Notifications (Esc to close)"
               aria-expanded={notifOpen}
               aria-label="Notifications"
             >
               <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#11120D] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#11120D] text-[10px] font-mono font-bold shadow-xs">
+              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] text-[10px] font-mono font-bold shadow-xs">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>)}
             </button>
@@ -409,9 +409,9 @@ export const Header = () => {
                   animate="visible"
                   exit="exit"
                   variants={tenantMenuVariants}
-                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-[#191B15] rounded-2xl border border-slate-200 dark:border-[#33372B] shadow-2xl shadow-black/10 dark:shadow-black/50 py-2 z-50 text-xs origin-top-right"
+                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-[#121316] rounded-2xl border border-slate-200 dark:border-[#22242B] shadow-2xl shadow-black/10 dark:shadow-black/50 py-2 z-50 text-xs origin-top-right"
                 >
-                <div className="px-4 py-3 border-b border-slate-100 dark:border-[#33372B] flex items-center justify-between">
+                <div className="px-4 py-3 border-b border-slate-100 dark:border-[#22242B] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">Notifications</span>
                     {unreadCount > 0 && (
@@ -431,7 +431,7 @@ export const Header = () => {
                     <button
                       type="button"
                       onClick={() => setNotifOpen(false)}
-                      className="text-slate-400 hover:text-slate-700 dark:hover:text-[#D8CFBC] p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-[#23261E] transition-colors cursor-pointer"
+                      className="text-slate-400 hover:text-slate-700 dark:hover:text-[#D8CFBC] p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-[#18191E] transition-colors cursor-pointer"
                       title="Close notifications (Esc)"
                       aria-label="Close notifications"
                     >
@@ -441,7 +441,7 @@ export const Header = () => {
                 </div>
 
                 {/* Notifications List */}
-                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-[#2B2E25]">
+                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-[#22242B]">
                   {loadingNotifs ? (
                     <div className="p-4 text-center text-slate-400 dark:text-[#7C8189]">Loading notifications...</div>
                   ) : notifications.length > 0 ? (
@@ -451,7 +451,7 @@ export const Header = () => {
                         onClick={() => {
                           if (!notif.is_read) handleMarkAsRead(notif.id);
                         }}
-                        className={`p-3.5 hover:bg-[#D8CFBC]/15 dark:hover:bg-[#23261E] transition-colors flex items-start gap-3 cursor-pointer ${
+                        className={`p-3.5 hover:bg-[#D8CFBC]/15 dark:hover:bg-[#18191E] transition-colors flex items-start gap-3 cursor-pointer ${
                           !notif.is_read ? "bg-[#D8CFBC]/10 dark:bg-[#D8CFBC]/[0.05]" : ""
                         }`}
                       >
@@ -486,7 +486,7 @@ export const Header = () => {
                   )}
                 </div>
 
-                <div className="p-2.5 border-t border-slate-100 dark:border-[#33372B] bg-slate-50/80 dark:bg-[#11120D] text-center">
+                <div className="p-2.5 border-t border-slate-100 dark:border-[#22242B] bg-slate-50/80 dark:bg-[#090A0C] text-center">
                   <Link to="/audit" onClick={() => setNotifOpen(false)} className="text-xs text-[#565449] dark:text-[#D8CFBC] hover:text-black dark:hover:text-white font-medium inline-flex items-center gap-1 transition-colors">
                     <span>View Full Audit Trails & System Logs</span>
                     <span>→</span>
@@ -496,13 +496,13 @@ export const Header = () => {
             </AnimatePresence>
           </div>
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#23261E]"/>
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#18191E]"/>
 
           {/* Active Operator & Live Role Switcher */}
           <div className="relative" ref={userMenuRef}>
             <button
               onClick={toggleUserMenu}
-              className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23261E] border border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#565449] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs hover:shadow-xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC] text-left outline-none"
+              className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#121316] hover:bg-slate-50 dark:hover:bg-[#18191E] border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#343742] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs hover:shadow-xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC] text-left outline-none"
               title="Click to switch active operator / role"
               aria-expanded={userMenuOpen}
               aria-label="User menu"
@@ -537,9 +537,9 @@ export const Header = () => {
                   animate="visible"
                   exit="exit"
                   variants={tenantMenuVariants}
-                  className="absolute right-0 mt-2 w-72 bg-white dark:bg-[#191B15] rounded-2xl border border-slate-200 dark:border-[#33372B] shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-right"
+                  className="absolute right-0 mt-2 w-72 bg-white dark:bg-[#121316] rounded-2xl border border-slate-200 dark:border-[#22242B] shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-right"
                 >
-                  <div className="px-3 py-2 border-b border-slate-100 dark:border-[#33372B]/60 flex items-center justify-between mb-1.5">
+                  <div className="px-3 py-2 border-b border-slate-100 dark:border-[#22242B] flex items-center justify-between mb-1.5">
                     <span className="text-[11px] font-mono font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider">
                       Switch Operator (RBAC)
                     </span>
@@ -547,7 +547,7 @@ export const Header = () => {
                       {currentOrg?.slug}
                     </span>
                   </div>
-                  <div className="max-h-60 overflow-y-auto space-y-1 p-0.5 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#33372B]">
+                  <div className="max-h-60 overflow-y-auto space-y-1 p-0.5 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#22242B]">
                     {(currentOrg?.users || []).map((u) => {
                       const isSelected = u.id === currentUser?.id;
                       return (
@@ -560,7 +560,7 @@ export const Header = () => {
                           className={`w-full px-3 py-2 text-left flex items-center justify-between gap-2 rounded-xl transition-all cursor-pointer ${
                             isSelected
                               ? "bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 text-slate-950 dark:text-[#FFFBF4] border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/25 shadow-2xs font-semibold"
-                              : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100 dark:hover:bg-[#23261E] border border-transparent"
+                              : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100 dark:hover:bg-[#18191E] border border-transparent"
                           }`}
                         >
                           <div className="min-w-0 flex-1">
@@ -571,8 +571,8 @@ export const Header = () => {
                           </div>
                           <span className={`text-[10px] shrink-0 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${
                             u.role === "admin"
-                              ? "bg-[#11120D] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#11120D]"
-                              : "bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#33372B]"
+                              ? "bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C]"
+                              : "bg-slate-100 dark:bg-[#18191E] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#22242B]"
                           }`}>
                             {u.role?.replace("_", " ") || u.role}
                           </span>
@@ -580,7 +580,7 @@ export const Header = () => {
                       );
                     })}
                   </div>
-                  <div className="border-t border-slate-100 dark:border-[#33372B]/60 pt-2 mt-1.5">
+                  <div className="border-t border-slate-100 dark:border-[#22242B] pt-2 mt-1.5">
                     <button
                       onClick={() => {
                         logout();
@@ -598,7 +598,7 @@ export const Header = () => {
             </AnimatePresence>
           </div>
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#23261E]"/>
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#18191E]"/>
 
           {/* Quick Sign Out Action */}
           <button
@@ -606,7 +606,7 @@ export const Header = () => {
               logout();
               navigate("/");
             }}
-            className="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#181A20] hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-200 dark:hover:border-red-900/50 text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            className="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#22242B] bg-white dark:bg-[#121316] hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-200 dark:hover:border-red-900/50 text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-red-500"
             title="Sign Out & Return to Landing Page"
             aria-label="Sign out"
           >
@@ -618,9 +618,9 @@ export const Header = () => {
       {/* Add Organization Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} maxWidth="md">
         <div className="p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#33372B]">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#22242B]">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] flex items-center justify-center shrink-0">
                 <Building2 className="w-4 h-4 text-slate-700 dark:text-[#D8CFBC]" />
               </div>
               <h3 className="font-bold text-slate-900 dark:text-[#F4F5F7] text-base tracking-tight">Create New Organization</h3>
@@ -628,7 +628,7 @@ export const Header = () => {
             <button
               type="button"
               onClick={() => setModalOpen(false)}
-              className="w-7 h-7 rounded-lg border border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#D8CFBC] bg-slate-50 dark:bg-[#23261E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
+              className="w-7 h-7 rounded-lg border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#D8CFBC]/40 bg-slate-50 dark:bg-[#18191E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
               title="Close"
               aria-label="Close modal"
             >
@@ -661,7 +661,7 @@ export const Header = () => {
               />
             </div>
 
-            <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-[#33372B]">
+            <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-[#22242B]">
               <Button type="button" variant="secondary" size="sm" onClick={() => setModalOpen(false)} className="rounded-xl px-4 py-2 text-xs font-semibold cursor-pointer">
                 Cancel
               </Button>
@@ -686,7 +686,7 @@ export const Header = () => {
         maxWidth="sm"
       >
         <div className="p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#33372B]">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#22242B]">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
@@ -697,7 +697,7 @@ export const Header = () => {
                     Delete Organization
                   </h3>
                   {orgToDelete?.slug && (
-                    <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] text-[11px] font-mono text-slate-600 dark:text-[#D8CFBC]">
+                    <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] text-[11px] font-mono text-slate-600 dark:text-[#D8CFBC]">
                       {orgToDelete.slug}
                     </span>
                   )}
@@ -715,7 +715,7 @@ export const Header = () => {
                 setOrgToDelete(null);
                 setDeleteError("");
               }}
-              className="w-8 h-8 rounded-lg border border-slate-200 dark:border-[#33372B] hover:border-slate-300 dark:hover:border-[#D8CFBC] bg-slate-50 dark:bg-[#23261E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+              className="w-8 h-8 rounded-lg border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#D8CFBC]/40 bg-slate-50 dark:bg-[#18191E] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer disabled:opacity-50"
               title="Close"
               aria-label="Close modal"
             >
@@ -747,7 +747,7 @@ export const Header = () => {
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-[#33372B]">
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-[#22242B]">
             <Button
               type="button"
               variant="secondary"

@@ -92,11 +92,11 @@ export const Sidebar = () => {
       <aside
         className={`${
           collapsed ? "w-16" : "w-64"
-        } bg-white dark:bg-[#191B15] text-slate-700 dark:text-[#9BA3AF] flex flex-col shrink-0 border-r border-slate-200 dark:border-[#33372B] select-none transition-[width] duration-200 ease-out relative z-20 overflow-hidden`}
+        } bg-white dark:bg-[#121316] text-slate-700 dark:text-[#A0A5B2] flex flex-col shrink-0 border-r border-slate-200 dark:border-[#22242B] select-none transition-[width] duration-200 ease-out relative z-20 overflow-hidden`}
         aria-label="Primary navigation"
       >
         {/* Brand Header */}
-        <div className="h-12 flex items-center px-2 border-b border-slate-200 dark:border-[#33372B] shrink-0 overflow-hidden">
+        <div className="h-12 flex items-center px-2 border-b border-slate-200 dark:border-[#22242B] shrink-0 overflow-hidden">
           <button
             onClick={() => setCollapsed(!collapsed)}
             onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar")}
@@ -118,7 +118,7 @@ export const Sidebar = () => {
               <span className="font-semibold text-xs text-slate-900 dark:text-[#F4F5F7] tracking-tight leading-none">
                 FlowStock
               </span>
-              <span className="text-[10px] text-slate-500 dark:text-[#9BA3AF] mt-0.5 leading-none">
+              <span className="text-[10px] text-slate-500 dark:text-[#808594] mt-0.5 leading-none">
                 Operations Ledger
               </span>
             </div>
@@ -127,7 +127,7 @@ export const Sidebar = () => {
           {!collapsed && (
             <button
               onClick={() => setCollapsed(true)}
-              className="p-1 rounded text-slate-400 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23261E] transition-colors shrink-0 ml-auto mr-1 cursor-pointer"
+              className="p-1 rounded text-slate-400 dark:text-[#808594] hover:text-slate-900 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#18191E] transition-colors shrink-0 ml-auto mr-1 cursor-pointer"
               aria-label="Collapse sidebar"
               title="Collapse sidebar"
             >
@@ -144,9 +144,9 @@ export const Sidebar = () => {
           {NAV_GROUPS.map((group) => (
             <div key={group.label} className="mb-3 last:mb-0">
               {collapsed ? (
-                <div className="mx-2 my-2 h-px bg-slate-200 dark:bg-[#33372B]" />
+                <div className="mx-2 my-2 h-px bg-slate-200 dark:bg-[#22242B]" />
               ) : (
-                <p className="px-2.5 mb-1 text-[11px] font-medium text-slate-500 dark:text-[#9BA3AF] whitespace-nowrap overflow-hidden">
+                <p className="px-2.5 mb-1 text-[11px] font-medium text-slate-500 dark:text-[#808594] whitespace-nowrap overflow-hidden">
                   {group.label}
                 </p>
               )}
@@ -173,7 +173,7 @@ export const Sidebar = () => {
                         className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
                           active
                             ? "text-slate-950 dark:text-[#D8CFBC] font-semibold"
-                            : "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#23261E] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
+                            : "text-slate-600 dark:text-[#A0A5B2] hover:bg-slate-100 dark:hover:bg-[#18191E] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
                         }`}
                       >
                         {/* Fixed Icon slot - exact same 32px center in both collapsed & expanded */}

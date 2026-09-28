@@ -51,21 +51,21 @@
   }
 
   html.dark {
-    /* Smoky Black Luxury Dark Void Canvas & Surfaces */
-    --color-surface-canvas: #11120D;
-    --color-surface-base: #191B15;
-    --color-surface-raised: #23261E;
-    --color-surface-overlay: #2B2E25;
-    --color-border-subtle: #33372B;
-    --color-border-strong: #565449;
+    /* Pure Velvet Obsidian Luxury Dark Canvas & Surfaces */
+    --color-surface-canvas: #090A0C;
+    --color-surface-base: #121316;
+    --color-surface-raised: #18191E;
+    --color-surface-overlay: #1E2026;
+    --color-border-subtle: #22242B;
+    --color-border-strong: #343742;
 
     /* Inks */
-    --color-ink-primary: #FFFBF4;
+    --color-ink-primary: #F4F5F7;
     --color-ink-secondary: #D8CFBC;
-    --color-ink-muted: #807D6E;
-    --color-ink-on-spark: #11120D;
+    --color-ink-muted: #808594;
+    --color-ink-on-spark: #090A0C;
 
-    /* Accent & Status (Bone Primary & Citrus Spark) */
+    /* Accent & Status (Bone Primary & Champagne Glow) */
     --color-accent-spark: #D8CFBC;
     --color-accent-hover: #FFFBF4;
     --color-accent-muted: #C5BBA4;
@@ -80,7 +80,7 @@
     /* Brand Tokens */
     --brand-primary: #D8CFBC;
     --brand-bone: #D8CFBC;
-    --brand-smoky-black: #11120D;
+    --brand-smoky-black: #090A0C;
     --brand-olive-drab: #565449;
     --brand-floral-white: #FFFBF4;
     --brand-citrus: #E4FD97;
@@ -91,7 +91,7 @@
   }
 
   body {
-    @apply bg-[#FFFBF4] text-[#11120D] dark:bg-[#11120D] dark:text-[#FFFBF4] antialiased;
+    @apply bg-[#FFFBF4] text-[#11120D] dark:bg-[#090A0C] dark:text-[#F4F5F7] antialiased;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
     font-variant-numeric: tabular-nums;
@@ -133,11 +133,11 @@
 }
 html.dark .app-canvas::-webkit-scrollbar-thumb,
 html.dark *::-webkit-scrollbar-thumb {
-  background: rgba(44, 48, 59, 0.6);
+  background: rgba(255, 255, 255, 0.12);
 }
 html.dark .app-canvas::-webkit-scrollbar-thumb:hover,
 html.dark *::-webkit-scrollbar-thumb:hover {
-  background: rgba(182, 255, 46, 0.4);
+  background: rgba(216, 207, 188, 0.35);
 }
 
 /* CSS counterparts to the TypeScript motion tokens. */
@@ -159,7 +159,7 @@ html.dark *::-webkit-scrollbar-thumb:hover {
     background-image: radial-gradient(circle at 10% -10%, rgba(15, 23, 42, 0.03), transparent 28rem);
   }
   html.dark .app-canvas {
-    background-image: radial-gradient(circle at 10% -10%, rgba(182, 255, 46, 0.03), transparent 32rem);
+    background-image: radial-gradient(circle at 10% -10%, rgba(216, 207, 188, 0.02), transparent 32rem);
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -186,7 +186,7 @@ table thead {
 }
 
 html.dark table thead {
-  background-color: rgba(20, 23, 31, 0.95) !important;
+  background-color: rgba(14, 15, 18, 0.95) !important;
 }
 
 html:not(.dark) table thead {
@@ -217,7 +217,7 @@ table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:fir
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td {
-  background-color: rgba(44, 48, 59, 0.55);
+  background-color: rgba(255, 255, 255, 0.035) !important;
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:first-child {
@@ -256,44 +256,78 @@ html.dark [class*="text-zinc-400"]:not([class*="dark:text-"]) {
 
 /* Surfaces */
 html.dark [class*="bg-zinc-950"]:not([class*="dark:bg-"]) {
-  background-color: #11120D;
+  background-color: #090A0C;
 }
 
 html.dark [class*="bg-zinc-900"]:not([class*="dark:bg-"]) {
-  background-color: #23261E;
+  background-color: #121316;
 }
 
 html.dark [class*="bg-zinc-800"]:not([class*="dark:bg-"]) {
-  background-color: #2B2E25;
+  background-color: #18191E;
 }
 
 html.dark [class*="bg-zinc-100"]:not([class*="dark:bg-"]) {
-  background-color: #2B2E25;
+  background-color: #18191E;
 }
 
 html.dark [class*="bg-zinc-50"]:not([class*="dark:bg-"]) {
-  background-color: #191B15;
+  background-color: #121316;
 }
 
 /* Structural Borders */
 html.dark [class*="border-zinc-800"]:not([class*="dark:border-"]) {
-  border-color: #33372B;
+  border-color: #22242B;
 }
 
 html.dark [class*="border-zinc-700"]:not([class*="dark:border-"]) {
-  border-color: #3D4353;
+  border-color: #262932;
 }
 
 html.dark [class*="border-zinc-300"]:not([class*="dark:border-"]) {
-  border-color: #3D4353;
+  border-color: #262932;
 }
 
 html.dark [class*="border-zinc-200"]:not([class*="dark:border-"]) {
-  border-color: #33372B;
+  border-color: #22242B;
 }
 
 html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
-  border-color: #282C37;
+  border-color: #1E2026;
+}
+
+/* Pure Obsidian Dark Mode Universal Palette Enforcers (Zero Blue, Zero Swamp Olive) */
+html.dark [class*="bg-\[\#11120D\]"]:not([data-preserve="true"]) {
+  background-color: #090A0C !important;
+}
+html.dark [class*="bg-\[\#191B15\]"]:not([data-preserve="true"]) {
+  background-color: #121316 !important;
+}
+html.dark [class*="bg-\[\#181A20\]"]:not([data-preserve="true"]) {
+  background-color: #121316 !important;
+}
+html.dark [class*="bg-\[\#23261E\]"]:not([data-preserve="true"]) {
+  background-color: #18191E !important;
+}
+html.dark [class*="bg-\[\#2B2E25\]"]:not([data-preserve="true"]) {
+  background-color: #1E2026 !important;
+}
+html.dark [class*="border-\[\#33372B\]"]:not([data-preserve="true"]) {
+  border-color: #22242B !important;
+}
+html.dark [class*="border-\[\#2B2E25\]"]:not([data-preserve="true"]) {
+  border-color: #1E2026 !important;
+}
+html.dark [class*="border-\[\#3A404F\]"]:not([data-preserve="true"]) {
+  border-color: #22242B !important;
+}
+html.dark [class*="hover\:bg-slate-800"]:hover,
+html.dark [class*="dark\:hover\:bg-slate-800"]:hover {
+  background-color: #1E2026 !important;
+}
+html.dark [class*="hover\:border-\[\#424857\]"]:hover,
+html.dark [class*="dark\:hover\:border-\[\#424857\]"]:hover {
+  border-color: #343742 !important;
 }
 
 /* Toast shrinking progress bar animation */
@@ -333,9 +367,9 @@ html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
     border-bottom: 1px solid rgba(86, 84, 73, 0.15);
   }
   html.dark .glass-header {
-    background-color: rgba(17, 18, 13, 0.92);
+    background-color: rgba(9, 10, 12, 0.92);
     backdrop-filter: blur(16px) saturate(180%);
-    border-bottom: 1px solid rgba(86, 84, 73, 0.35);
+    border-bottom: 1px solid rgba(34, 36, 43, 0.9);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
 }

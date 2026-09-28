@@ -43,15 +43,15 @@ export const Button = React.forwardRef((
     dark:
       "bg-[#11120D] hover:bg-black active:bg-[#191B15] text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-[#11120D] font-medium border border-[#11120D] dark:border-white shadow-2xs",
     secondary:
-      "bg-slate-100 hover:bg-slate-200/90 active:bg-slate-200 text-slate-700 hover:text-slate-900 dark:bg-[#191B15] dark:hover:bg-[#23261E] dark:active:bg-[#101020] dark:text-[#c2cbda] dark:hover:text-white border border-slate-200/80 dark:border-[#33372B] shadow-2xs",
+      "bg-slate-100 hover:bg-slate-200/90 active:bg-slate-200 text-slate-700 hover:text-slate-900 dark:bg-[#18191E] dark:hover:bg-[#1E2026] dark:active:bg-[#121316] dark:text-[#D8CFBC] dark:hover:text-white border border-slate-200/80 dark:border-[#22242B] shadow-2xs",
     outline:
-      "bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 dark:bg-[#11120D] dark:hover:bg-[#191B15] dark:active:bg-[#101020] dark:text-[#f0f3f8] dark:hover:text-white dark:border-[#33372B] dark:hover:border-[#565449] shadow-2xs",
+      "bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 dark:bg-[#121316] dark:hover:bg-[#18191E] dark:active:bg-[#090A0C] dark:text-[#F4F5F7] dark:hover:text-white dark:border-[#22242B] dark:hover:border-[#D8CFBC]/40 shadow-2xs",
     bone:
       "bg-[#D8CFBC]/15 hover:bg-[#D8CFBC]/25 text-[#D8CFBC] border border-[#D8CFBC]/30 font-medium",
     frozen:
       "bg-[#D8CFBC]/15 hover:bg-[#D8CFBC]/25 text-[#D8CFBC] border border-[#D8CFBC]/30 font-medium",
     ghost:
-      "text-slate-600 hover:text-slate-900 hover:bg-slate-100/90 active:bg-slate-200/70 dark:text-[#7e889b] dark:hover:text-[#f0f3f8] dark:hover:bg-[#191B15]/80 dark:active:bg-[#191B15]",
+      "text-slate-600 hover:text-slate-900 hover:bg-slate-100/90 active:bg-slate-200/70 dark:text-[#808594] dark:hover:text-[#F4F5F7] dark:hover:bg-[#18191E] dark:active:bg-[#121316]",
     danger:
       "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-medium border border-rose-600 shadow-2xs",
     "danger-subtle":

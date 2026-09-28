@@ -27,7 +27,7 @@ export const AppShell = ({ children }) => {
 
     return (
       <WebSocketProvider>
-        <div className="flex h-screen bg-[#FFFBF4] dark:bg-[#11120D] text-[#11120D] dark:text-[#FFFBF4] overflow-hidden font-sans">
+        <div className="flex h-screen bg-[#FFFBF4] dark:bg-[#090A0C] text-[#11120D] dark:text-[#F4F5F7] overflow-hidden font-sans">
           <Sidebar />
           <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
             <Header />
@@ -39,7 +39,7 @@ export const AppShell = ({ children }) => {
                 wheelMultiplier: 0.95,
                 touchMultiplier: 1.5,
               }}
-              className="app-canvas flex-1 overflow-y-auto p-3.5 sm:p-5 lg:p-6 bg-[#FFFBF4] dark:bg-[#11120D]"
+              className="app-canvas flex-1 overflow-y-auto p-3.5 sm:p-5 lg:p-6 bg-[#FFFBF4] dark:bg-[#090A0C]"
             >
               {children}
             </ReactLenis>

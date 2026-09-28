@@ -224,7 +224,7 @@ export default function InventoryPage() {
                     safeSummaries.map((s) => {
                       if (!s || !s.product) return null;
                       return (
-                    <tr key={s.product.id} className={`hover:bg-slate-50 dark:bg-[#11120D] dark:hover:bg-slate-800/40 transition-colors ${s.is_low_stock ? "bg-amber-500/5 dark:bg-amber-500/5" : ""}`}>
+                    <tr key={s.product.id} className={`hover:bg-slate-50 dark:bg-[#090A0C] dark:hover:bg-[#18191E] transition-colors ${s.is_low_stock ? "bg-amber-500/5 dark:bg-amber-500/5" : ""}`}>
                       <td className="py-2 px-3.5 font-mono font-bold text-slate-900 dark:text-[#F4F5F7]">
                         {s.product.sku}
                       </td>

@@ -37,21 +37,21 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
             })}
       </div>);
     }
-    return (<div role="tablist" className={`inline-flex items-center gap-1.5 bg-slate-100/90 dark:bg-[#181A20] p-1.5 rounded-xl border border-slate-200 dark:border-[#33372B] text-xs shadow-2xs overflow-x-auto no-scrollbar ${className}`}>
+    return (<div role="tablist" className={`inline-flex items-center gap-1.5 bg-slate-100/90 dark:bg-[#121316] p-1.5 rounded-xl border border-slate-200 dark:border-[#22242B] text-xs shadow-2xs overflow-x-auto no-scrollbar ${className}`}>
       {normalizedTabs.map((tab) => {
             const isActive = tab.id === activeTab;
             const Icon = tab.icon;
             return (<button key={tab.id} role="tab" type="button" aria-selected={isActive} onClick={() => onChange(tab.id)} className={`relative rounded-lg font-semibold whitespace-nowrap transition-colors z-10 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] flex items-center gap-2 cursor-pointer ${fullWidth ? "flex-1 justify-center" : ""} ${size === "md" ? "text-xs py-2 px-3.5" : "text-xs py-1.5 px-3"} ${isActive
                     ? "text-slate-950 dark:text-[#FFFBF4]"
-                    : "text-slate-500 hover:text-slate-800 dark:text-[#9BA3AF] dark:hover:text-white"}`}>
+                    : "text-slate-500 hover:text-slate-800 dark:text-[#808594] dark:hover:text-white"}`}>
             {/* Sliding pill indicator */}
-            {isActive && (<motion.div layoutId={prefersReducedMotion ? undefined : `${layoutId}-pill`} className="absolute inset-0 bg-white dark:bg-[#23261E] rounded-lg shadow-xs border border-slate-200/80 dark:border-[#33372B] -z-10" transition={transitionConfig}/>)}
+            {isActive && (<motion.div layoutId={prefersReducedMotion ? undefined : `${layoutId}-pill`} className="absolute inset-0 bg-white dark:bg-[#1E2026] rounded-lg shadow-xs border border-slate-200/80 dark:border-[#2E313C] -z-10" transition={transitionConfig}/>)}
 
-            {Icon && (<Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? "text-[#565449] dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#7C8189]"}`}/>)}
+            {Icon && (<Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? "text-[#565449] dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#808594]"}`}/>)}
             <span>{tab.label}</span>
             {tab.count !== undefined && (<span className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono font-medium leading-none ${isActive
                         ? "bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 text-[#565449] dark:text-[#D8CFBC] border border-[#D8CFBC]/40"
-                        : "bg-slate-200/70 dark:bg-[#23261E] text-slate-600 dark:text-[#9BA3AF]"}`}>
+                        : "bg-slate-200/70 dark:bg-[#18191E] text-slate-600 dark:text-[#808594]"}`}>
                 {tab.count}
               </span>)}
           </button>);
