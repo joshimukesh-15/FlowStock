@@ -19,7 +19,7 @@ import { formatINR } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
 import { AnimatedProgressBar } from "@/components/ui/AnimatedProgressBar";
-import { CardSkeleton, KpiRowSkeleton, FilterBarSkeleton, TableSkeleton, SkeletonAnnouncer } from "@/components/ui/Skeleton";
+import { PageSkeleton, CardSkeleton } from "@/components/ui/Skeleton";
 import { RevenueVelocityMatrix } from "@/components/dashboard/RevenueVelocityMatrix";
 import { OrderStatusDistribution } from "@/components/dashboard/OrderStatusDistribution";
 import { QuickActionsBar } from "@/components/dashboard/QuickActionsBar";
@@ -136,35 +136,7 @@ export default function HomePage() {
     ];
 
     if (loading && !summary) {
-      return (
-        <div className="max-w-7xl mx-auto space-y-3 pb-12" role="presentation">
-          <SkeletonAnnouncer label="Loading executive operations cockpit" />
-          <div className="flex items-center justify-between pb-1">
-            <div className="space-y-1">
-              <Skeleton className="h-6 w-64" />
-              <Skeleton className="h-3.5 w-96 max-w-full" />
-            </div>
-            <Skeleton className="h-8 w-24 rounded-md" />
-          </div>
-          <div className="flex items-center justify-between px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#191B15]/60">
-            <Skeleton className="h-4 w-48" />
-            <Skeleton className="h-4 w-32" />
-          </div>
-          <KpiRowSkeleton count={4} />
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
-            <div className="lg:col-span-7 h-64 rounded-lg border border-slate-200 dark:border-[#33372B] p-4 space-y-3 bg-white dark:bg-[#191B15]/60">
-              <Skeleton className="h-4 w-40" />
-              <Skeleton className="h-44 w-full rounded-md" />
-            </div>
-            <div className="lg:col-span-5 h-64 rounded-lg border border-slate-200 dark:border-[#33372B] p-4 space-y-3 bg-white dark:bg-[#191B15]/60">
-              <Skeleton className="h-4 w-36" />
-              <Skeleton className="h-44 w-full rounded-md" />
-            </div>
-          </div>
-          <FilterBarSkeleton />
-          <TableSkeleton rows={4} />
-        </div>
-      );
+      return <PageSkeleton />;
     }
 
     return (<motion.div variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible" className="max-w-7xl mx-auto space-y-3 pb-12">
