@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { Send, PackageCheck, FileText } from "lucide-react";
 import { LifecycleStepper } from "./LifecycleStepper";
 const PO_STEPS = [

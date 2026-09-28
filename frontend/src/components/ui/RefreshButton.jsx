@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { RefreshCw } from "lucide-react";
 import { clearApiCache } from "@/lib/api";

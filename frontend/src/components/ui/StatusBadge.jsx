@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import {
   Clock,

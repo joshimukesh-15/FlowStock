@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useEffect, useRef, useState, useCallback, } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useCallback, } from "react";
 import { useTenant } from "./TenantContext";
 import { useToast } from "./ToastContext";
 const WebSocketContext = createContext({
@@ -54,7 +54,7 @@ export const WebSocketProvider = ({ children, }) => {
         const connect = () => {
             if (isCleanedUp)
                 return;
-            const apiUrl = (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_API_URL) || (typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_API_URL) || "http://localhost:8000/api/v1";
+            const apiUrl = (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) || "http://localhost:8000/api/v1";
             const wsProtocol = apiUrl.startsWith("https") ? "wss" : "ws";
             const host = apiUrl.replace(/^https?:\/\//, "");
             const wsUrl = `${wsProtocol}://${host}/ws/${orgId}`;
@@ -116,7 +116,7 @@ export const WebSocketProvider = ({ children, }) => {
                             });
                         }
                     }
-                    catch (e) {
+                    catch {
                         // Ignore non-JSON messages
                     }
                 };
@@ -132,7 +132,7 @@ export const WebSocketProvider = ({ children, }) => {
                     ws.close();
                 };
             }
-            catch (err) {
+            catch {
                 setIsConnected(false);
                 if (!isCleanedUp) {
                     reconnectTimeoutRef.current = setTimeout(connect, 3000);

@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { fetchOrganizations, createOrganizationApi, deleteOrganizationApi, clearApiCache } from "@/lib/api";
 const TenantContext = createContext(undefined);
 export const TenantProvider = ({ children }) => {

@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { Clock, PackageCheck, FileText } from "lucide-react";
 import { LifecycleStepper } from "./LifecycleStepper";
 const ORDER_STEPS = [

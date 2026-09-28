@@ -1,12 +1,12 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, AlertTriangle, AlertCircle, Info, X, ExternalLink, } from "lucide-react";
 import { useReducedMotion, toastVariants } from "@/motion";
 const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
     const [isPaused, setIsPaused] = useState(false);
     const remainingTimeRef = useRef(toast.duration);
-    const startTimeRef = useRef(Date.now());
+    const startTimeRef = useRef(null);
     const timerRef = useRef(null);
     useEffect(() => {
         if (toast.duration <= 0)

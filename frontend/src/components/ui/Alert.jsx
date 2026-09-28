@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { cn } from "@/lib/utils";
 import { AlertCircle, CheckCircle2, Info, AlertTriangle, X } from "lucide-react";
 const DEFAULT_ICONS = {

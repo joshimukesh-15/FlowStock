@@ -1,4 +1,4 @@
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import {
   fetchProducts,
   fetchCategories,
@@ -177,7 +177,7 @@ export function useInventoryData() {
     const qty = Number(quantity || 0);
 
     return mutateInventory(
-      async (currentList = []) => {
+      async () => {
         await recordMovementApi(movementPayload);
         // Background re-fetch will synchronize exact financial calculations
         const fresh = await fetchInventorySummaries();

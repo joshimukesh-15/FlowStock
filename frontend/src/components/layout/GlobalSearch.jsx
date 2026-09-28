@@ -154,7 +154,7 @@ export const GlobalSearch = ({ onOpen }) => {
             </div>
           ) : filteredResults.length === 0 ? (
             <p className="px-3 py-8 text-center text-sm text-slate-500 dark:text-[#9BA3AF]">
-              No matching records found for "{query}".
+              No matching records found for &ldquo;{query}&rdquo;.
             </p>
           ) : (
             <motion.div

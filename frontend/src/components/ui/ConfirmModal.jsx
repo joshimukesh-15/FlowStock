@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate, useReducedMotion } from "framer-motion";
 import { Modal } from "./Modal";
 import { Button } from "./Button";
@@ -19,7 +19,6 @@ function HoldToConfirmDangerButton({
   const prefersReducedMotion = useReducedMotion();
   const progress = useMotionValue(0);
   const clip = useTransform(progress, [0, 1], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  const [isHolding, setIsHolding] = useState(false);
   const controlsRef = useRef(null);
   const triggeredRef = useRef(false);
 
@@ -28,13 +27,11 @@ function HoldToConfirmDangerButton({
     if (!isLoading) {
       triggeredRef.current = false;
       progress.set(0);
-      setIsHolding(false);
     }
   }, [isLoading, progress]);
 
   const start = () => {
     if (disabled || isLoading || triggeredRef.current) return;
-    setIsHolding(true);
     controlsRef.current?.stop();
     controlsRef.current = animate(progress, 1, {
       type: "tween",
@@ -42,7 +39,6 @@ function HoldToConfirmDangerButton({
       duration: duration * (1 - progress.get()),
       onComplete: () => {
         triggeredRef.current = true;
-        setIsHolding(false);
         onConfirm?.();
       },
     });
@@ -50,7 +46,6 @@ function HoldToConfirmDangerButton({
 
   const cancel = () => {
     if (triggeredRef.current || isLoading) return;
-    setIsHolding(false);
     controlsRef.current?.stop();
     controlsRef.current = animate(progress, 0, {
       type: "spring",

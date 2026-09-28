@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
@@ -14,7 +14,9 @@ export const AppShell = ({ children }) => {
         if (location.pathname !== "/" && location.pathname !== "/welcome") {
             try {
                 sessionStorage.setItem("flowstock_last_route", location.pathname);
-            } catch {}
+            } catch {
+                // Storage quota exceeded or disabled in private browsing
+            }
         }
         if (lenisRef.current?.lenis) {
             lenisRef.current.lenis.scrollTo(0, { immediate: true });

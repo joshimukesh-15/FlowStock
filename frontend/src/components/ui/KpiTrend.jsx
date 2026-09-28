@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 export function KpiTrend({ changePct, comparisonText = "vs 30d", invertColors = false, className = "", }) {
     const isPositive = changePct > 0;

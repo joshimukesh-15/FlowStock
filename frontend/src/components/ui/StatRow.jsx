@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { cn } from "@/lib/utils";
 export function StatRow({ items, children, columns = 4, className = "", }) {
     const colClassMap = {

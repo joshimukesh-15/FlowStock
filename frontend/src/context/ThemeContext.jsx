@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 const ThemeContext = createContext(undefined);
 const THEME_STORAGE_KEY = "flowstock_theme";
 function getSystemTheme() {

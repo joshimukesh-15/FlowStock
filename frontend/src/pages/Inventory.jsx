@@ -1,16 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Boxes, Plus, History, AlertTriangle, RefreshCw, TrendingDown, TrendingUp, Sliders, DollarSign, Package, X } from "lucide-react";
+import { Boxes, Plus, History, AlertTriangle, TrendingDown, TrendingUp, Sliders, DollarSign, Package, X } from "lucide-react";
 import { fetchProductMovements } from "@/lib/api";
-import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { useInventoryData } from "@/hooks/useFlowStockData";
 import { motion } from "framer-motion";
-import { getTransition, useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
+import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
 import { TableSkeleton, ListSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -24,10 +23,8 @@ import { KpiGrid } from "@/components/ui/KpiGrid";
 import { formatDate, selectClass } from "@/lib/utils";
 
 export default function InventoryPage() {
-    const { currentOrg } = useTenant();
     const { toast } = useToast();
     const prefersReducedMotion = useReducedMotion();
-    const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
     const itemVariants = slideUpVariants(prefersReducedMotion);
     const [searchQuery, setSearchQuery] = useState("");
 

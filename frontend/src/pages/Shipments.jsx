@@ -1,14 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Truck, Plus, CheckCircle2, Clock, Ban, RefreshCw, X, Eye, Send, MapPin, IndianRupee, Navigation, PackageCheck, Building, } from "lucide-react";
+import { Truck, Plus, CheckCircle2, Ban, X, Eye, Send, MapPin, IndianRupee, Navigation, PackageCheck, Building, } from "lucide-react";
 import { fetchShipments, fetchOrders, createShipmentApi, dispatchShipmentApi, outForDeliveryShipmentApi, deliverShipmentApi, cancelShipmentApi, addShipmentEventApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { formatINR, formatDate, selectClass } from "@/lib/utils";
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { ShipmentLifecycleStepper } from "@/components/ui/ShipmentLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
 import { FormModal } from "@/components/ui/FormModal";
@@ -23,9 +22,8 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { Alert } from "@/components/ui/Alert";
 import { motion } from "framer-motion";
-import { DISTANCE, DURATION, STAGGER, useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
+import { useReducedMotion, pageEnterVariants } from "@/motion";
 const CARRIERS = [
     "Blue Dart",
     "Delhivery",
@@ -40,8 +38,6 @@ export default function ShipmentsPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
     const prefersReducedMotion = useReducedMotion();
-    const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
-    const itemVariants = slideUpVariants(prefersReducedMotion);
     const [shipments, setShipments] = useState([]);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -64,7 +60,17 @@ export default function ShipmentsPage() {
     const [detailShipment, setDetailShipment] = useState(null);
     const [newCheckpointLocation, setNewCheckpointLocation] = useState("");
     const [newCheckpointDesc, setNewCheckpointDesc] = useState("");
-    const [loggingCheckpoint, setLoggingCheckpoint] = useState(false);
+    const selectOrderForCreation = (order, orderId) => {
+        setSelectedOrderId(orderId);
+        if (order) {
+            setDestinationAddress(order.customer?.shipping_address ||
+                order.customer?.billing_address ||
+                `Consignee ${order.customer?.name || "Client"}`);
+            setOriginAddress(order.warehouse
+                ? `${order.warehouse.name} (${order.warehouse.location || "Central Depot"})`
+                : "Central Logistics Facility");
+        }
+    };
     const loadData = async () => {
         if (shipments.length === 0)
             setLoading(true);
@@ -91,17 +97,6 @@ export default function ShipmentsPage() {
     useEffect(() => {
         loadData();
     }, [currentOrg?.id]);
-    const selectOrderForCreation = (order, orderId) => {
-        setSelectedOrderId(orderId);
-        if (order) {
-            setDestinationAddress(order.customer?.shipping_address ||
-                order.customer?.billing_address ||
-                `Consignee ${order.customer?.name || "Client"}`);
-            setOriginAddress(order.warehouse
-                ? `${order.warehouse.name} (${order.warehouse.location || "Central Depot"})`
-                : "Central Logistics Facility");
-        }
-    };
     const handleOrderChange = (orderId) => {
         const found = orders.find((o) => o.id === orderId);
         if (found) {

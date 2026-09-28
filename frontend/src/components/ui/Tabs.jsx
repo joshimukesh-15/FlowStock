@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
 import { DURATION, EASING, useReducedMotion } from "@/motion";
 export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", variant = "pill", size = "sm", className = "", fullWidth = false, }) {

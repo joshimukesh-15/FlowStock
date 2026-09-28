@@ -1,4 +1,4 @@
-const API_BASE_URL = (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_API_URL) || (typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_API_URL) || "http://localhost:8000/api/v1";
+const API_BASE_URL = (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) || "http://localhost:8000/api/v1";
 const apiCache = new Map();
 const DEFAULT_TTL_MS = 60000; // 60s in-memory cache for instant navigation
 export function clearApiCache(keyPrefix) {

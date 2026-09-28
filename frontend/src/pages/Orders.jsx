@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { ShoppingCart, Plus, Trash2, Clock, PackageCheck, Users, RefreshCw, X, Eye, Truck, Building2, Layers, IndianRupee } from "lucide-react";
+import { ShoppingCart, Plus, Trash2, Clock, PackageCheck, Users, X, Eye, Truck, Building2, Layers, IndianRupee } from "lucide-react";
 import { fulfillOrderApi, cancelOrderApi, createCustomerApi } from "@/lib/api";
 import { useOrdersData } from "@/hooks/useFlowStockData";
-import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
 import { OrderLifecycleStepper } from "@/components/ui/OrderLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
@@ -19,21 +18,16 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { StatCard } from "@/components/ui/StatCard";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/Table";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { Alert } from "@/components/ui/Alert";
 import { formatDate, selectClass } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { useReducedMotion, createStaggerContainer, slideUpVariants, pageEnterVariants } from "@/motion";
+import { useReducedMotion, pageEnterVariants } from "@/motion";
 
 export default function OrdersPage() {
-    const { currentOrg } = useTenant();
     const { toast } = useToast();
     const prefersReducedMotion = useReducedMotion();
-    const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
-    const itemVariants = slideUpVariants(prefersReducedMotion);
     const [actionLoading, setActionLoading] = useState(null);
     const [orderIdToCancel, setOrderIdToCancel] = useState(null);
     const [statusFilter, setStatusFilter] = useState("ALL");

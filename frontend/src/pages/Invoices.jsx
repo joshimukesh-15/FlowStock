@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { ReceiptText, Plus, Trash2, CheckCircle2, Clock, Ban, RefreshCw, X, Eye, CreditCard, IndianRupee, FileText, ArrowDownLeft, AlertCircle, } from "lucide-react";
+import { ReceiptText, Plus, Trash2, CheckCircle2, Ban, X, Eye, CreditCard, IndianRupee, FileText, ArrowDownLeft, } from "lucide-react";
 import { fetchInvoices, fetchInvoiceById, fetchOrders, fetchCustomers, fetchProducts, createInvoiceApi, createInvoiceFromOrderApi, voidInvoiceApi, recordPaymentApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
@@ -17,11 +17,9 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
-import { FormField } from "@/components/ui/FormField";
 import { KpiGrid } from "@/components/ui/KpiGrid";
 import { motion } from "framer-motion";
-import { createStaggerContainer, slideUpVariants, pageEnterVariants, useReducedMotion } from "@/motion";
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { pageEnterVariants, useReducedMotion } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 const PAYMENT_METHODS = [
@@ -34,9 +32,6 @@ const PAYMENT_METHODS = [
 export default function InvoicesPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
-    const prefersReducedMotion = useReducedMotion();
-    const containerVariants = createStaggerContainer(0.05, 0, prefersReducedMotion);
-    const itemVariants = slideUpVariants(prefersReducedMotion);
     const [invoices, setInvoices] = useState([]);
     const [orders, setOrders] = useState([]);
     const [customers, setCustomers] = useState([]);

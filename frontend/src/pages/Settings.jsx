@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -11,7 +11,7 @@ import { RefreshButton } from "@/components/ui/RefreshButton";
 import { Tabs } from "@/components/ui/Tabs";
 import { Alert } from "@/components/ui/Alert";
 import { PageSkeleton } from "@/components/ui/Skeleton";
-import { ShieldCheck, Building2, Users, User as UserIcon, Plus, X, AlertCircle, Globe, RefreshCw, Database, Zap, Gauge, Bell, Rows3, BadgeCheck, Sun, Moon, Monitor, } from "lucide-react";
+import { ShieldCheck, Building2, Users, User as UserIcon, Plus, X, AlertCircle, Globe, Database, Zap, Gauge, Bell, Rows3, BadgeCheck, Sun, Moon, Monitor, } from "lucide-react";
 import { fetchHealth, createOrgUserApi } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -35,6 +35,12 @@ const roleBadgeClass = (role) => {
             return "bg-slate-50 dark:bg-[#11120D] text-slate-600 dark:text-[#9BA3AF] border-slate-200 dark:border-[#33372B] font-medium";
     }
 };
+
+const Switch = ({ checked, onChange, label }) => (
+    <button role="switch" aria-checked={checked} aria-label={label} onClick={onChange} className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer active:scale-95 ${checked ? "bg-[#D8CFBC]" : "bg-slate-200 dark:bg-[#33372B]"}`}>
+        <span className={`inline-block h-4 w-4 transform rounded-full shadow transition-transform ${checked ? "translate-x-[22px] bg-[#11120D]" : "translate-x-[3px] bg-white dark:bg-zinc-400"}`}/>
+    </button>
+);
 export default function SettingsPage() {
     const { currentOrg, currentUser, loading, refreshOrganizations } = useTenant();
     const { theme, setTheme } = useTheme();
@@ -114,9 +120,6 @@ export default function SettingsPage() {
         : health?.status === "degraded"
             ? { label: "Degraded", cls: "warning" }
             : { label: "Unreachable", cls: "danger" };
-    const Switch = ({ checked, onChange, label }) => (<button role="switch" aria-checked={checked} aria-label={label} onClick={onChange} className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer active:scale-95 ${checked ? "bg-[#D8CFBC]" : "bg-slate-200 dark:bg-[#33372B]"}`}>
-      <span className={`inline-block h-4 w-4 transform rounded-full shadow transition-transform ${checked ? "translate-x-[22px] bg-[#11120D]" : "translate-x-[3px] bg-white dark:bg-zinc-400"}`}/>
-    </button>);
 
     if (loading && !currentOrg) {
       return <PageSkeleton hasKpis={false} tableRows={5} />;

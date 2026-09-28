@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { Clock, Truck, Navigation, CheckCircle2 } from "lucide-react";
 import { LifecycleStepper } from "./LifecycleStepper";
 const SHIPMENT_STEPS = [

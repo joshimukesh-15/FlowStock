@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { Warehouse as WarehouseIcon, Package, CheckCircle2, Truck, Ban } from "lucide-react";
 import { getTransition, RELATIVE_OFFSET, useReducedMotion } from "@/motion";

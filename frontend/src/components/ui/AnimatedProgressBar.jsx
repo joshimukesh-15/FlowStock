@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { getTransition, SCALE, useReducedMotion } from "@/motion";
 /** A data-bound chart primitive that reveals once when a real value changes. */

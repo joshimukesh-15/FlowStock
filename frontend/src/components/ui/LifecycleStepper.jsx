@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
 import { Check, Ban } from "lucide-react";
 import { useReducedMotion, DURATION, EASING, SCALE, STAGGER } from "@/motion";
