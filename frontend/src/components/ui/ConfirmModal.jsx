@@ -60,7 +60,7 @@ function HoldToConfirmDangerButton({
   };
 
   const focusRing =
-    "outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1B2A20]";
+    "outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#181A20]";
 
   return (
     <motion.button
@@ -154,7 +154,7 @@ export const ConfirmModal = ({
                 ? "bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400"
                 : isWarning
                 ? "bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400"
-                : "bg-[#E2DED2] dark:bg-[#314C3B] text-[#4C6B55] dark:text-[#9BA3AF]"
+                : "bg-slate-100 dark:bg-[#23262F] text-slate-700 dark:text-[#9BA3AF]"
             }`}
           >
             {isDanger ? (
@@ -166,11 +166,11 @@ export const ConfirmModal = ({
             )}
           </div>
           <div>
-            <h3 className="text-base font-semibold text-[#314C3B] dark:text-[#F4F5F7]">{title}</h3>
+            <h3 className="text-base font-semibold text-slate-900 dark:text-[#F4F5F7]">{title}</h3>
           </div>
         </div>
 
-        <div className="text-sm text-[#4C6B55] dark:text-[#9BA3AF] mb-5 leading-relaxed">
+        <div className="text-sm text-slate-600 dark:text-[#9BA3AF] mb-5 leading-relaxed">
           {description}
         </div>
 

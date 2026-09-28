@@ -9,10 +9,10 @@ const DEFAULT_ICONS = {
     danger: AlertCircle,
 };
 const VARIANT_STYLES = {
-    info: "bg-[#E2DED2] dark:bg-[#314C3B]/50 border-[#BDC9B8] dark:border-[#6D8C73] text-[#314C3B] dark:text-[#E2E8F0]",
-    success: "bg-slate-950 dark:bg-[#1B2A20] text-white dark:text-[#F4F5F7] border-zinc-900 dark:border-[#6D8C73] shadow-xs",
-    warning: "bg-[#E2DED2] dark:bg-[#314C3B]/50 border-[#BDC9B8] dark:border-[#6D8C73] text-[#314C3B] dark:text-[#F4F5F7]",
-    danger: "bg-[#E2DED2] dark:bg-[#1B2A20]/60 border-[#BDC9B8] dark:border-[#4C6B55] text-[#314C3B] dark:text-[#E2E8F0] font-medium",
+    info: "bg-slate-100 dark:bg-[#23262F]/50 border-slate-200 dark:border-[#3A404F] text-slate-800 dark:text-[#E2E8F0]",
+    success: "bg-slate-950 dark:bg-[#181A20] text-white dark:text-[#F4F5F7] border-zinc-900 dark:border-[#3A404F] shadow-xs",
+    warning: "bg-slate-100 dark:bg-[#23262F]/50 border-slate-300 dark:border-[#3A404F] text-slate-900 dark:text-[#F4F5F7]",
+    danger: "bg-slate-100 dark:bg-[#181A20]/60 border-slate-300 dark:border-[#323744] text-slate-900 dark:text-[#E2E8F0] font-medium",
 };
 export const Alert = ({ className, variant = "info", icon: CustomIcon, onClose, title, children, ...props }) => {
     const Icon = CustomIcon || DEFAULT_ICONS[variant];
@@ -22,7 +22,7 @@ export const Alert = ({ className, variant = "info", icon: CustomIcon, onClose, 
         {title && <h5 className="font-semibold mb-0.5 leading-none">{title}</h5>}
         <div className="text-xs leading-relaxed">{children}</div>
       </div>
-      {onClose && (<button type="button" onClick={onClose} className="text-[#6D8C73] hover:text-[#4C6B55] dark:hover:text-slate-200 p-0.5 rounded transition-colors -mr-1 -mt-1" aria-label="Dismiss alert">
+      {onClose && (<button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-0.5 rounded transition-colors -mr-1 -mt-1" aria-label="Dismiss alert">
           <X className="w-3.5 h-3.5"/>
         </button>)}
     </div>);

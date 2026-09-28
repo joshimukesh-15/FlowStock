@@ -54,7 +54,7 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
     const getProgressBarColor = () => {
         switch (toast.type) {
             case "success":
-                return "bg-[#E2DED2]0/80";
+                return "bg-emerald-500/80";
             case "error":
                 return "bg-rose-500/80";
             case "warning":
@@ -90,7 +90,7 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
           <span className="text-xs font-semibold text-white tracking-tight truncate">
             {toast.title}
           </span>
-          <span className="text-[10px] text-[#6D8C73] shrink-0 font-mono">
+          <span className="text-[10px] text-slate-500 shrink-0 font-mono">
             {toast.timestamp}
           </span>
         </div>
@@ -109,7 +109,7 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
           </a>)}
       </div>
 
-      <button onClick={() => onDismiss(toast.id)} className="text-[#6D8C73] hover:text-white p-1 -mr-1.5 -mt-1.5 rounded hover:bg-slate-800/80 transition-colors" aria-label="Dismiss notification">
+      <button onClick={() => onDismiss(toast.id)} className="text-slate-400 hover:text-white p-1 -mr-1.5 -mt-1.5 rounded hover:bg-slate-800/80 transition-colors" aria-label="Dismiss notification">
         <X className="w-3.5 h-3.5"/>
       </button>
 

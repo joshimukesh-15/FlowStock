@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 
 export const badgeVariants = {
   default:
-    "bg-[#E2DED2] dark:bg-[#1E222B] text-[#4C6B55] dark:text-[#CBD5E1] border-[#BDC9B8]/80 dark:border-[#4C6B55]",
+    "bg-slate-100 dark:bg-[#1E222B] text-slate-700 dark:text-[#CBD5E1] border-slate-200/80 dark:border-[#323744]",
   brand:
-    "bg-slate-900 dark:bg-[#92AA97]/15 text-white dark:text-[#92AA97] border-slate-800 dark:border-[#92AA97]/30",
+    "bg-slate-900 dark:bg-[#A0BDDB]/15 text-white dark:text-[#A0BDDB] border-slate-800 dark:border-[#A0BDDB]/30",
   success:
-    "bg-[#E2DED2] dark:bg-[#E2DED2]0/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/70 dark:border-emerald-500/20",
+    "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/70 dark:border-emerald-500/20",
   warning:
     "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200/70 dark:border-amber-500/20",
   danger:
@@ -17,9 +17,9 @@ export const badgeVariants = {
 };
 
 const dotColors = {
-  default: "bg-slate-400 dark:bg-[#E2DED2]0",
-  brand: "bg-[#92AA97]",
-  success: "bg-[#E2DED2]0 dark:bg-emerald-400",
+  default: "bg-slate-400 dark:bg-slate-500",
+  brand: "bg-[#A0BDDB]",
+  success: "bg-emerald-500 dark:bg-emerald-400",
   warning: "bg-amber-500 dark:bg-amber-400",
   danger: "bg-rose-500 dark:bg-rose-400",
   info: "bg-blue-500 dark:bg-blue-400",

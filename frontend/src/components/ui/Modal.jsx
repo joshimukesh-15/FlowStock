@@ -82,7 +82,7 @@ export const Modal = ({
           {/* Animated Modal Dialog Content Card */}
           <motion.div
             style={{ transformOrigin: "center" }}
-            className={`relative bg-[#F7F3EA] dark:bg-[#1B2A20] border border-[#BDC9B8] dark:border-[#4C6B55] border-t-white/80 dark:border-t-white/15 text-[#314C3B] dark:text-[#F4F5F7] rounded-2xl w-full ${maxWidthClasses[maxWidth]} shadow-2xl overflow-hidden z-10 ${className}`}
+            className={`relative bg-white dark:bg-[#181A20] border border-slate-200 dark:border-[#323744] border-t-white/80 dark:border-t-white/15 text-slate-900 dark:text-[#F4F5F7] rounded-2xl w-full ${maxWidthClasses[maxWidth]} shadow-2xl overflow-hidden z-10 ${className}`}
             initial="hidden"
             animate="visible"
             exit="exit"

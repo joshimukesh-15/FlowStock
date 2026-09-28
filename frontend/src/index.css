@@ -17,65 +17,65 @@
     --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
     /* Surfaces */
-    --color-surface-canvas: #F7F3EA;
-    --color-surface-base: #E2DED2;
-    --color-surface-raised: #BDC9B8;
-    --color-border-subtle: #BDC9B8;
-    --color-border-strong: #92AA97;
+    --color-surface-canvas: #f6f8fb;
+    --color-surface-base: #ffffff;
+    --color-surface-raised: #edf2f8;
+    --color-border-subtle: #d8e2ec;
+    --color-border-strong: #b8c9dc;
 
     /* Inks */
-    --color-ink-primary: #1B2A20;
-    --color-ink-secondary: #314C3B;
-    --color-ink-muted: #4C6B55;
-    --color-ink-on-spark: #1B2A20;
+    --color-ink-primary: #080813;
+    --color-ink-secondary: #4a5568;
+    --color-ink-muted: #8a94a6;
+    --color-ink-on-spark: #080813;
 
-    /* Accent & Status (Holst Sage Primary & Citrus Spark) */
-    --color-accent-spark: #92AA97;
-    --color-accent-hover: #BDC9B8;
-    --color-accent-muted: #6D8C73;
-    --color-accent-frozen: #92AA97;
-    --color-status-success: #92AA97;
+    /* Accent & Status (Frozen Main Accent & Citrus Spark) */
+    --color-accent-spark: #A0BDDB;
+    --color-accent-hover: #b4cce3;
+    --color-accent-muted: #8eaecf;
+    --color-accent-frozen: #A0BDDB;
+    --color-status-success: #A0BDDB;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #92AA97;
+    --color-status-info: #A0BDDB;
 
     /* Brand Tokens */
-    --brand-primary: #92AA97;
-    --brand-frozen: #92AA97;
+    --brand-primary: #A0BDDB;
+    --brand-frozen: #A0BDDB;
     --brand-citrus: #E4FD97;
-    --brand-black-iris: #1B2A20;
+    --brand-black-iris: #080813;
   }
 
   html.dark {
-    /* Holst Sage Dark Void Canvas & Surfaces */
-    --color-surface-canvas: #1B2A20;
-    --color-surface-base: #314C3B;
-    --color-surface-raised: #4C6B55;
-    --color-surface-overlay: #263B2D;
-    --color-border-subtle: #6D8C73;
-    --color-border-strong: #5E7C65;
+    /* Black Iris Dark Void Canvas & Surfaces */
+    --color-surface-canvas: #080813;
+    --color-surface-base: #121224;
+    --color-surface-raised: #181832;
+    --color-surface-overlay: #202040;
+    --color-border-subtle: #1c1d32;
+    --color-border-strong: #2c2d4c;
 
     /* Inks */
-    --color-ink-primary: #F7F3EA;
-    --color-ink-secondary: #E2DED2;
-    --color-ink-muted: #BDC9B8;
-    --color-ink-on-spark: #1B2A20;
+    --color-ink-primary: #f0f3f8;
+    --color-ink-secondary: #c2cbda;
+    --color-ink-muted: #7e889b;
+    --color-ink-on-spark: #080813;
 
-    /* Accent & Status (Holst Sage Primary & Citrus Spark) */
-    --color-accent-spark: #92AA97;
-    --color-accent-hover: #BDC9B8;
-    --color-accent-muted: #6D8C73;
-    --color-accent-frozen: #92AA97;
-    --color-status-success: #92AA97;
+    /* Accent & Status (Frozen Main Accent & Citrus Spark) */
+    --color-accent-spark: #A0BDDB;
+    --color-accent-hover: #b4cce3;
+    --color-accent-muted: #8eaecf;
+    --color-accent-frozen: #A0BDDB;
+    --color-status-success: #A0BDDB;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #92AA97;
+    --color-status-info: #A0BDDB;
 
     /* Brand Tokens */
-    --brand-primary: #92AA97;
-    --brand-frozen: #92AA97;
+    --brand-primary: #A0BDDB;
+    --brand-frozen: #A0BDDB;
     --brand-citrus: #E4FD97;
-    --brand-black-iris: #1B2A20;
+    --brand-black-iris: #080813;
   }
 
   html {
@@ -83,7 +83,7 @@
   }
 
   body {
-    @apply bg-[#f6f8fb] text-[#1B2A20] dark:bg-[#1B2A20] dark:text-[#F7F3EA] antialiased;
+    @apply bg-[#f6f8fb] text-[#080813] dark:bg-[#080813] dark:text-[#f0f3f8] antialiased;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
     font-variant-numeric: tabular-nums;
@@ -213,7 +213,7 @@ html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hove
 }
 
 html.dark table tbody tr:not(:has(td[colspan])):not([data-no-hover="true"]):hover > td:first-child {
-  box-shadow: inset 3px 0 0 0 #92AA97;
+  box-shadow: inset 3px 0 0 0 #A0BDDB;
 }
 
 /* Graphite & Lime Spark Surface Mappings in Dark Mode */
@@ -248,28 +248,28 @@ html.dark [class*="text-zinc-400"]:not([class*="dark:text-"]) {
 
 /* Surfaces */
 html.dark [class*="bg-zinc-950"]:not([class*="dark:bg-"]) {
-  background-color: #1B2A20;
+  background-color: #14171F;
 }
 
 html.dark [class*="bg-zinc-900"]:not([class*="dark:bg-"]) {
-  background-color: #314C3B;
+  background-color: #23262F;
 }
 
 html.dark [class*="bg-zinc-800"]:not([class*="dark:bg-"]) {
-  background-color: #4C6B55;
+  background-color: #2C303B;
 }
 
 html.dark [class*="bg-zinc-100"]:not([class*="dark:bg-"]) {
-  background-color: #4C6B55;
+  background-color: #2C303B;
 }
 
 html.dark [class*="bg-zinc-50"]:not([class*="dark:bg-"]) {
-  background-color: #1B2A20;
+  background-color: #181A20;
 }
 
 /* Structural Borders */
 html.dark [class*="border-zinc-800"]:not([class*="dark:border-"]) {
-  border-color: #4C6B55;
+  border-color: #323744;
 }
 
 html.dark [class*="border-zinc-700"]:not([class*="dark:border-"]) {
@@ -281,7 +281,7 @@ html.dark [class*="border-zinc-300"]:not([class*="dark:border-"]) {
 }
 
 html.dark [class*="border-zinc-200"]:not([class*="dark:border-"]) {
-  border-color: #4C6B55;
+  border-color: #323744;
 }
 
 html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
