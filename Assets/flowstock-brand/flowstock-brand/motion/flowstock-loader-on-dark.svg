@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 12 84 96" width="84" height="96" role="img" aria-label="Loading">
+  <title>Loading</title>
+  <style>
+    /* a fading comet orbits the rim; the arrow breathes once per lap */
+    .t1{stroke-dasharray:34 66;opacity:0;animation:fs-o1 1.6s linear infinite}
+    .t2{stroke-dasharray:22 78;opacity:0;animation:fs-o2 1.6s linear infinite}
+    .t3{stroke-dasharray:12 88;opacity:0;animation:fs-o3 1.6s linear infinite}
+    .t4{stroke-dasharray:5 95;opacity:0;animation:fs-o4 1.6s linear infinite}
+    .k{animation:fs-br 1.6s cubic-bezier(.4,0,.2,1) infinite}
+    @keyframes fs-o1{from{stroke-dashoffset:34;opacity:.16}to{stroke-dashoffset:-66;opacity:.16}}
+    @keyframes fs-o2{from{stroke-dashoffset:22;opacity:.3}to{stroke-dashoffset:-78;opacity:.3}}
+    @keyframes fs-o3{from{stroke-dashoffset:12;opacity:.6}to{stroke-dashoffset:-88;opacity:.6}}
+    @keyframes fs-o4{from{stroke-dashoffset:5;opacity:1}to{stroke-dashoffset:-95;opacity:1}}
+    .k{opacity:0}
+    @keyframes fs-br{0%,100%{opacity:0}50%{opacity:.75}}
+    @media (prefers-reduced-motion:reduce){.t1,.t2,.t3,.t4{display:none}}
+  </style>
+  <defs><clipPath id="fs-c"><path d="M54.4 57.6A2.3 2.3 0 0 1 56.7 55.3L67.67 55.3A2.3 2.3 0 0 1 68.82 55.61L77.31 60.51A2.3 2.3 0 0 1 77.31 64.49L68.82 69.39A2.3 2.3 0 0 1 67.67 69.7L56.7 69.7A2.3 2.3 0 0 1 54.4 67.4Z"/></clipPath></defs>
+  <path fill-rule="evenodd" fill="#B6FF2E" d="M56 16.31A8 8 0 0 1 64 16.31L95.84 34.69A8 8 0 0 1 99.84 41.62L99.84 78.38A8 8 0 0 1 95.84 85.31L64 103.69A8 8 0 0 1 56 103.69L24.16 85.31A8 8 0 0 1 20.16 78.38L20.16 41.62A8 8 0 0 1 24.16 34.69ZM38.5 35.6A1.6 1.6 0 0 1 40.1 34L79.73 34A1.6 1.6 0 0 1 81.11 36.4L75.75 45.7A1.6 1.6 0 0 1 74.36 46.5L54.1 46.5A1.6 1.6 0 0 0 52.5 48.1L52.5 84.4A1.6 1.6 0 0 1 50.9 86L40.1 86A1.6 1.6 0 0 1 38.5 84.4ZM55.1 57.6A1.6 1.6 0 0 1 56.7 56L67.67 56A1.6 1.6 0 0 1 68.47 56.21L76.96 61.11A1.6 1.6 0 0 1 76.96 63.89L68.47 68.79A1.6 1.6 0 0 1 67.67 69L56.7 69A1.6 1.6 0 0 1 55.1 67.4Z"/>
+  <g fill="none" stroke="#0D1117" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path class="t1" pathLength="100" d="M56.8 21.85A6.4 6.4 0 0 1 63.2 21.85L91.44 38.15A6.4 6.4 0 0 1 94.64 43.7L94.64 76.3A6.4 6.4 0 0 1 91.44 81.85L63.2 98.15A6.4 6.4 0 0 1 56.8 98.15L28.56 81.85A6.4 6.4 0 0 1 25.36 76.3L25.36 43.7A6.4 6.4 0 0 1 28.56 38.15Z"/>
+    <path class="t2" pathLength="100" d="M56.8 21.85A6.4 6.4 0 0 1 63.2 21.85L91.44 38.15A6.4 6.4 0 0 1 94.64 43.7L94.64 76.3A6.4 6.4 0 0 1 91.44 81.85L63.2 98.15A6.4 6.4 0 0 1 56.8 98.15L28.56 81.85A6.4 6.4 0 0 1 25.36 76.3L25.36 43.7A6.4 6.4 0 0 1 28.56 38.15Z"/>
+    <path class="t3" pathLength="100" d="M56.8 21.85A6.4 6.4 0 0 1 63.2 21.85L91.44 38.15A6.4 6.4 0 0 1 94.64 43.7L94.64 76.3A6.4 6.4 0 0 1 91.44 81.85L63.2 98.15A6.4 6.4 0 0 1 56.8 98.15L28.56 81.85A6.4 6.4 0 0 1 25.36 76.3L25.36 43.7A6.4 6.4 0 0 1 28.56 38.15Z"/>
+    <path class="t4" pathLength="100" d="M56.8 21.85A6.4 6.4 0 0 1 63.2 21.85L91.44 38.15A6.4 6.4 0 0 1 94.64 43.7L94.64 76.3A6.4 6.4 0 0 1 91.44 81.85L63.2 98.15A6.4 6.4 0 0 1 56.8 98.15L28.56 81.85A6.4 6.4 0 0 1 25.36 76.3L25.36 43.7A6.4 6.4 0 0 1 28.56 38.15Z"/>
+  </g>
+  <g clip-path="url(#fs-c)"><path class="k" fill="#B6FF2E" d="M54.4 57.6A2.3 2.3 0 0 1 56.7 55.3L67.67 55.3A2.3 2.3 0 0 1 68.82 55.61L77.31 60.51A2.3 2.3 0 0 1 77.31 64.49L68.82 69.39A2.3 2.3 0 0 1 67.67 69.7L56.7 69.7A2.3 2.3 0 0 1 54.4 67.4Z"/></g>
+</svg>

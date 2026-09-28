@@ -144,3 +144,16 @@ FlowStock uses a signature luxury palette engineered for high-velocity supply ch
 | `smoky-raised` | `#23261E` | Elevated popovers, active tabs, hover states |
 | `olive-drab` | `#565449` | Strong borders, hairline accents, secondary badges |
 | `floral-white` | `#FFFBF4` | Light mode canvas void & dark mode headlines |
+
+## 3. Brand Logomark & Favicon
+The FlowStock emblem is a modern nature-leaf mark:
+- **Base Semi-Circle**: Warm cream/beige gradient (`#f5e6d3` → `#d4b896`) grounding the silhouette.
+- **Upper Leaf Structure**: 4 progressive leaflets in cyan-to-cobalt gradients (`#a5f3fc` → `#0284c7`, `#38bdf8` → `#0369a1`, `#0ea5e9` → `#1d4ed8`).
+- **Vein Highlights**: Fine curvilinear strokes (`stroke="#ffffff"`) providing depth and luminescence across both dark and light modes.
+- **Implementations**:
+  - `frontend/src/components/ui/Logomark.jsx`: Native vector SVG React component with responsive sizing.
+  - `frontend/public/favicon.svg`: Browser tab icon.
+  - `frontend/public/flowstock-logomark.svg`: Master mark file.
+  - `frontend/public/assets/flowstock-loader.svg`: Loading state in Skeleton.jsx.
+  - `frontend/public/assets/flowstock-reveal.svg`: Auth entrance mark in Login.jsx.
+

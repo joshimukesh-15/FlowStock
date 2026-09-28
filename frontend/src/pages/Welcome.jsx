@@ -121,11 +121,7 @@ export default function WelcomePage() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#11120D]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#33372B] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 relative z-10 cursor-pointer">
-            <img 
-              src="/assets/flowstock-ambient.svg" 
-              alt="FlowStock Logo" 
-              className="w-10 h-10 hover:scale-105 transition-transform drop-shadow-md" 
-            />
+            <Logomark className="w-8 h-8 hover:scale-105 transition-transform drop-shadow-md" />
             <div>
               <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white block leading-none">
                 FlowStock

@@ -105,7 +105,7 @@ export const Sidebar = () => {
             aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
-              <span className="w-7 h-7 rounded-lg bg-[#565449] border border-[#565449] flex items-center justify-center shadow-xs p-0.5">
+              <span className="w-7 h-7 rounded-lg bg-slate-900 dark:bg-[#11120D] border border-slate-700/50 dark:border-[#33372B] flex items-center justify-center shadow-xs p-0.5">
                 <Logomark className="w-5 h-5" />
               </span>
             </span>
