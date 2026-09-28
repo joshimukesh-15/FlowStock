@@ -18,6 +18,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
+import { Select } from "@/components/ui/Select";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -336,19 +337,18 @@ export default function LoginPage() {
                   {/* Currency */}
                   <div>
                     <label className={labelClass}>Currency</label>
-                    <div className="relative">
-                      <Globe className={iconClass} />
-                      <select
-                        value={currency}
-                        onChange={(e) => setCurrency(e.target.value)}
-                        className={`${inputBase} border-slate-200 dark:border-[#33372B] text-slate-900 dark:text-white focus:border-[#D8CFBC] dark:focus:border-[#D8CFBC] focus:ring-[#D8CFBC]/20 dark:focus:ring-[#D8CFBC]/15 appearance-none cursor-pointer`}
-                      >
-                        <option value="INR">INR — Indian Rupee</option>
-                        <option value="USD">USD — US Dollar</option>
-                        <option value="EUR">EUR — Euro</option>
-                        <option value="GBP">GBP — British Pound</option>
-                      </select>
-                    </div>
+                    <Select
+                      value={currency}
+                      onChange={(e) => setCurrency(e.target.value)}
+                      icon={Globe}
+                      buttonClassName="rounded-lg h-10 border-slate-200 dark:border-[#33372B]"
+                      options={[
+                        { value: "INR", label: "INR — Indian Rupee" },
+                        { value: "USD", label: "USD — US Dollar" },
+                        { value: "EUR", label: "EUR — Euro" },
+                        { value: "GBP", label: "GBP — British Pound" },
+                      ]}
+                    />
                   </div>
                 </>
               )}

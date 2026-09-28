@@ -7,7 +7,8 @@ import { Truck, Plus, CheckCircle2, Ban, X, Eye, Send, MapPin, IndianRupee, Navi
 import { fetchShipments, fetchOrders, createShipmentApi, dispatchShipmentApi, outForDeliveryShipmentApi, deliverShipmentApi, cancelShipmentApi, addShipmentEventApi, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useToast } from "@/context/ToastContext";
-import { formatINR, formatDate, selectClass } from "@/lib/utils";
+import { formatINR, formatDate } from "@/lib/utils";
+import { Select } from "@/components/ui/Select";
 import { ShipmentLifecycleStepper } from "@/components/ui/ShipmentLifecycleStepper";
 import { Modal } from "@/components/ui/Modal";
 import { FormModal } from "@/components/ui/FormModal";
@@ -469,34 +470,30 @@ export default function ShipmentsPage() {
                 No confirmed or fulfilled sales orders available to ship. Please confirm a draft sales order first in Orders & Sales.
               </div>
             ) : (
-              <select
+              <Select
                 value={selectedOrderId}
                 onChange={(e) => handleOrderChange(e.target.value)}
-                className={selectClass}
-              >
-                {eligibleOrdersForShipping.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.order_number} — {o.customer?.name} ({formatINR(o.total_amount)}) [{o.status}]
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose sales order..."
+                options={eligibleOrdersForShipping.map((o) => ({
+                  value: o.id,
+                  label: `${o.order_number} — ${o.customer?.name} (${formatINR(o.total_amount)}) [${o.status}]`,
+                }))}
+              />
             )}
           </FormField>
 
           {/* Carrier & Tracking Number */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Carrier Partner *">
-              <select
+              <Select
                 value={carrier}
                 onChange={(e) => setCarrier(e.target.value)}
-                className={selectClass}
-              >
-                {CARRIERS.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose carrier partner..."
+                options={CARRIERS.map((c) => ({
+                  value: c,
+                  label: c,
+                }))}
+              />
             </FormField>
 
             <FormField

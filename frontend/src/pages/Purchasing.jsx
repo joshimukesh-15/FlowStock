@@ -21,7 +21,8 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { formatDate, selectClass } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { Select } from "@/components/ui/Select";
 import { motion } from "framer-motion";
 import { useReducedMotion, pageEnterVariants } from "@/motion";
 export default function PurchasingPage() {
@@ -484,33 +485,27 @@ export default function PurchasingPage() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <FormField label="Vendor / Supplier *">
-              <select
+              <Select
                 value={poSupplierId}
                 onChange={(e) => setPoSupplierId(e.target.value)}
-                className={selectClass}
-                required
-              >
-                {suppliers.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name} {s.company ? `(${s.company})` : ""}
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose vendor..."
+                options={suppliers.map((s) => ({
+                  value: s.id,
+                  label: `${s.name}${s.company ? ` (${s.company})` : ""}`,
+                }))}
+              />
             </FormField>
 
             <FormField label="Destination Warehouse *">
-              <select
+              <Select
                 value={poWarehouseId}
                 onChange={(e) => setPoWarehouseId(e.target.value)}
-                className={selectClass}
-                required
-              >
-                {warehouses.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose destination warehouse..."
+                options={warehouses.map((wh) => ({
+                  value: wh.id,
+                  label: `${wh.name} (${wh.code})`,
+                }))}
+              />
             </FormField>
           </div>
 
@@ -539,17 +534,16 @@ export default function PurchasingPage() {
                   className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25] text-xs"
                 >
                   <div className="flex-1">
-                    <select
+                    <Select
+                      size="sm"
                       value={item.product_id}
                       onChange={(e) => handleItemChange(idx, "product_id", e.target.value)}
-                      className={selectClass}
-                    >
-                      {products.map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.name} [{p.sku}]
-                        </option>
-                      ))}
-                    </select>
+                      placeholder="Select SKU item..."
+                      options={products.map((p) => ({
+                        value: p.id,
+                        label: `${p.name} [${p.sku}]`,
+                      }))}
+                    />
                   </div>
 
                   <div className="w-20">
@@ -673,16 +667,16 @@ export default function PurchasingPage() {
           </FormField>
 
           <FormField label="Payment Terms">
-            <select
+            <Select
               value={supTerms}
               onChange={(e) => setSupTerms(e.target.value)}
-              className={selectClass}
-            >
-              <option value="Immediate">Immediate / Advance</option>
-              <option value="Net 15">Net 15 Days</option>
-              <option value="Net 30">Net 30 Days</option>
-              <option value="Net 60">Net 60 Days</option>
-            </select>
+              options={[
+                { value: "Immediate", label: "Immediate / Advance" },
+                { value: "Net 15", label: "Net 15 Days" },
+                { value: "Net 30", label: "Net 30 Days" },
+                { value: "Net 60", label: "Net 60 Days" },
+              ]}
+            />
           </FormField>
         </FormModal>
 

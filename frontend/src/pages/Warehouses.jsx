@@ -40,12 +40,13 @@ import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { StatCard } from "@/components/ui/StatCard";
+import { Select } from "@/components/ui/Select";
 
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
-import { formatDate, selectClass } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
 
@@ -795,49 +796,40 @@ export default function WarehousesPage() {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormField label="Source Warehouse *">
-              <select
+              <Select
                 value={sourceWarehouseId}
                 onChange={(e) => setSourceWarehouseId(e.target.value)}
-                className={selectClass}
-                required
-              >
-                {warehouses.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose source warehouse..."
+                options={warehouses.map((wh) => ({
+                  value: wh.id,
+                  label: `${wh.name} (${wh.code})`,
+                }))}
+              />
             </FormField>
 
             <FormField label="Destination Warehouse *">
-              <select
+              <Select
                 value={destinationWarehouseId}
                 onChange={(e) => setDestinationWarehouseId(e.target.value)}
-                className={selectClass}
-                required
-              >
-                {warehouses.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose destination warehouse..."
+                options={warehouses.map((wh) => ({
+                  value: wh.id,
+                  label: `${wh.name} (${wh.code})`,
+                }))}
+              />
             </FormField>
           </div>
 
           <FormField label="Select Product *">
-            <select
+            <Select
               value={selectedProductId}
               onChange={(e) => setSelectedProductId(e.target.value)}
-              className={selectClass}
-              required
-            >
-              {products.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name} [{p.sku}]
-                </option>
-              ))}
-            </select>
+              placeholder="Choose product to transfer..."
+              options={products.map((p) => ({
+                value: p.id,
+                label: `${p.name} [${p.sku}]`,
+              }))}
+            />
           </FormField>
 
           <FormField

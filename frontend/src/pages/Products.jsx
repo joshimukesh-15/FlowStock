@@ -19,7 +19,7 @@ import { FormField } from "@/components/ui/FormField";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { selectClass } from "@/lib/utils";
+import { Select } from "@/components/ui/Select";
 
 export default function ProductsPage() {
     const { currentOrg } = useTenant();
@@ -179,10 +179,17 @@ export default function ProductsPage() {
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium shrink-0">Category:</span>
-              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#191B15] text-slate-900 dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#D8CFBC] focus:outline-none">
-                <option value="">All Categories ({safeCategories.length})</option>
-                {safeCategories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
-              </select>
+              <div className="w-52">
+                <Select
+                  size="sm"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  options={[
+                    { value: "", label: `All Categories (${safeCategories.length})` },
+                    ...safeCategories.map((c) => ({ value: c.id, label: c.name })),
+                  ]}
+                />
+              </div>
             </div>
           </div>
         </Card>
@@ -304,18 +311,15 @@ export default function ProductsPage() {
           </div>
 
           <FormField label="Category">
-            <select
+            <Select
               value={formData.category_id}
               onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-              className={selectClass}
-            >
-              <option value="">None (Uncategorized)</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+              placeholder="None (Uncategorized)"
+              options={[
+                { value: "", label: "None (Uncategorized)" },
+                ...categories.map((c) => ({ value: c.id, label: c.name })),
+              ]}
+            />
           </FormField>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

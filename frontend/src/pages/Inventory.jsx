@@ -20,7 +20,8 @@ import { Alert } from "@/components/ui/Alert";
 import { StatCard } from "@/components/ui/StatCard";
 import { FormField } from "@/components/ui/FormField";
 import { KpiGrid } from "@/components/ui/KpiGrid";
-import { formatDate, selectClass } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { Select } from "@/components/ui/Select";
 
 export default function InventoryPage() {
     const { toast } = useToast();
@@ -311,21 +312,20 @@ export default function InventoryPage() {
 
             <form onSubmit={handleMovementSubmit} className="space-y-3">
               <FormField label="Select Product">
-                <select
+                <Select
                   value={selectedProduct?.product?.id || ""}
                   onChange={(e) => {
                     const found = safeSummaries.find((s) => s?.product?.id === e.target.value);
                     if (found) setSelectedProduct(found);
                   }}
-                  className={selectClass}
-                >
-                  {safeSummaries.map((s) => s?.product ? (
-                    <option key={s.product.id} value={s.product.id}>
-                      {s.product.name} ({s.product.sku}) — Available: {s.on_hand_quantity}{" "}
-                      {s.product.unit}
-                    </option>
-                  ) : null)}
-                </select>
+                  placeholder="Choose product to adjust..."
+                  options={safeSummaries
+                    .filter((s) => s?.product)
+                    .map((s) => ({
+                      value: s.product.id,
+                      label: `${s.product.name} (${s.product.sku}) — Available: ${s.on_hand_quantity} ${s.product.unit}`,
+                    }))}
+                />
               </FormField>
 
               {/* Movement Type Tabs with Fluid Indicator */}

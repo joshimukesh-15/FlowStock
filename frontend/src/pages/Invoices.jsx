@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 import { pageEnterVariants, useReducedMotion } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { Select } from "@/components/ui/Select";
 const PAYMENT_METHODS = [
     { label: "Bank Transfer (NEFT / RTGS / IMPS)", value: "BANK_TRANSFER" },
     { label: "UPI (Unified Payments Interface)", value: "UPI" },
@@ -526,24 +527,34 @@ export default function InvoicesPage() {
                       </label>
                       {eligibleOrdersForInvoice.length === 0 ? (<div className="p-4 text-xs bg-slate-50 border border-slate-200 text-slate-700 rounded-lg">
                           No confirmed or fulfilled sales orders found to invoice. You can create a custom line item invoice using the tab above or confirm an order in Orders & Sales.
-                        </div>) : (<select value={selectedOrderId} onChange={(e) => setSelectedOrderId(e.target.value)} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
-                          {eligibleOrdersForInvoice.map((o) => (<option key={o.id} value={o.id}>
-                              {o.order_number} &bull; {o.customer?.name} ({formatINR(o.total_amount)}) [{o.status}]
-                            </option>))}
-                        </select>)}
+                        </div>) : (
+                        <Select
+                          value={selectedOrderId}
+                          onChange={(e) => setSelectedOrderId(e.target.value)}
+                          placeholder="Select sales order to invoice..."
+                          options={eligibleOrdersForInvoice.map((o) => ({
+                            value: o.id,
+                            label: `${o.order_number} • ${o.customer?.name} (${formatINR(o.total_amount)}) [${o.status}]`,
+                          }))}
+                        />
+                      )}
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                         GST Tax Rate (%)
                       </label>
-                      <select value={orderTaxRate} onChange={(e) => setOrderTaxRate(parseFloat(e.target.value))} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
-                        <option value={18.0}>18% GST (Standard B2B Goods & Services)</option>
-                        <option value={12.0}>12% GST (Processed Industrial Goods)</option>
-                        <option value={5.0}>5% GST (Essential Commodities)</option>
-                        <option value={28.0}>28% GST (Luxury & Heavy Machinery)</option>
-                        <option value={0.0}>0% GST (Zero Rated / SEZ Supply)</option>
-                      </select>
+                      <Select
+                        value={orderTaxRate}
+                        onChange={(e) => setOrderTaxRate(parseFloat(e.target.value))}
+                        options={[
+                          { value: 18.0, label: "18% GST (Standard B2B Goods & Services)" },
+                          { value: 12.0, label: "12% GST (Processed Industrial Goods)" },
+                          { value: 5.0, label: "5% GST (Essential Commodities)" },
+                          { value: 28.0, label: "28% GST (Luxury & Heavy Machinery)" },
+                          { value: 0.0, label: "0% GST (Zero Rated / SEZ Supply)" },
+                        ]}
+                      />
                     </div>
 
                     <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1.5">
@@ -574,24 +585,32 @@ export default function InvoicesPage() {
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                           Select B2B Customer *
                         </label>
-                        <select value={selectedCustomerId} onChange={(e) => setSelectedCustomerId(e.target.value)} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
-                          {customers.map((c) => (<option key={c.id} value={c.id}>
-                              {c.name} ({c.company || "Client"})
-                            </option>))}
-                        </select>
+                        <Select
+                          value={selectedCustomerId}
+                          onChange={(e) => setSelectedCustomerId(e.target.value)}
+                          placeholder="Choose B2B customer..."
+                          options={customers.map((c) => ({
+                            value: c.id,
+                            label: `${c.name}${c.company ? ` (${c.company})` : ""}`,
+                          }))}
+                        />
                       </div>
 
                       <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                           GST Tax Rate (%)
                         </label>
-                        <select value={customTaxRate} onChange={(e) => setCustomTaxRate(parseFloat(e.target.value))} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950">
-                          <option value={18.0}>18% GST (Standard)</option>
-                          <option value={12.0}>12% GST</option>
-                          <option value={5.0}>5% GST</option>
-                          <option value={28.0}>28% GST</option>
-                          <option value={0.0}>0% GST (Exempt)</option>
-                        </select>
+                        <Select
+                          value={customTaxRate}
+                          onChange={(e) => setCustomTaxRate(parseFloat(e.target.value))}
+                          options={[
+                            { value: 18.0, label: "18% GST (Standard)" },
+                            { value: 12.0, label: "12% GST" },
+                            { value: 5.0, label: "5% GST" },
+                            { value: 28.0, label: "28% GST" },
+                            { value: 0.0, label: "0% GST (Exempt)" },
+                          ]}
+                        />
                       </div>
                     </div>
 
@@ -734,11 +753,11 @@ export default function InvoicesPage() {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                     Settlement Method *
                   </label>
-                  <select value={payMethod} onChange={(e) => setPayMethod(e.target.value)} className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 font-medium focus:outline-none focus:ring-1 focus:ring-zinc-950 focus:border-zinc-950 h-9">
-                    {PAYMENT_METHODS.map((m) => (<option key={m.value} value={m.value}>
-                        {m.label}
-                      </option>))}
-                  </select>
+                  <Select
+                    value={payMethod}
+                    onChange={(e) => setPayMethod(e.target.value)}
+                    options={PAYMENT_METHODS}
+                  />
                 </div>
 
                 {/* Transaction Reference (UTR / Cheque #) */}

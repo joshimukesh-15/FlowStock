@@ -21,7 +21,8 @@ import { StatCard } from "@/components/ui/StatCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { formatDate, selectClass } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { Select } from "@/components/ui/Select";
 import { motion } from "framer-motion";
 import { useReducedMotion, pageEnterVariants } from "@/motion";
 
@@ -469,32 +470,27 @@ export default function OrdersPage() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <FormField label="B2B Customer *">
-              <select
+              <Select
                 value={orderCustomerId}
                 onChange={(e) => setOrderCustomerId(e.target.value)}
-                className={selectClass}
-                required
-              >
-                {customers.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name} {c.company ? `(${c.company})` : ""}
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose customer..."
+                options={customers.map((c) => ({
+                  value: c.id,
+                  label: `${c.name}${c.company ? ` (${c.company})` : ""}`,
+                }))}
+              />
             </FormField>
 
             <FormField label="Fulfillment Facility">
-              <select
+              <Select
                 value={orderWarehouseId}
                 onChange={(e) => setOrderWarehouseId(e.target.value)}
-                className={selectClass}
-              >
-                {warehouses.map((wh) => (
-                  <option key={wh.id} value={wh.id}>
-                    {wh.name} ({wh.code})
-                  </option>
-                ))}
-              </select>
+                placeholder="Choose fulfillment warehouse..."
+                options={warehouses.map((wh) => ({
+                  value: wh.id,
+                  label: `${wh.name} (${wh.code})`,
+                }))}
+              />
             </FormField>
           </div>
 
@@ -523,17 +519,16 @@ export default function OrdersPage() {
                   className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25] text-xs"
                 >
                   <div className="flex-1">
-                    <select
+                    <Select
+                      size="sm"
                       value={item.product_id}
                       onChange={(e) => handleItemChange(idx, "product_id", e.target.value)}
-                      className={selectClass}
-                    >
-                      {products.map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.name} [{p.sku}]
-                        </option>
-                      ))}
-                    </select>
+                      placeholder="Select SKU item..."
+                      options={products.map((p) => ({
+                        value: p.id,
+                        label: `${p.name} [${p.sku}]`,
+                      }))}
+                    />
                   </div>
 
                   <div className="w-20">
