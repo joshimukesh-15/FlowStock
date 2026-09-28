@@ -325,7 +325,7 @@ export default function LoginPage() {
                   {orgSlug && (
                     <p className="text-[10px] text-slate-400 dark:text-[#9BA3AF] font-mono -mt-1 pl-0.5">
                       flowstock.app/
-                      <span className="text-sky-600 dark:text-[#D8CFBC]">
+                      <span className="text-[#565449] dark:text-[#D8CFBC]">
                         {orgSlug}
                       </span>
                     </p>
@@ -435,7 +435,7 @@ export default function LoginPage() {
                 onClick={() =>
                   switchMode(mode === "login" ? "signup" : "login")
                 }
-                className="text-sky-600 dark:text-[#D8CFBC] font-semibold hover:underline cursor-pointer"
+                className="text-[#565449] dark:text-[#D8CFBC] font-semibold hover:underline cursor-pointer"
               >
                 {mode === "login" ? "Sign up" : "Log in"}
               </button>

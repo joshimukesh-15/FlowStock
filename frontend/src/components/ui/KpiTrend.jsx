@@ -9,10 +9,10 @@ export function KpiTrend({ changePct, comparisonText = "vs 30d", invertColors = 
     return (<div className={`inline-flex items-center gap-1.5 select-none ${className}`}>
       {/* Clean Trend Badge with Up/Down Arrow & Percentage */}
       <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold tracking-tight border transition-colors ${isNeutral
-            ? "bg-slate-100 dark:bg-[#23262F] text-slate-600 dark:text-[#9BA3AF] border-slate-200 dark:border-[#3A404F]"
+            ? "bg-slate-100 dark:bg-[#23261E] text-slate-600 dark:text-[#9BA3AF] border-slate-200 dark:border-[#3A404F]"
             : isGood
                 ? "bg-slate-950 dark:bg-slate-100 text-white dark:text-slate-950 border-zinc-950 dark:border-slate-100 shadow-2xs"
-                : "bg-slate-100 dark:bg-[#23262F] text-slate-900 dark:text-[#F4F5F7] border-slate-300 dark:border-[#3A404F]"}`}>
+                : "bg-slate-100 dark:bg-[#23261E] text-slate-900 dark:text-[#F4F5F7] border-slate-300 dark:border-[#3A404F]"}`}>
         {isNeutral ? (<Minus className="w-2.5 h-2.5"/>) : isPositive ? (<TrendingUp className="w-2.5 h-2.5"/>) : (<TrendingDown className="w-2.5 h-2.5"/>)}
         <span>{isPositive ? `+${changePct}%` : `${changePct}%`}</span>
       </span>

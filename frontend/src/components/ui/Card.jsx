@@ -8,7 +8,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-xl border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xs hover:border-slate-300 dark:hover:border-[#424857] transition-colors duration-150 overflow-hidden",
+        "rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#191B15] shadow-xs hover:border-slate-300 dark:hover:border-[#424857] transition-colors duration-150 overflow-hidden",
         className
       )}
       {...props}
@@ -19,7 +19,7 @@ export const Card = ({
 };
 
 export const CardHeader = ({ className, children, ...props }) => (
-  <div className={cn("p-3.5 sm:p-4 border-b border-slate-100 dark:border-[#262A34]", className)} {...props}>
+  <div className={cn("p-3.5 sm:p-4 border-b border-slate-100 dark:border-[#2B2E25]", className)} {...props}>
     {children}
   </div>
 );
@@ -43,7 +43,7 @@ export const CardContent = ({ className, children, ...props }) => (
 );
 
 export const CardFooter = ({ className, children, ...props }) => (
-  <div className={cn("p-3.5 sm:p-4 border-t border-slate-100 dark:border-[#262A34] flex items-center justify-between", className)} {...props}>
+  <div className={cn("p-3.5 sm:p-4 border-t border-slate-100 dark:border-[#2B2E25] flex items-center justify-between", className)} {...props}>
     {children}
   </div>
 );

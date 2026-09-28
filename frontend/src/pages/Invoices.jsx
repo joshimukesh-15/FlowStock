@@ -361,7 +361,7 @@ export default function InvoicesPage() {
 
         {/* Table & Controls Card */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="p-4 pb-3 border-b border-slate-100 dark:border-[#262A34]">
+          <CardHeader className="p-4 pb-3 border-b border-slate-100 dark:border-[#2B2E25]">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={[
@@ -386,7 +386,7 @@ export default function InvoicesPage() {
                     Create Invoice
                   </Button>}/>) : (<div className="overflow-x-auto">
                 <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
-                  <thead className="bg-slate-50 dark:bg-[#1C1F27] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#2A2E39]">
+                  <thead className="bg-slate-50 dark:bg-[#191B15] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#33372B]">
                     <tr>
                       <th className="py-2.5 px-3.5 font-semibold">Invoice #</th>
                       <th className="py-2.5 px-3.5 font-semibold">Customer</th>
@@ -399,8 +399,8 @@ export default function InvoicesPage() {
                       <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
-                    {filteredInvoices.map((inv) => (<tr key={inv.id} className="hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors group">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
+                    {filteredInvoices.map((inv) => (<tr key={inv.id} className="hover:bg-slate-50/70 dark:hover:bg-[#191B15]/50 transition-colors group">
                         <td className="py-2.5 px-3.5 font-mono font-medium text-slate-900 dark:text-[#F4F5F7] whitespace-nowrap">
                           {inv.invoice_number}
                           <div className="text-[10px] text-slate-400 dark:text-[#7C8189] font-sans mt-0.5">
@@ -416,7 +416,7 @@ export default function InvoicesPage() {
                           </div>
                         </td>
                         <td className="py-2.5 px-3.5 whitespace-nowrap">
-                          {inv.order ? (<span className="font-mono text-[11px] bg-slate-100 dark:bg-[#20242D] border border-slate-200 dark:border-[#323744] text-slate-800 dark:text-[#E2E8F0] px-2 py-0.5 rounded inline-block whitespace-nowrap font-medium">
+                          {inv.order ? (<span className="font-mono text-[11px] bg-slate-100 dark:bg-[#191B15] border border-slate-200 dark:border-[#33372B] text-slate-800 dark:text-[#E2E8F0] px-2 py-0.5 rounded inline-block whitespace-nowrap font-medium">
                               {inv.order.order_number}
                             </span>) : (<span className="text-xs text-slate-400 dark:text-[#7C8189]">Direct Invoice</span>)}
                         </td>
@@ -760,7 +760,7 @@ export default function InvoicesPage() {
                   <Input placeholder="Remittance received in corporate account" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9"/>
                 </div>
 
-                <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-100 dark:border-[#262A34]">
+                <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-100 dark:border-[#2B2E25]">
                   <Button type="button" variant="outline" size="sm" onClick={() => setPaymentModalOpen(false)}>
                     Cancel
                   </Button>
@@ -775,9 +775,9 @@ export default function InvoicesPage() {
         {/* Modal 3: Printable Tax Invoice Viewer & Payment Ledger Drawer */}
         <Modal isOpen={!!viewInvoice} onClose={() => setViewInvoice(null)} maxWidth="3xl">
           {viewInvoice && (
-            <div className="max-h-[88vh] overflow-y-auto bg-slate-50/30 dark:bg-[#181A20] text-slate-700 dark:text-slate-300 text-xs relative flex flex-col">
+            <div className="max-h-[88vh] overflow-y-auto bg-slate-50/30 dark:bg-[#191B15] text-slate-700 dark:text-slate-300 text-xs relative flex flex-col">
               {/* Sticky Header with Title, Tabs, Actions */}
-              <div className="sticky top-0 z-20 border-b border-slate-200 dark:border-[#262A34] bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md shadow-2xs shrink-0">
+              <div className="sticky top-0 z-20 border-b border-slate-200 dark:border-[#2B2E25] bg-white/95 dark:bg-[#191B15]/95 backdrop-blur-md shadow-2xs shrink-0">
                 <div className="flex items-center justify-between px-6 py-3.5">
                   <div className="flex items-center gap-2.5">
                     <ReceiptText className="w-5 h-5 text-slate-900 dark:text-slate-100"/>
@@ -830,7 +830,7 @@ export default function InvoicesPage() {
               {invoiceModalTab === "document" && (
                 <div className="p-6 sm:p-8 space-y-6">
                   {/* Invoice Meta Banner */}
-                  <div className="flex flex-col sm:flex-row justify-between gap-4 pb-6 border-b border-slate-100 dark:border-[#262A34]">
+                  <div className="flex flex-col sm:flex-row justify-between gap-4 pb-6 border-b border-slate-100 dark:border-[#2B2E25]">
                     <div>
                       <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-wide">
                         TAX INVOICE
@@ -873,7 +873,7 @@ export default function InvoicesPage() {
                   </div>
 
                   {/* Customer Bill To & Ship To */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34]">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25]">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-[#9BA3AF] block mb-1">
                         Billed To (Consignee):
@@ -907,9 +907,9 @@ export default function InvoicesPage() {
                   </div>
 
                   {/* Line Items Table */}
-                  <div className="rounded-lg border border-slate-200 dark:border-[#262A34] overflow-hidden">
+                  <div className="rounded-lg border border-slate-200 dark:border-[#2B2E25] overflow-hidden">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-50 dark:bg-[#1C1F27] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#262A34]">
+                      <thead className="bg-slate-50 dark:bg-[#191B15] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#2B2E25]">
                         <tr>
                           <th className="py-2.5 px-3">#</th>
                           <th className="py-2.5 px-3">Item Description</th>
@@ -918,7 +918,7 @@ export default function InvoicesPage() {
                           <th className="py-2.5 px-3 text-right">Amount (₹)</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 dark:divide-[#262A34] bg-white dark:bg-[#181A20]">
+                      <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25] bg-white dark:bg-[#191B15]">
                         {viewInvoice.items.map((it, idx) => (
                           <tr key={it.id || idx}>
                             <td className="py-2 px-3 text-slate-500 dark:text-[#9BA3AF]">{idx + 1}</td>
@@ -945,7 +945,7 @@ export default function InvoicesPage() {
                         Beneficiary: FlowStock Operations Pvt Ltd &bull; Bank: HDFC Bank
                       </p>
                     </div>
-                    <div className="w-full sm:w-72 space-y-2 bg-slate-50 dark:bg-[#1C1F27] p-4 rounded-lg border border-slate-200 dark:border-[#262A34]">
+                    <div className="w-full sm:w-72 space-y-2 bg-slate-50 dark:bg-[#191B15] p-4 rounded-lg border border-slate-200 dark:border-[#2B2E25]">
                       <div className="flex justify-between text-slate-500 dark:text-[#9BA3AF]">
                         <span>Taxable Subtotal:</span>
                         <span>{formatINR(viewInvoice.subtotal)}</span>
@@ -958,7 +958,7 @@ export default function InvoicesPage() {
                         <span>SGST ({viewInvoice.tax_rate / 2}%):</span>
                         <span>{formatINR(viewInvoice.tax_amount / 2)}</span>
                       </div>
-                      <div className="flex justify-between text-slate-900 dark:text-white font-bold text-sm pt-2 border-t border-slate-200 dark:border-[#262A34]">
+                      <div className="flex justify-between text-slate-900 dark:text-white font-bold text-sm pt-2 border-t border-slate-200 dark:border-[#2B2E25]">
                         <span>Grand Total:</span>
                         <span className="text-slate-950 dark:text-white">
                           {formatINR(viewInvoice.total_amount)}
@@ -968,7 +968,7 @@ export default function InvoicesPage() {
                         <span>Amount Received:</span>
                         <span className="font-medium text-emerald-600 dark:text-emerald-400">{formatINR(viewInvoice.paid_amount)}</span>
                       </div>
-                      <div className="flex justify-between font-bold pt-1 border-t border-slate-200 dark:border-[#262A34]">
+                      <div className="flex justify-between font-bold pt-1 border-t border-slate-200 dark:border-[#2B2E25]">
                         <span className="text-slate-700 dark:text-slate-300">Balance Payable:</span>
                         <span className={viewInvoice.balance_due > 0 ? "text-rose-600 dark:text-rose-400 font-bold" : "text-slate-400 dark:text-slate-500"}>
                           {formatINR(viewInvoice.balance_due)}
@@ -978,7 +978,7 @@ export default function InvoicesPage() {
                   </div>
 
                   {/* Payment History Audit Ledger Section */}
-                  <div className="pt-4 border-t border-slate-200 dark:border-[#262A34]">
+                  <div className="pt-4 border-t border-slate-200 dark:border-[#2B2E25]">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="font-semibold text-slate-900 dark:text-white uppercase tracking-wider text-xs flex items-center gap-1.5">
                         <ArrowDownLeft className="w-4 h-4 text-slate-900 dark:text-white"/>
@@ -1002,9 +1002,9 @@ export default function InvoicesPage() {
                         description="Record a payment remittance against this invoice to settle the balance due."
                       />
                     ) : (
-                      <div className="rounded-lg border border-slate-200 dark:border-[#262A34] overflow-hidden">
+                      <div className="rounded-lg border border-slate-200 dark:border-[#2B2E25] overflow-hidden">
                         <table className="w-full text-left text-xs">
-                          <thead className="bg-slate-50 dark:bg-[#1C1F27] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#262A34]">
+                          <thead className="bg-slate-50 dark:bg-[#191B15] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#2B2E25]">
                             <tr>
                               <th className="py-2.5 px-3">Receipt #</th>
                               <th className="py-2.5 px-3">Date</th>
@@ -1013,7 +1013,7 @@ export default function InvoicesPage() {
                               <th className="py-2.5 px-3 text-right">Amount (₹)</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100 dark:divide-[#262A34] bg-white dark:bg-[#181A20]">
+                          <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25] bg-white dark:bg-[#191B15]">
                             {viewInvoice.payments.map((pay) => (
                               <tr key={pay.id}>
                                 <td className="py-2.5 px-3 font-mono font-medium text-slate-900 dark:text-white">
@@ -1046,7 +1046,7 @@ export default function InvoicesPage() {
                 <div className="p-6 sm:p-8 space-y-5">
                   {/* Financial Summary KPI Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34]">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25]">
                       <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider block">Total Billed</span>
                       <span className="text-lg font-bold text-slate-900 dark:text-white font-mono mt-0.5 block">
                         {formatINR(viewInvoice.total_amount)}
@@ -1058,7 +1058,7 @@ export default function InvoicesPage() {
                         {formatINR(viewInvoice.paid_amount)}
                       </span>
                     </div>
-                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34]">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25]">
                       <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider block">Outstanding Balance</span>
                       <span className={`text-lg font-bold font-mono mt-0.5 block ${viewInvoice.balance_due > 0 ? "text-rose-600 dark:text-rose-400" : "text-slate-900 dark:text-white"}`}>
                         {formatINR(viewInvoice.balance_due)}
@@ -1094,9 +1094,9 @@ export default function InvoicesPage() {
                         }
                       />
                     ) : (
-                      <div className="rounded-xl border border-slate-200 dark:border-[#262A34] overflow-hidden shadow-2xs">
+                      <div className="rounded-xl border border-slate-200 dark:border-[#2B2E25] overflow-hidden shadow-2xs">
                         <table className="w-full text-left text-xs">
-                          <thead className="bg-slate-50 dark:bg-[#1C1F27] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#262A34]">
+                          <thead className="bg-slate-50 dark:bg-[#191B15] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#2B2E25]">
                             <tr>
                               <th className="py-3 px-3.5 font-semibold">Receipt #</th>
                               <th className="py-3 px-3.5 font-semibold">Date</th>
@@ -1105,7 +1105,7 @@ export default function InvoicesPage() {
                               <th className="py-3 px-3.5 text-right font-semibold">Amount (₹)</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100 dark:divide-[#262A34] bg-white dark:bg-[#181A20]">
+                          <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25] bg-white dark:bg-[#191B15]">
                             {viewInvoice.payments.map((pay) => (
                               <tr key={pay.id} className="hover:bg-slate-50/60 dark:hover:bg-[#1F232D] transition-colors">
                                 <td className="py-3 px-3.5 font-mono font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -1116,7 +1116,7 @@ export default function InvoicesPage() {
                                   {formatDate(pay.payment_date)}
                                 </td>
                                 <td className="py-3 px-3.5 font-medium text-slate-700 dark:text-slate-300">
-                                  <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#262A34] text-[11px] font-mono">
+                                  <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#2B2E25] text-[11px] font-mono">
                                     {pay.payment_method}
                                   </span>
                                 </td>

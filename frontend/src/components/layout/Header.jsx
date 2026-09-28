@@ -237,7 +237,7 @@ export const Header = () => {
       <header className="h-12 glass-header px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
         {/* Tenant Selector */}
         <div className="relative" ref={tenantMenuRef}>
-          <button onClick={toggleDropdown} className="btn-tactile flex items-center gap-2.5 text-xs text-slate-700 dark:text-[#9BA3AF] bg-slate-50/90 dark:bg-[#23262F]/90 hover:bg-slate-100 dark:hover:bg-[#2C303B] border border-slate-200 dark:border-[#323744] border-t-white/80 dark:border-t-white/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs">
+          <button onClick={toggleDropdown} className="btn-tactile flex items-center gap-2.5 text-xs text-slate-700 dark:text-[#9BA3AF] bg-slate-50/90 dark:bg-[#23261E]/90 hover:bg-slate-100 dark:hover:bg-[#2B2E25] border border-slate-200 dark:border-[#33372B] border-t-white/80 dark:border-t-white/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs">
             <Building2 className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
             <div className="flex flex-col text-left">
               <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#F4F5F7] leading-tight">
@@ -252,18 +252,18 @@ export const Header = () => {
 
           {/* Dropdown Menu */}
           <AnimatePresence>
-            {dropdownOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute top-full left-0 mt-1.5 w-72 bg-white/95 dark:bg-[#23262F]/95 backdrop-blur-md border border-slate-200 dark:border-[#323744] border-t-white/90 dark:border-t-white/15 rounded-xl shadow-2xl py-1 z-50 origin-top-left">
-              <div className="px-3 py-1.5 border-b border-slate-100 dark:border-[#323744] text-[11px] font-semibold text-slate-400 dark:text-[#7C8189] uppercase tracking-wider">
+            {dropdownOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute top-full left-0 mt-1.5 w-72 bg-white/95 dark:bg-[#23261E]/95 backdrop-blur-md border border-slate-200 dark:border-[#33372B] border-t-white/90 dark:border-t-white/15 rounded-xl shadow-2xl py-1 z-50 origin-top-left">
+              <div className="px-3 py-1.5 border-b border-slate-100 dark:border-[#33372B] text-[11px] font-semibold text-slate-400 dark:text-[#7C8189] uppercase tracking-wider">
                 Select Active Organization
               </div>
-              <div className="max-h-56 overflow-y-auto divide-y divide-slate-100 dark:divide-[#262A34]">
+              <div className="max-h-56 overflow-y-auto divide-y divide-slate-100 dark:divide-[#2B2E25]">
                 {organizations.map((org) => {
                 const isActive = currentOrg?.id === org.id;
                 const canDelete = organizations.length > 1;
                 return (<div key={org.id} onClick={() => {
                         switchOrganization(org.id);
                         setDropdownOpen(false);
-                    }} className={`group w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/70 transition-colors cursor-pointer ${isActive ? "bg-slate-50 dark:bg-[#23262F]/50 text-slate-900 dark:text-[#F4F5F7] font-semibold" : "text-slate-700 dark:text-[#CBD5E1]"}`}>
+                    }} className={`group w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/70 transition-colors cursor-pointer ${isActive ? "bg-slate-50 dark:bg-[#23261E]/50 text-slate-900 dark:text-[#F4F5F7] font-semibold" : "text-slate-700 dark:text-[#CBD5E1]"}`}>
                       <div className="min-w-0 pr-2 flex-1">
                         <p className="truncate">{org.name}</p>
                         <p className="text-[10px] text-slate-400 dark:text-[#7C8189] font-mono">
@@ -285,7 +285,7 @@ export const Header = () => {
                     </div>);
             })}
               </div>
-              <div className="border-t border-slate-100 dark:border-[#323744] p-1.5 space-y-1">
+              <div className="border-t border-slate-100 dark:border-[#33372B] p-1.5 space-y-1">
                 <Button
                   variant="outline"
                   size="sm"
@@ -313,14 +313,14 @@ export const Header = () => {
           {/* Dark / Light Theme Toggle */}
           <ThemeToggle />
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#23262F]"/>
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#23261E]"/>
 
           {/* Notifications Bell Dropdown */}
           <div className="relative" ref={notifRef}>
             <button
               onClick={toggleNotifDrawer}
-              className={`btn-tactile relative p-2 rounded-xl text-slate-500 dark:text-[#9BA3AF] hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23262F] transition-all cursor-pointer ${
-                notifOpen ? "bg-slate-100 dark:bg-[#23262F] text-slate-900 dark:text-white" : ""
+              className={`btn-tactile relative p-2 rounded-xl text-slate-500 dark:text-[#9BA3AF] hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#23261E] transition-all cursor-pointer ${
+                notifOpen ? "bg-slate-100 dark:bg-[#23261E] text-slate-900 dark:text-white" : ""
               }`}
               title="Notifications (Esc to close)"
               aria-expanded={notifOpen}
@@ -334,8 +334,8 @@ export const Header = () => {
 
             {/* Notifications Popover */}
             <AnimatePresence>
-              {notifOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#323744] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 text-xs origin-top-right">
-                <div className="px-4 py-2.5 border-b border-slate-100 dark:border-[#323744] flex items-center justify-between">
+              {notifOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white/95 dark:bg-[#191B15]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#33372B] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 text-xs origin-top-right">
+                <div className="px-4 py-2.5 border-b border-slate-100 dark:border-[#33372B] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">Notifications</span>
                     {unreadCount > 0 && (<Badge variant="danger" className="text-[10px] py-0 px-1.5">
@@ -350,7 +350,7 @@ export const Header = () => {
                     <button
                       type="button"
                       onClick={() => setNotifOpen(false)}
-                      className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-md hover:bg-slate-100 dark:hover:bg-[#23262F] transition-colors cursor-pointer"
+                      className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-md hover:bg-slate-100 dark:hover:bg-[#23261E] transition-colors cursor-pointer"
                       title="Close notifications (Esc)"
                       aria-label="Close notifications"
                     >
@@ -360,11 +360,11 @@ export const Header = () => {
                 </div>
 
                 {/* Notifications List */}
-                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-[#262A34]">
+                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-[#2B2E25]">
                   {loadingNotifs ? (<div className="p-4 text-center text-slate-400 dark:text-[#7C8189]">Loading notifications...</div>) : notifications.length > 0 ? (notifications.map((notif) => (<div key={notif.id} onClick={() => {
                     if (!notif.is_read)
                         handleMarkAsRead(notif.id);
-                }} className={`p-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-2.5 cursor-pointer ${!notif.is_read ? "bg-slate-100/70 dark:bg-[#23262F]/50" : ""}`}>
+                }} className={`p-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-2.5 cursor-pointer ${!notif.is_read ? "bg-slate-100/70 dark:bg-[#23261E]/50" : ""}`}>
                         {getNotifIcon(notif.type)}
                         <div className="flex-1 min-w-0 space-y-0.5">
                           <div className="flex items-center justify-between gap-1">
@@ -388,7 +388,7 @@ export const Header = () => {
                     </div>)}
                 </div>
 
-                <div className="p-2 border-t border-slate-100 dark:border-[#323744] bg-slate-50 dark:bg-[#14171F]/60 text-center">
+                <div className="p-2 border-t border-slate-100 dark:border-[#33372B] bg-slate-50 dark:bg-[#11120D]/60 text-center">
                   <Link to="/audit" onClick={() => setNotifOpen(false)} className="text-xs text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-slate-100 font-medium">
                     View Full Audit Trails & System Logs →
                   </Link>
@@ -397,12 +397,12 @@ export const Header = () => {
             </AnimatePresence>
           </div>
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#23262F]"/>
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#23261E]"/>
 
           {/* Active Operator & Live Role Switcher */}
           <div className="relative" ref={userMenuRef}>
-            <button onClick={toggleUserMenu} className="btn-tactile flex items-center gap-2 text-sm text-slate-700 dark:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23262F] p-1.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-[#323744] transition-all cursor-pointer text-left" title="Click to switch active user / role">
-              <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-[#2C303B] border border-slate-300 dark:border-[#545963] flex items-center justify-center">
+            <button onClick={toggleUserMenu} className="btn-tactile flex items-center gap-2 text-sm text-slate-700 dark:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23261E] p-1.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-[#33372B] transition-all cursor-pointer text-left" title="Click to switch active user / role">
+              <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-[#2B2E25] border border-slate-300 dark:border-[#565449] flex items-center justify-center">
                 <User className="w-4 h-4 text-slate-600 dark:text-[#F4F5F7]"/>
               </div>
               <div>
@@ -411,7 +411,7 @@ export const Header = () => {
                   <ChevronDown className="w-3 h-3 text-slate-400"/>
                 </p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#23262F] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#323744] uppercase tracking-wider">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#33372B] uppercase tracking-wider">
                     {currentUser?.role?.replace("_", " ") || "Operator"}
                   </span>
                 </div>
@@ -419,8 +419,8 @@ export const Header = () => {
             </button>
 
             <AnimatePresence>
-              {userMenuOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 mt-2 w-64 bg-white/95 dark:bg-[#181A20]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#323744] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 origin-top-right">
-                  <div className="px-3 py-1.5 border-b border-slate-100 dark:border-[#323744] flex items-center justify-between">
+              {userMenuOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 mt-2 w-64 bg-white/95 dark:bg-[#191B15]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#33372B] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 origin-top-right">
+                  <div className="px-3 py-1.5 border-b border-slate-100 dark:border-[#33372B] flex items-center justify-between">
                     <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider">
                       Switch Active User (RBAC)
                     </span>
@@ -434,20 +434,20 @@ export const Header = () => {
                 return (<button key={u.id} onClick={() => {
                         switchUser(u.id);
                         setUserMenuOpen(false);
-                    }} className={`w-full px-3 py-2 text-left flex items-start justify-between gap-2 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors ${isSelected ? "bg-slate-50/80 dark:bg-[#23262F]/50 font-medium" : ""}`}>
+                    }} className={`w-full px-3 py-2 text-left flex items-start justify-between gap-2 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors ${isSelected ? "bg-slate-50/80 dark:bg-[#23261E]/50 font-medium" : ""}`}>
                           <div className="min-w-0 flex-1">
                             <p className="text-xs font-semibold text-slate-900 dark:text-[#F4F5F7] truncate">
                               {u.name}
                             </p>
                             <p className="text-[10px] text-slate-500 dark:text-[#9BA3AF] truncate">{u.email}</p>
                           </div>
-                          <span className={`text-[10px] shrink-0 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${u.role === "admin" ? "bg-slate-950 dark:bg-slate-100 text-white dark:text-slate-950" : "bg-slate-100 dark:bg-[#23262F] text-slate-800 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#3A404F]"}`}>
+                          <span className={`text-[10px] shrink-0 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${u.role === "admin" ? "bg-slate-950 dark:bg-slate-100 text-white dark:text-slate-950" : "bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#3A404F]"}`}>
                             {u.role?.replace("_", " ") || u.role}
                           </span>
                         </button>);
             })}
                   </div>
-                  <div className="border-t border-slate-100 dark:border-[#323744] p-1.5">
+                  <div className="border-t border-slate-100 dark:border-[#33372B] p-1.5">
                     <button
                       onClick={() => {
                         logout();
@@ -464,7 +464,7 @@ export const Header = () => {
             </AnimatePresence>
           </div>
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#23262F]"/>
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#23261E]"/>
 
           {/* Quick Sign Out Action */}
           <button
@@ -483,14 +483,14 @@ export const Header = () => {
       {/* Add Organization Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} maxWidth="md">
           <div className="p-5 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#323744]">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#33372B]">
               <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">Create New Organization</h3>
               <button onClick={() => setModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
                 <X className="w-4 h-4"/>
               </button>
             </div>
 
-            {createError && (<p className="text-xs text-slate-950 dark:text-[#F4F5F7] bg-slate-100 dark:bg-[#23262F] border border-slate-300 dark:border-[#3A404F] p-2.5 rounded font-medium">
+            {createError && (<p className="text-xs text-slate-950 dark:text-[#F4F5F7] bg-slate-100 dark:bg-[#23261E] border border-slate-300 dark:border-[#3A404F] p-2.5 rounded font-medium">
                 {createError}
               </p>)}
 
@@ -501,7 +501,7 @@ export const Header = () => {
                 <label className="block text-xs font-medium text-slate-700 dark:text-[#CBD5E1] mb-1">
                   Default Currency
                 </label>
-                <select value={newOrgCurrency} onChange={(e) => setNewOrgCurrency(e.target.value)} className="w-full rounded-md border border-slate-300 dark:border-[#3A404F] bg-white dark:bg-[#23262F] text-slate-900 dark:text-[#F4F5F7] px-3 py-2 text-sm focus:border-zinc-900 dark:focus:border-slate-100 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                <select value={newOrgCurrency} onChange={(e) => setNewOrgCurrency(e.target.value)} className="w-full rounded-md border border-slate-300 dark:border-[#3A404F] bg-white dark:bg-[#23261E] text-slate-900 dark:text-[#F4F5F7] px-3 py-2 text-sm focus:border-zinc-900 dark:focus:border-slate-100 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100">
                   <option value="INR">INR (₹)</option>
                   <option value="USD">USD ($)</option>
                   <option value="EUR">EUR (€)</option>

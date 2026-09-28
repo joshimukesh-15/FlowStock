@@ -19,7 +19,7 @@ export const TableHeader = React.forwardRef(({ className, children, ...props }, 
   <thead
     ref={ref}
     className={cn(
-      "bg-slate-50 dark:bg-[#1C1F27] border-b border-slate-100 dark:border-[#2A2E39] text-slate-500 dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]",
+      "bg-slate-50 dark:bg-[#191B15] border-b border-slate-100 dark:border-[#33372B] text-slate-500 dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]",
       className
     )}
     {...props}
@@ -32,7 +32,7 @@ TableHeader.displayName = "TableHeader";
 export const TableBody = React.forwardRef(({ className, children, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={cn("divide-y divide-slate-100 dark:divide-[#262A34]", className)}
+    className={cn("divide-y divide-slate-100 dark:divide-[#2B2E25]", className)}
     {...props}
   >
     {children}
@@ -44,7 +44,7 @@ export const TableRow = React.forwardRef(({ className, children, ...props }, ref
   <tr
     ref={ref}
     className={cn(
-      "hover:bg-slate-50/70 dark:hover:bg-[#20242D]/50 transition-colors group",
+      "hover:bg-slate-50/70 dark:hover:bg-[#191B15]/50 transition-colors group",
       className
     )}
     {...props}

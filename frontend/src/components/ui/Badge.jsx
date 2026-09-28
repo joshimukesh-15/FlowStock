@@ -3,26 +3,29 @@ import { cn } from "@/lib/utils";
 
 export const badgeVariants = {
   default:
-    "bg-slate-100 dark:bg-[#1E222B] text-slate-700 dark:text-[#CBD5E1] border-slate-200/80 dark:border-[#323744]",
+    "bg-slate-100 dark:bg-[#23261E] text-slate-700 dark:text-[#D8CFBC] border-slate-200/80 dark:border-[#33372B]",
   brand:
-    "bg-slate-900 dark:bg-[#D8CFBC]/15 text-white dark:text-[#D8CFBC] border-slate-800 dark:border-[#D8CFBC]/30",
+    "bg-[#11120D] text-[#FFFBF4] dark:bg-[#D8CFBC]/15 dark:text-[#D8CFBC] border-[#565449]/40 dark:border-[#D8CFBC]/30",
+  bone:
+    "bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border-[#D8CFBC]/50 dark:border-[#D8CFBC]/30",
   success:
-    "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/70 dark:border-emerald-500/20",
+    "bg-[#D8CFBC]/20 text-[#565449] dark:text-[#D8CFBC] border-[#D8CFBC]/40 dark:border-[#D8CFBC]/30",
   warning:
     "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200/70 dark:border-amber-500/20",
   danger:
     "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200/70 dark:border-rose-500/20",
   info:
-    "bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200/70 dark:border-blue-500/20",
+    "bg-[#D8CFBC]/20 text-[#565449] dark:text-[#D8CFBC] border-[#D8CFBC]/40 dark:border-[#D8CFBC]/30",
 };
 
 const dotColors = {
   default: "bg-slate-400 dark:bg-slate-500",
   brand: "bg-[#D8CFBC]",
-  success: "bg-emerald-500 dark:bg-emerald-400",
+  bone: "bg-[#D8CFBC]",
+  success: "bg-[#565449] dark:bg-[#D8CFBC]",
   warning: "bg-amber-500 dark:bg-amber-400",
   danger: "bg-rose-500 dark:bg-rose-400",
-  info: "bg-blue-500 dark:bg-blue-400",
+  info: "bg-[#565449] dark:bg-[#D8CFBC]",
 };
 
 export const Badge = ({ className, variant = "default", showDot = true, children, ...props }) => {

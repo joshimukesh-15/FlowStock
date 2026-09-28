@@ -39,7 +39,7 @@ export function FormModal({
       )}
       {children}
       {showFooter && !footer && (
-        <div className="flex items-center justify-between gap-2 pt-4 border-t border-slate-100 dark:border-[#262A34]">
+        <div className="flex items-center justify-between gap-2 pt-4 border-t border-slate-100 dark:border-[#2B2E25]">
           <div>{footerExtra}</div>
           <div className="flex items-center gap-2">
             <Button
@@ -77,10 +77,10 @@ export function FormModal({
       className={cn("overflow-hidden", className)}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-[#262A34] bg-slate-50/60 dark:bg-[#181A20]">
+      <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-[#2B2E25] bg-slate-50/60 dark:bg-[#191B15]">
         <h3 className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-base sm:text-lg flex items-center gap-2.5">
           {Icon && (
-            <div className="w-7 h-7 rounded-lg bg-slate-200/70 dark:bg-[#262A34] flex items-center justify-center text-slate-800 dark:text-[#F4F5F7] shrink-0 shadow-2xs">
+            <div className="w-7 h-7 rounded-lg bg-slate-200/70 dark:bg-[#2B2E25] flex items-center justify-center text-slate-800 dark:text-[#F4F5F7] shrink-0 shadow-2xs">
               <Icon className="w-4 h-4" />
             </div>
           )}

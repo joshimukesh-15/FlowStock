@@ -526,7 +526,7 @@ export default function OrdersPage() {
               {orderItems.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34] text-xs"
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25] text-xs"
                 >
                   <div className="flex-1">
                     <select
@@ -589,7 +589,7 @@ export default function OrdersPage() {
             </div>
 
             {/* Total Summary */}
-            <div className="flex items-center justify-between p-3 mt-3 bg-slate-50 dark:bg-[#1C1F27] rounded-lg border border-slate-200 dark:border-[#262A34]">
+            <div className="flex items-center justify-between p-3 mt-3 bg-slate-50 dark:bg-[#191B15] rounded-lg border border-slate-200 dark:border-[#2B2E25]">
               <span className="text-xs text-slate-500 dark:text-[#9BA3AF]">
                 Total Order Amount ({orderItems.length} items):
               </span>
@@ -792,7 +792,7 @@ export default function OrdersPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#262A34] mt-4">
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#2B2E25] mt-4">
                 <Button variant="ghost" size="sm" onClick={() => setDetailOrder(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
                   Close
                 </Button>

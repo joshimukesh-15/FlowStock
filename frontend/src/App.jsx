@@ -27,7 +27,7 @@ import { swrConfig } from './lib/swr';
 function ProtectedRoute({ children }) {
     const { isAuthenticated, loading } = useAuth();
     if (loading) return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#14171F] flex items-center justify-center">
+        <div className="min-h-screen bg-slate-50 dark:bg-[#11120D] flex items-center justify-center">
             <PageSkeleton />
         </div>
     );

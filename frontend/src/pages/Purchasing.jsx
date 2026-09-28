@@ -540,7 +540,7 @@ export default function PurchasingPage() {
               {poItems.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34] text-xs"
+                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25] text-xs"
                 >
                   <div className="flex-1">
                     <select
@@ -603,7 +603,7 @@ export default function PurchasingPage() {
             </div>
 
             {/* PO Total Preview */}
-            <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-[#1C1F27] border border-slate-200 dark:border-[#262A34] flex items-center justify-between">
+            <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25] flex items-center justify-between">
               <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium">Estimated PO Cost:</span>
               <span className="text-base font-bold text-slate-900 dark:text-[#F4F5F7] font-mono">
                 ₹{poCalculatedTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
@@ -819,7 +819,7 @@ export default function PurchasingPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#262A34] mt-4">
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-[#2B2E25] mt-4">
                 <Button variant="ghost" size="sm" onClick={() => setDetailPO(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
                   Close
                 </Button>

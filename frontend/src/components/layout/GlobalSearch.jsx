@@ -96,7 +96,7 @@ export const GlobalSearch = ({ onOpen }) => {
       <button
         type="button"
         onClick={openSearch}
-        className="w-full flex items-center justify-between gap-2.5 h-8.5 px-3 rounded-xl border border-slate-200/90 dark:border-[#323744] bg-slate-100/70 hover:bg-slate-100 dark:bg-[#181A20] dark:hover:bg-[#20242D] text-xs text-slate-500 dark:text-[#9BA3AF] transition-all cursor-pointer shadow-2xs hover:border-slate-300 dark:hover:border-[#454C5E] group"
+        className="w-full flex items-center justify-between gap-2.5 h-8.5 px-3 rounded-xl border border-slate-200/90 dark:border-[#33372B] bg-slate-100/70 hover:bg-slate-100 dark:bg-[#191B15] dark:hover:bg-[#191B15] text-xs text-slate-500 dark:text-[#9BA3AF] transition-all cursor-pointer shadow-2xs hover:border-slate-300 dark:hover:border-[#454C5E] group"
         aria-label="Search FlowStock records (Ctrl+K or /)"
       >
         <div className="flex items-center gap-2 min-w-0">
@@ -106,17 +106,17 @@ export const GlobalSearch = ({ onOpen }) => {
           </span>
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] font-mono text-[10px] text-slate-400 dark:text-[#7C8189] shadow-2xs">
+          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23261E] font-mono text-[10px] text-slate-400 dark:text-[#7C8189] shadow-2xs">
             Ctrl K
           </kbd>
-          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] font-mono text-[10px] text-slate-400 dark:text-[#7C8189]">
+          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23261E] font-mono text-[10px] text-slate-400 dark:text-[#7C8189]">
             /
           </kbd>
         </div>
       </button>
 
       <Modal isOpen={isOpen} onClose={close} maxWidth="xl" position="top">
-        <div className="border-b border-slate-100 dark:border-[#323744] p-3.5 sm:p-4 flex items-center justify-between gap-3 bg-slate-50/50 dark:bg-[#181A20]">
+        <div className="border-b border-slate-100 dark:border-[#33372B] p-3.5 sm:p-4 flex items-center justify-between gap-3 bg-slate-50/50 dark:bg-[#191B15]">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <Search className="h-5 w-5 text-slate-400 dark:text-[#7C8189] shrink-0" />
             <input
@@ -137,7 +137,7 @@ export const GlobalSearch = ({ onOpen }) => {
               Clear
             </button>
           )}
-          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23262F] font-mono text-[10px] text-slate-400 dark:text-[#7C8189] shadow-2xs">
+          <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#23261E] font-mono text-[10px] text-slate-400 dark:text-[#7C8189] shadow-2xs">
             ESC
           </kbd>
         </div>
@@ -170,7 +170,7 @@ export const GlobalSearch = ({ onOpen }) => {
                     <Link
                       to={result.to}
                       onClick={close}
-                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-100 dark:hover:bg-[#23262F] group"
+                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-slate-100 dark:hover:bg-[#23261E] group"
                     >
                       <span className="rounded-lg border border-slate-200 dark:border-[#3A404F] bg-white dark:bg-[#1E222B] p-2 text-slate-600 dark:text-[#CBD5E1] shrink-0 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                         <Icon className="h-4 w-4" />
@@ -183,7 +183,7 @@ export const GlobalSearch = ({ onOpen }) => {
                           {result.detail}
                         </span>
                       </span>
-                      <span className="text-[11px] font-mono font-medium text-slate-400 dark:text-[#7C8189] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#181A20] border border-slate-200/80 dark:border-[#323744]">
+                      <span className="text-[11px] font-mono font-medium text-slate-400 dark:text-[#7C8189] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#191B15] border border-slate-200/80 dark:border-[#33372B]">
                         {result.type}
                       </span>
                     </Link>
@@ -195,15 +195,15 @@ export const GlobalSearch = ({ onOpen }) => {
         </div>
 
         {/* Footer shortcuts hint */}
-        <div className="px-4 py-2 border-t border-slate-100 dark:border-[#323744] bg-slate-50 dark:bg-[#14171F] flex items-center justify-between text-[11px] text-slate-400 dark:text-[#7C8189]">
+        <div className="px-4 py-2 border-t border-slate-100 dark:border-[#33372B] bg-slate-50 dark:bg-[#11120D] flex items-center justify-between text-[11px] text-slate-400 dark:text-[#7C8189]">
           <span className="flex items-center gap-2">
             <span>Navigation:</span>
-            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#23262F] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">↑</kbd>
-            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#23262F] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">↓</kbd>
+            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">↑</kbd>
+            <kbd className="px-1 py-0.5 rounded bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">↓</kbd>
             <span>to select</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#23262F] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">ESC</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#3A404F] font-mono text-[10px]">ESC</kbd>
             <span>to close</span>
           </span>
         </div>

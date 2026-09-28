@@ -181,7 +181,7 @@ export default function ProductsPage() {
 
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium shrink-0">Category:</span>
-              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] text-slate-900 dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#D8CFBC] focus:outline-none">
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="text-xs rounded-lg border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#191B15] text-slate-900 dark:text-[#F4F5F7] px-2.5 py-1.5 focus:border-[#D8CFBC] focus:outline-none">
                 <option value="">All Categories ({safeCategories.length})</option>
                 {safeCategories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
@@ -193,7 +193,7 @@ export default function ProductsPage() {
         <Card spotlight={true} className="overflow-hidden shadow-2xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-slate-50 dark:bg-[#14171F] border-b border-slate-100 dark:border-[#262A34] text-slate-500 dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]">
+              <thead className="bg-slate-50 dark:bg-[#11120D] border-b border-slate-100 dark:border-[#2B2E25] text-slate-500 dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-2.5 px-3.5">SKU / Code</th>
                   <th className="py-2.5 px-3.5">Product Name</th>
@@ -206,7 +206,7 @@ export default function ProductsPage() {
                   <th className="py-2.5 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-14", "w-16", "w-16", "w-12", "w-24", "w-20"]}/>
@@ -221,14 +221,14 @@ export default function ProductsPage() {
                     </td>
                   </tr>) : (safeProducts.map((p) => {
             const margin = p.price > 0 ? (((p.price - p.cost_price) / p.price) * 100).toFixed(0) : "0";
-            return (<tr key={p.id} className="hover:bg-slate-50 dark:bg-[#14171F]/70 dark:hover:bg-[#20242D]/50 transition-colors">
+            return (<tr key={p.id} className="hover:bg-slate-50 dark:bg-[#11120D]/70 dark:hover:bg-[#191B15]/50 transition-colors">
                         <td className="py-2.5 px-3.5 font-mono font-semibold text-slate-900 dark:text-[#F4F5F7]">{p.sku}</td>
                         <td className="py-2.5 px-3.5">
                           <p className="font-medium text-slate-900 dark:text-[#F4F5F7]">{p.name}</p>
                           {p.description && <p className="text-[10px] text-slate-400 dark:text-[#7C8189] dark:text-slate-500 dark:text-[#9BA3AF] truncate max-w-xs">{p.description}</p>}
                         </td>
                         <td className="py-2.5 px-3.5">
-                          <span className="inline-block px-1.5 py-0.5 bg-slate-100 dark:bg-[#23262F] dark:bg-[#20242D] text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1] rounded text-[10px] border border-slate-200 dark:border-[#323744]">
+                          <span className="inline-block px-1.5 py-0.5 bg-slate-100 dark:bg-[#23261E] dark:bg-[#191B15] text-slate-700 dark:text-[#CBD5E1] dark:text-[#CBD5E1] rounded text-[10px] border border-slate-200 dark:border-[#33372B]">
                             {p.category?.name || "Uncategorized"}
                           </span>
                         </td>
@@ -252,7 +252,7 @@ export default function ProductsPage() {
                             type="button"
                             whileTap={{ scale: 0.90 }}
                             onClick={() => handleOpenEdit(p)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 rounded-md text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23261E] dark:hover:bg-slate-800 rounded-md text-slate-500 dark:text-[#9BA3AF] hover:text-slate-900 dark:text-white dark:hover:text-slate-100 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
                             title="Edit Product"
                             aria-label={`Edit ${p.name}`}
                           >
@@ -262,7 +262,7 @@ export default function ProductsPage() {
                             type="button"
                             whileTap={{ scale: 0.90 }}
                             onClick={() => handleDeleteProduct(p.id, p.name)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23262F] dark:hover:bg-slate-800 text-slate-400 dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#23261E] dark:hover:bg-slate-800 text-slate-400 dark:text-[#7C8189] hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Delete Product"
                             aria-label={`Delete ${p.name}`}
                           >

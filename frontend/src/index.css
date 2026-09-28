@@ -256,28 +256,28 @@ html.dark [class*="text-zinc-400"]:not([class*="dark:text-"]) {
 
 /* Surfaces */
 html.dark [class*="bg-zinc-950"]:not([class*="dark:bg-"]) {
-  background-color: #14171F;
+  background-color: #11120D;
 }
 
 html.dark [class*="bg-zinc-900"]:not([class*="dark:bg-"]) {
-  background-color: #23262F;
+  background-color: #23261E;
 }
 
 html.dark [class*="bg-zinc-800"]:not([class*="dark:bg-"]) {
-  background-color: #2C303B;
+  background-color: #2B2E25;
 }
 
 html.dark [class*="bg-zinc-100"]:not([class*="dark:bg-"]) {
-  background-color: #2C303B;
+  background-color: #2B2E25;
 }
 
 html.dark [class*="bg-zinc-50"]:not([class*="dark:bg-"]) {
-  background-color: #181A20;
+  background-color: #191B15;
 }
 
 /* Structural Borders */
 html.dark [class*="border-zinc-800"]:not([class*="dark:border-"]) {
-  border-color: #323744;
+  border-color: #33372B;
 }
 
 html.dark [class*="border-zinc-700"]:not([class*="dark:border-"]) {
@@ -289,7 +289,7 @@ html.dark [class*="border-zinc-300"]:not([class*="dark:border-"]) {
 }
 
 html.dark [class*="border-zinc-200"]:not([class*="dark:border-"]) {
-  border-color: #323744;
+  border-color: #33372B;
 }
 
 html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
@@ -328,15 +328,15 @@ html.dark [class*="border-zinc-100"]:not([class*="dark:border-"]) {
 
   /* Apple-style translucent glass highlight */
   .glass-header {
-    background-color: rgba(255, 255, 255, 0.88);
+    background-color: rgba(255, 251, 244, 0.92);
     backdrop-filter: blur(16px) saturate(180%);
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    border-bottom: 1px solid rgba(86, 84, 73, 0.15);
   }
   html.dark .glass-header {
-    background-color: rgba(24, 26, 32, 0.88);
+    background-color: rgba(17, 18, 13, 0.92);
     backdrop-filter: blur(16px) saturate(180%);
-    border-bottom: 1px solid rgba(50, 55, 68, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(86, 84, 73, 0.35);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 

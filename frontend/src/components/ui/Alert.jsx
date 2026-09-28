@@ -9,10 +9,10 @@ const DEFAULT_ICONS = {
     danger: AlertCircle,
 };
 const VARIANT_STYLES = {
-    info: "bg-slate-100 dark:bg-[#23262F]/50 border-slate-200 dark:border-[#3A404F] text-slate-800 dark:text-[#E2E8F0]",
-    success: "bg-slate-950 dark:bg-[#181A20] text-white dark:text-[#F4F5F7] border-zinc-900 dark:border-[#3A404F] shadow-xs",
-    warning: "bg-slate-100 dark:bg-[#23262F]/50 border-slate-300 dark:border-[#3A404F] text-slate-900 dark:text-[#F4F5F7]",
-    danger: "bg-slate-100 dark:bg-[#181A20]/60 border-slate-300 dark:border-[#323744] text-slate-900 dark:text-[#E2E8F0] font-medium",
+    info: "bg-slate-100 dark:bg-[#23261E]/50 border-slate-200 dark:border-[#3A404F] text-slate-800 dark:text-[#E2E8F0]",
+    success: "bg-slate-950 dark:bg-[#191B15] text-white dark:text-[#F4F5F7] border-zinc-900 dark:border-[#3A404F] shadow-xs",
+    warning: "bg-slate-100 dark:bg-[#23261E]/50 border-slate-300 dark:border-[#3A404F] text-slate-900 dark:text-[#F4F5F7]",
+    danger: "bg-slate-100 dark:bg-[#191B15]/60 border-slate-300 dark:border-[#33372B] text-slate-900 dark:text-[#E2E8F0] font-medium",
 };
 export const Alert = ({ className, variant = "info", icon: CustomIcon, onClose, title, children, ...props }) => {
     const Icon = CustomIcon || DEFAULT_ICONS[variant];

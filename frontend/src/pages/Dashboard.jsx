@@ -147,17 +147,17 @@ export default function HomePage() {
             </div>
             <Skeleton className="h-8 w-24 rounded-md" />
           </div>
-          <div className="flex items-center justify-between px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20]/60">
+          <div className="flex items-center justify-between px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#191B15]/60">
             <Skeleton className="h-4 w-48" />
             <Skeleton className="h-4 w-32" />
           </div>
           <KpiRowSkeleton count={4} />
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
-            <div className="lg:col-span-7 h-64 rounded-lg border border-slate-200 dark:border-[#323744] p-4 space-y-3 bg-white dark:bg-[#181A20]/60">
+            <div className="lg:col-span-7 h-64 rounded-lg border border-slate-200 dark:border-[#33372B] p-4 space-y-3 bg-white dark:bg-[#191B15]/60">
               <Skeleton className="h-4 w-40" />
               <Skeleton className="h-44 w-full rounded-md" />
             </div>
-            <div className="lg:col-span-5 h-64 rounded-lg border border-slate-200 dark:border-[#323744] p-4 space-y-3 bg-white dark:bg-[#181A20]/60">
+            <div className="lg:col-span-5 h-64 rounded-lg border border-slate-200 dark:border-[#33372B] p-4 space-y-3 bg-white dark:bg-[#191B15]/60">
               <Skeleton className="h-4 w-36" />
               <Skeleton className="h-44 w-full rounded-md" />
             </div>
@@ -191,16 +191,16 @@ export default function HomePage() {
       {/* ROW 1: 4 Key Financial & Capital KPI Cards */}
       {loading && !summary ? (
         <KpiGrid aria-hidden="true">
-          <Card className="rounded-lg border-slate-200 dark:border-[#323744] shadow-none">
+          <Card className="rounded-lg border-slate-200 dark:border-[#33372B] shadow-none">
             <CardSkeleton />
           </Card>
-          <Card className="rounded-lg border-slate-200 dark:border-[#323744] shadow-none">
+          <Card className="rounded-lg border-slate-200 dark:border-[#33372B] shadow-none">
             <CardSkeleton />
           </Card>
-          <Card className="rounded-lg border-slate-200 dark:border-[#323744] shadow-none">
+          <Card className="rounded-lg border-slate-200 dark:border-[#33372B] shadow-none">
             <CardSkeleton />
           </Card>
-          <Card className="rounded-lg border-slate-200 dark:border-[#323744] shadow-none">
+          <Card className="rounded-lg border-slate-200 dark:border-[#33372B] shadow-none">
             <CardSkeleton />
           </Card>
         </KpiGrid>
@@ -266,7 +266,7 @@ export default function HomePage() {
 
       {/* Secondary Tabbed Section */}
       <motion.div variants={itemVariants} className="space-y-3 pt-1">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-slate-200 dark:border-[#323744]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-slate-200 dark:border-[#33372B]">
           <Tabs tabs={dashboardTabs} activeTab={activeTab} onChange={setActiveTab} variant="pill" size="sm"/>
           <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-mono hidden sm:inline">
             Section: {activeTab.toUpperCase()}
@@ -296,9 +296,9 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent className="p-3.5 pt-0 flex-1 flex flex-col">
                   {summary && summary.inventory.low_stock_items.length > 0 ? (<div className="space-y-2 flex-1">
-                      <div className="border border-slate-200 dark:border-[#323744] rounded-lg overflow-hidden">
+                      <div className="border border-slate-200 dark:border-[#33372B] rounded-lg overflow-hidden">
                         <table className="w-full text-left text-xs">
-                          <thead className="bg-slate-50 dark:bg-[#14171F] text-slate-600 dark:text-[#9BA3AF] font-medium border-b border-slate-200 dark:border-[#323744]">
+                          <thead className="bg-slate-50 dark:bg-[#11120D] text-slate-600 dark:text-[#9BA3AF] font-medium border-b border-slate-200 dark:border-[#33372B]">
                             <tr>
                               <th className="py-2 px-3">SKU</th>
                               <th className="py-2 px-3">Product Name</th>
@@ -307,8 +307,8 @@ export default function HomePage() {
                               <th className="py-2 px-3 text-center">Status</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
-                            {summary.inventory.low_stock_items.map((item) => (<tr key={item.product_id} className="hover:bg-slate-50 dark:hover:bg-[#23262F]/50 transition-colors">
+                          <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
+                            {summary.inventory.low_stock_items.map((item) => (<tr key={item.product_id} className="hover:bg-slate-50 dark:hover:bg-[#23261E]/50 transition-colors">
                                 <td className="py-2 px-3 font-mono text-slate-700 dark:text-[#CBD5E1] font-medium">
                                   {item.sku}
                                 </td>
@@ -338,7 +338,7 @@ export default function HomePage() {
                           </Button>
                         </Link>
                       </div>
-                    </div>) : (<div className="h-[120px] flex flex-col items-center justify-center text-center p-4 rounded-lg border border-dashed border-slate-200 dark:border-[#323744] bg-slate-50/40 dark:bg-[#14171F]/30">
+                    </div>) : (<div className="h-[120px] flex flex-col items-center justify-center text-center p-4 rounded-lg border border-dashed border-slate-200 dark:border-[#33372B] bg-slate-50/40 dark:bg-[#11120D]/30">
                       <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-[#CBD5E1] font-medium">
                         <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0"/>
                         <span>All stock levels healthy across {summary?.inventory.total_skus || 0} catalog items.</span>
@@ -362,11 +362,11 @@ export default function HomePage() {
                   </p>
                 </CardHeader>
                 <CardContent className="p-3.5 pt-0 flex-1 space-y-2">
-                  {summary && summary.warehouses.length > 0 ? (summary.warehouses.map((wh) => (<div key={wh.warehouse_id} className="p-2.5 rounded-lg border border-slate-200 dark:border-[#323744] hover:bg-slate-50 dark:hover:bg-[#23262F]/40 transition-colors space-y-1.5">
+                  {summary && summary.warehouses.length > 0 ? (summary.warehouses.map((wh) => (<div key={wh.warehouse_id} className="p-2.5 rounded-lg border border-slate-200 dark:border-[#33372B] hover:bg-slate-50 dark:hover:bg-[#23261E]/40 transition-colors space-y-1.5">
                         <div className="flex items-center justify-between text-xs">
                           <div className="flex items-center gap-1.5">
                             <span className="font-medium text-slate-900 dark:text-[#F4F5F7]">{wh.name}</span>
-                            <span className="font-mono text-[10px] text-slate-500 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23262F] px-1 py-0.2 rounded border border-slate-200/50 dark:border-[#3A404F]/50">
+                            <span className="font-mono text-[10px] text-slate-500 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23261E] px-1 py-0.2 rounded border border-slate-200/50 dark:border-[#3A404F]/50">
                               {wh.code}
                             </span>
                           </div>
@@ -411,9 +411,9 @@ export default function HomePage() {
                 </Link>
               </CardHeader>
               <CardContent className="p-4 pt-0">
-                {summary && summary.top_products.length > 0 ? (<div className="border border-slate-200 dark:border-[#323744] rounded-lg overflow-hidden">
+                {summary && summary.top_products.length > 0 ? (<div className="border border-slate-200 dark:border-[#33372B] rounded-lg overflow-hidden">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-50 dark:bg-[#14171F] text-slate-600 dark:text-[#9BA3AF] font-medium border-b border-slate-200 dark:border-[#323744]">
+                      <thead className="bg-slate-50 dark:bg-[#11120D] text-slate-600 dark:text-[#9BA3AF] font-medium border-b border-slate-200 dark:border-[#33372B]">
                         <tr>
                           <th className="py-2 px-3 w-10">#</th>
                           <th className="py-2 px-3">SKU & Item</th>
@@ -422,8 +422,8 @@ export default function HomePage() {
                           <th className="py-2 px-3 text-right">Current Stock</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
-                        {summary.top_products.map((item, idx) => (<tr key={item.product_id} className="hover:bg-slate-50 dark:hover:bg-[#23262F]/50 transition-colors">
+                      <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
+                        {summary.top_products.map((item, idx) => (<tr key={item.product_id} className="hover:bg-slate-50 dark:hover:bg-[#23261E]/50 transition-colors">
                             <td className="py-2 px-3 font-mono text-slate-400 dark:text-[#7C8189]">{idx + 1}</td>
                             <td className="py-2 px-3">
                               <span className="font-medium text-slate-900 dark:text-[#F4F5F7]">{item.name}</span>
@@ -544,7 +544,7 @@ export default function HomePage() {
                 return (<Card key={job.name} spotlight className="flex flex-col justify-between">
                     <CardHeader className="p-4 pb-2 space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-slate-600 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23262F] px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F]">
+                        <span className="text-[10px] font-mono text-slate-600 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23261E] px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#3A404F]">
                           {job.schedule_interval}
                         </span>
                         {lastRun ? (<Badge variant={lastRun.status === "SUCCESS"
@@ -565,7 +565,7 @@ export default function HomePage() {
                       </p>
                     </CardHeader>
                     <CardContent className="p-4 pt-0 space-y-2">
-                      {lastRun ? (<div className="p-2 rounded bg-slate-50 dark:bg-[#14171F]/60 border border-slate-100 dark:border-[#262A34] text-[11px] space-y-0.5">
+                      {lastRun ? (<div className="p-2 rounded bg-slate-50 dark:bg-[#11120D]/60 border border-slate-100 dark:border-[#2B2E25] text-[11px] space-y-0.5">
                           <div className="flex items-center justify-between text-slate-500 dark:text-[#9BA3AF]">
                             <span>Last ({lastRun.triggered_by})</span>
                             <span className="font-mono tabular-nums">
@@ -577,7 +577,7 @@ export default function HomePage() {
                           <p className="text-slate-700 dark:text-[#CBD5E1] font-medium truncate" title={lastRun.result_summary || ""}>
                             {lastRun.result_summary || "Completed"}
                           </p>
-                        </div>) : (<div className="p-2 rounded bg-slate-50/50 dark:bg-[#181A20]/60 border border-dashed border-slate-200 dark:border-[#323744] text-[11px] text-slate-400 dark:text-[#7C8189] text-center">
+                        </div>) : (<div className="p-2 rounded bg-slate-50/50 dark:bg-[#191B15]/60 border border-dashed border-slate-200 dark:border-[#33372B] text-[11px] text-slate-400 dark:text-[#7C8189] text-center">
                           Ready for initial trigger
                         </div>)}
                       <Button variant="outline" size="sm" className="w-full text-xs gap-1.5 h-8 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => handleRunJob(job.name)} disabled={isRunning || runningJob !== null}>
@@ -595,7 +595,7 @@ export default function HomePage() {
             </div>
 
             {/* Recent Execution Log Table */}
-            {jobExecutions.length > 0 && (<Card className="rounded-lg border-slate-200 dark:border-[#323744] shadow-none">
+            {jobExecutions.length > 0 && (<Card className="rounded-lg border-slate-200 dark:border-[#33372B] shadow-none">
                 <CardHeader className="p-4 pb-2">
                   <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-slate-500"/>
@@ -607,7 +607,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent className="p-0 overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-50 dark:bg-[#14171F] text-slate-500 dark:text-[#9BA3AF] border-b border-slate-200 dark:border-[#323744] font-medium">
+                    <thead className="bg-slate-50 dark:bg-[#11120D] text-slate-500 dark:text-[#9BA3AF] border-b border-slate-200 dark:border-[#33372B] font-medium">
                       <tr>
                         <th className="py-2 px-4">Job Name</th>
                         <th className="py-2 px-4">Trigger</th>
@@ -617,13 +617,13 @@ export default function HomePage() {
                         <th className="py-2 px-4 text-right">Timestamp</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
                       {jobExecutions.slice(0, 5).map((exec) => (<tr key={exec.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
                           <td className="py-2 px-4 font-mono font-medium text-slate-800 dark:text-[#E2E8F0]">
                             {exec.job_name}
                           </td>
                           <td className="py-2 px-4">
-                            <span className="text-[10px] font-mono text-slate-500 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23262F] border dark:border-[#3A404F]/60 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-mono text-slate-500 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23261E] border dark:border-[#3A404F]/60 px-1.5 py-0.5 rounded">
                               {exec.triggered_by}
                             </span>
                           </td>
@@ -674,7 +674,7 @@ export default function HomePage() {
               </Link>
             </CardHeader>
             <CardContent className="p-4 pt-0">
-              {summary && summary.recent_activities.length > 0 ? (<div className="space-y-2 max-h-[380px] overflow-y-auto pr-1 divide-y divide-slate-100 dark:divide-[#262A34]">
+              {summary && summary.recent_activities.length > 0 ? (<div className="space-y-2 max-h-[380px] overflow-y-auto pr-1 divide-y divide-slate-100 dark:divide-[#2B2E25]">
                   {summary.recent_activities.map((act) => (<div key={act.id} className="pt-2 first:pt-0 flex items-center justify-between gap-3 text-xs">
                       <div className="min-w-0 flex-1 space-y-0.5">
                         <div className="flex items-center gap-2">

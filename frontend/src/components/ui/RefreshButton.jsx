@@ -73,7 +73,7 @@ export function RefreshButton({
         size === "lg" && "h-10 px-4 text-sm font-medium",
         size === "xl" && "h-11 px-5 text-base font-semibold",
         variant === "outline" &&
-          "border-slate-300 dark:border-[#323744] bg-white dark:bg-[#181A20] text-slate-700 dark:text-[#D1D5DB] hover:bg-slate-50 dark:hover:bg-[#20242D] hover:text-slate-900 dark:hover:text-white shadow-2xs",
+          "border-slate-300 dark:border-[#33372B] bg-white dark:bg-[#191B15] text-slate-700 dark:text-[#D1D5DB] hover:bg-slate-50 dark:hover:bg-[#191B15] hover:text-slate-900 dark:hover:text-white shadow-2xs",
         variant === "primary" &&
           "bg-[#D8CFBC] text-[#11120D] border border-[#FFFBF4] font-semibold hover:bg-[#FFFBF4] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(216,207,188,0.2)] hover:shadow-[0_2px_8px_rgba(216,207,188,0.35)]",
         isSpinning && "cursor-wait",

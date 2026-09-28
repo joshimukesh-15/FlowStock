@@ -190,7 +190,7 @@ export default function InventoryPage() {
       {/* Inventory Table */}
       <motion.div variants={itemVariants}>
         <Card className="overflow-hidden">
-          <CardHeader className="py-2.5 px-3.5 bg-slate-50/60 dark:bg-[#14171F]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+          <CardHeader className="py-2.5 px-3.5 bg-slate-50/60 dark:bg-[#11120D]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-[#9BA3AF]">
               Live On-Hand Stock Levels & Reorder Thresholds
             </CardTitle>
@@ -199,7 +199,7 @@ export default function InventoryPage() {
 
           <div className="overflow-auto max-h-[60vh] relative custom-scrollbar">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-slate-50 dark:bg-[#14171F] border-b border-slate-200 dark:border-[#323744] text-slate-500 dark:text-[#9BA3AF] font-medium uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-sm">
+              <thead className="bg-slate-50 dark:bg-[#11120D] border-b border-slate-200 dark:border-[#33372B] text-slate-500 dark:text-[#9BA3AF] font-medium uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-sm">
                 <tr>
                   <th className="py-2 px-3.5">SKU</th>
                   <th className="py-2 px-3.5">Product Name</th>
@@ -212,7 +212,7 @@ export default function InventoryPage() {
                   <th className="py-2 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-[#262A34]">
+              <tbody className="divide-y divide-slate-200 dark:divide-[#2B2E25]">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-16", "w-16", "w-20", "w-24", "w-24", "w-20"]}/>
@@ -226,7 +226,7 @@ export default function InventoryPage() {
                     safeSummaries.map((s) => {
                       if (!s || !s.product) return null;
                       return (
-                    <tr key={s.product.id} className={`hover:bg-slate-50 dark:bg-[#14171F] dark:hover:bg-slate-800/40 transition-colors ${s.is_low_stock ? "bg-amber-500/5 dark:bg-amber-500/5" : ""}`}>
+                    <tr key={s.product.id} className={`hover:bg-slate-50 dark:bg-[#11120D] dark:hover:bg-slate-800/40 transition-colors ${s.is_low_stock ? "bg-amber-500/5 dark:bg-amber-500/5" : ""}`}>
                       <td className="py-2 px-3.5 font-mono font-bold text-slate-900 dark:text-[#F4F5F7]">
                         {s.product.sku}
                       </td>
@@ -239,7 +239,7 @@ export default function InventoryPage() {
                       <td className="py-2 px-3.5 text-center">
                         <span className={`inline-block font-mono font-bold px-2 py-0.5 rounded text-xs ${s.is_low_stock
                 ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30"
-                : "bg-slate-100 dark:bg-[#23262F] text-slate-800 dark:text-[#E2E8F0]"}`}>
+                : "bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#E2E8F0]"}`}>
                           {s.on_hand_quantity} {s.product.unit}
                         </span>
                       </td>
@@ -294,7 +294,7 @@ export default function InventoryPage() {
       {/* Record Movement Modal */}
       <Modal isOpen={movementModalOpen && !!selectedProduct} onClose={() => setMovementModalOpen(false)} maxWidth="md" className="p-6">
         {selectedProduct && (<div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#262A34]">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#2B2E25]">
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white text-sm">
                   Record Stock Movement
@@ -333,7 +333,7 @@ export default function InventoryPage() {
 
               {/* Movement Type Tabs with Fluid Indicator */}
               <FormField label="Movement Type">
-                <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 dark:bg-[#23262F] rounded-lg border border-slate-200 dark:border-[#323744]">
+                <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 dark:bg-[#23261E] rounded-lg border border-slate-200 dark:border-[#33372B]">
                   {[
                     { type: "IN", label: "Stock IN", icon: TrendingUp },
                     { type: "OUT", label: "Stock OUT", icon: TrendingDown },
@@ -380,8 +380,8 @@ export default function InventoryPage() {
                   <div
                     className={`px-3 py-2 text-sm font-mono font-bold rounded-md border ${
                       previewNewStock < 0
-                        ? "bg-slate-100 dark:bg-[#23262F] text-slate-950 border-zinc-400 font-bold"
-                        : "bg-slate-50 dark:bg-[#14171F] text-slate-800 dark:text-[#F4F5F7] border-slate-200 dark:border-[#323744]"
+                        ? "bg-slate-100 dark:bg-[#23261E] text-slate-950 border-zinc-400 font-bold"
+                        : "bg-slate-50 dark:bg-[#11120D] text-slate-800 dark:text-[#F4F5F7] border-slate-200 dark:border-[#33372B]"
                     }`}
                   >
                     {previewNewStock} {selectedProduct?.product?.unit || "units"}
@@ -393,7 +393,7 @@ export default function InventoryPage() {
 
               <Input label="Notes (Optional)" placeholder="Additional context or batch info..." value={notes} onChange={(e) => setNotes(e.target.value)}/>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#262A34]">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#2B2E25]">
                 <Button type="button" variant="outline" size="sm" onClick={() => setMovementModalOpen(false)}>
                   Cancel
                 </Button>
@@ -408,7 +408,7 @@ export default function InventoryPage() {
       {/* Movement History Audit Drawer Modal */}
       <Modal isOpen={historyModalOpen && !!historyItem} onClose={() => setHistoryModalOpen(false)} maxWidth="2xl" className="p-6">
         {historyItem && (<div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#262A34]">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#2B2E25]">
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white text-sm">
                   Ledger Audit Trail: {historyItem.product.name}
@@ -430,7 +430,7 @@ export default function InventoryPage() {
                 <SkeletonAnnouncer label="Loading movement transactions"/>
               </div>) : movements.length === 0 ? (<EmptyState compact icon={History} title="No movements recorded yet" description="Stock changes are recorded as append-only ledger movements. Record an IN or OUT movement to see the timeline."/>) : (<div className="max-h-80 overflow-y-auto">
                 <table className="w-full text-left text-xs border-collapse">
-                  <thead className="bg-slate-50 dark:bg-[#14171F] border-b border-slate-200 dark:border-[#323744] text-slate-600 font-semibold sticky top-0">
+                  <thead className="bg-slate-50 dark:bg-[#11120D] border-b border-slate-200 dark:border-[#33372B] text-slate-600 font-semibold sticky top-0">
                     <tr>
                       <th className="py-2.5 px-3">Date / Time</th>
                       <th className="py-2.5 px-3">Type</th>
@@ -439,8 +439,8 @@ export default function InventoryPage() {
                       <th className="py-2.5 px-3">Notes</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-[#262A34]">
-                    {movements.map((m) => (<tr key={m.id} className="hover:bg-slate-50 dark:bg-[#14171F]">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
+                    {movements.map((m) => (<tr key={m.id} className="hover:bg-slate-50 dark:bg-[#11120D]">
                         <td className="py-2.5 px-3 text-slate-500 dark:text-[#9BA3AF] font-mono">
                           {formatDate(m.created_at, true)}
                         </td>
@@ -448,8 +448,8 @@ export default function InventoryPage() {
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${m.movement_type === "IN"
                         ? "bg-emerald-500 text-white dark:bg-[#D8CFBC] dark:text-[#11120D] font-bold font-semibold"
                         : m.movement_type === "OUT"
-                            ? "bg-slate-200 text-slate-900 dark:text-white border border-slate-300 dark:border-[#545963] font-semibold"
-                            : "bg-slate-100 dark:bg-[#23262F] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#323744] font-semibold"}`}>
+                            ? "bg-slate-200 text-slate-900 dark:text-white border border-slate-300 dark:border-[#565449] font-semibold"
+                            : "bg-slate-100 dark:bg-[#23261E] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#33372B] font-semibold"}`}>
                             {m.movement_type}
                           </span>
                         </td>
@@ -469,7 +469,7 @@ export default function InventoryPage() {
                 </table>
               </div>)}
 
-            <div className="flex justify-end pt-3 border-t border-slate-100 dark:border-[#262A34]">
+            <div className="flex justify-end pt-3 border-t border-slate-100 dark:border-[#2B2E25]">
               <Button variant="outline" size="sm" onClick={() => setHistoryModalOpen(false)}>
                 Close
               </Button>

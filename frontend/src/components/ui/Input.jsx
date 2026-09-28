@@ -9,7 +9,7 @@ export const Input = React.forwardRef(({ className, label, error, id, ...props }
           id={id}
           ref={ref}
           className={cn(
-            "w-full rounded-lg border bg-white dark:bg-[#181A20] px-3 py-2 text-sm text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-slate-500 shadow-2xs transition-colors focus:outline-none disabled:bg-slate-50 dark:disabled:bg-slate-950 disabled:text-slate-400 dark:disabled:text-slate-600",
+            "w-full rounded-lg border bg-white dark:bg-[#191B15] px-3 py-2 text-sm text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-slate-500 shadow-2xs transition-colors focus:outline-none disabled:bg-slate-50 dark:disabled:bg-slate-950 disabled:text-slate-400 dark:disabled:text-slate-600",
             error
               ? "border-rose-500 dark:border-rose-500/80 focus:border-rose-600 dark:focus:border-rose-400 focus:ring-1 focus:ring-rose-500"
               : "border-slate-300 dark:border-[#3A404F] focus:border-slate-900 dark:focus:border-white focus:ring-1 focus:ring-slate-900 dark:focus:ring-white",

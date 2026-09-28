@@ -23,4 +23,4 @@ export function formatDate(dateString, includeTime = false) {
 }
 
 export const selectClass =
-    "w-full bg-white dark:bg-[#181A20] border border-slate-300 dark:border-[#323744] rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-[#F4F5F7] focus:outline-none focus:ring-1 focus:ring-zinc-950 dark:focus:ring-zinc-200 transition-colors";
+    "w-full bg-white dark:bg-[#191B15] border border-slate-300 dark:border-[#33372B] rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-[#F4F5F7] focus:outline-none focus:ring-1 focus:ring-zinc-950 dark:focus:ring-zinc-200 transition-colors";

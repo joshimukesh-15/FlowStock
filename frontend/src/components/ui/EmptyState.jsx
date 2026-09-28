@@ -15,7 +15,7 @@ export const EmptyState = ({ icon: Icon, title, description, action, className, 
     const contentVariants = emptyStateContentVariants(prefersReducedMotion);
     return (<motion.div variants={contentVariants} initial="hidden" animate="visible" className={cn("flex flex-col items-center justify-center text-center", compact ? "px-4 py-8" : "px-4 py-12", className)}>
       <motion.div variants={iconVariants} initial="hidden" animate="visible" className="flex items-center justify-center">
-        <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 dark:border-[#323744] bg-slate-50 dark:bg-[#23262F]/50 text-slate-400 dark:text-[#7C8189] shadow-xs">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 dark:border-[#33372B] bg-slate-50 dark:bg-[#23261E]/50 text-slate-400 dark:text-[#7C8189] shadow-xs">
           <Icon className="h-7 w-7" strokeWidth={1.5}/>
         </span>
       </motion.div>

@@ -81,11 +81,11 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
         { id: "12M", label: "12M" },
     ];
     const activeHoveredBar = hoveredBarIndex !== null ? sparkbars[hoveredBarIndex] : null;
-    return (<Card className={`border border-slate-200 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-xs rounded-xl overflow-hidden ${className}`}>
+    return (<Card className={`border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#191B15] shadow-xs rounded-xl overflow-hidden ${className}`}>
       {/* Top Meta Bar */}
-      <CardHeader className="py-2.5 px-4 border-b border-slate-100 dark:border-[#262A34] bg-slate-50/60 dark:bg-[#14171F]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <CardHeader className="py-2.5 px-4 border-b border-slate-100 dark:border-[#2B2E25] bg-slate-50/60 dark:bg-[#11120D]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-600 dark:text-[#D8CFBC] border border-sky-500/20">
+          <div className="p-1.5 rounded-lg bg-[#D8CFBC]/15 text-[#565449] dark:text-[#D8CFBC] border border-[#D8CFBC]/30">
             <Zap className="w-3.5 h-3.5"/>
           </div>
           <div>
@@ -110,12 +110,12 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
           
           {/* Column 1: Gross Invoiced */}
-          <div className="space-y-1 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-[#262A34] pb-3 sm:pb-0 pr-0 sm:pr-4">
+          <div className="space-y-1 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-[#2B2E25] pb-3 sm:pb-0 pr-0 sm:pr-4">
             <div className="flex items-center justify-between">
               <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF]">
                 Gross invoiced
               </span>
-              <span className="text-[10px] font-mono text-slate-600 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23262F] border border-slate-200/60 dark:border-[#323744] px-1.5 py-0.5 rounded">
+              <span className="text-[10px] font-mono text-slate-600 dark:text-[#9BA3AF] bg-slate-100 dark:bg-[#23261E] border border-slate-200/60 dark:border-[#33372B] px-1.5 py-0.5 rounded">
                 {metrics.periodOrders} orders
               </span>
             </div>
@@ -128,12 +128,12 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
           </div>
 
           {/* Column 2: Cash Realized */}
-          <div className="space-y-1 border-b sm:border-b-0 lg:border-r border-slate-100 dark:border-[#262A34] pb-3 sm:pb-0 pr-0 lg:pr-4">
+          <div className="space-y-1 border-b sm:border-b-0 lg:border-r border-slate-100 dark:border-[#2B2E25] pb-3 sm:pb-0 pr-0 lg:pr-4">
             <div className="flex items-center justify-between">
               <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF]">
                 Cash realized
               </span>
-              <span className="text-[10px] font-mono font-medium text-sky-700 dark:text-[#D8CFBC] bg-sky-50 dark:bg-[#D8CFBC]/15 border border-sky-200 dark:border-[#D8CFBC]/30 px-1.5 py-0.5 rounded">
+              <span className="text-[10px] font-mono font-medium text-[#565449] dark:text-[#D8CFBC] bg-[#D8CFBC]/15 dark:bg-[#D8CFBC]/15 border border-[#D8CFBC]/30 dark:border-[#D8CFBC]/30 px-1.5 py-0.5 rounded">
                 {metrics.efficiency}% collected
               </span>
             </div>
@@ -141,13 +141,13 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
               <AnimatedCounter value={metrics.collected} prefix="₹" decimals={2} formatINR/>
             </div>
             {/* Minimalist Progress Line */}
-            <div className="w-full bg-slate-100 dark:bg-[#23262F] h-1.5 rounded-full overflow-hidden">
-              <div className="bg-sky-500 dark:bg-[#D8CFBC] h-full rounded-full transition-all duration-500" style={{ width: `${metrics.efficiency}%` }}/>
+            <div className="w-full bg-slate-100 dark:bg-[#23261E] h-1.5 rounded-full overflow-hidden">
+              <div className="bg-[#565449] dark:bg-[#D8CFBC] h-full rounded-full transition-all duration-500" style={{ width: `${metrics.efficiency}%` }}/>
             </div>
           </div>
 
           {/* Column 3: Daily Run-Rate Velocity */}
-          <div className="space-y-1 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-[#262A34] pb-3 sm:pb-0 pr-0 sm:pr-4">
+          <div className="space-y-1 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-[#2B2E25] pb-3 sm:pb-0 pr-0 sm:pr-4">
             <div className="flex items-center justify-between">
               <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF]">
                 Run-rate velocity
@@ -186,8 +186,8 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
                     <motion.div initial={prefersReducedMotion ? false : { height: 0 }} animate={{ height: `${bar.heightPct}%` }} transition={{ duration: 0.5, delay: idx * 0.04 }} className={`w-full max-w-[14px] rounded-t-xs transition-colors duration-150 ${isHovered
                     ? "bg-[#D8CFBC] shadow-[0_0_8px_rgba(216,207,188,0.6)]"
                     : bar.isToday
-                        ? "bg-sky-500 dark:bg-[#D8CFBC]"
-                        : "bg-slate-200 dark:bg-[#2B303C] hover:bg-slate-300 dark:hover:bg-[#3A404F]"}`}/>
+                        ? "bg-[#565449] dark:bg-[#D8CFBC]"
+                        : "bg-slate-200 dark:bg-[#23261E] hover:bg-slate-300 dark:hover:bg-[#3A404F]"}`}/>
 
                     {/* Micro Day Label */}
                     <span className={`text-[9px] font-mono mt-1 transition-colors ${isHovered ? "font-bold text-slate-900 dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#7C8189]"}`}>

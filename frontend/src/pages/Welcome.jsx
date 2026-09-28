@@ -33,7 +33,7 @@ function FeatureRow({
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-20">
       {/* Media Column */}
       <div
-        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#323744] bg-white dark:bg-[#181A20] shadow-md hover:shadow-xl transition-shadow p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#2A2E39] dark:to-[#181A20] ${
+        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#33372B] bg-white dark:bg-[#191B15] shadow-md hover:shadow-xl transition-shadow p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#33372B] dark:to-[#191B15] ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
@@ -50,7 +50,7 @@ function FeatureRow({
 
       {/* Text Column */}
       <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-sky-50 dark:bg-[#D8CFBC]/15 border border-sky-200/80 dark:border-[#D8CFBC]/30 text-sky-800 dark:text-[#D8CFBC] text-[11px] font-mono font-medium tracking-tight">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#D8CFBC]/15 dark:bg-[#D8CFBC]/15 border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/30 text-[#565449] dark:text-[#D8CFBC] text-[11px] font-mono font-medium tracking-tight">
           {tag}
         </div>
 
@@ -65,7 +65,7 @@ function FeatureRow({
         <ul className="space-y-3 pt-2">
           {bullets.map((b, idx) => (
             <li key={idx} className="flex items-start gap-3 text-sm text-slate-700 dark:text-[#f0f3f8]">
-              <span className="w-5 h-5 rounded-md bg-sky-50 dark:bg-[#D8CFBC]/15 border border-sky-200/60 dark:border-[#D8CFBC]/30 text-sky-700 dark:text-[#D8CFBC] flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
+              <span className="w-5 h-5 rounded-md bg-[#D8CFBC]/15 dark:bg-[#D8CFBC]/15 border border-[#D8CFBC]/30 dark:border-[#D8CFBC]/30 text-[#565449] dark:text-[#D8CFBC] flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
                 <Check className="w-3.5 h-3.5" />
               </span>
               <span>{b}</span>
@@ -186,7 +186,7 @@ export default function WelcomePage() {
                   size="sm"
                   variant="outline"
                   onClick={() => navigate("/login?mode=login")}
-                  className="h-8 px-3 text-xs gap-1.5 border border-slate-200 dark:border-[#545963] hover:border-slate-300 dark:hover:border-[#B0B4BA] bg-white dark:bg-transparent text-slate-800 dark:text-white"
+                  className="h-8 px-3 text-xs gap-1.5 border border-slate-200 dark:border-[#565449] hover:border-slate-300 dark:hover:border-[#B0B4BA] bg-white dark:bg-transparent text-slate-800 dark:text-white"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Log In</span>
@@ -226,14 +226,14 @@ export default function WelcomePage() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D8CFBC] opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D8CFBC]" />
             </span>
-            <span className="font-mono text-[11px] tracking-tight text-sky-800 dark:text-[#D8CFBC] font-semibold">HIGH-THROUGHPUT CORE</span>
+            <span className="font-mono text-[11px] tracking-tight text-[#565449] dark:text-[#D8CFBC] font-semibold">HIGH-THROUGHPUT CORE</span>
             <span className="w-px h-3 bg-slate-300 dark:bg-[#33372B]" />
             <span className="text-[11px] text-slate-600 dark:text-[#c2cbda] font-mono hidden sm:inline">FINANCIAL-GRADE INVENTORY LEDGER</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold tracking-[-0.035em] leading-[1.06] mb-6 text-slate-950 dark:text-white [text-wrap:balance]">
             The financial-grade{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-blue-500 to-indigo-500 dark:from-white dark:via-[#EBE5D8] dark:to-[#D8CFBC]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#11120D] via-[#565449] to-[#D8CFBC] dark:from-white dark:via-[#EBE5D8] dark:to-[#D8CFBC]">
               inventory ledger
             </span>{" "}
             for high-velocity warehouses
@@ -465,7 +465,7 @@ export default function WelcomePage() {
 
           <div className="relative">
             {/* Connector Line (hidden on mobile) */}
-            <div className="hidden lg:block absolute top-8 left-[calc(12.5%+1rem)] right-[calc(12.5%+1rem)] h-px bg-gradient-to-r from-sky-500/40 via-blue-500/20 to-sky-500/40 dark:from-[#D8CFBC]/40 dark:via-[#D8CFBC]/15 dark:to-[#D8CFBC]/40" />
+            <div className="hidden lg:block absolute top-8 left-[calc(12.5%+1rem)] right-[calc(12.5%+1rem)] h-px bg-gradient-to-r from-[#D8CFBC]/40 via-[#565449]/20 to-[#D8CFBC]/40 dark:from-[#D8CFBC]/40 dark:via-[#D8CFBC]/15 dark:to-[#D8CFBC]/40" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
@@ -477,8 +477,8 @@ export default function WelcomePage() {
                 <div key={i} className="group relative p-5 rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#191B15]/80 dark:hover:bg-[#23261E] shadow-xs hover:shadow-lg transition-all overflow-hidden">
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500 dark:via-[#D8CFBC] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="flex items-center gap-2.5 mb-3">
-                    <span className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-[#D8CFBC]/15 border border-sky-200 dark:border-[#D8CFBC]/30 flex items-center justify-center text-[11px] font-mono font-bold text-sky-700 dark:text-[#D8CFBC]">{s.step}</span>
-                    <span className="text-[11px] font-mono font-semibold text-sky-700 dark:text-[#D8CFBC] uppercase tracking-wider">{s.label}</span>
+                    <span className="w-7 h-7 rounded-lg bg-[#D8CFBC]/15 dark:bg-[#D8CFBC]/15 border border-[#D8CFBC]/30 dark:border-[#D8CFBC]/30 flex items-center justify-center text-[11px] font-mono font-bold text-[#565449] dark:text-[#D8CFBC]">{s.step}</span>
+                    <span className="text-[11px] font-mono font-semibold text-[#565449] dark:text-[#D8CFBC] uppercase tracking-wider">{s.label}</span>
                   </div>
                   <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-1.5">{s.title}</h4>
                   <p className="text-xs text-slate-500 dark:text-[#9BA3AF] leading-relaxed">{s.desc}</p>
@@ -568,7 +568,7 @@ export default function WelcomePage() {
           {/* Header */}
           <div className="p-6 border-b border-slate-200 dark:border-[#33372B] flex items-center justify-between bg-slate-50 dark:bg-[#11120D]/60">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] flex items-center justify-center text-sky-700 dark:text-[#D8CFBC] shadow-2xs">
+              <div className="w-9 h-9 rounded-xl bg-white dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] flex items-center justify-center text-[#565449] dark:text-[#D8CFBC] shadow-2xs">
                 <FileText className="w-5 h-5" />
               </div>
               <div>
@@ -589,7 +589,7 @@ export default function WelcomePage() {
           <div className="p-6 overflow-y-auto space-y-5 text-xs text-slate-600 dark:text-[#9BA3AF] leading-relaxed font-sans">
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-[11px] text-sky-700 dark:text-[#D8CFBC]">01.</span> Agreement & Platform Scope
+                <span className="font-mono text-[11px] text-[#565449] dark:text-[#D8CFBC]">01.</span> Agreement & Platform Scope
               </h4>
               <p>
                 By provisioning or accessing an organization workspace on the FlowStock platform, you agree to be bound by this Master Services Agreement. FlowStock provides multi-tenant warehouse management, stock reservation ledgers, and logistics dispatch orchestration APIs for commercial and enterprise entities.
@@ -598,7 +598,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-sky-700 dark:text-[#D8CFBC]">02.</span> Immutable Double-Entry Ledger System
+                <span className="font-mono text-[#565449] dark:text-[#D8CFBC]">02.</span> Immutable Double-Entry Ledger System
               </h4>
               <p>
                 FlowStock operates on an append-only double-entry bookkeeping architecture. Every stock receipt, customer order allocation, inter-facility transfer, and carrier dispatch creates an immutable transaction entry. Entries cannot be retrospectively deleted or mutated; corrections must be posted as offsetting adjustment transactions to preserve audit integrity.
@@ -607,7 +607,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-sky-700 dark:text-[#D8CFBC]">03.</span> Multi-Tenant Data Isolation & RLS Security
+                <span className="font-mono text-[#565449] dark:text-[#D8CFBC]">03.</span> Multi-Tenant Data Isolation & RLS Security
               </h4>
               <p>
                 All workspace data is strictly segregated using PostgreSQL Row-Level Security (RLS) policies tied to unique tenant organization UUIDs. Under no circumstances can operators from one tenant access, inspect, or query database rows belonging to another organization.
@@ -616,7 +616,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-sky-700 dark:text-[#D8CFBC]">04.</span> Carrier Dispatches & Third-Party Integrations
+                <span className="font-mono text-[#565449] dark:text-[#D8CFBC]">04.</span> Carrier Dispatches & Third-Party Integrations
               </h4>
               <p>
                 FlowStock facilitates automated dispatch tracking and Air Waybill (AWB) generation with third-party logistics carriers (including Blue Dart, Delhivery, and DTDC). Transit timelines and delivery checkpoint telemetry are synchronized directly from carrier APIs and represent real-time custody handoffs.
@@ -625,7 +625,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-sky-700 dark:text-[#D8CFBC]">05.</span> Tax Compliance & Automated GST Invoicing
+                <span className="font-mono text-[#565449] dark:text-[#D8CFBC]">05.</span> Tax Compliance & Automated GST Invoicing
               </h4>
               <p>
                 Invoices generated via the platform are structured according to Indian Goods and Services Tax (GST) statutes or regional value-added tax rules configured by your workspace administrators. Users are responsible for verifying accurate tax IDs and rate schedules.
@@ -634,7 +634,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-sky-700 dark:text-[#D8CFBC]">06.</span> Service Level Agreement (SLA) & Data Backups
+                <span className="font-mono text-[#565449] dark:text-[#D8CFBC]">06.</span> Service Level Agreement (SLA) & Data Backups
               </h4>
               <p>
                 FlowStock targets a 99.95% monthly uptime SLA for core ledger calculation endpoints and WebSocket telemetry channels. Automated encrypted snapshots are executed daily with point-in-time recovery capabilities.
@@ -643,7 +643,7 @@ export default function WelcomePage() {
 
             <section>
               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1.5 flex items-center gap-2">
-                <span className="font-mono text-sky-700 dark:text-[#D8CFBC]">07.</span> Data Portability & Termination
+                <span className="font-mono text-[#565449] dark:text-[#D8CFBC]">07.</span> Data Portability & Termination
               </h4>
               <p>
                 You retain 100% ownership of your inventory data, SKU catalogs, and financial ledgers. Upon workspace termination, you have the right to execute a full export of all records in standard CSV and JSON formats prior to secure cryptographic sanitization.

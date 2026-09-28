@@ -92,11 +92,11 @@ export const Sidebar = () => {
       <aside
         className={`${
           collapsed ? "w-16" : "w-64"
-        } bg-white dark:bg-[#181A20] text-slate-700 dark:text-[#9BA3AF] flex flex-col shrink-0 border-r border-slate-200 dark:border-[#323744] select-none transition-[width] duration-200 ease-out relative z-20 overflow-hidden`}
+        } bg-white dark:bg-[#191B15] text-slate-700 dark:text-[#9BA3AF] flex flex-col shrink-0 border-r border-slate-200 dark:border-[#33372B] select-none transition-[width] duration-200 ease-out relative z-20 overflow-hidden`}
         aria-label="Primary navigation"
       >
         {/* Brand Header */}
-        <div className="h-12 flex items-center px-2 border-b border-slate-200 dark:border-[#323744] shrink-0 overflow-hidden">
+        <div className="h-12 flex items-center px-2 border-b border-slate-200 dark:border-[#33372B] shrink-0 overflow-hidden">
           <button
             onClick={() => setCollapsed(!collapsed)}
             onMouseEnter={(e) => handleMouseEnter(e, "Expand sidebar", { shortcut: "[" })}
@@ -105,7 +105,7 @@ export const Sidebar = () => {
             aria-label={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
-              <span className="w-7 h-7 rounded-lg bg-[#3A3E47] border border-[#545963] flex items-center justify-center shadow-xs p-0.5">
+              <span className="w-7 h-7 rounded-lg bg-[#565449] border border-[#565449] flex items-center justify-center shadow-xs p-0.5">
                 <Logomark className="w-5 h-5" />
               </span>
             </span>
@@ -127,7 +127,7 @@ export const Sidebar = () => {
           {!collapsed && (
             <button
               onClick={() => setCollapsed(true)}
-              className="p-1 rounded text-slate-400 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23262F] transition-colors shrink-0 ml-auto mr-1 cursor-pointer"
+              className="p-1 rounded text-slate-400 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23261E] transition-colors shrink-0 ml-auto mr-1 cursor-pointer"
               aria-label="Collapse sidebar"
               title="Collapse sidebar ([)"
             >
@@ -144,7 +144,7 @@ export const Sidebar = () => {
           {NAV_GROUPS.map((group) => (
             <div key={group.label} className="mb-3 last:mb-0">
               {collapsed ? (
-                <div className="mx-2 my-2 h-px bg-slate-200 dark:bg-[#323744]" />
+                <div className="mx-2 my-2 h-px bg-slate-200 dark:bg-[#33372B]" />
               ) : (
                 <p className="px-2.5 mb-1 text-[11px] font-medium text-slate-500 dark:text-[#9BA3AF] whitespace-nowrap overflow-hidden">
                   {group.label}
@@ -173,7 +173,7 @@ export const Sidebar = () => {
                         className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
                           active
                             ? "text-slate-950 dark:text-[#D8CFBC] font-semibold"
-                            : "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#23262F] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
+                            : "text-slate-600 dark:text-[#9BA3AF] hover:bg-slate-100 dark:hover:bg-[#23261E] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
                         }`}
                       >
                         {/* Fixed Icon slot - exact same 32px center in both collapsed & expanded */}
@@ -212,7 +212,7 @@ export const Sidebar = () => {
         </nav>
 
         {/* Bottom Sign Out */}
-        <div className="p-2 border-t border-slate-200 dark:border-[#323744] shrink-0 overflow-hidden">
+        <div className="p-2 border-t border-slate-200 dark:border-[#33372B] shrink-0 overflow-hidden">
           <button
             onClick={() => {
               logout();
@@ -243,10 +243,10 @@ export const Sidebar = () => {
                 duration: prefersReducedMotion ? 0 : DURATION.micro,
                 ease: EASING.standard,
             }} style={{ top: hoveredTooltip.top }} className="fixed left-[72px] -translate-y-1/2 z-50 pointer-events-none">
-            <div className="relative bg-[#23262F] text-[#F4F5F7] text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-[#323744] whitespace-nowrap flex items-center gap-2">
-              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#23262F] border-l border-b border-[#323744] rotate-45"/>
+            <div className="relative bg-[#23261E] text-[#F4F5F7] text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-[#33372B] whitespace-nowrap flex items-center gap-2">
+              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#23261E] border-l border-b border-[#33372B] rotate-45"/>
               <span className="relative z-10">{hoveredTooltip.label}</span>
-              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#14171F] border border-[#323744] rounded px-1 text-[#9BA3AF] font-mono">
+              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#11120D] border border-[#33372B] rounded px-1 text-[#9BA3AF] font-mono">
                   {hoveredTooltip.shortcut}
                 </kbd>)}
               {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#D8CFBC] shrink-0"/>)}

@@ -60,7 +60,7 @@ function HoldToConfirmDangerButton({
   };
 
   const focusRing =
-    "outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#181A20]";
+    "outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#191B15]";
 
   return (
     <motion.button
@@ -154,7 +154,7 @@ export const ConfirmModal = ({
                 ? "bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400"
                 : isWarning
                 ? "bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400"
-                : "bg-slate-100 dark:bg-[#23262F] text-slate-700 dark:text-[#9BA3AF]"
+                : "bg-slate-100 dark:bg-[#23261E] text-slate-700 dark:text-[#9BA3AF]"
             }`}
           >
             {isDanger ? (
