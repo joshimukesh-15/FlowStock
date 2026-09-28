@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
+import { Select } from "@/components/ui/Select";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { GlobalSearch } from "@/components/layout/GlobalSearch";
 import { useTenant } from "@/context/TenantContext";
@@ -237,69 +238,121 @@ export const Header = () => {
       <header className="h-12 glass-header px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
         {/* Tenant Selector */}
         <div className="relative" ref={tenantMenuRef}>
-          <button onClick={toggleDropdown} className="btn-tactile flex items-center gap-2.5 text-xs text-slate-700 dark:text-[#9BA3AF] bg-slate-50/90 dark:bg-[#23261E]/90 hover:bg-slate-100 dark:hover:bg-[#2B2E25] border border-slate-200 dark:border-[#33372B] border-t-white/80 dark:border-t-white/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs">
-            <Building2 className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
-            <div className="flex flex-col text-left">
-              <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#F4F5F7] leading-tight">
+          <button
+            onClick={toggleDropdown}
+            className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23261E] border border-slate-300 dark:border-[#33372B] hover:border-slate-400 dark:hover:border-[#565449] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+            aria-expanded={dropdownOpen}
+            aria-label="Select organization"
+          >
+            <div className="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0">
+              <Building2 className="w-3.5 h-3.5 text-slate-600 dark:text-[#D8CFBC]"/>
+            </div>
+            <div className="flex flex-col text-left min-w-0">
+              <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] leading-tight truncate">
                 {currentOrg ? currentOrg.name : "Select Tenant..."}
               </span>
-              <span suppressHydrationWarning className="text-[10px] text-slate-500 dark:text-[#9BA3AF] font-mono">
+              <span suppressHydrationWarning className="text-[10px] text-slate-500 dark:text-[#9BA3AF] font-mono leading-none mt-0.5">
                 {currentOrg ? `${currentOrg.slug} (${currentOrg.currency})` : "Loading"}
               </span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1"/>
+            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 dark:text-[#9BA3AF] ml-1 shrink-0 transition-transform duration-200 ${dropdownOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
           </button>
 
           {/* Dropdown Menu */}
           <AnimatePresence>
-            {dropdownOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute top-full left-0 mt-1.5 w-72 bg-white/95 dark:bg-[#23261E]/95 backdrop-blur-md border border-slate-200 dark:border-[#33372B] border-t-white/90 dark:border-t-white/15 rounded-xl shadow-2xl py-1 z-50 origin-top-left">
-              <div className="px-3 py-1.5 border-b border-slate-100 dark:border-[#33372B] text-[11px] font-semibold text-slate-400 dark:text-[#7C8189] uppercase tracking-wider">
-                Select Active Organization
-              </div>
-              <div className="max-h-56 overflow-y-auto divide-y divide-slate-100 dark:divide-[#2B2E25]">
-                {organizations.map((org) => {
-                const isActive = currentOrg?.id === org.id;
-                const canDelete = organizations.length > 1;
-                return (<div key={org.id} onClick={() => {
-                        switchOrganization(org.id);
-                        setDropdownOpen(false);
-                    }} className={`group w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/70 transition-colors cursor-pointer ${isActive ? "bg-slate-50 dark:bg-[#23261E]/50 text-slate-900 dark:text-[#F4F5F7] font-semibold" : "text-slate-700 dark:text-[#CBD5E1]"}`}>
-                      <div className="min-w-0 pr-2 flex-1">
-                        <p className="truncate">{org.name}</p>
-                        <p className="text-[10px] text-slate-400 dark:text-[#7C8189] font-mono">
-                          {org.slug} ({org.currency})
-                        </p>
+            {dropdownOpen && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={tenantMenuVariants}
+                className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-[#191B15] border border-slate-200 dark:border-[#33372B] rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-left"
+              >
+                <div className="px-3 py-2 text-[11px] font-mono font-semibold tracking-wider text-slate-500 dark:text-[#9BA3AF] uppercase flex items-center justify-between border-b border-slate-100 dark:border-[#33372B]/60 mb-1.5">
+                  <span>Select Active Organization</span>
+                  <span className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] lowercase font-sans">
+                    {organizations.length} {organizations.length === 1 ? "organization" : "organizations"}
+                  </span>
+                </div>
+                <div className="max-h-60 overflow-y-auto space-y-1 p-0.5 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#33372B]">
+                  {organizations.map((org) => {
+                    const isActive = currentOrg?.id === org.id;
+                    const canDelete = organizations.length > 1;
+                    return (
+                      <div
+                        key={org.id}
+                        onClick={() => {
+                          switchOrganization(org.id);
+                          setDropdownOpen(false);
+                        }}
+                        className={`group relative flex items-center justify-between rounded-xl px-3 py-2.5 transition-all duration-150 cursor-pointer ${
+                          isActive
+                            ? "bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 text-slate-950 dark:text-[#FFFBF4] border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/25 shadow-2xs"
+                            : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100 dark:hover:bg-[#23261E] border border-transparent"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
+                          <div
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                              isActive
+                                ? "bg-[#11120D] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#11120D]"
+                                : "bg-slate-100 dark:bg-[#23261E] text-slate-500 dark:text-[#9BA3AF] group-hover:bg-slate-200 dark:group-hover:bg-[#2D3025]"
+                            }`}
+                          >
+                            <Building2 className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className={`truncate text-xs ${isActive ? "font-bold text-slate-950 dark:text-white" : "font-medium text-slate-800 dark:text-[#F4F5F7]"}`}>
+                              {org.name}
+                            </p>
+                            <p className="text-[10px] font-mono text-slate-400 dark:text-[#9BA3AF] truncate mt-0.5">
+                              {org.slug} <span className="text-slate-300 dark:text-[#565449]">•</span> <span className="font-semibold">{org.currency}</span>
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {isActive && (
+                            <span className="w-5 h-5 rounded-full bg-[#11120D]/10 dark:bg-[#D8CFBC]/20 flex items-center justify-center">
+                              <Check className="w-3.5 h-3.5 text-slate-950 dark:text-[#D8CFBC]" />
+                            </span>
+                          )}
+                          {canDelete && (
+                            <button
+                              type="button"
+                              title={`Delete ${org.name}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOrgToDelete(org);
+                                setDeleteError("");
+                                setDeleteModalOpen(true);
+                                setDropdownOpen(false);
+                              }}
+                              className="p-1.5 rounded-lg text-slate-400 opacity-0 group-hover:opacity-100 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 transition-all cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {isActive && <Check className="w-3.5 h-3.5 text-slate-950 dark:text-[#F4F5F7]"/>}
-                        {canDelete && (<button type="button" title={`Delete ${org.name}`} onClick={(e) => {
-                            e.stopPropagation();
-                            setOrgToDelete(org);
-                            setDeleteError("");
-                            setDeleteModalOpen(true);
-                            setDropdownOpen(false);
-                        }} className="p-1 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors">
-                            <Trash2 className="w-3.5 h-3.5"/>
-                          </button>)}
-                      </div>
-                    </div>);
-            })}
-              </div>
-              <div className="border-t border-slate-100 dark:border-[#33372B] p-1.5 space-y-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setModalOpen(true);
-                    setDropdownOpen(false);
-                  }}
-                  className="w-full text-xs gap-1 py-1 h-auto justify-center"
-                >
-                  <Plus className="w-3 h-3"/>
-                  Add Organization
-                </Button>
-              </div>
-              </motion.div>)}
+                    );
+                  })}
+                </div>
+                <div className="pt-2 mt-1.5 border-t border-slate-100 dark:border-[#33372B]/60">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalOpen(true);
+                      setDropdownOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-[#D8CFBC] hover:text-slate-950 dark:hover:text-white bg-slate-100/80 hover:bg-slate-200/80 dark:bg-[#23261E] dark:hover:bg-[#2B2E25] border border-slate-200 dark:border-[#33372B] transition-all cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC]" />
+                    <span>Add Organization</span>
+                  </button>
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
 
@@ -334,7 +387,14 @@ export const Header = () => {
 
             {/* Notifications Popover */}
             <AnimatePresence>
-              {notifOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white/95 dark:bg-[#191B15]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#33372B] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 text-xs origin-top-right">
+              {notifOpen && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={tenantMenuVariants}
+                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-[#191B15] rounded-2xl border border-slate-200 dark:border-[#33372B] shadow-2xl shadow-black/10 dark:shadow-black/50 py-2 z-50 text-xs origin-top-right"
+                >
                 <div className="px-4 py-2.5 border-b border-slate-100 dark:border-[#33372B] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">Notifications</span>
@@ -401,14 +461,20 @@ export const Header = () => {
 
           {/* Active Operator & Live Role Switcher */}
           <div className="relative" ref={userMenuRef}>
-            <button onClick={toggleUserMenu} className="btn-tactile flex items-center gap-2 text-sm text-slate-700 dark:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23261E] p-1.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-[#33372B] transition-all cursor-pointer text-left" title="Click to switch active user / role">
+            <button
+              onClick={toggleUserMenu}
+              className="btn-tactile flex items-center gap-2 text-sm text-slate-700 dark:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#23261E] p-1.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-[#33372B] transition-all cursor-pointer text-left"
+              title="Click to switch active user / role"
+              aria-expanded={userMenuOpen}
+              aria-label="User menu"
+            >
               <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-[#2B2E25] border border-slate-300 dark:border-[#565449] flex items-center justify-center">
                 <User className="w-4 h-4 text-slate-600 dark:text-[#F4F5F7]"/>
               </div>
               <div>
                 <p suppressHydrationWarning className="text-xs font-semibold leading-none text-slate-900 dark:text-white flex items-center gap-1">
                   {currentUser?.name || "Admin Operator"}
-                  <ChevronDown className="w-3 h-3 text-slate-400"/>
+                  <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${userMenuOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
                 </p>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#33372B] uppercase tracking-wider">
@@ -419,48 +485,70 @@ export const Header = () => {
             </button>
 
             <AnimatePresence>
-              {userMenuOpen && (<motion.div initial="hidden" animate="visible" exit="exit" variants={tenantMenuVariants} className="absolute right-0 mt-2 w-64 bg-white/95 dark:bg-[#191B15]/95 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-[#33372B] border-t-white/90 dark:border-t-white/15 shadow-2xl py-2 z-50 origin-top-right">
-                  <div className="px-3 py-1.5 border-b border-slate-100 dark:border-[#33372B] flex items-center justify-between">
-                    <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider">
-                      Switch Active User (RBAC)
+              {userMenuOpen && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={tenantMenuVariants}
+                  className="absolute right-0 mt-2 w-72 bg-white dark:bg-[#191B15] rounded-2xl border border-slate-200 dark:border-[#33372B] shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-right"
+                >
+                  <div className="px-3 py-2 border-b border-slate-100 dark:border-[#33372B]/60 flex items-center justify-between mb-1.5">
+                    <span className="text-[11px] font-mono font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider">
+                      Switch Operator (RBAC)
                     </span>
-                    <span className="text-[10px] text-slate-400 dark:text-[#7C8189]">
+                    <span className="text-[10px] font-mono text-slate-400 dark:text-[#7C8189]">
                       {currentOrg?.slug}
                     </span>
                   </div>
-                  <div className="max-h-60 overflow-y-auto py-1">
+                  <div className="max-h-60 overflow-y-auto space-y-1 p-0.5 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-[#33372B]">
                     {(currentOrg?.users || []).map((u) => {
-                const isSelected = u.id === currentUser?.id;
-                return (<button key={u.id} onClick={() => {
-                        switchUser(u.id);
-                        setUserMenuOpen(false);
-                    }} className={`w-full px-3 py-2 text-left flex items-start justify-between gap-2 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors ${isSelected ? "bg-slate-50/80 dark:bg-[#23261E]/50 font-medium" : ""}`}>
+                      const isSelected = u.id === currentUser?.id;
+                      return (
+                        <button
+                          key={u.id}
+                          onClick={() => {
+                            switchUser(u.id);
+                            setUserMenuOpen(false);
+                          }}
+                          className={`w-full px-3 py-2 text-left flex items-center justify-between gap-2 rounded-xl transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 text-slate-950 dark:text-[#FFFBF4] border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/25 shadow-2xs font-semibold"
+                              : "text-slate-700 dark:text-[#CBD5E1] hover:bg-slate-100 dark:hover:bg-[#23261E] border border-transparent"
+                          }`}
+                        >
                           <div className="min-w-0 flex-1">
                             <p className="text-xs font-semibold text-slate-900 dark:text-[#F4F5F7] truncate">
                               {u.name}
                             </p>
-                            <p className="text-[10px] text-slate-500 dark:text-[#9BA3AF] truncate">{u.email}</p>
+                            <p className="text-[10px] text-slate-500 dark:text-[#9BA3AF] truncate mt-0.5">{u.email}</p>
                           </div>
-                          <span className={`text-[10px] shrink-0 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${u.role === "admin" ? "bg-slate-950 dark:bg-slate-100 text-white dark:text-slate-950" : "bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#3A404F]"}`}>
+                          <span className={`text-[10px] shrink-0 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                            u.role === "admin"
+                              ? "bg-[#11120D] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#11120D]"
+                              : "bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#33372B]"
+                          }`}>
                             {u.role?.replace("_", " ") || u.role}
                           </span>
-                        </button>);
-            })}
+                        </button>
+                      );
+                    })}
                   </div>
-                  <div className="border-t border-slate-100 dark:border-[#33372B] p-1.5">
+                  <div className="border-t border-slate-100 dark:border-[#33372B]/60 pt-2 mt-1.5">
                     <button
                       onClick={() => {
                         logout();
                         setUserMenuOpen(false);
                         navigate("/");
                       }}
-                      className="w-full px-3 py-2 text-left flex items-center gap-2 rounded-md hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400 text-xs font-semibold transition-colors cursor-pointer"
+                      className="w-full px-3 py-2 text-left flex items-center gap-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400 text-xs font-semibold transition-colors cursor-pointer"
                     >
                       <LogOut className="w-3.5 h-3.5" />
                       Sign Out
                     </button>
                   </div>
-                </motion.div>)}
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
 
@@ -501,12 +589,16 @@ export const Header = () => {
                 <label className="block text-xs font-medium text-slate-700 dark:text-[#CBD5E1] mb-1">
                   Default Currency
                 </label>
-                <select value={newOrgCurrency} onChange={(e) => setNewOrgCurrency(e.target.value)} className="w-full rounded-md border border-slate-300 dark:border-[#3A404F] bg-white dark:bg-[#23261E] text-slate-900 dark:text-[#F4F5F7] px-3 py-2 text-sm focus:border-zinc-900 dark:focus:border-slate-100 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100">
-                  <option value="INR">INR (₹)</option>
-                  <option value="USD">USD ($)</option>
-                  <option value="EUR">EUR (€)</option>
-                  <option value="GBP">GBP (£)</option>
-                </select>
+                <Select
+                  value={newOrgCurrency}
+                  onChange={(val) => setNewOrgCurrency(val)}
+                  options={[
+                    { value: "INR", label: "INR (₹) - Indian Rupee" },
+                    { value: "USD", label: "USD ($) - US Dollar" },
+                    { value: "EUR", label: "EUR (€) - Euro" },
+                    { value: "GBP", label: "GBP (£) - British Pound" },
+                  ]}
+                />
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
