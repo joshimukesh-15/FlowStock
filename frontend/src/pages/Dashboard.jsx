@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -16,7 +16,7 @@ import { fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJ
 import { useTenant } from "@/context/TenantContext";
 import { useRealtime } from "@/context/WebSocketContext";
 import { formatINR } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
 import { AnimatedProgressBar } from "@/components/ui/AnimatedProgressBar";
 import { PageSkeleton, CardSkeleton } from "@/components/ui/Skeleton";
@@ -36,6 +36,23 @@ export default function HomePage() {
     const [error, setError] = useState(null);
     const [lastChecked, setLastChecked] = useState("");
     const [activeTab, setActiveTab] = useState("inventory");
+    const tabSectionRef = useRef(null);
+
+    const handleTabChange = (newTab) => {
+        if (newTab === activeTab) return;
+
+        // MNC-grade scroll anchoring:
+        // If the user has scrolled past the tab section, smoothly keep the tab header at the top
+        // If the tab bar is already in view, keep scroll completely still!
+        if (tabSectionRef.current) {
+            const rect = tabSectionRef.current.getBoundingClientRect();
+            if (rect.top < 48) {
+                tabSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+
+        setActiveTab(newTab);
+    };
     const { currentOrg } = useTenant();
     const { subscribe } = useRealtime();
     const loadData = async () => {
@@ -236,13 +253,25 @@ export default function HomePage() {
       </motion.div>
 
       {/* Secondary Tabbed Section */}
-      <motion.div variants={itemVariants} className="space-y-3 pt-1">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-slate-200 dark:border-[#33372B]">
-          <Tabs tabs={dashboardTabs} activeTab={activeTab} onChange={setActiveTab} variant="pill" size="sm"/>
+      <motion.div ref={tabSectionRef} variants={itemVariants} className="space-y-3 pt-1 scroll-mt-2">
+        <div className="sticky top-0 z-20 -mx-3.5 sm:-mx-5 lg:-mx-6 px-3.5 sm:px-5 lg:px-6 py-2.5 bg-[#FFFBF4]/90 dark:bg-[#090A0C]/90 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 dark:border-[#22242B] transition-colors">
+          <Tabs tabs={dashboardTabs} activeTab={activeTab} onChange={handleTabChange} variant="pill" size="sm"/>
           <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-mono hidden sm:inline">
             Section: {activeTab.toUpperCase()}
           </span>
         </div>
+
+        {/* Stable Tab Content Wrapper (Prevents scroll collapse jump) */}
+        <div className="min-h-[580px]">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeTab}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={prefersReducedMotion ? false : { opacity: 0, y: -6 }}
+              transition={{ duration: 0.12 }}
+              className="w-full space-y-3"
+            >
 
         {/* Tab 1: Inventory */}
         {activeTab === "inventory" && (<div className="space-y-3">
@@ -703,6 +732,9 @@ export default function HomePage() {
                 </div>)}
             </CardContent>
           </Card>)}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </motion.div>
     </motion.div>);
 }

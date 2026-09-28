@@ -20,7 +20,7 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
         {normalizedTabs.map((tab) => {
                 const isActive = tab.id === activeTab;
                 const Icon = tab.icon;
-                return (<button key={tab.id} role="tab" type="button" aria-selected={isActive} onClick={() => onChange(tab.id)} className={`relative py-2.5 px-3.5 text-xs font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 dark:focus-visible:ring-white rounded-t-sm flex items-center gap-1.5 ${fullWidth ? "flex-1 justify-center" : ""} ${isActive
+                return (<button key={tab.id} role="tab" type="button" aria-selected={isActive} onClick={(e) => { e.preventDefault(); onChange(tab.id); }} className={`relative py-2.5 px-3.5 text-xs font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 dark:focus-visible:ring-white rounded-t-sm flex items-center gap-1.5 ${fullWidth ? "flex-1 justify-center" : ""} ${isActive
                         ? "text-slate-950 dark:text-[#F4F5F7] font-semibold"
                         : "text-slate-500 hover:text-slate-800 dark:text-[#9BA3AF] dark:hover:text-slate-200"}`}>
               {Icon && (<Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? "text-slate-950 dark:text-[#F4F5F7]" : "text-slate-400 dark:text-[#7C8189]"}`}/>)}
@@ -41,7 +41,7 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
       {normalizedTabs.map((tab) => {
             const isActive = tab.id === activeTab;
             const Icon = tab.icon;
-            return (<button key={tab.id} role="tab" type="button" aria-selected={isActive} onClick={() => onChange(tab.id)} className={`relative rounded-lg font-semibold whitespace-nowrap transition-colors z-10 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] flex items-center gap-2 cursor-pointer ${fullWidth ? "flex-1 justify-center" : ""} ${size === "md" ? "text-xs py-2 px-3.5" : "text-xs py-1.5 px-3"} ${isActive
+            return (<button key={tab.id} role="tab" type="button" aria-selected={isActive} onClick={(e) => { e.preventDefault(); onChange(tab.id); }} className={`relative rounded-lg font-semibold whitespace-nowrap transition-colors z-10 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] flex items-center gap-2 cursor-pointer ${fullWidth ? "flex-1 justify-center" : ""} ${size === "md" ? "text-xs py-2 px-3.5" : "text-xs py-1.5 px-3"} ${isActive
                     ? "text-slate-950 dark:text-[#FFFBF4]"
                     : "text-slate-500 hover:text-slate-800 dark:text-[#808594] dark:hover:text-white"}`}>
             {/* Sliding pill indicator */}
