@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TenantProvider } from './context/TenantContext';
@@ -35,26 +36,63 @@ function ProtectedRoute({ children }) {
     return children;
 }
 
+/* Route order used to decide swipe direction */
+const PUBLIC_ORDER = ['/', '/welcome', '/login'];
+
+function getDirection(from, to) {
+    const fi = PUBLIC_ORDER.indexOf(from);
+    const ti = PUBLIC_ORDER.indexOf(to);
+    if (fi === -1 || ti === -1) return 0;
+    return ti > fi ? 1 : -1; // 1 = swipe left (forward), -1 = swipe right (back)
+}
+
 function AppLayout() {
     const location = useLocation();
     const prefersReducedMotion = useReducedMotion();
-    const isPublic = location.pathname === '/' || location.pathname === '/welcome' || location.pathname === '/login';
+    const isPublic = PUBLIC_ORDER.includes(location.pathname);
+
+    // Track previous pathname so we can compute direction
+    const prevPath = useRef(location.pathname);
+    const directionRef = useRef(0);
+
+    if (prevPath.current !== location.pathname) {
+        directionRef.current = getDirection(prevPath.current, location.pathname);
+        prevPath.current = location.pathname;
+    }
+
+    const dir = directionRef.current;
+    const dist = prefersReducedMotion ? 0 : 48; // px slide distance
+
+    // Public routes: card swipe; app routes: plain fade
+    const publicVariants = {
+        initial: (d) => ({ opacity: 0, x: d * dist }),
+        animate: { opacity: 1, x: 0 },
+        exit:    (d) => ({ opacity: 0, x: d * -dist }),
+    };
+
+    const appVariants = {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit:    { opacity: 0 },
+    };
+
+    const variants = isPublic ? publicVariants : appVariants;
 
     const content = (
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait" initial={false} custom={dir}>
         <motion.div
           key={location.pathname}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={prefersReducedMotion ? undefined : {
-            opacity: 0,
-            transition: { duration: DURATION.micro, ease: EASING.standard },
-          }}
+          custom={dir}
+          variants={variants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           transition={{
-            duration: prefersReducedMotion ? 0 : 0.18,
-            ease: EASING.standard,
+            duration: prefersReducedMotion ? 0 : isPublic ? 0.32 : 0.18,
+            ease: isPublic ? [0.32, 0, 0.08, 1] : EASING.standard,
           }}
           className="w-full"
+          style={{ willChange: 'transform, opacity' }}
         >
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<WelcomePage />} />
