@@ -82,32 +82,32 @@ export default function LoginPage() {
   };
 
   const inputBase =
-    "w-full rounded-lg border bg-white dark:bg-[#11120D] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
+    "w-full rounded-lg border bg-white dark:bg-[#18191E] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
   const inputColors =
-    "border-slate-200 dark:border-[#33372B] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#9BA3AF] focus:border-[#D8CFBC] dark:focus:border-[#D8CFBC] focus:ring-[#D8CFBC]/20 dark:focus:ring-[#D8CFBC]/15";
+    "border-slate-200 dark:border-[#22242B] text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-[#808594] focus:border-sky-500 dark:focus:border-[#38BDF8] focus:ring-sky-500/20 dark:focus:ring-[#38BDF8]/20";
   const inputClass = `${inputBase} ${inputColors}`;
 
   const labelClass =
-    "block text-xs font-medium text-slate-600 dark:text-[#D8CFBC] mb-1";
+    "block text-xs font-medium text-slate-700 dark:text-[#A0A5B2] mb-1";
 
   const iconClass =
-    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#D8CFBC]";
+    "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#808594]";
 
   return (
-    <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#11120D] flex items-center justify-center px-4 py-8 relative overflow-hidden">
+    <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#090A0C] flex items-center justify-center px-4 py-8 relative overflow-hidden font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8]">
       {/* Background decoration */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(216,207,188,0.12), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(56,189,248,0.08), rgba(30,41,59,0.05), transparent 60%)",
         }}
       />
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
         style={{
           background:
-            "linear-gradient(90deg, transparent, rgba(216,207,188,0.18), transparent)",
+            "linear-gradient(90deg, transparent, rgba(56,189,248,0.18), transparent)",
         }}
       />
 
@@ -117,37 +117,37 @@ export default function LoginPage() {
           to="/"
           className="flex items-center justify-center gap-2.5 mb-8 group outline-none"
         >
-          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform duration-200">
+          <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200/90 dark:border-[#22242B] shadow-xs flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform duration-200">
             <img
               src="/assets/flowstock-reveal.svg"
               alt="FlowStock"
               className="w-7 h-7"
             />
           </div>
-          <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">
+          <span className="font-display font-bold text-lg tracking-tight text-slate-950 dark:text-white">
             FlowStock
           </span>
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#33372B] bg-white dark:bg-[#191B15] shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.6)]">
           {/* Tab switcher — always visible at top of card */}
           <div className="px-6 pt-5 pb-0">
-            <div className="flex bg-slate-100 dark:bg-[#11120D] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#33372B] relative">
+            <div className="flex bg-slate-100 dark:bg-[#090A0C] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#22242B] relative">
               <button
                 type="button"
                 onClick={() => switchMode("login")}
                 className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
                   mode === "login"
                     ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-[#9BA3AF] hover:text-slate-700 dark:hover:text-white"
+                    : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
                 }`}
               >
                 {mode === "login" && (
                   <motion.div
                     layoutId="active-login-tab"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white dark:bg-[#23261E] dark:border dark:border-[#33372B] rounded-md shadow-sm -z-10"
+                    className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
                   />
                 )}
                 Log In
@@ -158,14 +158,14 @@ export default function LoginPage() {
                 className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
                   mode === "signup"
                     ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-[#9BA3AF] hover:text-slate-700 dark:hover:text-white"
+                    : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
                 }`}
               >
                 {mode === "signup" && (
                   <motion.div
                     layoutId="active-login-tab"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white dark:bg-[#23261E] dark:border dark:border-[#33372B] rounded-md shadow-sm -z-10"
+                    className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
                   />
                 )}
                 Create Account
@@ -175,12 +175,12 @@ export default function LoginPage() {
 
           {/* Header text */}
           <div className="px-6 pt-4 pb-1">
-            <h1 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">
+            <h1 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] leading-tight">
               {mode === "login"
                 ? "Welcome back"
                 : "Get started with FlowStock"}
             </h1>
-            <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-[#808594] mt-0.5">
               {mode === "login"
                 ? "Sign in to your workspace"
                 : "Create your organization in under a minute"}
@@ -244,7 +244,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#D8CFBC] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#808594] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5"
                     aria-label={
                       showPassword ? "Hide password" : "Show password"
                     }
@@ -262,11 +262,11 @@ export default function LoginPage() {
                 <>
                   {/* Org section divider */}
                   <div className="flex items-center gap-2 pt-1">
-                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#33372B]" />
-                    <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400 dark:text-[#D8CFBC]">
+                    <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-[#808594]">
                       Organization
                     </span>
-                    <div className="flex-1 h-px bg-slate-150 dark:bg-[#33372B]" />
+                    <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-2.5">
@@ -326,9 +326,9 @@ export default function LoginPage() {
                   </div>
 
                   {orgSlug && (
-                    <p className="text-[10px] text-slate-400 dark:text-[#9BA3AF] font-mono -mt-1 pl-0.5">
+                    <p className="text-[10px] text-slate-400 dark:text-[#808594] font-mono -mt-1 pl-0.5">
                       flowstock.app/
-                      <span className="text-[#565449] dark:text-[#D8CFBC]">
+                      <span className="text-sky-600 dark:text-[#38BDF8]">
                         {orgSlug}
                       </span>
                     </p>
@@ -341,7 +341,7 @@ export default function LoginPage() {
                       value={currency}
                       onChange={(e) => setCurrency(e.target.value)}
                       icon={Globe}
-                      buttonClassName="rounded-lg h-10 border-slate-200 dark:border-[#33372B]"
+                      buttonClassName="rounded-lg h-10 border-slate-200 dark:border-[#22242B]"
                       options={[
                         { value: "INR", label: "INR — Indian Rupee" },
                         { value: "USD", label: "USD — US Dollar" },
@@ -370,18 +370,18 @@ export default function LoginPage() {
 
             {/* Demo quick-fill — login mode only */}
             {mode === "login" && (
-              <div className="mt-3 p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#33372B] bg-slate-50/50 dark:bg-[#11120D]/60 flex items-center justify-between gap-2">
+              <div className="mt-3 p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#22242B] bg-slate-50/50 dark:bg-[#090A0C]/70 flex items-center justify-between gap-2">
                 <div className="min-w-0">
                   <div className="flex items-center gap-1 mb-0.5">
                     <Zap className="w-3 h-3 text-amber-500" />
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-400">
                       Demo
                     </span>
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">
                     alice@acme.local
                   </span>
-                  <span className="text-[10px] text-slate-400 dark:text-[#D8CFBC]">
+                  <span className="text-[10px] text-slate-400 dark:text-[#808594]">
                     Pass: <code className="font-mono">admin123</code>
                   </span>
                 </div>
@@ -395,7 +395,7 @@ export default function LoginPage() {
                     setAutoFilled(true);
                     setTimeout(() => setAutoFilled(false), 1400);
                   }}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(216,207,188,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-sky-500 hover:bg-sky-400 text-white text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(56,189,248,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#38BDF8]"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     {autoFilled ? (
@@ -407,7 +407,7 @@ export default function LoginPage() {
                         transition={{ type: "spring", stiffness: 500, damping: 25 }}
                         className="inline-flex items-center gap-1"
                       >
-                        <Check className="w-3 h-3 text-[#11120D]" strokeWidth={2.5} />
+                        <Check className="w-3 h-3 text-white" strokeWidth={2.5} />
                         <span>Filled</span>
                       </motion.span>
                     ) : (
@@ -427,8 +427,8 @@ export default function LoginPage() {
           </div>
 
           {/* Footer toggle */}
-          <div className="px-6 py-3.5 border-t border-slate-100 dark:border-[#33372B] text-center">
-            <p className="text-xs text-slate-500 dark:text-[#9BA3AF]">
+          <div className="px-6 py-3.5 border-t border-slate-100 dark:border-[#22242B] text-center">
+            <p className="text-xs text-slate-500 dark:text-[#808594]">
               {mode === "login"
                 ? "Don't have an account? "
                 : "Already have an account? "}
@@ -437,7 +437,7 @@ export default function LoginPage() {
                 onClick={() =>
                   switchMode(mode === "login" ? "signup" : "login")
                 }
-                className="text-[#565449] dark:text-[#D8CFBC] font-semibold hover:underline cursor-pointer"
+                className="text-sky-600 dark:text-[#38BDF8] font-semibold hover:underline cursor-pointer"
               >
                 {mode === "login" ? "Sign up" : "Log in"}
               </button>
@@ -446,8 +446,8 @@ export default function LoginPage() {
         </div>
 
         {/* Trust badge */}
-        <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#D8CFBC]/70">
-          <ShieldCheck className="w-3 h-3" />
+        <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#808594]">
+          <ShieldCheck className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
           <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
         </div>
 
@@ -455,7 +455,7 @@ export default function LoginPage() {
         <div className="mt-3 text-center">
           <Link
             to="/"
-            className="text-[11px] text-slate-400 dark:text-[#D8CFBC]/70 hover:text-slate-600 dark:hover:text-[#D8CFBC] transition-colors"
+            className="text-[11px] text-slate-400 dark:text-[#808594] hover:text-slate-600 dark:hover:text-[#38BDF8] transition-colors"
           >
             ← Back to Home
           </Link>
