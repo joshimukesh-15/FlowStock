@@ -24,14 +24,15 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
       label: "Requested",
       detail: "Staged for Dispatch",
       icon: Clock,
-      progressWidth: "w-1/3",
+      progressWidth: "w-1/4",
       trackColor: "bg-amber-500",
       pillClass:
-        "bg-white dark:bg-[#1C1E24] text-slate-900 dark:text-[#FFFBF4] border border-slate-300 dark:border-[#343742]",
+        "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30",
       badgeClass:
         "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30",
       iconClass: "text-amber-600 dark:text-amber-400",
       dotClass: "bg-amber-500",
+      corridorText: "Staged for Dispatch",
     },
     IN_TRANSIT: {
       label: "In Transit",
@@ -40,11 +41,12 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
       progressWidth: "w-2/3",
       trackColor: "bg-[#090A0C] dark:bg-[#D8CFBC]",
       pillClass:
-        "bg-white dark:bg-[#1C1E24] text-slate-900 dark:text-[#FFFBF4] border border-slate-300 dark:border-[#343742]",
+        "bg-[#090A0C] text-white dark:bg-[#D8CFBC] dark:text-[#090A0C] border border-[#090A0C] dark:border-[#D8CFBC]",
       badgeClass:
-        "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30",
-      iconClass: "text-amber-600 dark:text-amber-400",
-      dotClass: "bg-amber-500",
+        "bg-[#090A0C] text-white dark:bg-[#D8CFBC] dark:text-[#090A0C] border border-[#090A0C] dark:border-[#D8CFBC]",
+      iconClass: "text-[#D8CFBC] dark:text-[#090A0C]",
+      dotClass: "bg-[#D8CFBC] dark:bg-[#090A0C]",
+      corridorText: "En Route in Corridor",
     },
     RECEIVED: {
       label: "Delivered",
@@ -58,35 +60,57 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
         "bg-[#090A0C] text-white dark:bg-[#D8CFBC] dark:text-[#090A0C] border border-[#090A0C] dark:border-[#D8CFBC]",
       iconClass: "text-[#D8CFBC] dark:text-[#090A0C]",
       dotClass: "bg-[#D8CFBC] dark:bg-[#090A0C]",
+      corridorText: "Direct Transit • Reconciled",
     },
     CANCELLED: {
       label: "Cancelled",
       detail: "Transfer Terminated",
       icon: Ban,
-      progressWidth: "w-1/3",
+      progressWidth: "w-1/4",
       trackColor: "bg-rose-500",
       pillClass:
-        "bg-white dark:bg-[#1C1E24] text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-700/50",
+        "bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/30",
       badgeClass:
         "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/30",
       iconClass: "text-rose-600 dark:text-rose-400",
       dotClass: "bg-rose-500",
+      corridorText: "Transfer Cancelled",
     },
   }[status] || {
     label: status,
     detail: "Status Logged",
     icon: Package,
-    progressWidth: "w-1/3",
+    progressWidth: "w-1/4",
     trackColor: "bg-slate-400",
     pillClass:
       "bg-white dark:bg-[#1C1E24] text-slate-800 dark:text-[#D8CFBC] border border-slate-300 dark:border-[#343742]",
     badgeClass:
-      "bg-slate-100 text-slate-700 dark:bg-[#1E2026] dark:text-[#D8CFBC] border-slate-200 dark:border-[#343742]",
+      "bg-slate-100 text-slate-700 dark:bg-[#1E2026] dark:text-[#D8CFBC] border border-slate-200 dark:border-[#343742]",
     iconClass: "text-slate-600 dark:text-[#D8CFBC]",
     dotClass: "bg-slate-400",
+    corridorText: "Active Transfer",
   };
 
   const StatusIcon = config.icon;
+
+  const arrowColor =
+    isReceived || isTransit
+      ? "text-[#090A0C] dark:text-[#D8CFBC]"
+      : isCancelled
+      ? "text-rose-500"
+      : "text-slate-300 dark:text-[#3A3D47]";
+
+  const originDotClass =
+    isReceived || isTransit
+      ? "bg-[#090A0C] dark:bg-[#D8CFBC]"
+      : isRequested
+      ? "bg-amber-500"
+      : "bg-slate-400 dark:bg-slate-500";
+
+  const destDotClass =
+    isReceived
+      ? "bg-[#090A0C] dark:bg-[#D8CFBC]"
+      : "bg-slate-400 dark:bg-slate-500";
 
   return (
     <div className={`w-full max-w-full space-y-4 text-slate-900 dark:text-[#F4F5F7] ${className}`}>
@@ -124,20 +148,46 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
         </div>
       </div>
 
-      {/* Main Route Corridor (Fluid, Zero-Overflow, 100% Contained) */}
+      {/* Main Route Corridor (Fluid, Zero-Overlap, Harmonious Left & Right Sizing) */}
       <div className="w-full rounded-xl border border-slate-200/80 dark:border-[#22242B] bg-slate-50/70 dark:bg-[#0B0C0E] p-4 sm:p-6 overflow-hidden">
-        <div className="flex items-center justify-between w-full">
-          {/* Origin Facility (Left) */}
+        {/* Top Centered Status Hero Capsule (Never overlaps route line or arrow) */}
+        <div className="flex justify-center mb-5">
+          <div
+            className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full shadow-xs transition-colors ${config.pillClass}`}
+          >
+            <StatusIcon className={`w-3.5 h-3.5 shrink-0 ${config.iconClass}`} />
+            <span className="text-xs font-bold tracking-tight whitespace-nowrap">
+              {config.label}
+            </span>
+            <span className="text-[10px] opacity-75 font-mono whitespace-nowrap hidden sm:inline">
+              • {config.detail}
+            </span>
+          </div>
+        </div>
+
+        {/* 3-Column Physical Corridor Path: Origin <---> Rail <---> Destination */}
+        <div className="flex items-start justify-between w-full">
+          {/* Origin Facility (Left Side) */}
           <div className="w-28 sm:w-36 flex flex-col items-center text-center shrink-0">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-[#808594] mb-2 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500" />
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-[#808594] mb-2.5 flex items-center gap-1.5">
+              <span className={`w-1.5 h-1.5 rounded-full ${originDotClass}`} />
               Origin
             </span>
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#262833] flex items-center justify-center text-slate-900 dark:text-[#D8CFBC] shadow-xs">
-              <WarehouseIcon className="w-5 h-5" />
+            <div className="relative">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#262833] flex items-center justify-center text-slate-900 dark:text-[#D8CFBC] shadow-xs">
+                <WarehouseIcon className="w-5 h-5" />
+              </div>
+              {(isReceived || isTransit) && (
+                <div
+                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] flex items-center justify-center shadow-2xs border border-white dark:border-[#18191E]"
+                  title="Dispatched"
+                >
+                  <Check className="w-2.5 h-2.5 stroke-[3]" />
+                </div>
+              )}
             </div>
             <span
-              className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-[#FFFBF4] mt-2 text-center leading-snug w-full break-words"
+              className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-[#FFFBF4] mt-2.5 text-center leading-snug w-full break-words"
               title={transfer.source_warehouse?.name}
             >
               {transfer.source_warehouse?.name || "Source Warehouse"}
@@ -147,64 +197,70 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
             </span>
           </div>
 
-          {/* Center Corridor & Single Main-Color Status Capsule (Fluid Flex) */}
-          <div className="flex-1 min-w-0 mx-2 sm:mx-6 flex flex-col items-center justify-center relative">
-            {/* The Horizontal Route Rail */}
-            <div className="relative w-full flex items-center justify-center">
-              {/* Background Track Line */}
-              <div className="absolute left-0 right-0 h-1 rounded-full bg-slate-200 dark:bg-[#22242B]" />
-
-              {/* Progress Rail (Main Brand Color: Obsidian / Bone) */}
-              <div
-                className={`absolute left-0 h-1 rounded-full ${config.progressWidth} ${config.trackColor} transition-all duration-300`}
-              />
-
-              {/* Directional Terminal Arrow (Contained within rail, no negative margin) */}
-              <ArrowRight className="absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-300 dark:text-[#3A3D47]" />
-
-              {/* Compact Unified Status Capsule */}
-              <div
-                className={`relative z-10 px-3 sm:px-3.5 py-1 rounded-full shadow-xs flex items-center gap-1.5 sm:gap-2 transition-colors ${config.pillClass}`}
-              >
-                <StatusIcon className={`w-3.5 h-3.5 shrink-0 ${config.iconClass}`} />
-                <span className="text-xs font-bold tracking-tight whitespace-nowrap">
-                  {config.label}
-                </span>
-                <span className="text-[10px] opacity-75 font-mono whitespace-nowrap hidden sm:inline">
-                  • {config.detail}
-                </span>
-              </div>
+          {/* Center Corridor & Route Rail */}
+          <div className="flex-1 min-w-0 mx-2 sm:mx-6 flex flex-col items-center justify-start">
+            {/* Header spacer aligning with Origin/Destination labels */}
+            <div className="h-4 mb-2.5 flex items-center justify-center">
+              <span className="text-[10px] font-mono text-slate-400 dark:text-[#808594] uppercase tracking-wider">
+                Corridor
+              </span>
             </div>
 
-            {/* Subtitle visible on smaller screens */}
-            <span className="text-[10px] font-mono text-slate-400 dark:text-[#808594] mt-2 text-center block sm:hidden">
-              {config.detail}
-            </span>
+            {/* Horizontal Route Rail (48px tall, vertically centered with warehouse icons) */}
+            <div className="h-11 sm:h-12 w-full flex items-center relative">
+              {/* Background Track Rail */}
+              <div className="w-full h-1 sm:h-1.5 rounded-full bg-slate-200 dark:bg-[#22242B]" />
+
+              {/* Progress Rail Fill (Obsidian / Bone brand colors) */}
+              <div
+                className={`absolute left-0 top-1/2 -translate-y-1/2 h-1 sm:h-1.5 rounded-full ${config.progressWidth} ${config.trackColor} transition-all duration-300`}
+              />
+
+              {/* Mid-Transit Vehicle Marker */}
+              {isTransit && (
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 left-2/3 w-6 h-6 rounded-full bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] flex items-center justify-center shadow-xs border border-white dark:border-[#0B0C0E]"
+                  title="En route"
+                >
+                  <Truck className="w-3 h-3" />
+                </div>
+              )}
+
+              {/* Directional Terminal Arrow (Matches rail color on delivery, no negative margin) */}
+              <ArrowRight
+                className={`absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${arrowColor}`}
+              />
+            </div>
+
+            {/* Route Detail Subtitle */}
+            <div className="mt-2.5 text-center">
+              <span className="text-[10px] font-mono text-slate-400 dark:text-[#808594]">
+                {config.corridorText}
+              </span>
+            </div>
           </div>
 
-          {/* Destination Facility (Right) */}
+          {/* Destination Facility (Right Side) */}
           <div className="w-28 sm:w-36 flex flex-col items-center text-center shrink-0">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-[#808594] mb-2 flex items-center gap-1.5">
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  isReceived
-                    ? "bg-[#090A0C] dark:bg-[#D8CFBC]"
-                    : "bg-slate-400 dark:bg-slate-500"
-                }`}
-              />
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-[#808594] mb-2.5 flex items-center gap-1.5">
+              <span className={`w-1.5 h-1.5 rounded-full ${destDotClass}`} />
               Destination
             </span>
-            <div
-              className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-xs transition-colors border ${
-                isReceived
-                  ? "bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] border-[#090A0C] dark:border-[#D8CFBC]"
-                  : "bg-white dark:bg-[#18191E] border-slate-200 dark:border-[#262833] text-slate-700 dark:text-[#D8CFBC]"
-              }`}
-            >
-              <WarehouseIcon className="w-5 h-5" />
+            <div className="relative">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#262833] flex items-center justify-center text-slate-900 dark:text-[#D8CFBC] shadow-xs">
+                <WarehouseIcon className="w-5 h-5" />
+              </div>
+              {isReceived && (
+                <div
+                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] flex items-center justify-center shadow-2xs border border-white dark:border-[#18191E]"
+                  title="Delivered & Reconciled"
+                >
+                  <Check className="w-2.5 h-2.5 stroke-[3]" />
+                </div>
+              )}
             </div>
             <span
-              className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-[#FFFBF4] mt-2 text-center leading-snug w-full break-words"
+              className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-[#FFFBF4] mt-2.5 text-center leading-snug w-full break-words"
               title={transfer.destination_warehouse?.name}
             >
               {transfer.destination_warehouse?.name || "Dest Warehouse"}
