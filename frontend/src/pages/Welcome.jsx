@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Boxes,
@@ -282,57 +282,69 @@ function AuthDrawer({ mode, onModeChange, onClose, onSuccess }) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-[#22242B] shrink-0">
-        <div>
-          <h2 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] leading-tight">
-            {mode === "login" ? "Welcome back" : "Get started"}
-          </h2>
-          <p className="text-xs text-slate-500 dark:text-[#808594] mt-0.5">
-            {mode === "login" ? "Sign in to your workspace" : "Create your organization in under a minute"}
-          </p>
+      <div className="px-6 py-5 border-b border-slate-100 dark:border-[#22242B] shrink-0">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-slate-900 dark:bg-[#18191E] border border-slate-800 dark:border-[#22242B] flex items-center justify-center p-1">
+              <Logomark className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="font-display text-base font-bold text-slate-950 dark:text-[#F4F5F7] leading-tight">
+                {mode === "login" ? "Welcome back" : "Get started with FlowStock"}
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-[#808594] mt-0.5">
+                {mode === "login" ? "Sign in to your workspace" : "Create your organization in under a minute"}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 dark:text-[#808594] hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#22242B] transition-colors cursor-pointer"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
-        <button
-          onClick={onClose}
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 dark:text-[#808594] hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#22242B] transition-colors cursor-pointer"
-        >
-          <X className="w-4 h-4" />
-        </button>
       </div>
 
       {/* Tab switcher */}
       <div className="px-6 pt-4 shrink-0">
-        <div className="flex bg-slate-100 dark:bg-[#090A0C] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#22242B]">
-          {["login","signup"].map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => switchMode(m)}
-              className={`relative flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
-                mode === m
-                  ? "text-slate-900 dark:text-white"
-                  : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
-              }`}
-            >
-              {mode === m && (
-                <motion.div
-                  layoutId="auth-drawer-tab"
-                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                  className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
-                />
-              )}
-              {m === "login" ? "Log In" : "Create Account"}
-            </button>
-          ))}
+        <div className="max-w-md mx-auto">
+          <div className="flex bg-slate-100 dark:bg-[#090A0C] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#22242B]">
+            {["login","signup"].map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => switchMode(m)}
+                className={`relative flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
+                  mode === m
+                    ? "text-slate-900 dark:text-white"
+                    : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
+                }`}
+              >
+                {mode === m && (
+                  <motion.div
+                    layoutId="auth-drawer-tab"
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
+                  />
+                )}
+                {m === "login" ? "Log In" : "Create Account"}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Scrollable form area */}
       <div className="flex-1 overflow-y-auto px-6 py-4">
-        {error && (
-          <div className="mb-3 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 text-xs text-red-600 dark:text-red-400">
-            {error}
-          </div>
-        )}
+        <div className="max-w-md mx-auto">
+          {error && (
+            <div className="mb-3 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 text-xs text-red-600 dark:text-red-400">
+              {error}
+            </div>
+          )}
 
         <form onSubmit={handleSubmit} className="space-y-3">
           {mode === "signup" && (
@@ -455,20 +467,23 @@ function AuthDrawer({ mode, onModeChange, onClose, onSuccess }) {
             <ArrowRight className="w-3.5 h-3.5 ml-1.5 shrink-0" />
           </Button>
         </form>
+        </div>{/* end max-w-md */}
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-slate-100 dark:border-[#22242B] shrink-0 space-y-3">
-        <p className="text-xs text-center text-slate-500 dark:text-[#808594]">
-          {mode === "login" ? "Don't have an account? " : "Already have an account? "}
-          <button type="button" onClick={() => switchMode(mode === "login" ? "signup" : "login")}
-            className="text-sky-600 dark:text-[#38BDF8] font-semibold hover:underline cursor-pointer">
-            {mode === "login" ? "Sign up" : "Log in"}
-          </button>
-        </p>
-        <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 dark:text-[#808594]">
-          <ShieldCheck className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
-          <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
+      <div className="px-6 py-4 border-t border-slate-100 dark:border-[#22242B] shrink-0">
+        <div className="max-w-md mx-auto space-y-3">
+          <p className="text-xs text-center text-slate-500 dark:text-[#808594]">
+            {mode === "login" ? "Don't have an account? " : "Already have an account? "}
+            <button type="button" onClick={() => switchMode(mode === "login" ? "signup" : "login")}
+              className="text-sky-600 dark:text-[#38BDF8] font-semibold hover:underline cursor-pointer">
+              {mode === "login" ? "Sign up" : "Log in"}
+            </button>
+          </p>
+          <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 dark:text-[#808594]">
+            <ShieldCheck className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
+            <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
+          </div>
         </div>
       </div>
     </div>
@@ -484,6 +499,22 @@ export default function WelcomePage() {
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState("login");
 
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const authPanelWidth = windowWidth < 640
+    ? windowWidth
+    : windowWidth < 1024
+      ? 460
+      : Math.min(560, Math.max(480, Math.floor(windowWidth * 0.48)));
+
   const openAuth = (mode = "login") => { setAuthMode(mode); setAuthOpen(true); };
   const closeAuth = () => setAuthOpen(false);
 
@@ -496,10 +527,13 @@ export default function WelcomePage() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#FFFBF4] dark:bg-[#090A0C] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8] relative transition-colors">
+    <div className="h-[100dvh] flex overflow-hidden bg-[#FFFBF4] dark:bg-[#090A0C] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8] transition-colors">
+
+      {/* ── LEFT: scrollable welcome content ── */}
+      <div className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden relative">
       
       {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+      <div className="absolute inset-x-0 top-0 h-[450px] overflow-hidden pointer-events-none -z-10">
         <div 
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[450px]" 
           style={{
@@ -520,8 +554,8 @@ export default function WelcomePage() {
         />
       </div>
 
-      {/* 1. FIXED TOP NAVBAR */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#090A0C]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#22242B] transition-colors">
+      {/* 1. STICKY TOP NAVBAR */}
+      <header className="sticky top-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#090A0C]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#22242B] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 relative z-10 cursor-pointer">
             <Logomark className="w-8 h-8 hover:scale-105 transition-transform drop-shadow-md" />
@@ -583,18 +617,26 @@ export default function WelcomePage() {
               <>
                 <Button
                   size="sm"
-                  variant="outline"
-                  onClick={() => openAuth("login")}
-                  className="h-8 px-3 text-xs gap-1.5 border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 bg-white dark:bg-[#121316] text-slate-800 dark:text-white"
+                  variant={authOpen && authMode === "login" ? "primary" : "outline"}
+                  onClick={() => (authOpen && authMode === "login" ? closeAuth() : openAuth("login"))}
+                  className={`h-8 px-3 text-xs gap-1.5 transition-all ${
+                    authOpen && authMode === "login"
+                      ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 border border-transparent shadow-xs"
+                      : "border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 bg-white dark:bg-[#121316] text-slate-800 dark:text-white"
+                  }`}
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Log In</span>
                 </Button>
                 <Button
                   size="sm"
-                  variant="primary"
-                  onClick={() => openAuth("signup")}
-                  className="h-8 px-3 text-xs gap-1.5 shadow-xs"
+                  variant={authOpen && authMode === "signup" ? "primary" : "outline"}
+                  onClick={() => (authOpen && authMode === "signup" ? closeAuth() : openAuth("signup"))}
+                  className={`h-8 px-3 text-xs gap-1.5 transition-all shadow-xs ${
+                    authOpen && authMode === "signup"
+                      ? "bg-sky-500 hover:bg-sky-400 text-white font-bold"
+                      : "border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 bg-white dark:bg-[#121316] text-slate-800 dark:text-white"
+                  }`}
                 >
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>Sign Up</span>
@@ -606,7 +648,7 @@ export default function WelcomePage() {
       </header>
 
       {/* 2. HERO SECTION */}
-      <section id="hero" className="relative pt-32 sm:pt-40 pb-20 sm:pb-28 bg-transparent">
+      <section id="hero" className="relative pt-14 sm:pt-20 pb-20 sm:pb-28 bg-transparent">
         {/* Clean Ambient Atmosphere (No Image) */}
         <div className="absolute inset-0 pointer-events-none">
           <div
@@ -1189,41 +1231,35 @@ export default function WelcomePage() {
         </div>
       </Modal>
 
-      {/* ── Auth Drawer Backdrop ── */}
-      <AnimatePresence>
-        {authOpen && (
-          <motion.div
-            key="auth-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={closeAuth}
-            className="fixed inset-0 z-40 bg-black/30 dark:bg-black/60 backdrop-blur-[2px]"
-          />
-        )}
-      </AnimatePresence>
+      </div>{/* end left scroll panel */}
 
-      {/* ── Auth Drawer Panel ── */}
+      {/* ── RIGHT: Auth panel — true flex sibling, pushes content left ── */}
       <AnimatePresence>
         {authOpen && (
           <motion.div
-            key="auth-drawer"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 340, damping: 38, mass: 0.9 }}
-            className="fixed top-0 right-0 h-full z-50 w-full sm:w-[420px] lg:w-[440px] bg-white dark:bg-[#121316] border-l border-slate-200/80 dark:border-[#22242B] shadow-2xl overflow-hidden flex flex-col"
+            key="auth-panel"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: authPanelWidth, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 320, damping: 36, mass: 0.85 }}
+            className="shrink-0 h-full overflow-hidden border-l border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-[-16px_0_48px_rgba(0,0,0,0.14)] z-30"
           >
-            <AuthDrawer
-              mode={authMode}
-              onModeChange={setAuthMode}
-              onClose={closeAuth}
-              onSuccess={() => { closeAuth(); navigate("/dashboard"); }}
-            />
+            {/* Inner container with dynamic width prevents content from squishing during animation */}
+            <div
+              className="h-full flex flex-col overflow-y-auto"
+              style={{ width: authPanelWidth }}
+            >
+              <AuthDrawer
+                mode={authMode}
+                onModeChange={setAuthMode}
+                onClose={closeAuth}
+                onSuccess={() => { closeAuth(); navigate("/dashboard"); }}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }
