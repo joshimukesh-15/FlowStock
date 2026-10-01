@@ -59,6 +59,8 @@ backend/app/storage/uploads/*
 Thumbs.db
 Desktop.ini
 .idea/
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 *.swp
 *.swo
