@@ -318,7 +318,7 @@ export default function ShipmentsPage() {
 
         {/* Table & Controls Card */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="p-4 pb-3 border-b border-slate-100 dark:border-[#2B2E25]">
+          <CardHeader className="p-4 pb-3 border-b border-slate-100 dark:border-[#22242B]">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={[
@@ -344,7 +344,7 @@ export default function ShipmentsPage() {
                     Create Shipment
                   </Button>}/>) : (<div className="overflow-x-auto">
                 <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
-                  <thead className="bg-slate-50 dark:bg-[#191B15] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#33372B]">
+                  <thead className="bg-slate-50 dark:bg-[#18191E] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#22242B]">
                     <tr>
                       <th className="py-2.5 px-3.5 font-semibold">Shipment #</th>
                       <th className="py-2.5 px-3.5 font-semibold">Order / Customer</th>
@@ -355,8 +355,8 @@ export default function ShipmentsPage() {
                       <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
-                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-slate-50/70 dark:hover:bg-[#191B15]/50 transition-colors group">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#22242B]">
+                    {filteredShipments.map((s) => (<tr key={s.id} className="hover:bg-slate-50/70 dark:hover:bg-[#18191E]/50 transition-colors group">
                         <td className="py-2.5 px-3.5 font-mono font-medium text-slate-900 dark:text-[#F4F5F7]">
                           {s.shipment_number}
                           <div className="text-[10px] text-slate-400 dark:text-[#7C8189] font-sans mt-0.5">
@@ -375,7 +375,7 @@ export default function ShipmentsPage() {
                           <div className="font-medium text-slate-800 dark:text-[#E2E8F0]">
                             {s.carrier}
                           </div>
-                          <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-slate-100 dark:bg-[#191B15] px-1.5 py-0.5 rounded text-slate-600 dark:text-[#9BA3AF] border border-slate-200 dark:border-[#33372B] mt-0.5">
+                          <span className="inline-flex items-center gap-1 font-mono text-[11px] bg-slate-100 dark:bg-[#18191E] px-1.5 py-0.5 rounded text-slate-600 dark:text-[#9BA3AF] border border-slate-200 dark:border-[#22242B] mt-0.5">
                             {s.tracking_number}
                           </span>
                         </td>
@@ -466,7 +466,7 @@ export default function ShipmentsPage() {
           {/* Select Sales Order */}
           <FormField label="Sales Order to Ship *">
             {eligibleOrdersForShipping.length === 0 ? (
-              <div className="p-3 text-xs bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25] text-slate-700 dark:text-[#CBD5E1] rounded-lg">
+              <div className="p-3 text-xs bg-slate-50 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] text-slate-700 dark:text-[#CBD5E1] rounded-lg">
                 No confirmed or fulfilled sales orders available to ship. Please confirm a draft sales order first in Orders & Sales.
               </div>
             ) : (

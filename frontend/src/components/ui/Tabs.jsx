@@ -21,9 +21,9 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
                 const isActive = tab.id === activeTab;
                 const Icon = tab.icon;
                 return (<button key={tab.id} role="tab" type="button" aria-selected={isActive} onClick={(e) => { e.preventDefault(); onChange(tab.id); }} className={`relative py-2.5 px-3.5 text-xs font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] rounded-t-sm flex items-center gap-1.5 ${fullWidth ? "flex-1 justify-center" : ""} ${isActive
-                        ? "text-slate-950 dark:text-[#D8CFBC] font-bold"
+                        ? "text-[#11120D] dark:text-[#D8CFBC] font-bold"
                         : "text-slate-500 hover:text-slate-800 dark:text-[#9BA3AF] dark:hover:text-slate-200"}`}>
-              {Icon && (<Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? "text-slate-950 dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#7C8189]"}`}/>)}
+              {Icon && (<Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? "text-[#11120D] dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#7C8189]"}`}/>)}
               <span>{tab.label}</span>
               {tab.count !== undefined && (<span className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono font-medium leading-none ${isActive
                             ? "bg-[#D8CFBC] dark:bg-[#D8CFBC] text-[#11120D] dark:text-[#11120D] font-bold"
@@ -32,7 +32,7 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
                 </span>)}
 
               {/* Sliding underline indicator */}
-              {isActive && (<motion.div layoutId={prefersReducedMotion ? undefined : `${layoutId}-underline`} className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#D8CFBC] dark:bg-[#D8CFBC] rounded-full" transition={transitionConfig}/>)}
+              {isActive && (<motion.div layoutId={prefersReducedMotion ? undefined : `${layoutId}-underline`} className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#D8CFBC] dark:bg-[#D8CFBC] rounded-full" transition={transitionConfig}/>)}
             </button>);
             })}
       </div>);

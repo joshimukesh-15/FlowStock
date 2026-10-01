@@ -54,8 +54,17 @@ export default function AuditPage() {
     };
     const getActionBadge = (action) => {
         let variant = "default";
-        if (action.includes("CONFIRMED") || action.includes("DELIVERED") || action.includes("RECEIVED") || action.includes("PAID") || action.includes("RECORDED")) {
-            variant = "success";
+        if (
+            action.includes("CONFIRMED") ||
+            action.includes("DELIVERED") ||
+            action.includes("RECEIVED") ||
+            action.includes("PAID") ||
+            action.includes("RECORDED") ||
+            action.includes("SUCCESS") ||
+            action.includes("CREATED") ||
+            action.includes("INITIALIZED")
+        ) {
+            variant = "brand";
         }
         else if (action.includes("CANCELLED") || action.includes("VOID")) {
             variant = "danger";
@@ -63,7 +72,7 @@ export default function AuditPage() {
         else if (action.includes("ADJUSTMENT") || action.includes("OUT")) {
             variant = "warning";
         }
-        else if (action.includes("IN") || action.includes("DISPATCHED") || action.includes("ISSUED")) {
+        else if (action === "STOCK_IN" || action.startsWith("IN_") || action.includes("DISPATCHED") || action.includes("ISSUED")) {
             variant = "info";
         }
         return (<AnimatedBadge statusKey={action} variant={variant}>
@@ -73,19 +82,19 @@ export default function AuditPage() {
     const getEntityIcon = (entity) => {
         switch (entity) {
             case "Order":
-                return <ShoppingCart className="w-3.5 h-3.5 text-slate-900"/>;
+                return <ShoppingCart className="w-3.5 h-3.5 text-slate-700 dark:text-[#D8CFBC]"/>;
             case "Invoice":
-                return <FileText className="w-3.5 h-3.5 text-slate-900"/>;
+                return <FileText className="w-3.5 h-3.5 text-slate-700 dark:text-[#D8CFBC]"/>;
             case "Payment":
-                return <CreditCard className="w-3.5 h-3.5 text-slate-900"/>;
+                return <CreditCard className="w-3.5 h-3.5 text-slate-700 dark:text-[#D8CFBC]"/>;
             case "Shipment":
-                return <Truck className="w-3.5 h-3.5 text-slate-900"/>;
+                return <Truck className="w-3.5 h-3.5 text-slate-700 dark:text-[#D8CFBC]"/>;
             case "Inventory":
-                return <Boxes className="w-3.5 h-3.5 text-slate-900"/>;
+                return <Boxes className="w-3.5 h-3.5 text-slate-700 dark:text-[#D8CFBC]"/>;
             case "PurchaseOrder":
-                return <Building2 className="w-3.5 h-3.5 text-slate-900"/>;
+                return <Building2 className="w-3.5 h-3.5 text-slate-700 dark:text-[#D8CFBC]"/>;
             default:
-                return <History className="w-3.5 h-3.5 text-slate-500"/>;
+                return <History className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>;
         }
     };
     const entities = [
@@ -109,7 +118,7 @@ export default function AuditPage() {
         {/* Metric Summary Cards */}
         <KpiGrid>
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#191B15] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#18191E] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#22242B] flex items-center justify-center shrink-0">
               <History className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
@@ -119,7 +128,7 @@ export default function AuditPage() {
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#191B15] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#18191E] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#22242B] flex items-center justify-center shrink-0">
               <CreditCard className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
@@ -131,7 +140,7 @@ export default function AuditPage() {
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#191B15] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-[#18191E] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#22242B] flex items-center justify-center shrink-0">
               <Boxes className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
@@ -143,14 +152,14 @@ export default function AuditPage() {
           </Card>
 
           <Card className="p-3.5 sm:p-4 flex items-center gap-3.5">
-            <div className="w-9 h-9 rounded-lg bg-[#D8CFBC]/10 text-slate-900 dark:text-[#D8CFBC] border border-[#D8CFBC]/20 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#D8CFBC]/20 text-[#11120D] dark:text-[#D8CFBC] border border-[#D8CFBC]/40 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4"/>
             </div>
             <div className="min-w-0">
               <p className="text-xs font-medium text-slate-500 dark:text-[#9BA3AF] truncate">Tenant Isolation</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">Enforced</span>
-                <Badge variant="success">Active</Badge>
+                <Badge variant="brand">Active</Badge>
               </div>
             </div>
           </Card>
@@ -168,7 +177,7 @@ export default function AuditPage() {
             {/* Search Input */}
             <form onSubmit={handleSearch} className="flex gap-2">
               <SearchBar placeholder="Search by action, entity name (e.g. SO-3F2383, INV-ACME-01), operator, or details..." value={searchTerm} onChange={setSearchTerm} className="flex-1"/>
-              <Button type="submit" size="sm" variant="secondary" className="text-xs gap-1.5">
+              <Button type="submit" size="sm" variant="primary" className="text-xs gap-1.5">
                 <Filter className="w-3.5 h-3.5"/>
                 Filter
               </Button>
@@ -178,7 +187,7 @@ export default function AuditPage() {
 
         {/* Audit Log Table */}
         <Card spotlight={true} className="shadow-2xs">
-          <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#2B2E25] flex flex-row items-center justify-between">
+          <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#22242B] flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7]">Audit Trail Records</CardTitle>
               <p className="text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
@@ -192,7 +201,7 @@ export default function AuditPage() {
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
-                <thead className="bg-slate-50 dark:bg-[#191B15] text-slate-500 dark:text-[#9BA3AF] font-semibold border-b border-slate-100 dark:border-[#33372B] text-[11px] uppercase tracking-wider">
+                <thead className="bg-slate-50 dark:bg-[#18191E] text-slate-500 dark:text-[#9BA3AF] font-semibold border-b border-slate-100 dark:border-[#22242B] text-[11px] uppercase tracking-wider">
                   <tr>
                     <th className="py-2.5 px-3.5">Timestamp</th>
                     <th className="py-2.5 px-3.5">Action</th>
@@ -203,13 +212,13 @@ export default function AuditPage() {
                     <th className="py-2.5 px-3.5 text-right">Host IP</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
+                <tbody className="divide-y divide-slate-100 dark:divide-[#22242B]">
                   {loading ? (<tr>
                       <td colSpan={7} className="p-4">
                         <TableSkeleton rows={5} columns={["w-36", "w-24", "w-24", "w-32", "w-28", "w-56", "w-24"]}/>
                         <SkeletonAnnouncer label="Loading audit trails"/>
                       </td>
-                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-slate-50/70 dark:hover:bg-[#191B15]/50 transition-colors">
+                    </tr>) : audits.length > 0 ? (audits.map((item) => (<tr key={item.id} className="hover:bg-slate-50/70 dark:hover:bg-[#18191E]/50 transition-colors">
                         <td className="py-2.5 px-3.5 font-mono text-slate-500 dark:text-[#9BA3AF] whitespace-nowrap">
                           {formatDate(item.created_at, true)}
                         </td>
