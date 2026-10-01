@@ -47,10 +47,10 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
             {/* Sliding pill indicator */}
             {isActive && (<motion.div layoutId={prefersReducedMotion ? undefined : `${layoutId}-pill`} className="absolute inset-0 bg-white dark:bg-[#1E2026] rounded-lg shadow-xs border border-slate-200/80 dark:border-[#2E313C] -z-10" transition={transitionConfig}/>)}
 
-            {Icon && (<Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? "text-[#565449] dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#808594]"}`}/>)}
+            {Icon && (<Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? "text-[#090A0C] dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#808594]"}`}/>)}
             <span>{tab.label}</span>
             {tab.count !== undefined && (<span className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono font-medium leading-none ${isActive
-                        ? "bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 text-[#565449] dark:text-[#D8CFBC] border border-[#D8CFBC]/40"
+                        ? "bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 text-[#090A0C] dark:text-[#D8CFBC] border border-[#D8CFBC]/40"
                         : "bg-slate-200/70 dark:bg-[#18191E] text-slate-600 dark:text-[#808594]"}`}>
                 {tab.count}
               </span>)}

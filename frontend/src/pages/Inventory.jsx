@@ -292,7 +292,7 @@ export default function InventoryPage() {
       {/* Record Movement Modal */}
       <Modal isOpen={movementModalOpen && !!selectedProduct} onClose={() => setMovementModalOpen(false)} maxWidth="md" className="p-6">
         {selectedProduct && (<div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#2B2E25]">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200/80 dark:border-[#22242B]">
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white text-sm">
                   Record Stock Movement
@@ -330,7 +330,7 @@ export default function InventoryPage() {
 
               {/* Movement Type Tabs with Fluid Indicator */}
               <FormField label="Movement Type">
-                <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 dark:bg-[#23261E] rounded-lg border border-slate-200 dark:border-[#33372B]">
+                <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 dark:bg-[#181A20] rounded-lg border border-slate-200 dark:border-[#22242B]">
                   {[
                     { type: "IN", label: "Stock IN", icon: TrendingUp },
                     { type: "OUT", label: "Stock OUT", icon: TrendingDown },
@@ -344,17 +344,17 @@ export default function InventoryPage() {
                         type="button"
                         onClick={() => setMovementType(tab.type)}
                         className={`relative text-xs py-2 px-2.5 rounded-md font-medium flex items-center justify-center gap-1.5 transition-colors z-10 ${
-                          isSelected ? "text-white font-semibold" : "text-slate-600 hover:text-slate-950 dark:text-[#9BA3AF] dark:hover:text-white"
+                          isSelected ? "text-[#11120D] font-bold" : "text-slate-600 hover:text-slate-950 dark:text-[#9BA3AF] dark:hover:text-white"
                         }`}
                       >
                         {isSelected && (
                           <motion.div
                             layoutId={prefersReducedMotion ? undefined : "activeMovementTab"}
-                            className="absolute inset-0 bg-slate-950 rounded-md shadow-xs -z-10"
+                            className="absolute inset-0 bg-[#D8CFBC] hover:bg-[#FFFBF4] rounded-md shadow-xs border border-[#FFFBF4]/40 -z-10"
                             transition={getTransition("normal", prefersReducedMotion)}
                           />
                         )}
-                        <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-white" : "text-slate-500 dark:text-[#9BA3AF]"}`} />
+                        <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-[#11120D]" : "text-slate-500 dark:text-[#9BA3AF]"}`} />
                         <span>{tab.label}</span>
                       </button>
                     );
@@ -377,8 +377,8 @@ export default function InventoryPage() {
                   <div
                     className={`px-3 py-2 text-sm font-mono font-bold rounded-md border ${
                       previewNewStock < 0
-                        ? "bg-slate-100 dark:bg-[#23261E] text-slate-950 border-zinc-400 font-bold"
-                        : "bg-slate-50 dark:bg-[#11120D] text-slate-800 dark:text-[#F4F5F7] border-slate-200 dark:border-[#33372B]"
+                        ? "bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 border-rose-300 dark:border-rose-800/50 font-bold"
+                        : "bg-slate-50 dark:bg-[#181A20] text-slate-800 dark:text-[#F4F5F7] border-slate-200 dark:border-[#22242B]"
                     }`}
                   >
                     {previewNewStock} {selectedProduct?.product?.unit || "units"}
@@ -390,7 +390,7 @@ export default function InventoryPage() {
 
               <Input label="Notes (Optional)" placeholder="Additional context or batch info..." value={notes} onChange={(e) => setNotes(e.target.value)}/>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-[#2B2E25]">
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200/80 dark:border-[#22242B]">
                 <Button type="button" variant="outline" size="sm" onClick={() => setMovementModalOpen(false)}>
                   Cancel
                 </Button>
