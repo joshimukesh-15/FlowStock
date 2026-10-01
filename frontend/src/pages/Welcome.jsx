@@ -19,32 +19,183 @@ import { motion } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
+/* ── Inventory Ledger Panel ── */
+function InventoryPanel() {
+  const rows = [
+    { name: "Raw Denim 32x30", sku: "RD-3230", qty: 148, status: "ok", value: "₹2,96,000" },
+    { name: "Merino Tee M/White", sku: "MT-MWH", qty: 34, status: "low", value: "₹61,200" },
+    { name: "Canvas Sneaker 42", sku: "CS-42BK", qty: 212, status: "ok", value: "₹5,30,000" },
+    { name: "Linen Shirt XL/Blue", sku: "LS-XLBL", qty: 7, status: "critical", value: "₹21,000" },
+    { name: "Oxford Chino 34x32", sku: "OC-3432", qty: 89, status: "ok", value: "₹2,22,500" },
+  ];
+  const badge = { ok: ["#166534", "#DCFCE7", "In Stock"], low: ["#92400E", "#FEF3C7", "Low"], critical: ["#991B1B", "#FEE2E2", "Critical"] };
+  return (
+    <div className="w-full h-full bg-[#090A0C] rounded-xl overflow-hidden flex flex-col select-none">
+      {/* Header bar */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[#22242B]">
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#38BDF8]">Inventory Ledger</span>
+          <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#38BDF8]/10 text-[#38BDF8] border border-[#38BDF8]/20">490 SKUs</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="h-6 w-28 rounded bg-[#121316] border border-[#22242B]" />
+          <div className="h-6 w-16 rounded bg-[#38BDF8] opacity-90" />
+        </div>
+      </div>
+      {/* Table */}
+      <div className="flex-1 overflow-hidden">
+        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2 border-b border-[#22242B]">
+          {["PRODUCT", "QTY", "STATUS", "VALUE"].map(h => (
+            <span key={h} className="text-[9px] font-mono uppercase tracking-[0.14em] text-[#4B5563]">{h}</span>
+          ))}
+        </div>
+        {rows.map((r, i) => (
+          <div key={i} className={`grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 border-b border-[#22242B]/50 ${i % 2 === 0 ? "" : "bg-[#0D0E11]/50"}`}>
+            <div>
+              <div className="text-[11px] text-[#E5E7EB] font-medium leading-tight truncate">{r.name}</div>
+              <div className="text-[9px] font-mono text-[#4B5563] mt-0.5">{r.sku}</div>
+            </div>
+            <div className="text-[11px] font-mono tabular-nums text-[#D1D5DB] self-center">{r.qty}</div>
+            <div className="self-center">
+              <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold" style={{ background: badge[r.status][1] + "22", color: badge[r.status][1], border: `1px solid ${badge[r.status][1]}33` }}>
+                {badge[r.status][2]}
+              </span>
+            </div>
+            <div className="text-[11px] font-mono tabular-nums text-[#38BDF8] self-center text-right">{r.value}</div>
+          </div>
+        ))}
+      </div>
+      {/* Footer metric */}
+      <div className="flex items-center justify-between px-4 py-2.5 border-t border-[#22242B] bg-[#0D0E11]">
+        <span className="text-[9px] font-mono uppercase tracking-[0.14em] text-[#4B5563]">Total Portfolio Value</span>
+        <span className="text-[13px] font-mono font-bold tabular-nums text-[#38BDF8]">₹24,68,450</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Products / SKU Catalog Panel ── */
+function ProductsPanel() {
+  const products = [
+    { name: "Raw Denim Jeans", cat: "Bottoms", sku: "RD-3230", stock: 148, price: "₹2,000" },
+    { name: "Merino Wool Tee", cat: "Tops", sku: "MT-MWH", stock: 34, price: "₹1,800" },
+    { name: "Canvas Sneakers", cat: "Footwear", sku: "CS-42BK", stock: 212, price: "₹2,500" },
+    { name: "Linen Shirt", cat: "Tops", sku: "LS-XLBL", stock: 7, price: "₹3,000" },
+    { name: "Oxford Chinos", cat: "Bottoms", sku: "OC-3432", stock: 89, price: "₹2,500" },
+    { name: "Leather Wallet", cat: "Accessories", sku: "LW-BRN", stock: 55, price: "₹1,200" },
+  ];
+  return (
+    <div className="w-full h-full bg-[#090A0C] rounded-xl overflow-hidden flex flex-col select-none">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[#22242B]">
+        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#38BDF8]">SKU Catalog</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[9px] font-mono text-[#4B5563]">6 of 490 shown</span>
+          <div className="h-5 w-20 rounded bg-[#38BDF8] opacity-90" />
+        </div>
+      </div>
+      {/* Grid */}
+      <div className="flex-1 p-3 grid grid-cols-3 gap-2 overflow-hidden">
+        {products.map((p, i) => (
+          <div key={i} className="rounded-lg border border-[#22242B] bg-[#121316] p-2.5 flex flex-col gap-1.5 hover:border-[#38BDF8]/30 transition-colors">
+            <div className="flex items-start justify-between">
+              <span className="text-[8px] font-mono uppercase tracking-[0.12em] text-[#38BDF8]">{p.cat}</span>
+              <span className={`w-1.5 h-1.5 rounded-full mt-0.5 ${p.stock > 20 ? "bg-emerald-500" : "bg-amber-500"}`} />
+            </div>
+            <div className="text-[10px] font-semibold text-[#E5E7EB] leading-tight">{p.name}</div>
+            <div className="text-[9px] font-mono text-[#4B5563]">{p.sku}</div>
+            <div className="flex items-center justify-between mt-auto pt-1 border-t border-[#22242B]">
+              <span className="text-[9px] font-mono tabular-nums text-[#9CA3AF]">{p.stock} units</span>
+              <span className="text-[10px] font-mono font-bold tabular-nums text-[#38BDF8]">{p.price}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Operations & Financial Velocity Panel ── */
+function OperationsPanel() {
+  const kpis = [
+    { label: "Invoiced Revenue", value: "₹18.4L", delta: "+12.3%", up: true },
+    { label: "Active Orders", value: "247", delta: "+8", up: true },
+    { label: "Receivables", value: "₹4.2L", delta: "-2.1%", up: false },
+  ];
+  const orders = [
+    { id: "ORD-8821", customer: "Nexus Retail Ltd", items: 14, status: "Dispatched", amount: "₹84,200" },
+    { id: "ORD-8820", customer: "Apex Stores", items: 6, status: "Confirmed", amount: "₹31,500" },
+    { id: "ORD-8819", customer: "Meridian Corp", items: 22, status: "Fulfilled", amount: "₹1,12,000" },
+  ];
+  const bars = [40, 65, 52, 80, 70, 88, 60, 95, 72, 85, 68, 90];
+  const statusColor = { Dispatched: "#38BDF8", Confirmed: "#A78BFA", Fulfilled: "#34D399" };
+  return (
+    <div className="w-full h-full bg-[#090A0C] rounded-xl overflow-hidden flex flex-col select-none">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[#22242B]">
+        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#38BDF8]">Executive Cockpit</span>
+        <span className="text-[9px] font-mono text-[#4B5563] border border-[#22242B] px-2 py-0.5 rounded">Live · Oct 2026</span>
+      </div>
+      {/* KPIs */}
+      <div className="grid grid-cols-3 divide-x divide-[#22242B] border-b border-[#22242B]">
+        {kpis.map((k, i) => (
+          <div key={i} className="px-3 py-3">
+            <div className="text-[8px] font-mono uppercase tracking-[0.12em] text-[#4B5563] mb-1">{k.label}</div>
+            <div className="text-[15px] font-mono font-bold tabular-nums text-[#F4F5F7]">{k.value}</div>
+            <div className={`text-[9px] font-mono mt-0.5 ${k.up ? "text-emerald-400" : "text-red-400"}`}>{k.delta}</div>
+          </div>
+        ))}
+      </div>
+      {/* Mini bar chart */}
+      <div className="px-4 py-2.5 border-b border-[#22242B]">
+        <div className="text-[8px] font-mono uppercase tracking-[0.12em] text-[#4B5563] mb-2">Order Velocity — Last 12 Days</div>
+        <div className="flex items-end gap-1 h-10">
+          {bars.map((h, i) => (
+            <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === bars.length - 1 ? "#38BDF8" : "#38BDF8" + "40" }} />
+          ))}
+        </div>
+      </div>
+      {/* Recent orders */}
+      <div className="flex-1 overflow-hidden">
+        {orders.map((o, i) => (
+          <div key={i} className={`flex items-center gap-3 px-4 py-2 ${i < orders.length - 1 ? "border-b border-[#22242B]/60" : ""}`}>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9px] font-mono text-[#4B5563]">{o.id}</span>
+                <span className="text-[9px] font-mono" style={{ color: statusColor[o.status] }}>· {o.status}</span>
+              </div>
+              <div className="text-[10px] text-[#D1D5DB] font-medium truncate">{o.customer}</div>
+            </div>
+            <div className="text-right shrink-0">
+              <div className="text-[10px] font-mono font-bold tabular-nums text-[#38BDF8]">{o.amount}</div>
+              <div className="text-[9px] font-mono text-[#4B5563]">{o.items} items</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── High-Performance Responsive Feature Row ── */
 function FeatureRow({
   tag,
   title,
   description,
   bullets,
-  imgSrc,
-  imgAlt,
+  panel,
   reverse = false,
 }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-20">
-      {/* Media Column */}
+      {/* Panel Column */}
       <div
-        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm hover:shadow-xl transition-all duration-300 p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-[#18191E] dark:to-[#121316] ${
+        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#0D0E11] shadow-sm hover:shadow-[0_0_40px_rgba(56,189,248,0.06)] transition-all duration-500 p-1.5 sm:p-2 ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
-        <div className="rounded-xl overflow-hidden border border-slate-200/80 dark:border-[#22242B] bg-slate-900 relative aspect-[16/10]">
-          <img
-            src={imgSrc}
-            alt={imgAlt}
-            className="w-full h-full object-cover object-center hover:scale-[1.02] transition-transform duration-500 ease-out"
-            loading="lazy"
-            decoding="async"
-          />
+        <div className="rounded-xl overflow-hidden border border-slate-200/80 dark:border-[#22242B] relative aspect-[16/10]">
+          {panel}
         </div>
       </div>
 
@@ -323,8 +474,7 @@ export default function WelcomePage() {
             "Itemized SKU tracking with instant ledger reconciliation",
             "Reorder-required alerts synchronized across warehouse depots"
           ]}
-          imgSrc="/assets/flowstock-inventory.jpeg"
-          imgAlt="FlowStock Inventory Ledger and Real-Time Stock Valuation Console"
+          panel={<InventoryPanel />}
           reverse={false}
         />
 
@@ -338,8 +488,7 @@ export default function WelcomePage() {
             "Real-time stock level monitoring with Active and Clearance states",
             "Rapid SKU lookup and bulk catalog management for high-volume catalogs"
           ]}
-          imgSrc="/assets/flowstock-products.jpeg"
-          imgAlt="FlowStock Products and SKU Variants Management Console"
+          panel={<ProductsPanel />}
           reverse={true}
         />
 
@@ -353,8 +502,7 @@ export default function WelcomePage() {
             "Interactive fulfillment curves and order velocity intelligence",
             "Integrated multi-tenant warehouse overview with double-entry precision"
           ]}
-          imgSrc="/assets/flowstock-operations.jpeg"
-          imgAlt="FlowStock Executive Operations and Warehouse Management Dashboard"
+          panel={<OperationsPanel />}
           reverse={false}
         />
       </section>
