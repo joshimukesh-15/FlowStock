@@ -41,7 +41,7 @@ const STATUS_CONFIGS = {
     VOID: { variant: "danger", icon: Ban, label: "Void" },
   },
   transfer: {
-    REQUESTED: { variant: "warning", icon: Clock, label: "REQUESTED" },
+    REQUESTED: { variant: "brand", icon: Clock, label: "REQUESTED" },
     IN_TRANSIT: { variant: "brand", icon: Truck, label: "IN TRANSIT", pulse: true },
     RECEIVED: { variant: "success", icon: CheckCircle2, label: "RECEIVED" },
     CANCELLED: { variant: "danger", icon: Ban, label: "CANCELLED" },

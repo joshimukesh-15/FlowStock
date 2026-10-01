@@ -379,13 +379,13 @@ export default function WarehousesPage() {
               ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30"
               : isHigh
               ? "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30"
-              : "text-[#565449] dark:text-[#D8CFBC] bg-[#D8CFBC]/20 dark:bg-[#D8CFBC]/10 border-[#D8CFBC]/40 dark:border-[#D8CFBC]/30";
+              : "text-[#090A0C] dark:text-[#D8CFBC] bg-slate-100 dark:bg-[#18191E] border-slate-200 dark:border-[#262833]";
 
             const barFillColor = isCritical
               ? "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"
               : isHigh
               ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]"
-              : "bg-[#565449] dark:bg-[#D8CFBC] shadow-[0_0_8px_rgba(216,207,188,0.35)]";
+              : "bg-[#090A0C] dark:bg-[#D8CFBC] shadow-[0_0_8px_rgba(9,10,12,0.2)]";
 
             const statusLabel = isCritical
               ? "Near Limit"
@@ -396,7 +396,7 @@ export default function WarehousesPage() {
               : "Optimal";
 
             return (
-              <Card key={wh.id} className="p-4 flex flex-col justify-between hover:border-slate-300 dark:hover:border-[#565449] transition-colors group">
+              <Card key={wh.id} className="p-4 flex flex-col justify-between hover:border-slate-300 dark:hover:border-[#D8CFBC]/40 transition-colors group">
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
@@ -419,19 +419,19 @@ export default function WarehousesPage() {
                       <button
                         type="button"
                         onClick={() => handleOpenEdit(wh)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2B2E25] transition-colors cursor-pointer"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18191E] transition-colors cursor-pointer"
                         title="Configure Facility & Capacity"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#191B15] flex items-center justify-center text-slate-600 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#33372B]">
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#18191E] flex items-center justify-center text-slate-700 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#262833]">
                         <WarehouseIcon className="w-4 h-4" />
                       </div>
                     </div>
                   </div>
 
                   {/* Realistic Capacity Metrics & Visualization */}
-                  <div className="mt-3.5 p-3 rounded-xl bg-slate-50/70 dark:bg-[#191B15] border border-slate-200/60 dark:border-[#2B2E25]">
+                  <div className="mt-3.5 p-3 rounded-xl bg-slate-50/70 dark:bg-[#121316] border border-slate-200/60 dark:border-[#22242B]">
                     <div className="flex items-center justify-between text-xs mb-1.5">
                       <span className="font-medium text-slate-600 dark:text-[#9BA3AF] flex items-center gap-1.5">
                         <Gauge className="w-3.5 h-3.5 text-slate-400" />
@@ -444,7 +444,7 @@ export default function WarehousesPage() {
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-2 w-full rounded-full bg-slate-200/70 dark:bg-[#23261E] overflow-hidden p-0.5">
+                    <div className="h-2 w-full rounded-full bg-slate-200/70 dark:bg-[#22242B] overflow-hidden p-0.5">
                       <div
                         className={`h-full rounded-full transition-all duration-700 ease-out ${barFillColor}`}
                         style={{ width: `${Math.min(100, Math.max(currentStock > 0 ? 3 : 0, pct))}%` }}
@@ -463,7 +463,7 @@ export default function WarehousesPage() {
                   </div>
                 </div>
 
-                <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-[#2B2E25] flex items-center justify-between text-xs text-slate-400 dark:text-[#7C8189]">
+                <div className="mt-3.5 pt-3 border-t border-slate-100 dark:border-[#22242B] flex items-center justify-between text-xs text-slate-400 dark:text-[#7C8189]">
                   <span className="flex items-center gap-1.5 truncate">
                     <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0" />
                     {wh.location || "General Logistics Zone"}

@@ -24,13 +24,13 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
       detail: "Staged for Dispatch",
       icon: Clock,
       progressWidth: "w-1/4",
-      trackColor: "bg-amber-500",
+      trackColor: "bg-[#090A0C] dark:bg-[#D8CFBC]",
       pillClass:
-        "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30",
+        "bg-[#090A0C] text-white dark:bg-[#D8CFBC] dark:text-[#090A0C] border border-[#090A0C] dark:border-[#D8CFBC]",
       badgeClass:
-        "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30",
-      iconClass: "text-amber-600 dark:text-amber-400",
-      dotClass: "bg-amber-500",
+        "bg-[#090A0C] text-white dark:bg-[#D8CFBC] dark:text-[#090A0C] border border-[#090A0C] dark:border-[#D8CFBC]",
+      iconClass: "text-[#D8CFBC] dark:text-[#090A0C]",
+      dotClass: "bg-[#D8CFBC] dark:bg-[#090A0C]",
       corridorText: "Staged for Dispatch",
     },
     IN_TRANSIT: {
@@ -92,12 +92,7 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
 
   const StatusIcon = config.icon;
 
-  const originDotClass =
-    isReceived || isTransit
-      ? "bg-[#090A0C] dark:bg-[#D8CFBC]"
-      : isRequested
-      ? "bg-amber-500"
-      : "bg-slate-400 dark:bg-slate-500";
+  const originDotClass = "bg-[#090A0C] dark:bg-[#D8CFBC]";
 
   const destDotClass =
     isReceived
@@ -169,6 +164,14 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#262833] flex items-center justify-center text-slate-900 dark:text-[#D8CFBC] shadow-xs">
                 <WarehouseIcon className="w-5 h-5" />
               </div>
+              {isRequested && (
+                <div
+                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] flex items-center justify-center shadow-2xs border border-white dark:border-[#18191E]"
+                  title="Staged at Origin"
+                >
+                  <Clock className="w-2.5 h-2.5" />
+                </div>
+              )}
               {(isReceived || isTransit) && (
                 <div
                   className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] flex items-center justify-center shadow-2xs border border-white dark:border-[#18191E]"
