@@ -162,7 +162,6 @@ html.dark *::-webkit-scrollbar-thumb:hover {
   }
   html.dark .app-canvas {
     background-image:
-      radial-gradient(circle at 90% -5%, rgba(56, 189, 248, 0.035), transparent 28rem),
       radial-gradient(circle at 10% -10%, rgba(216, 207, 188, 0.025), transparent 32rem);
   }
   .no-scrollbar::-webkit-scrollbar {

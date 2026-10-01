@@ -105,7 +105,7 @@ export const Sidebar = () => {
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
-              <span className="w-7 h-7 rounded-lg bg-white dark:bg-[#18191E] border border-slate-200/90 dark:border-[#38BDF8]/25 shadow-xs dark:shadow-[0_0_12px_rgba(56,189,248,0.18)] flex items-center justify-center p-0.5 transition-all">
+              <span className="w-7 h-7 rounded-lg bg-white dark:bg-[#18191E] border border-slate-200/90 dark:border-[#22242B] shadow-xs flex items-center justify-center p-0.5 transition-all">
                 <Logomark className="w-5 h-5" />
               </span>
             </span>
@@ -165,7 +165,7 @@ export const Sidebar = () => {
                             transition={getTransition("normal", prefersReducedMotion)}
                             aria-hidden="true"
                           />
-                          <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full bg-[#38BDF8] shadow-[0_0_8px_rgba(56,189,248,0.7)] z-20" />
+                          <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full bg-[#38BDF8] z-20" />
                         </>
                       )}
                       <Link

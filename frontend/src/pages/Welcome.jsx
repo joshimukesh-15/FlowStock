@@ -201,7 +201,7 @@ function FeatureRow({
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-20">
       {/* Panel Column */}
       <div
-        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#0D0E11] shadow-sm hover:shadow-[0_0_40px_rgba(56,189,248,0.06)] transition-all duration-500 p-1.5 sm:p-2 ${
+        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#0D0E11] shadow-sm hover:shadow-lg dark:hover:shadow-black/50 transition-all duration-300 p-1.5 sm:p-2 ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
@@ -525,28 +525,6 @@ export default function WelcomePage() {
   return (
     <div className="min-h-[100dvh] bg-[#FFFBF4] dark:bg-[#090A0C] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8] relative transition-colors">
       
-      {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        <div 
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[450px]" 
-          style={{
-            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(56,189,248,0.06), rgba(30,41,59,0.04), transparent 70%)',
-          }} 
-        />
-        <div 
-          className="absolute top-[35%] right-0 w-[500px] h-[500px]" 
-          style={{
-            background: 'radial-gradient(circle at 100% 50%, rgba(56,189,248,0.04), transparent 70%)',
-          }} 
-        />
-        <div 
-          className="absolute top-[65%] left-0 w-[500px] h-[500px]" 
-          style={{
-            background: 'radial-gradient(circle at 0% 50%, rgba(56,189,248,0.03), transparent 70%)',
-          }} 
-        />
-      </div>
-
       {/* 1. FIXED TOP NAVBAR */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-[#090A0C]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#22242B] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -640,16 +618,6 @@ export default function WelcomePage() {
 
       {/* 2. HERO SECTION */}
       <section id="hero" className="relative pt-32 sm:pt-40 pb-20 sm:pb-28 bg-transparent">
-        {/* Clean Ambient Atmosphere (No Image) */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div
-            className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] pointer-events-none opacity-80"
-            style={{
-              background: 'radial-gradient(ellipse 60% 45% at 50% 25%, rgba(56,189,248,0.07), rgba(30,41,59,0.05), transparent 70%)',
-            }}
-          />
-        </div>
-
         {/* Hero Content Header */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
           {/* Status Pill */}
@@ -686,7 +654,7 @@ export default function WelcomePage() {
                 size="lg"
                 variant="primary"
                 onClick={() => navigate("/dashboard")}
-                className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_14px_rgba(56,189,248,0.25)]"
+                className="h-12 px-7 rounded-xl font-bold text-sm shadow-sm hover:shadow-md"
               >
                 <span>Go to Dashboard</span>
                 <ArrowRight className="w-4 h-4" />
@@ -697,7 +665,7 @@ export default function WelcomePage() {
                   size="lg"
                   variant="primary"
                   onClick={() => openAuth("signup")}
-                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_14px_rgba(56,189,248,0.25)]"
+                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-sm hover:shadow-md"
                 >
                   <span>Get Started Free</span>
                   <ArrowRight className="w-4 h-4" />
@@ -794,15 +762,6 @@ export default function WelcomePage() {
 
       {/* 5. STATS BAND (LUXURY COCKPIT TELEMETRY) */}
       <section id="stats" className="py-16 sm:py-20 bg-[#090A0C] text-[#FFFBF4] border-y border-[#22242B] relative overflow-hidden">
-        {/* Subtle Ambient Atmosphere */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#38BDF8]/30 to-transparent" />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[260px] pointer-events-none opacity-25"
-          style={{
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(56,189,248,0.12), transparent 75%)",
-          }}
-        />
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#22242B]">
             <div className="py-4 sm:py-2 px-3 sm:px-6 text-center">
@@ -956,7 +915,7 @@ export default function WelcomePage() {
             size="lg"
             variant="primary"
             onClick={() => openAuth("signup")}
-            className="h-12 px-8 rounded-xl font-bold text-sm shadow-[0_2px_14px_rgba(56,189,248,0.25)]"
+            className="h-12 px-8 rounded-xl font-bold text-sm shadow-sm hover:shadow-md"
           >
             <span>Get Started Free</span>
             <ArrowRight className="w-4 h-4" />
@@ -1229,14 +1188,6 @@ export default function WelcomePage() {
         maxWidth="md"
         className="!bg-white dark:!bg-[#121316] !border-slate-200/90 dark:!border-[#22242B] !shadow-[0_25px_70px_rgba(0,0,0,0.3)] dark:!shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden"
       >
-        {/* Top ambient azure hairline glow */}
-        <div
-          className="absolute top-0 inset-x-0 h-px pointer-events-none z-10"
-          style={{
-            background: "linear-gradient(90deg, transparent, rgba(56,189,248,0.6), transparent)",
-          }}
-        />
-
         <AuthModalContent
           mode={authMode}
           onModeChange={setAuthMode}

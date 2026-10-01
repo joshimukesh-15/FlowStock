@@ -396,7 +396,7 @@ export const Header = () => {
               aria-label="Notifications"
             >
               <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-sky-500 text-white dark:bg-[#38BDF8] dark:text-[#090A0C] text-[10px] font-mono font-bold shadow-[0_0_8px_rgba(56,189,248,0.4)]">
+              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-sky-500 text-white dark:bg-[#38BDF8] dark:text-[#090A0C] text-[10px] font-mono font-bold">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>)}
             </button>

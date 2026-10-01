@@ -95,22 +95,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#090A0C] flex items-center justify-center px-4 py-8 relative overflow-hidden font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8]">
-      {/* Background decoration */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 50% at 50% -10%, rgba(56,189,248,0.08), rgba(30,41,59,0.05), transparent 60%)",
-        }}
-      />
-      <div
-        className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(56,189,248,0.18), transparent)",
-        }}
-      />
-
       <div className="w-full max-w-[400px] relative z-10">
         {/* Logo */}
         <Link
@@ -395,7 +379,7 @@ export default function LoginPage() {
                     setAutoFilled(true);
                     setTimeout(() => setAutoFilled(false), 1400);
                   }}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-sky-500 hover:bg-sky-400 text-white text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-[0_2px_10px_rgba(56,189,248,0.25)] outline-none focus-visible:ring-2 focus-visible:ring-[#38BDF8]"
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-xs border border-[#FFFBF4] outline-none"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     {autoFilled ? (

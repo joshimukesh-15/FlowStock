@@ -184,9 +184,9 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
             return (<div key={bar.shortDay} onMouseEnter={() => setHoveredBarIndex(idx)} onMouseLeave={() => setHoveredBarIndex(null)} className="relative flex-1 flex flex-col items-center justify-end h-full group cursor-pointer">
                     {/* The Slender Micro Bar */}
                     <motion.div initial={prefersReducedMotion ? false : { height: 0 }} animate={{ height: `${bar.heightPct}%` }} transition={{ duration: 0.5, delay: idx * 0.04 }} className={`w-full max-w-[14px] rounded-t-xs transition-colors duration-150 ${isHovered
-                    ? "bg-[#38BDF8] shadow-[0_0_8px_rgba(56,189,248,0.6)]"
+                    ? "bg-[#38BDF8]"
                     : bar.isToday
-                        ? "bg-sky-600 dark:bg-[#38BDF8] dark:shadow-[0_0_8px_rgba(56,189,248,0.35)]"
+                        ? "bg-sky-600 dark:bg-[#38BDF8]"
                         : "bg-slate-200 dark:bg-[#22242B] hover:bg-slate-300 dark:hover:bg-[#2E313B]"}`}/>
 
                     {/* Micro Day Label */}
