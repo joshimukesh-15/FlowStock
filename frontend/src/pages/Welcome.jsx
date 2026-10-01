@@ -239,8 +239,8 @@ function FeatureRow({
   );
 }
 
-/* ── Inline Auth Drawer ── */
-function AuthDrawer({ mode, onModeChange, onClose, onSuccess }) {
+/* ── Production Center Auth Modal Content ── */
+function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
   const { login, signup } = useAuth();
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -326,7 +326,7 @@ function AuthDrawer({ mode, onModeChange, onClose, onSuccess }) {
               >
                 {mode === m && (
                   <motion.div
-                    layoutId="auth-drawer-tab"
+                    layoutId="auth-modal-tab"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
                   />
@@ -456,7 +456,7 @@ function AuthDrawer({ mode, onModeChange, onClose, onSuccess }) {
               </div>
               <button type="button"
                 onClick={() => { setEmail("alice@acme.local"); setPassword("admin123"); setError(""); }}
-                className="shrink-0 px-2.5 py-1 rounded-md bg-sky-500 hover:bg-sky-400 text-white text-[11px] font-bold transition-colors cursor-pointer">
+                className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer shadow-xs border border-[#FFFBF4]">
                 Auto Fill
               </button>
             </div>
@@ -500,21 +500,16 @@ export default function WelcomePage() {
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState("login");
 
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
-  );
-
+  // Close on Escape key
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const authPanelWidth = windowWidth < 640
-    ? windowWidth
-    : windowWidth < 1024
-      ? 460
-      : Math.min(560, Math.max(480, Math.floor(windowWidth * 0.48)));
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && authOpen) {
+        closeAuth();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [authOpen]);
 
   const openAuth = (mode = "login") => { setAuthMode(mode); setAuthOpen(true); };
   const closeAuth = () => setAuthOpen(false);
@@ -528,13 +523,10 @@ export default function WelcomePage() {
   };
 
   return (
-    <div className="h-[100dvh] flex overflow-hidden bg-[#FFFBF4] dark:bg-[#090A0C] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8] transition-colors">
-
-      {/* ── LEFT: scrollable welcome content ── */}
-      <div className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden relative">
+    <div className="min-h-[100dvh] bg-[#FFFBF4] dark:bg-[#090A0C] text-slate-900 dark:text-[#F4F5F7] font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8] relative transition-colors">
       
       {/* STATIC HIGH-PERFORMANCE BACKGROUND ACCENTS */}
-      <div className="absolute inset-x-0 top-0 h-[450px] overflow-hidden pointer-events-none -z-10">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
         <div 
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[450px]" 
           style={{
@@ -555,8 +547,8 @@ export default function WelcomePage() {
         />
       </div>
 
-      {/* 1. STICKY TOP NAVBAR */}
-      <header className="sticky top-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#090A0C]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#22242B] transition-colors">
+      {/* 1. FIXED TOP NAVBAR */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-[#090A0C]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-[#22242B] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 relative z-10 cursor-pointer">
             <Logomark className="w-8 h-8 hover:scale-105 transition-transform drop-shadow-md" />
@@ -647,7 +639,7 @@ export default function WelcomePage() {
       </header>
 
       {/* 2. HERO SECTION */}
-      <section id="hero" className="relative pt-14 sm:pt-20 pb-20 sm:pb-28 bg-transparent">
+      <section id="hero" className="relative pt-32 sm:pt-40 pb-20 sm:pb-28 bg-transparent">
         {/* Clean Ambient Atmosphere (No Image) */}
         <div className="absolute inset-0 pointer-events-none">
           <div
@@ -1230,32 +1222,49 @@ export default function WelcomePage() {
         </div>
       </Modal>
 
-      </div>{/* end left scroll panel */}
-
-      {/* ── RIGHT: Auth panel — true flex sibling, pushes content left ── */}
+      {/* ── PRODUCTION-TIER CENTER GLASS AUTH MODAL ── */}
       <AnimatePresence>
         {authOpen && (
-          <motion.div
-            key="auth-panel"
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: authPanelWidth, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 320, damping: 36, mass: 0.85 }}
-            className="shrink-0 h-full overflow-hidden border-l border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-[-16px_0_48px_rgba(0,0,0,0.14)] z-30"
-          >
-            {/* Inner container with dynamic width prevents content from squishing during animation */}
-            <div
-              className="h-full flex flex-col overflow-y-auto"
-              style={{ width: authPanelWidth }}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+            {/* Ambient Backdrop with Blur */}
+            <motion.div
+              key="auth-modal-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={closeAuth}
+              className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-md"
+            />
+
+            {/* Elevated Floating Glass Modal Card */}
+            <motion.div
+              key="auth-modal-card"
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 12 }}
+              transition={{ type: "spring", stiffness: 420, damping: 32 }}
+              className="relative w-full max-w-[440px] my-auto rounded-2xl border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-[0_25px_70px_rgba(0,0,0,0.25)] dark:shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)] overflow-hidden flex flex-col z-10"
             >
-              <AuthDrawer
+              {/* Top ambient azure hairline glow */}
+              <div
+                className="absolute top-0 inset-x-0 h-px pointer-events-none"
+                style={{
+                  background: "linear-gradient(90deg, transparent, rgba(56,189,248,0.5), transparent)",
+                }}
+              />
+
+              <AuthModalContent
                 mode={authMode}
                 onModeChange={setAuthMode}
                 onClose={closeAuth}
-                onSuccess={() => { closeAuth(); navigate("/dashboard"); }}
+                onSuccess={() => {
+                  closeAuth();
+                  navigate("/dashboard");
+                }}
               />
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
