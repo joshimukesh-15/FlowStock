@@ -188,7 +188,7 @@ export default function InventoryPage() {
       {/* Inventory Table */}
       <motion.div variants={itemVariants}>
         <Card className="overflow-hidden">
-          <CardHeader className="py-2.5 px-3.5 bg-slate-50/60 dark:bg-[#11120D]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+          <CardHeader className="py-2.5 px-3.5 bg-slate-50/60 dark:bg-[#121316]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-[#9BA3AF]">
               Live On-Hand Stock Levels & Reorder Thresholds
             </CardTitle>
@@ -197,7 +197,7 @@ export default function InventoryPage() {
 
           <div className="overflow-auto max-h-[60vh] relative custom-scrollbar">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-slate-50 dark:bg-[#11120D] border-b border-slate-200 dark:border-[#33372B] text-slate-500 dark:text-[#9BA3AF] font-medium uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-sm">
+              <thead className="bg-slate-50 dark:bg-[#121316] border-b border-slate-200 dark:border-[#22242B] text-slate-500 dark:text-[#9BA3AF] font-medium uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-sm">
                 <tr>
                   <th className="py-2 px-3.5">SKU</th>
                   <th className="py-2 px-3.5">Product Name</th>
@@ -210,7 +210,7 @@ export default function InventoryPage() {
                   <th className="py-2 px-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-[#2B2E25]">
+              <tbody className="divide-y divide-slate-200 dark:divide-[#22242B]">
                 {loading ? (<tr>
                     <td colSpan={9} className="p-0">
                       <TableSkeleton rows={6} columns={["w-24", "w-44", "w-28", "w-16", "w-16", "w-20", "w-24", "w-24", "w-20"]}/>
@@ -237,7 +237,7 @@ export default function InventoryPage() {
                       <td className="py-2 px-3.5 text-center">
                         <span className={`inline-block font-mono font-bold px-2 py-0.5 rounded text-xs ${s.is_low_stock
                 ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30"
-                : "bg-slate-100 dark:bg-[#23261E] text-slate-800 dark:text-[#E2E8F0]"}`}>
+                : "bg-slate-100 dark:bg-[#181A20] text-slate-800 dark:text-[#E2E8F0] border border-slate-200/60 dark:border-[#22242B]"}`}>
                           {s.on_hand_quantity} {s.product.unit}
                         </span>
                       </td>
@@ -405,7 +405,7 @@ export default function InventoryPage() {
       {/* Movement History Audit Drawer Modal */}
       <Modal isOpen={historyModalOpen && !!historyItem} onClose={() => setHistoryModalOpen(false)} maxWidth="2xl" className="p-6">
         {historyItem && (<div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#2B2E25]">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-[#22242B]">
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white text-sm">
                   Ledger Audit Trail: {historyItem.product.name}
@@ -427,7 +427,7 @@ export default function InventoryPage() {
                 <SkeletonAnnouncer label="Loading movement transactions"/>
               </div>) : movements.length === 0 ? (<EmptyState compact icon={History} title="No movements recorded yet" description="Stock changes are recorded as append-only ledger movements. Record an IN or OUT movement to see the timeline."/>) : (<div className="max-h-80 overflow-y-auto">
                 <table className="w-full text-left text-xs border-collapse">
-                  <thead className="bg-slate-50 dark:bg-[#11120D] border-b border-slate-200 dark:border-[#33372B] text-slate-600 font-semibold sticky top-0">
+                  <thead className="bg-slate-50 dark:bg-[#121316] border-b border-slate-200 dark:border-[#22242B] text-slate-600 dark:text-[#9BA3AF] font-semibold sticky top-0">
                     <tr>
                       <th className="py-2.5 px-3">Date / Time</th>
                       <th className="py-2.5 px-3">Type</th>
@@ -436,21 +436,21 @@ export default function InventoryPage() {
                       <th className="py-2.5 px-3">Notes</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
-                    {movements.map((m) => (<tr key={m.id} className="hover:bg-slate-50 dark:bg-[#11120D]">
+                  <tbody className="divide-y divide-slate-100 dark:divide-[#22242B]">
+                    {movements.map((m) => (<tr key={m.id} className="hover:bg-slate-50 dark:hover:bg-[#18191E]/60 transition-colors">
                         <td className="py-2.5 px-3 text-slate-500 dark:text-[#9BA3AF] font-mono">
                           {formatDate(m.created_at, true)}
                         </td>
                         <td className="py-2.5 px-3">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${m.movement_type === "IN"
-                        ? "bg-emerald-500 text-white dark:bg-[#D8CFBC] dark:text-[#11120D] font-bold font-semibold"
+                        ? "bg-[#D8CFBC] text-[#11120D] border border-[#C5BBA4] dark:border-[#D8CFBC] font-bold"
                         : m.movement_type === "OUT"
-                            ? "bg-slate-200 text-slate-900 dark:text-white border border-slate-300 dark:border-[#565449] font-semibold"
-                            : "bg-slate-100 dark:bg-[#23261E] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#33372B] font-semibold"}`}>
+                            ? "bg-slate-200 text-slate-900 dark:text-white border border-slate-300 dark:border-[#323644] font-semibold"
+                            : "bg-slate-100 dark:bg-[#181A20] text-slate-700 dark:text-[#CBD5E1] border border-slate-200 dark:border-[#22242B] font-semibold"}`}>
                             {m.movement_type}
                           </span>
                         </td>
-                        <td className={`py-2.5 px-3 text-right font-mono font-bold ${m.quantity_change > 0 ? "text-slate-950 font-bold" : "text-slate-600 font-bold"}`}>
+                        <td className={`py-2.5 px-3 text-right font-mono font-bold ${m.quantity_change > 0 ? "text-slate-900 dark:text-white" : "text-slate-600 dark:text-[#9BA3AF]"}`}>
                           {m.quantity_change > 0
                         ? `+${m.quantity_change}`
                         : m.quantity_change}
@@ -466,7 +466,7 @@ export default function InventoryPage() {
                 </table>
               </div>)}
 
-            <div className="flex justify-end pt-3 border-t border-slate-100 dark:border-[#2B2E25]">
+            <div className="flex justify-end pt-3 border-t border-slate-200 dark:border-[#22242B]">
               <Button variant="outline" size="sm" onClick={() => setHistoryModalOpen(false)}>
                 Close
               </Button>
