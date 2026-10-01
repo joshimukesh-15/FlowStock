@@ -43,6 +43,7 @@ import { StatCard } from "@/components/ui/StatCard";
 import { Select } from "@/components/ui/Select";
 
 import { Tabs } from "@/components/ui/Tabs";
+import { StatusBadge } from "@/components/ui/StatusBadge";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { RefreshButton } from "@/components/ui/RefreshButton";
@@ -275,24 +276,7 @@ export default function WarehousesPage() {
         return t.status === filterStatus;
     });
     const getStatusBadge = (status) => {
-        switch (status) {
-            case "REQUESTED":
-                return (<AnimatedBadge statusKey={status} variant="default" icon={Clock}>
-            REQUESTED
-          </AnimatedBadge>);
-            case "IN_TRANSIT":
-                return (<AnimatedBadge statusKey={status} variant="warning" icon={Truck} pulse>
-            IN TRANSIT
-          </AnimatedBadge>);
-            case "RECEIVED":
-                return (<AnimatedBadge statusKey={status} variant="success" icon={CheckCircle2}>
-            RECEIVED
-          </AnimatedBadge>);
-            case "CANCELLED":
-                return (<AnimatedBadge statusKey={status} variant="danger" icon={Ban}>
-            CANCELLED
-          </AnimatedBadge>);
-        }
+      return <StatusBadge status={status} type="transfer" />;
     };
 
     const totalCapacity = warehouses.reduce((sum, w) => sum + (w.capacity || 2500), 0);
@@ -497,7 +481,7 @@ export default function WarehousesPage() {
         {/* Stock Transfers Table */}
         <motion.div variants={itemVariants}>
           <Card spotlight={true} className="shadow-2xs">
-            <CardHeader className="border-b border-slate-100 dark:border-[#2B2E25] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <CardHeader className="border-b border-slate-200/80 dark:border-[#22242B] py-3 px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
                 <CardTitle className="text-sm font-semibold text-slate-900 dark:text-[#F4F5F7] flex items-center gap-2">
                   <Truck className="w-4 h-4 text-slate-900 dark:text-[#F4F5F7]"/>
@@ -520,7 +504,7 @@ export default function WarehousesPage() {
                 ? `No transfers with status ${filterStatus.replace("_", " ")}.`
                 : "Create an inter-warehouse transfer to balance facility stock."}/>) : (<div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
-                    <thead className="bg-slate-50 dark:bg-[#191B15] text-[11px] uppercase font-medium text-slate-500 dark:text-[#9BA3AF] border-b border-slate-100 dark:border-[#33372B]">
+                    <thead className="bg-slate-50/80 dark:bg-[#121316] text-[11px] uppercase font-mono font-semibold tracking-wider text-slate-500 dark:text-[#808594] border-b border-slate-200/80 dark:border-[#22242B]">
                       <tr>
                         <th className="py-2.5 px-3.5">Transfer #</th>
                         <th className="py-2.5 px-3.5">Product</th>
@@ -531,10 +515,10 @@ export default function WarehousesPage() {
                         <th className="py-2.5 px-3.5 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25]">
+                    <tbody className="divide-y divide-slate-200/70 dark:divide-[#22242B]">
                       {filteredTransfers.map((tr) => {
                 const isActing = actionLoading === tr.id;
-                return (<tr key={tr.id} className="hover:bg-slate-50/70 dark:hover:bg-[#191B15]/50 transition-colors">
+                return (<tr key={tr.id} className="hover:bg-slate-50/80 dark:hover:bg-[#18191E]/60 transition-colors">
                             <td className="py-2.5 px-3.5 font-mono text-xs font-semibold text-slate-900 dark:text-[#F4F5F7]">
                               {tr.transfer_number}
                               <div className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] mt-0.5">
@@ -550,12 +534,12 @@ export default function WarehousesPage() {
                               </span>
                             </td>
                             <td className="py-2.5 px-3.5">
-                              <button type="button" onClick={() => setSelectedVisualizerTransfer(tr)} className="group flex items-center gap-1.5 text-xs text-left hover:text-black dark:hover:text-white transition-colors" title="Click to view transit visualizer">
-                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
+                              <button type="button" onClick={() => setSelectedVisualizerTransfer(tr)} className="group flex items-center gap-1.5 text-xs text-left transition-colors" title="Click to view transit visualizer">
+                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white">
                                   {tr.source_warehouse?.name || "Source WH"}
                                 </span>
                                 <ArrowRight className="w-3 h-3 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white shrink-0 transition-transform group-hover:translate-x-0.5"/>
-                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white underline decoration-zinc-300 dark:decoration-zinc-600 group-hover:decoration-zinc-900 dark:group-hover:decoration-white underline-offset-2">
+                                <span className="font-medium text-slate-700 dark:text-[#CBD5E1] group-hover:text-slate-950 dark:group-hover:text-white">
                                   {tr.destination_warehouse?.name || "Dest WH"}
                                 </span>
                               </button>
@@ -580,13 +564,14 @@ export default function WarehousesPage() {
                                   onClick={() => setSelectedVisualizerTransfer(tr)}
                                   title="View Transfer Route Visualizer"
                                 >
+                                  <Truck className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                                   Visualizer
                                 </Button>
 
                                 {tr.status === "REQUESTED" && (
                                   <>
                                     <Button
-                                      variant="solid"
+                                      variant="default"
                                       size="xs"
                                       onClick={() => handleDispatch(tr.id)}
                                       disabled={isActing}
@@ -596,11 +581,10 @@ export default function WarehousesPage() {
                                       Dispatch
                                     </Button>
                                     <Button
-                                      variant="ghost"
+                                      variant="danger-subtle"
                                       size="xs"
                                       onClick={() => handleCancel(tr.id)}
                                       disabled={isActing}
-                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                       title="Cancel Transfer"
                                     >
                                       Cancel
@@ -611,7 +595,7 @@ export default function WarehousesPage() {
                                 {tr.status === "IN_TRANSIT" && (
                                   <>
                                     <Button
-                                      variant="solid"
+                                      variant="default"
                                       size="xs"
                                       onClick={() => handleReceive(tr.id)}
                                       disabled={isActing}
@@ -621,22 +605,15 @@ export default function WarehousesPage() {
                                       Receive
                                     </Button>
                                     <Button
-                                      variant="ghost"
+                                      variant="danger-subtle"
                                       size="xs"
                                       onClick={() => handleCancel(tr.id)}
                                       disabled={isActing}
-                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                       title="Cancel Transfer"
                                     >
                                       Cancel
                                     </Button>
                                   </>
-                                )}
-
-                                {(tr.status === "RECEIVED" || tr.status === "CANCELLED") && (
-                                  <span className="text-xs text-slate-400 dark:text-[#7C8189] font-medium italic">
-                                    Archived
-                                  </span>
                                 )}
                               </div>
                             </td>

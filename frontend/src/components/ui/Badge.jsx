@@ -2,26 +2,26 @@ import { cn } from "@/lib/utils";
 
 export const badgeVariants = {
   default:
-    "bg-slate-100 dark:bg-[#23261E] text-slate-700 dark:text-[#D8CFBC] border-slate-200/80 dark:border-[#33372B]",
+    "bg-slate-100 dark:bg-[#1E2026] text-slate-700 dark:text-[#D8CFBC] border-slate-200/80 dark:border-[#2E313C]",
   brand:
-    "bg-[#11120D] text-[#FFFBF4] dark:bg-[#D8CFBC]/15 dark:text-[#D8CFBC] border-[#565449]/40 dark:border-[#D8CFBC]/30",
+    "bg-[#090A0C] text-[#FFFBF4] dark:bg-[#D8CFBC] dark:text-[#090A0C] border-[#090A0C] dark:border-[#D8CFBC]",
   bone:
-    "bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border-[#D8CFBC]/50 dark:border-[#D8CFBC]/30",
+    "bg-[#D8CFBC]/25 text-[#090A0C] dark:text-[#D8CFBC] border-[#D8CFBC]/50 dark:border-[#D8CFBC]/30",
   success:
-    "bg-[#D8CFBC]/20 text-[#565449] dark:text-[#D8CFBC] border-[#D8CFBC]/40 dark:border-[#D8CFBC]/30",
+    "bg-[#090A0C] text-[#FFFBF4] dark:bg-[#D8CFBC] dark:text-[#090A0C] border-[#090A0C] dark:border-[#D8CFBC]",
   warning:
-    "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200/70 dark:border-amber-500/20",
+    "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30",
   danger:
-    "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200/70 dark:border-rose-500/20",
+    "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/30",
   info:
-    "bg-sky-500/10 text-sky-600 dark:text-[#38BDF8] border-sky-500/25 dark:border-[#38BDF8]/30",
+    "bg-sky-500/10 text-sky-700 dark:text-[#38BDF8] border-sky-500/30",
 };
 
 const dotColors = {
   default: "bg-slate-400 dark:bg-slate-500",
-  brand: "bg-[#D8CFBC]",
-  bone: "bg-[#D8CFBC]",
-  success: "bg-[#565449] dark:bg-[#D8CFBC]",
+  brand: "bg-[#D8CFBC] dark:bg-[#090A0C]",
+  bone: "bg-[#090A0C] dark:bg-[#D8CFBC]",
+  success: "bg-[#D8CFBC] dark:bg-[#090A0C]",
   warning: "bg-amber-500 dark:bg-amber-400",
   danger: "bg-rose-500 dark:bg-rose-400",
   info: "bg-sky-500 dark:bg-[#38BDF8]",

@@ -40,12 +40,18 @@ const STATUS_CONFIGS = {
     OVERDUE: { variant: "danger", icon: AlertCircle, label: "Overdue" },
     VOID: { variant: "danger", icon: Ban, label: "Void" },
   },
+  transfer: {
+    REQUESTED: { variant: "warning", icon: Clock, label: "REQUESTED" },
+    IN_TRANSIT: { variant: "brand", icon: Truck, label: "IN TRANSIT", pulse: true },
+    RECEIVED: { variant: "success", icon: CheckCircle2, label: "RECEIVED" },
+    CANCELLED: { variant: "danger", icon: Ban, label: "CANCELLED" },
+  },
 };
 
 /**
  * Standard Reusable StatusBadge
  * @param {string} status - The entity status string (e.g., 'CONFIRMED', 'DELIVERED', 'PAID')
- * @param {string} [type] - Entity domain ('order', 'po', 'shipment', 'invoice')
+ * @param {string} [type] - Entity domain ('order', 'po', 'shipment', 'invoice', 'transfer')
  * @param {string} [className] - Additional class names
  */
 export function StatusBadge({ status, type, className = "" }) {
@@ -58,7 +64,7 @@ export function StatusBadge({ status, type, className = "" }) {
 
   // 2. If not found by type, attempt generic cross-domain fallback
   if (!config) {
-    for (const domainKey of ["order", "po", "shipment", "invoice"]) {
+    for (const domainKey of ["order", "po", "shipment", "invoice", "transfer"]) {
       if (STATUS_CONFIGS[domainKey][upperStatus]) {
         config = STATUS_CONFIGS[domainKey][upperStatus];
         break;
