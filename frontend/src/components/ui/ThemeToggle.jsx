@@ -12,7 +12,7 @@ export const ThemeToggle = ({ className = "" }) => {
         type="button"
         onClick={toggleTheme}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-        className={`relative w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#181A20] hover:bg-slate-50 dark:hover:bg-[#23261E] hover:border-slate-300 dark:hover:border-[#565449] text-slate-600 dark:text-[#CBD5E1] hover:text-slate-950 dark:hover:text-white transition-all shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] cursor-pointer ${className}`}
+        className={`relative w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200/80 dark:border-[#262833] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-950 dark:hover:text-white transition-all outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC] cursor-pointer ${className}`}
         aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
         title={isDark ? "Switch to light theme" : "Switch to dark theme"}
       >

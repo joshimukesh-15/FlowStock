@@ -365,15 +365,14 @@ html.dark [class*="dark\:hover\:border-\[\#424857\]"]:hover {
 
   /* Apple-style translucent glass highlight */
   .glass-header {
-    background-color: rgba(255, 251, 244, 0.92);
+    background-color: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(16px) saturate(180%);
-    border-bottom: 1px solid rgba(86, 84, 73, 0.15);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85);
   }
   html.dark .glass-header {
-    background-color: rgba(9, 10, 12, 0.92);
+    background-color: rgba(14, 15, 18, 0.88);
     backdrop-filter: blur(16px) saturate(180%);
-    border-bottom: 1px solid rgba(34, 36, 43, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(34, 36, 43, 0.85);
   }
 }
 

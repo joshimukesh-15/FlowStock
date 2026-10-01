@@ -244,34 +244,34 @@ export const Header = () => {
                 );
             default:
                 return (
-                  <div className="w-6 h-6 rounded-lg bg-sky-500/10 dark:bg-sky-500/15 border border-sky-500/25 dark:border-[#38BDF8]/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <Info className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
+                  <div className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-[#1E2026] border border-slate-200 dark:border-[#2D3039] flex items-center justify-center shrink-0 mt-0.5">
+                    <Info className="w-3.5 h-3.5 text-slate-700 dark:text-[#D8CFBC]" />
                   </div>
                 );
         }
     };
     return (<>
-      <header className="h-12 glass-header px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
+      <header className="h-14 glass-header px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
         {/* Tenant Selector */}
         <div className="relative" ref={tenantMenuRef}>
           <button
             onClick={toggleDropdown}
-            className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#121316] hover:bg-slate-50 dark:hover:bg-[#18191E] border border-slate-300 dark:border-[#22242B] hover:border-slate-400 dark:hover:border-[#343742] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+            className="group flex items-center gap-2 text-xs text-slate-800 dark:text-[#F4F5F7] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] border border-slate-200/80 dark:border-[#262833] h-9 px-2.5 rounded-lg transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC]"
             aria-expanded={dropdownOpen}
             aria-label="Select organization"
           >
-            <div className="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] flex items-center justify-center shrink-0">
-              <Building2 className="w-3.5 h-3.5 text-slate-600 dark:text-[#D8CFBC]"/>
+            <div className="w-5 h-5 rounded-md bg-white dark:bg-[#22242B] border border-slate-200/80 dark:border-[#2D3039] flex items-center justify-center shrink-0 shadow-2xs">
+              <Building2 className="w-3 h-3 text-slate-600 dark:text-[#D8CFBC]"/>
             </div>
-            <div className="flex flex-col text-left min-w-0">
-              <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] leading-tight truncate">
-                {currentOrg ? currentOrg.name : "Select Tenant..."}
+            <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] leading-tight truncate max-w-[130px] sm:max-w-[180px]">
+              {currentOrg ? currentOrg.name : "Select Tenant..."}
+            </span>
+            {currentOrg?.currency && (
+              <span suppressHydrationWarning className="text-[10px] text-slate-500 dark:text-[#9BA3AF] font-mono leading-none px-1.5 py-0.5 rounded bg-slate-200/60 dark:bg-[#22242B] border border-slate-300/40 dark:border-[#2D3039] shrink-0">
+                {currentOrg.currency}
               </span>
-              <span suppressHydrationWarning className="text-[10px] text-slate-500 dark:text-[#9BA3AF] font-mono leading-none mt-0.5">
-                {currentOrg ? `${currentOrg.slug} (${currentOrg.currency})` : "Loading"}
-              </span>
-            </div>
-            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 dark:text-[#9BA3AF] ml-1 shrink-0 transition-transform duration-200 ${dropdownOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
+            )}
+            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 dark:text-[#808594] ml-0.5 shrink-0 transition-transform duration-200 ${dropdownOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
           </button>
 
           {/* Dropdown Menu */}
@@ -378,27 +378,27 @@ export const Header = () => {
         </div>
 
         {/* System & User Controls */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Dark / Light Theme Toggle */}
           <ThemeToggle />
-
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#18191E]"/>
 
           {/* Notifications Bell Dropdown */}
           <div className="relative" ref={notifRef}>
             <button
               onClick={toggleNotifDrawer}
-              className={`btn-tactile relative w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#22242B] bg-white dark:bg-[#121316] hover:bg-slate-50 dark:hover:bg-[#18191E] hover:border-slate-300 dark:hover:border-[#343742] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#FFFBF4] transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
-                notifOpen ? "bg-slate-50 dark:bg-[#18191E] text-slate-900 dark:text-white border-[#D8CFBC]/60" : ""
+              className={`relative w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200/80 dark:border-[#262833] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#FFFBF4] transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC] ${
+                notifOpen ? "bg-slate-200/70 dark:bg-[#22242B] text-slate-900 dark:text-white" : ""
               }`}
               title="Notifications (Esc to close)"
               aria-expanded={notifOpen}
               aria-label="Notifications"
             >
               <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-sky-500 text-white dark:bg-[#38BDF8] dark:text-[#090A0C] text-[10px] font-mono font-bold">
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-amber-500 text-white font-mono font-bold text-[10px] shadow-xs">
                   {unreadCount > 9 ? "9+" : unreadCount}
-                </span>)}
+                </span>
+              )}
             </button>
 
             {/* Notifications Popover */}
@@ -496,18 +496,19 @@ export const Header = () => {
             </AnimatePresence>
           </div>
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#18191E]"/>
+          {/* Single Clean Divider */}
+          <div className="h-5 w-px bg-slate-200 dark:bg-[#22242B] mx-0.5 sm:mx-1"/>
 
           {/* Active Operator & Live Role Switcher */}
           <div className="relative" ref={userMenuRef}>
             <button
               onClick={toggleUserMenu}
-              className="btn-tactile flex items-center gap-2.5 text-xs text-slate-800 dark:text-[#F4F5F7] bg-white dark:bg-[#121316] hover:bg-slate-50 dark:hover:bg-[#18191E] border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#343742] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-2xs hover:shadow-xs focus-visible:ring-2 focus-visible:ring-[#D8CFBC] text-left outline-none"
-              title="Click to switch active operator / role"
+              className="group flex items-center gap-2 text-xs text-slate-800 dark:text-[#F4F5F7] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] border border-slate-200/80 dark:border-[#262833] h-9 px-2 rounded-lg transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC] text-left outline-none"
+              title="Active operator & role (Esc to close)"
               aria-expanded={userMenuOpen}
               aria-label="User menu"
             >
-              <div className="w-7 h-7 rounded-lg bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/25 flex items-center justify-center shrink-0 text-[#565449] dark:text-[#D8CFBC] font-mono font-bold text-[11px] shadow-2xs">
+              <div className="w-6 h-6 rounded-md bg-slate-900 text-white dark:bg-[#D8CFBC] dark:text-[#090A0C] flex items-center justify-center shrink-0 font-mono font-bold text-[11px] shadow-2xs">
                 {currentUser?.name ? (
                   currentUser.name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase()
                 ) : (
@@ -515,15 +516,15 @@ export const Header = () => {
                 )}
               </div>
               <div className="flex flex-col text-left min-w-0">
-                <div className="flex items-center gap-1.5 leading-none">
-                  <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] truncate max-w-[130px]">
+                <div className="flex items-center gap-1 leading-none">
+                  <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] truncate max-w-[110px] sm:max-w-[140px]">
                     {currentUser?.name || "Admin Operator"}
                   </span>
-                  <ChevronDown className={`w-3 h-3 text-slate-400 dark:text-[#9BA3AF] shrink-0 transition-transform duration-200 ${userMenuOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
+                  <ChevronDown className={`w-3 h-3 text-slate-400 dark:text-[#808594] shrink-0 transition-transform duration-200 ${userMenuOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
                 </div>
-                <div className="flex items-center gap-1.5 mt-1">
+                <div className="flex items-center gap-1 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  <span className="text-[10px] font-mono font-medium text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider truncate max-w-[130px]">
+                  <span className="text-[9px] font-mono font-medium text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider truncate max-w-[110px]">
                     {currentUser?.role?.replace("_", " ") || "Operator"}
                   </span>
                 </div>
@@ -598,16 +599,14 @@ export const Header = () => {
             </AnimatePresence>
           </div>
 
-          <div className="h-4 w-px bg-slate-200 dark:bg-[#18191E]"/>
-
-          {/* Quick Sign Out Action */}
+          {/* Quick Sign Out Action (sleek ghost icon) */}
           <button
             onClick={() => {
               logout();
               navigate("/");
             }}
-            className="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 dark:border-[#22242B] bg-white dark:bg-[#121316] hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-200 dark:hover:border-red-900/50 text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 transition-all cursor-pointer shadow-2xs hover:shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-            title="Sign Out & Return to Landing Page"
+            className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-600 dark:text-[#808594] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            title="Sign Out"
             aria-label="Sign out"
           >
             <LogOut className="w-4 h-4" />

@@ -171,22 +171,22 @@ export const GlobalSearch = ({ onOpen }) => {
       <button
         type="button"
         onClick={openSearch}
-        className="group relative w-full h-9 px-3.5 rounded-xl border border-slate-200 dark:border-[#33372B] bg-white dark:bg-[#181A20] hover:bg-slate-50/80 dark:hover:bg-[#23261E] text-xs transition-all duration-150 cursor-pointer shadow-2xs hover:border-slate-300 dark:hover:border-[#565449] hover:shadow-xs flex items-center justify-between gap-3 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+        className="group relative w-full h-9 px-3 rounded-lg border border-slate-200/80 dark:border-[#262833] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] text-xs transition-all duration-150 cursor-pointer flex items-center justify-between gap-3 outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC]"
         aria-label="Search FlowStock records (Ctrl+K or /)"
       >
         <div className="flex items-center gap-2.5 min-w-0">
-          <Search className="w-3.5 h-3.5 text-slate-400 dark:text-[#9BA3AF] shrink-0 group-hover:text-slate-700 dark:group-hover:text-[#D8CFBC] transition-colors" />
-          <span className="truncate text-slate-400 dark:text-[#7C8189] group-hover:text-slate-600 dark:group-hover:text-[#CBD5E1] transition-colors font-medium">
+          <Search className="w-3.5 h-3.5 text-slate-400 dark:text-[#808594] shrink-0 group-hover:text-slate-600 dark:group-hover:text-[#D8CFBC] transition-colors" />
+          <span className="truncate text-slate-400 dark:text-[#808594] group-hover:text-slate-600 dark:group-hover:text-[#CBD5E1] transition-colors font-medium">
             Search products, orders, invoices...
           </span>
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC] shadow-2xs tracking-tight group-hover:border-slate-300 dark:group-hover:border-[#343742] transition-colors">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-slate-200/80 dark:border-[#2D3039] bg-white dark:bg-[#22242B] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC] shadow-2xs tracking-tight transition-colors">
             <span className="text-[9px] opacity-75">Ctrl</span>
             <span>K</span>
           </kbd>
-          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC]">
+          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200/80 dark:border-[#2D3039] bg-white dark:bg-[#22242B] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC]">
             /
           </kbd>
         </div>
