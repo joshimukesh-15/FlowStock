@@ -26,6 +26,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { Select } from "@/components/ui/Select";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -429,16 +430,18 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
 
               <div>
                 <label className={labelClass}>Currency</label>
-                <div className="relative">
-                  <Globe className={iconClass} />
-                  <select value={currency} onChange={e => setCurrency(e.target.value)}
-                    className={`${inputClass} pl-9 appearance-none`}>
-                    <option value="INR">INR — Indian Rupee</option>
-                    <option value="USD">USD — US Dollar</option>
-                    <option value="EUR">EUR — Euro</option>
-                    <option value="GBP">GBP — British Pound</option>
-                  </select>
-                </div>
+                <Select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  icon={Globe}
+                  buttonClassName="rounded-lg h-10 border-slate-200 dark:border-[#22242B] bg-white dark:bg-[#18191E]"
+                  options={[
+                    { value: "INR", label: "INR — Indian Rupee" },
+                    { value: "USD", label: "USD — US Dollar" },
+                    { value: "EUR", label: "EUR — Euro" },
+                    { value: "GBP", label: "GBP — British Pound" },
+                  ]}
+                />
               </div>
             </>
           )}
