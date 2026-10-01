@@ -618,11 +618,11 @@ export default function WelcomePage() {
               <>
                 <Button
                   size="sm"
-                  variant="outline"
+                  variant="primary"
                   onClick={() => (authOpen && authMode === "login" ? closeAuth() : openAuth("login"))}
                   className={cn(
-                    "h-8 px-3 text-xs gap-1.5 transition-all text-slate-700 hover:text-slate-950 dark:text-[#F4F5F7] dark:hover:text-white border-slate-200 dark:border-[#22242B]",
-                    authOpen && authMode === "login" && "ring-2 ring-slate-900/15 dark:ring-white/25 border-slate-400 dark:border-slate-500 font-semibold"
+                    "h-8 px-3 text-xs gap-1.5 shadow-xs font-semibold",
+                    authOpen && authMode === "login" && "ring-2 ring-[#11120D]/25 dark:ring-white/35"
                   )}
                 >
                   <LogIn className="w-3.5 h-3.5" />
