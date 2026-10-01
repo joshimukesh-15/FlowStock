@@ -659,7 +659,7 @@ export default function OrdersPage() {
           {detailOrder && (<>
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-slate-900/10 text-slate-900 flex items-center justify-center border border-zinc-900/20">
+                  <div className="w-9 h-9 rounded-lg bg-[#D8CFBC]/25 text-[#11120D] dark:text-[#D8CFBC] flex items-center justify-center border border-[#C5BBA4] dark:border-[#D8CFBC]/40">
                     <ShoppingCart className="w-5 h-5"/>
                   </div>
                   <div>

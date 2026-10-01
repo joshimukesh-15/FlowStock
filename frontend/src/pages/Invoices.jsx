@@ -486,7 +486,7 @@ export default function InvoicesPage() {
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/60">
                 <div className="flex items-center gap-2 text-slate-900 font-bold">
-                  <div className="w-7 h-7 rounded-md bg-slate-950 text-white flex items-center justify-center shadow-xs">
+                  <div className="w-7 h-7 rounded-md bg-[#D8CFBC] text-[#11120D] border border-[#C5BBA4] flex items-center justify-center shadow-xs">
                     <ReceiptText className="w-4 h-4"/>
                   </div>
                   Generate B2B GST Tax Invoice
@@ -499,7 +499,7 @@ export default function InvoicesPage() {
               {/* Mode Tabs */}
               <div className="px-6 pt-4 flex gap-2 border-b border-slate-100">
                 <button onClick={() => setCreateTab("order")} className={`pb-2 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${createTab === "order"
-            ? "border-zinc-900 text-slate-900"
+            ? "border-[#C5BBA4] dark:border-[#D8CFBC] text-[#11120D] dark:text-[#D8CFBC] font-bold"
             : "border-transparent text-slate-500 hover:text-slate-800"}`}>
                   From Confirmed Sales Order
                 </button>
@@ -508,7 +508,7 @@ export default function InvoicesPage() {
             if (customItems.length === 0)
                 handleAddCustomItem();
         }} className={`pb-2 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${createTab === "custom"
-            ? "border-zinc-900 text-slate-900"
+            ? "border-[#C5BBA4] dark:border-[#D8CFBC] text-[#11120D] dark:text-[#D8CFBC] font-bold"
             : "border-transparent text-slate-500 hover:text-slate-800"}`}>
                   Custom Line Items Invoice
                 </button>
@@ -573,7 +573,7 @@ export default function InvoicesPage() {
                       <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)} className="border-slate-200 bg-white hover:bg-slate-50 text-slate-700">
                         Cancel
                       </Button>
-                      <Button type="submit" isLoading={creating} disabled={eligibleOrdersForInvoice.length === 0} className="bg-slate-950 hover:bg-black text-white font-medium shadow-xs">
+                      <Button type="submit" variant="primary" isLoading={creating} disabled={eligibleOrdersForInvoice.length === 0} className="bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                         {creating ? "Generating..." : "Generate Tax Invoice"}
                       </Button>
                     </div>
@@ -668,14 +668,14 @@ export default function InvoicesPage() {
                       <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                         Invoice Remarks / Payment Terms
                       </label>
-                      <Input placeholder="Payment due within 30 days via NEFT/RTGS" value={customNotes} onChange={(e) => setCustomNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950"/>
+                      <Input placeholder="Payment due within 30 days via NEFT/RTGS" value={customNotes} onChange={(e) => setCustomNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-[#C5BBA4] focus:ring-1 focus:ring-[#D8CFBC]"/>
                     </div>
 
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
                       <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)} className="border-slate-200 bg-white hover:bg-slate-50 text-slate-700">
                         Cancel
                       </Button>
-                      <Button type="submit" isLoading={creating} disabled={customItems.length === 0} className="bg-slate-950 hover:bg-black text-white font-medium shadow-xs">
+                      <Button type="submit" variant="primary" isLoading={creating} disabled={customItems.length === 0} className="bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                         {creating ? "Creating..." : "Create & Post Invoice"}
                       </Button>
                     </div>
@@ -689,7 +689,7 @@ export default function InvoicesPage() {
           {paymentInvoice && (<div>
               <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-slate-50/70">
                 <div className="flex items-center gap-2.5 text-slate-900 font-bold text-sm">
-                  <div className="w-7 h-7 rounded-md bg-slate-950 text-white flex items-center justify-center shadow-xs">
+                  <div className="w-7 h-7 rounded-md bg-[#D8CFBC] text-[#11120D] border border-[#C5BBA4] flex items-center justify-center shadow-xs">
                     <CreditCard className="w-4 h-4"/>
                   </div>
                   Record Payment Receipt
@@ -744,7 +744,7 @@ export default function InvoicesPage() {
                     <span className="absolute left-3 top-2 text-slate-500 text-sm font-semibold">
                       ₹
                     </span>
-                    <Input type="number" step="0.01" min="0.01" max={paymentInvoice.balance_due} value={payAmount} onChange={(e) => setPayAmount(parseFloat(e.target.value) || 0)} className="pl-8 bg-white border-slate-300 text-sm text-slate-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9" required/>
+                    <Input type="number" step="0.01" min="0.01" max={paymentInvoice.balance_due} value={payAmount} onChange={(e) => setPayAmount(parseFloat(e.target.value) || 0)} className="pl-8 bg-white border-slate-300 text-sm text-slate-900 font-mono focus:border-[#C5BBA4] focus:ring-1 focus:ring-[#D8CFBC] h-9" required/>
                   </div>
                 </div>
 
@@ -765,21 +765,21 @@ export default function InvoicesPage() {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                     Bank Reference / UTR / Cheque Number *
                   </label>
-                  <Input placeholder="e.g. UTR-HDFC8823101" value={payReference} onChange={(e) => setPayReference(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 font-mono focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9" required/>
+                  <Input placeholder="e.g. UTR-HDFC8823101" value={payReference} onChange={(e) => setPayReference(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 font-mono focus:border-[#C5BBA4] focus:ring-1 focus:ring-[#D8CFBC] h-9" required/>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
                     Receipt Notes (Optional)
                   </label>
-                  <Input placeholder="Remittance received in corporate account" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-zinc-950 focus:ring-1 focus:ring-zinc-950 h-9"/>
+                  <Input placeholder="Remittance received in corporate account" value={payNotes} onChange={(e) => setPayNotes(e.target.value)} className="bg-white border-slate-300 text-sm text-slate-900 focus:border-[#C5BBA4] focus:ring-1 focus:ring-[#D8CFBC] h-9"/>
                 </div>
 
                 <div className="flex items-center justify-end gap-2.5 pt-3.5 border-t border-slate-100 dark:border-[#2B2E25]">
                   <Button type="button" variant="outline" size="sm" onClick={() => setPaymentModalOpen(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit" variant="primary" size="sm" isLoading={recordingPayment} disabled={payAmount <= 0}>
+                  <Button type="submit" variant="primary" size="sm" isLoading={recordingPayment} disabled={payAmount <= 0} className="bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                     {recordingPayment ? "Recording..." : "Record & Apply Payment"}
                   </Button>
                 </div>
@@ -806,7 +806,7 @@ export default function InvoicesPage() {
                        Print / Export
                     </Button>
                     {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
-                      <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)}>
+                      <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)} className="bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                         <CreditCard className="w-3.5 h-3.5"/> Record Payment
                       </Button>
                     )}
@@ -981,9 +981,9 @@ export default function InvoicesPage() {
                       </div>
                       <div className="flex justify-between text-slate-700 dark:text-slate-300 pt-1">
                         <span>Amount Received:</span>
-                        <span className="font-medium text-emerald-600 dark:text-emerald-400">{formatINR(viewInvoice.paid_amount)}</span>
+                        <span className="font-bold text-[#11120D] dark:text-[#D8CFBC]">{formatINR(viewInvoice.paid_amount)}</span>
                       </div>
-                      <div className="flex justify-between font-bold pt-1 border-t border-slate-200 dark:border-[#2B2E25]">
+                      <div className="flex justify-between font-bold pt-1 border-t border-slate-200 dark:border-[#22242B]">
                         <span className="text-slate-700 dark:text-slate-300">Balance Payable:</span>
                         <span className={viewInvoice.balance_due > 0 ? "text-rose-600 dark:text-rose-400 font-bold" : "text-slate-400 dark:text-slate-500"}>
                           {formatINR(viewInvoice.balance_due)}
@@ -993,7 +993,7 @@ export default function InvoicesPage() {
                   </div>
 
                   {/* Payment History Audit Ledger Section */}
-                  <div className="pt-4 border-t border-slate-200 dark:border-[#2B2E25]">
+                  <div className="pt-4 border-t border-slate-200 dark:border-[#22242B]">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="font-semibold text-slate-900 dark:text-white uppercase tracking-wider text-xs flex items-center gap-1.5">
                         <ArrowDownLeft className="w-4 h-4 text-slate-900 dark:text-white"/>
@@ -1017,9 +1017,9 @@ export default function InvoicesPage() {
                         description="Record a payment remittance against this invoice to settle the balance due."
                       />
                     ) : (
-                      <div className="rounded-lg border border-slate-200 dark:border-[#2B2E25] overflow-hidden">
+                      <div className="rounded-lg border border-slate-200 dark:border-[#22242B] overflow-hidden">
                         <table className="w-full text-left text-xs">
-                          <thead className="bg-slate-50 dark:bg-[#191B15] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#2B2E25]">
+                          <thead className="bg-slate-50 dark:bg-[#18191E] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#22242B]">
                             <tr>
                               <th className="py-2.5 px-3">Receipt #</th>
                               <th className="py-2.5 px-3">Date</th>
@@ -1028,7 +1028,7 @@ export default function InvoicesPage() {
                               <th className="py-2.5 px-3 text-right">Amount (₹)</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25] bg-white dark:bg-[#191B15]">
+                          <tbody className="divide-y divide-slate-100 dark:divide-[#22242B] bg-white dark:bg-[#18191E]">
                             {viewInvoice.payments.map((pay) => (
                               <tr key={pay.id}>
                                 <td className="py-2.5 px-3 font-mono font-medium text-slate-900 dark:text-white">
@@ -1041,7 +1041,7 @@ export default function InvoicesPage() {
                                 <td className="py-2.5 px-3 font-mono text-slate-600 dark:text-[#9BA3AF]">
                                   {pay.reference || "—"}
                                 </td>
-                                <td className="py-2.5 px-3 text-right font-semibold text-emerald-600 dark:text-emerald-400 font-mono">
+                                <td className="py-2.5 px-3 text-right font-bold text-[#11120D] dark:text-[#D8CFBC] font-mono">
                                   {formatINR(pay.amount)}
                                 </td>
                               </tr>
@@ -1061,19 +1061,19 @@ export default function InvoicesPage() {
                 <div className="p-6 sm:p-8 space-y-5">
                   {/* Financial Summary KPI Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25]">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B]">
                       <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider block">Total Billed</span>
                       <span className="text-lg font-bold text-slate-900 dark:text-white font-mono mt-0.5 block">
                         {formatINR(viewInvoice.total_amount)}
                       </span>
                     </div>
-                    <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20">
-                      <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Amount Received</span>
-                      <span className="text-lg font-bold text-emerald-700 dark:text-emerald-400 font-mono mt-0.5 block">
+                    <div className="p-4 rounded-xl bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/10 border border-[#C5BBA4] dark:border-[#D8CFBC]/30">
+                      <span className="text-[11px] font-bold text-[#11120D] dark:text-[#D8CFBC] uppercase tracking-wider block">Amount Received</span>
+                      <span className="text-lg font-bold text-[#11120D] dark:text-[#D8CFBC] font-mono mt-0.5 block">
                         {formatINR(viewInvoice.paid_amount)}
                       </span>
                     </div>
-                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#191B15] border border-slate-200 dark:border-[#2B2E25]">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B]">
                       <span className="text-[11px] font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider block">Outstanding Balance</span>
                       <span className={`text-lg font-bold font-mono mt-0.5 block ${viewInvoice.balance_due > 0 ? "text-rose-600 dark:text-rose-400" : "text-slate-900 dark:text-white"}`}>
                         {formatINR(viewInvoice.balance_due)}
@@ -1089,7 +1089,7 @@ export default function InvoicesPage() {
                         Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
                       </h4>
                       {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
-                        <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)}>
+                        <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)} className="bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                           <CreditCard className="w-3.5 h-3.5" /> Add Payment
                         </Button>
                       )}
@@ -1102,16 +1102,16 @@ export default function InvoicesPage() {
                         description="This invoice is currently pending payment. Record the transaction reference and payment method to reconcile the balance."
                         action={
                           viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" ? (
-                            <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)} className="mt-2">
+                            <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)} className="mt-2 bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                               <CreditCard className="w-3.5 h-3.5" /> Record Payment Remittance
                             </Button>
                           ) : null
                         }
                       />
                     ) : (
-                      <div className="rounded-xl border border-slate-200 dark:border-[#2B2E25] overflow-hidden shadow-2xs">
+                      <div className="rounded-xl border border-slate-200 dark:border-[#22242B] overflow-hidden shadow-2xs">
                         <table className="w-full text-left text-xs">
-                          <thead className="bg-slate-50 dark:bg-[#191B15] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#2B2E25]">
+                          <thead className="bg-slate-50 dark:bg-[#18191E] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-200 dark:border-[#22242B]">
                             <tr>
                               <th className="py-3 px-3.5 font-semibold">Receipt #</th>
                               <th className="py-3 px-3.5 font-semibold">Date</th>
@@ -1120,11 +1120,11 @@ export default function InvoicesPage() {
                               <th className="py-3 px-3.5 text-right font-semibold">Amount (₹)</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100 dark:divide-[#2B2E25] bg-white dark:bg-[#191B15]">
+                          <tbody className="divide-y divide-slate-100 dark:divide-[#22242B] bg-white dark:bg-[#18191E]">
                             {viewInvoice.payments.map((pay) => (
                               <tr key={pay.id} className="hover:bg-slate-50/60 dark:hover:bg-[#1F232D] transition-colors">
                                 <td className="py-3 px-3.5 font-mono font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0"/>
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC] shrink-0"/>
                                   {pay.payment_number}
                                 </td>
                                 <td className="py-3 px-3.5 text-slate-500 dark:text-[#9BA3AF]">
