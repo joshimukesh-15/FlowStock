@@ -11,11 +11,21 @@ import {
   Shield,
   LogIn,
   UserPlus,
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  Building2,
+  KeyRound,
+  Globe,
+  ShieldCheck,
+  Zap,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -228,12 +238,254 @@ function FeatureRow({
   );
 }
 
+/* ── Inline Auth Drawer ── */
+function AuthDrawer({ mode, onModeChange, onClose, onSuccess }) {
+  const { login, signup } = useAuth();
+  const [showPw, setShowPw] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // fields
+  const [email, setEmail]       = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName]         = useState("");
+  const [orgName, setOrgName]   = useState("");
+  const [orgSlug, setOrgSlug]   = useState("");
+  const [currency, setCurrency] = useState("INR");
+
+  const inputBase = "w-full rounded-lg border bg-white dark:bg-[#18191E] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
+  const inputColors = "border-slate-200 dark:border-[#22242B] text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-[#808594] focus:border-sky-500 dark:focus:border-[#38BDF8] focus:ring-sky-500/20 dark:focus:ring-[#38BDF8]/20";
+  const inputClass = `${inputBase} ${inputColors}`;
+  const labelClass = "block text-xs font-medium text-slate-600 dark:text-[#A0A5B2] mb-1";
+  const iconClass  = "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#808594]";
+
+  const switchMode = (m) => { onModeChange(m); setError(""); };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      if (mode === "login") {
+        await login(email, password);
+      } else {
+        await signup({ name, email, password, org_name: orgName, org_slug: orgSlug, currency });
+      }
+      onSuccess();
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-[#22242B] shrink-0">
+        <div>
+          <h2 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] leading-tight">
+            {mode === "login" ? "Welcome back" : "Get started"}
+          </h2>
+          <p className="text-xs text-slate-500 dark:text-[#808594] mt-0.5">
+            {mode === "login" ? "Sign in to your workspace" : "Create your organization in under a minute"}
+          </p>
+        </div>
+        <button
+          onClick={onClose}
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 dark:text-[#808594] hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#22242B] transition-colors cursor-pointer"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Tab switcher */}
+      <div className="px-6 pt-4 shrink-0">
+        <div className="flex bg-slate-100 dark:bg-[#090A0C] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#22242B]">
+          {["login","signup"].map((m) => (
+            <button
+              key={m}
+              type="button"
+              onClick={() => switchMode(m)}
+              className={`relative flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
+                mode === m
+                  ? "text-slate-900 dark:text-white"
+                  : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
+              }`}
+            >
+              {mode === m && (
+                <motion.div
+                  layoutId="auth-drawer-tab"
+                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                  className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
+                />
+              )}
+              {m === "login" ? "Log In" : "Create Account"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Scrollable form area */}
+      <div className="flex-1 overflow-y-auto px-6 py-4">
+        {error && (
+          <div className="mb-3 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 text-xs text-red-600 dark:text-red-400">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-3">
+          {mode === "signup" && (
+            <div>
+              <label className={labelClass}>Full Name</label>
+              <div className="relative">
+                <User className={iconClass} />
+                <input type="text" placeholder="Alex Morgan" value={name}
+                  onChange={e => setName(e.target.value)} required className={inputClass} />
+              </div>
+            </div>
+          )}
+
+          <div>
+            <label className={labelClass}>Email</label>
+            <div className="relative">
+              <Mail className={iconClass} />
+              <input type="email" placeholder="name@company.com" value={email}
+                onChange={e => setEmail(e.target.value)} required className={inputClass} />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelClass}>Password</label>
+            <div className="relative">
+              <Lock className={iconClass} />
+              <input
+                type={showPw ? "text" : "password"}
+                placeholder="Min. 6 characters"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required minLength={6}
+                className={`${inputClass} pr-9`}
+              />
+              <button type="button" onClick={() => setShowPw(!showPw)}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#808594] hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer p-0.5">
+                {showPw ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          </div>
+
+          {mode === "signup" && (
+            <>
+              <div className="flex items-center gap-2 pt-1">
+                <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
+                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-[#808594]">Organization</span>
+                <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className={labelClass}>Company Name</label>
+                  <div className="relative">
+                    <Building2 className={iconClass} />
+                    <input type="text" placeholder="Acme Ltd" value={orgName}
+                      onChange={e => {
+                        setOrgName(e.target.value);
+                        const auto = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                        if (!orgSlug || orgSlug === orgName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""))
+                          setOrgSlug(auto);
+                      }}
+                      required className={inputClass} />
+                  </div>
+                </div>
+                <div>
+                  <label className={labelClass}>Workspace ID</label>
+                  <div className="relative">
+                    <KeyRound className={iconClass} />
+                    <input type="text" placeholder="acme-ltd" value={orgSlug}
+                      onChange={e => setOrgSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
+                      required className={inputClass} />
+                  </div>
+                </div>
+              </div>
+
+              {orgSlug && (
+                <p className="text-[10px] text-slate-400 dark:text-[#808594] font-mono -mt-1">
+                  flowstock.app/<span className="text-sky-600 dark:text-[#38BDF8]">{orgSlug}</span>
+                </p>
+              )}
+
+              <div>
+                <label className={labelClass}>Currency</label>
+                <div className="relative">
+                  <Globe className={iconClass} />
+                  <select value={currency} onChange={e => setCurrency(e.target.value)}
+                    className={`${inputClass} pl-9 appearance-none`}>
+                    <option value="INR">INR — Indian Rupee</option>
+                    <option value="USD">USD — US Dollar</option>
+                    <option value="EUR">EUR — Euro</option>
+                    <option value="GBP">GBP — British Pound</option>
+                  </select>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Demo quick-fill */}
+          {mode === "login" && (
+            <div className="p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#22242B] bg-slate-50/50 dark:bg-[#090A0C]/70 flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <div className="flex items-center gap-1 mb-0.5">
+                  <Zap className="w-3 h-3 text-amber-500" />
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-400">Demo</span>
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">alice@acme.local</span>
+                <span className="text-[10px] text-slate-400 dark:text-[#808594]">Pass: <code className="font-mono">admin123</code></span>
+              </div>
+              <button type="button"
+                onClick={() => { setEmail("alice@acme.local"); setPassword("admin123"); setError(""); }}
+                className="shrink-0 px-2.5 py-1 rounded-md bg-sky-500 hover:bg-sky-400 text-white text-[11px] font-bold transition-colors cursor-pointer">
+                Auto Fill
+              </button>
+            </div>
+          )}
+
+          <Button type="submit" variant="primary" size="md" isLoading={loading}
+            className="w-full h-10 font-bold text-sm rounded-lg mt-1">
+            <span>{mode === "login" ? "Log In" : "Create Account"}</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-1.5 shrink-0" />
+          </Button>
+        </form>
+      </div>
+
+      {/* Footer */}
+      <div className="px-6 py-4 border-t border-slate-100 dark:border-[#22242B] shrink-0 space-y-3">
+        <p className="text-xs text-center text-slate-500 dark:text-[#808594]">
+          {mode === "login" ? "Don't have an account? " : "Already have an account? "}
+          <button type="button" onClick={() => switchMode(mode === "login" ? "signup" : "login")}
+            className="text-sky-600 dark:text-[#38BDF8] font-semibold hover:underline cursor-pointer">
+            {mode === "login" ? "Sign up" : "Log in"}
+          </button>
+        </p>
+        <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 dark:text-[#808594]">
+          <ShieldCheck className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
+          <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function WelcomePage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
   const [termsOpen, setTermsOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState("login");
+
+  const openAuth = (mode = "login") => { setAuthMode(mode); setAuthOpen(true); };
+  const closeAuth = () => setAuthOpen(false);
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -332,7 +584,7 @@ export default function WelcomePage() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => navigate("/login?mode=login")}
+                  onClick={() => openAuth("login")}
                   className="h-8 px-3 text-xs gap-1.5 border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 bg-white dark:bg-[#121316] text-slate-800 dark:text-white"
                 >
                   <LogIn className="w-3.5 h-3.5" />
@@ -341,7 +593,7 @@ export default function WelcomePage() {
                 <Button
                   size="sm"
                   variant="primary"
-                  onClick={() => navigate("/login?mode=signup")}
+                  onClick={() => openAuth("signup")}
                   className="h-8 px-3 text-xs gap-1.5 shadow-xs"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
@@ -411,7 +663,7 @@ export default function WelcomePage() {
                 <Button
                   size="lg"
                   variant="primary"
-                  onClick={() => navigate("/login?mode=signup")}
+                  onClick={() => openAuth("signup")}
                   className="h-12 px-7 rounded-xl font-bold text-sm shadow-[0_2px_14px_rgba(56,189,248,0.25)]"
                 >
                   <span>Get Started Free</span>
@@ -670,7 +922,7 @@ export default function WelcomePage() {
           <Button
             size="lg"
             variant="primary"
-            onClick={() => navigate("/login?mode=signup")}
+            onClick={() => openAuth("signup")}
             className="h-12 px-8 rounded-xl font-bold text-sm shadow-[0_2px_14px_rgba(56,189,248,0.25)]"
           >
             <span>Get Started Free</span>
@@ -936,6 +1188,42 @@ export default function WelcomePage() {
           </div>
         </div>
       </Modal>
+
+      {/* ── Auth Drawer Backdrop ── */}
+      <AnimatePresence>
+        {authOpen && (
+          <motion.div
+            key="auth-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={closeAuth}
+            className="fixed inset-0 z-40 bg-black/30 dark:bg-black/60 backdrop-blur-[2px]"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Auth Drawer Panel ── */}
+      <AnimatePresence>
+        {authOpen && (
+          <motion.div
+            key="auth-drawer"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 340, damping: 38, mass: 0.9 }}
+            className="fixed top-0 right-0 h-full z-50 w-full sm:w-[420px] lg:w-[440px] bg-white dark:bg-[#121316] border-l border-slate-200/80 dark:border-[#22242B] shadow-2xl overflow-hidden flex flex-col"
+          >
+            <AuthDrawer
+              mode={authMode}
+              onModeChange={setAuthMode}
+              onClose={closeAuth}
+              onSuccess={() => { closeAuth(); navigate("/dashboard"); }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
