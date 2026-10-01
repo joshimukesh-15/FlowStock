@@ -281,7 +281,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col w-full relative">
       {/* Header */}
       <div className="px-6 py-5 border-b border-slate-100 dark:border-[#22242B] shrink-0">
         <div className="max-w-md mx-auto flex items-center justify-between">
@@ -339,7 +339,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
       </div>
 
       {/* Scrollable form area */}
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="overflow-y-auto px-6 py-4 max-h-[65vh]">
         <div className="max-w-md mx-auto">
           {error && (
             <div className="mb-3 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 text-xs text-red-600 dark:text-red-400">
@@ -1222,51 +1222,31 @@ export default function WelcomePage() {
         </div>
       </Modal>
 
-      {/* ── PRODUCTION-TIER CENTER GLASS AUTH MODAL ── */}
-      <AnimatePresence>
-        {authOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-            {/* Ambient Backdrop with Blur */}
-            <motion.div
-              key="auth-modal-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={closeAuth}
-              className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-md"
-            />
+      {/* ── PRODUCTION-TIER PORTAL-BASED CENTER AUTH MODAL ── */}
+      <Modal
+        isOpen={authOpen}
+        onClose={closeAuth}
+        maxWidth="md"
+        className="!bg-white dark:!bg-[#121316] !border-slate-200/90 dark:!border-[#22242B] !shadow-[0_25px_70px_rgba(0,0,0,0.3)] dark:!shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden"
+      >
+        {/* Top ambient azure hairline glow */}
+        <div
+          className="absolute top-0 inset-x-0 h-px pointer-events-none z-10"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(56,189,248,0.6), transparent)",
+          }}
+        />
 
-            {/* Elevated Floating Glass Modal Card */}
-            <motion.div
-              key="auth-modal-card"
-              initial={{ opacity: 0, scale: 0.95, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              transition={{ type: "spring", stiffness: 420, damping: 32 }}
-              className="relative w-full max-w-[440px] my-auto rounded-2xl border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-[0_25px_70px_rgba(0,0,0,0.25)] dark:shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)] overflow-hidden flex flex-col z-10"
-            >
-              {/* Top ambient azure hairline glow */}
-              <div
-                className="absolute top-0 inset-x-0 h-px pointer-events-none"
-                style={{
-                  background: "linear-gradient(90deg, transparent, rgba(56,189,248,0.5), transparent)",
-                }}
-              />
-
-              <AuthModalContent
-                mode={authMode}
-                onModeChange={setAuthMode}
-                onClose={closeAuth}
-                onSuccess={() => {
-                  closeAuth();
-                  navigate("/dashboard");
-                }}
-              />
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+        <AuthModalContent
+          mode={authMode}
+          onModeChange={setAuthMode}
+          onClose={closeAuth}
+          onSuccess={() => {
+            closeAuth();
+            navigate("/dashboard");
+          }}
+        />
+      </Modal>
 
     </div>
   );
