@@ -14,7 +14,7 @@ export const badgeVariants = {
   danger:
     "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200/70 dark:border-rose-500/20",
   info:
-    "bg-[#D8CFBC]/20 text-[#565449] dark:text-[#D8CFBC] border-[#D8CFBC]/40 dark:border-[#D8CFBC]/30",
+    "bg-sky-500/10 text-sky-600 dark:text-[#38BDF8] border-sky-500/25 dark:border-[#38BDF8]/30",
 };
 
 const dotColors = {
@@ -24,7 +24,7 @@ const dotColors = {
   success: "bg-[#565449] dark:bg-[#D8CFBC]",
   warning: "bg-amber-500 dark:bg-amber-400",
   danger: "bg-rose-500 dark:bg-rose-400",
-  info: "bg-[#565449] dark:bg-[#D8CFBC]",
+  info: "bg-sky-500 dark:bg-[#38BDF8]",
 };
 
 export const Badge = ({ className, variant = "default", showDot = true, children, ...props }) => {

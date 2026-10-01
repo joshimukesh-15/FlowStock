@@ -105,7 +105,7 @@ export const Sidebar = () => {
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <span className="w-8 h-8 shrink-0 flex items-center justify-center">
-              <span className="w-7 h-7 rounded-lg bg-white border border-slate-200/90 shadow-xs flex items-center justify-center p-0.5">
+              <span className="w-7 h-7 rounded-lg bg-white dark:bg-[#18191E] border border-slate-200/90 dark:border-[#38BDF8]/25 shadow-xs dark:shadow-[0_0_12px_rgba(56,189,248,0.18)] flex items-center justify-center p-0.5 transition-all">
                 <Logomark className="w-5 h-5" />
               </span>
             </span>
@@ -158,21 +158,24 @@ export const Sidebar = () => {
                   return (
                     <li key={item.label} className="relative">
                       {active && (
-                        <motion.span
-                          layoutId="active-navigation-item"
-                          className="absolute inset-0 rounded-lg border border-[#D8CFBC]/30 bg-[#D8CFBC]/10 dark:bg-[#D8CFBC]/15"
-                          transition={getTransition("normal", prefersReducedMotion)}
-                          aria-hidden="true"
-                        />
+                        <>
+                          <motion.span
+                            layoutId="active-navigation-item"
+                            className="absolute inset-0 rounded-lg border border-[#38BDF8]/20 bg-[#38BDF8]/[0.05] dark:bg-[#38BDF8]/[0.08]"
+                            transition={getTransition("normal", prefersReducedMotion)}
+                            aria-hidden="true"
+                          />
+                          <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full bg-[#38BDF8] shadow-[0_0_8px_rgba(56,189,248,0.7)] z-20" />
+                        </>
                       )}
                       <Link
                         to={item.href}
                         onMouseEnter={(e) => handleMouseEnter(e, item.label, { active })}
                         onMouseLeave={handleMouseLeave}
                         aria-current={active ? "page" : undefined}
-                        className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
+                        className={`group relative z-10 flex items-center h-9 w-full rounded-lg text-[13px] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[#38BDF8] ${
                           active
-                            ? "text-slate-950 dark:text-[#D8CFBC] font-semibold"
+                            ? "text-slate-950 dark:text-[#F4F5F7] font-semibold"
                             : "text-slate-600 dark:text-[#A0A5B2] hover:bg-slate-100 dark:hover:bg-[#18191E] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
                         }`}
                       >
@@ -181,7 +184,7 @@ export const Sidebar = () => {
                           <Icon
                             className={`w-4 h-4 shrink-0 transition-colors ${
                               active
-                                ? "text-slate-950 dark:text-[#D8CFBC]"
+                                ? "text-sky-600 dark:text-[#38BDF8]"
                                 : "text-slate-400 dark:text-[#9BA3AF] group-hover:text-slate-700 dark:group-hover:text-slate-200"
                             }`}
                           />
@@ -200,7 +203,7 @@ export const Sidebar = () => {
                         </span>
 
                         {active && !collapsed && (
-                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#D8CFBC] shrink-0 mr-2" />
+                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#38BDF8] shadow-[0_0_6px_#38BDF8] shrink-0 mr-2" />
                         )}
                       </Link>
                     </li>
@@ -243,13 +246,13 @@ export const Sidebar = () => {
                 duration: prefersReducedMotion ? 0 : DURATION.micro,
                 ease: EASING.standard,
             }} style={{ top: hoveredTooltip.top }} className="fixed left-[72px] -translate-y-1/2 z-50 pointer-events-none">
-            <div className="relative bg-[#23261E] text-[#F4F5F7] text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-[#33372B] whitespace-nowrap flex items-center gap-2">
-              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#23261E] border-l border-b border-[#33372B] rotate-45"/>
+            <div className="relative bg-[#121316] text-[#F4F5F7] text-xs font-medium px-2.5 py-1.5 rounded-md shadow-2xl border border-[#22242B] whitespace-nowrap flex items-center gap-2">
+              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#121316] border-l border-b border-[#22242B] rotate-45"/>
               <span className="relative z-10">{hoveredTooltip.label}</span>
-              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#11120D] border border-[#33372B] rounded px-1 text-[#9BA3AF] font-mono">
+              {hoveredTooltip.shortcut && (<kbd className="relative z-10 text-[10px] bg-[#090A0C] border border-[#22242B] rounded px-1 text-[#9BA3AF] font-mono">
                   {hoveredTooltip.shortcut}
                 </kbd>)}
-              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#D8CFBC] shrink-0"/>)}
+              {hoveredTooltip.active && (<span className="relative z-10 w-1.5 h-1.5 rounded-full bg-[#38BDF8] shadow-[0_0_6px_#38BDF8] shrink-0"/>)}
             </div>
           </motion.div>)}
       </AnimatePresence>

@@ -244,8 +244,8 @@ export const Header = () => {
                 );
             default:
                 return (
-                  <div className="w-6 h-6 rounded-lg bg-[#565449]/10 dark:bg-[#D8CFBC]/10 border border-[#565449]/20 dark:border-[#D8CFBC]/20 flex items-center justify-center shrink-0 mt-0.5">
-                    <Info className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC]" />
+                  <div className="w-6 h-6 rounded-lg bg-sky-500/10 dark:bg-sky-500/15 border border-sky-500/25 dark:border-[#38BDF8]/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <Info className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
                   </div>
                 );
         }
@@ -396,7 +396,7 @@ export const Header = () => {
               aria-label="Notifications"
             >
               <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#090A0C] text-[#D8CFBC] dark:bg-[#D8CFBC] dark:text-[#090A0C] text-[10px] font-mono font-bold shadow-xs">
+              {unreadCount > 0 && (<span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-sky-500 text-white dark:bg-[#38BDF8] dark:text-[#090A0C] text-[10px] font-mono font-bold shadow-[0_0_8px_rgba(56,189,248,0.4)]">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>)}
             </button>

@@ -95,7 +95,13 @@ export default {
           success: '#D8CFBC',
           warning: '#F5A623',
           error: '#EF4444',
-          info: '#D8CFBC',
+          info: '#38BDF8',
+        },
+        azure: {
+          DEFAULT: '#0284C7',
+          light: '#38BDF8',
+          dark: '#0369A1',
+          glow: 'rgba(56, 189, 248, 0.25)',
         },
         brand: {
           50: '#FFFBF4',
