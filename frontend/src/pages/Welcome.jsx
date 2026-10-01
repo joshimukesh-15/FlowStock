@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import {
   Boxes,
   Truck,
@@ -617,26 +618,24 @@ export default function WelcomePage() {
               <>
                 <Button
                   size="sm"
-                  variant={authOpen && authMode === "login" ? "primary" : "outline"}
+                  variant="outline"
                   onClick={() => (authOpen && authMode === "login" ? closeAuth() : openAuth("login"))}
-                  className={`h-8 px-3 text-xs gap-1.5 transition-all ${
-                    authOpen && authMode === "login"
-                      ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 border border-transparent shadow-xs"
-                      : "border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 bg-white dark:bg-[#121316] text-slate-800 dark:text-white"
-                  }`}
+                  className={cn(
+                    "h-8 px-3 text-xs gap-1.5 transition-all text-slate-700 hover:text-slate-950 dark:text-[#F4F5F7] dark:hover:text-white border-slate-200 dark:border-[#22242B]",
+                    authOpen && authMode === "login" && "ring-2 ring-slate-900/15 dark:ring-white/25 border-slate-400 dark:border-slate-500 font-semibold"
+                  )}
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Log In</span>
                 </Button>
                 <Button
                   size="sm"
-                  variant={authOpen && authMode === "signup" ? "primary" : "outline"}
+                  variant="primary"
                   onClick={() => (authOpen && authMode === "signup" ? closeAuth() : openAuth("signup"))}
-                  className={`h-8 px-3 text-xs gap-1.5 transition-all shadow-xs ${
-                    authOpen && authMode === "signup"
-                      ? "bg-sky-500 hover:bg-sky-400 text-white font-bold"
-                      : "border border-slate-200 dark:border-[#22242B] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 bg-white dark:bg-[#121316] text-slate-800 dark:text-white"
-                  }`}
+                  className={cn(
+                    "h-8 px-3 text-xs gap-1.5 shadow-xs font-semibold",
+                    authOpen && authMode === "signup" && "ring-2 ring-[#11120D]/25 dark:ring-white/35"
+                  )}
                 >
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>Sign Up</span>
