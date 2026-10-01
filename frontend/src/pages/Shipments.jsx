@@ -407,7 +407,7 @@ export default function ShipmentsPage() {
                             {s.status === "PENDING" && (
                               <Button
                                 size="xs"
-                                variant="solid"
+                                variant="primary"
                                 onClick={() => handleDispatch(s.id)}
                                 disabled={actionLoading === s.id}
                                 title="Dispatch Shipment"
@@ -419,7 +419,7 @@ export default function ShipmentsPage() {
                             {s.status === "IN_TRANSIT" && (
                               <Button
                                 size="xs"
-                                variant="solid"
+                                variant="primary"
                                 onClick={() => handleOutForDelivery(s.id)}
                                 disabled={actionLoading === s.id}
                                 title="Mark Out for Delivery"
@@ -431,7 +431,7 @@ export default function ShipmentsPage() {
                             {s.status === "OUT_FOR_DELIVERY" && (
                               <Button
                                 size="xs"
-                                variant="solid"
+                                variant="primary"
                                 onClick={() => handleDeliver(s.id)}
                                 disabled={actionLoading === s.id}
                                 title="Confirm Delivery"
@@ -631,23 +631,23 @@ export default function ShipmentsPage() {
                 </div>
 
                 {/* State Machine Transition Actions */}
-                <div className="p-3.5 bg-slate-50 dark:bg-[#191B15] rounded-lg border border-slate-200 dark:border-[#33372B] flex flex-wrap items-center justify-between gap-2">
+                <div className="p-3.5 bg-slate-50 dark:bg-[#121316] rounded-lg border border-slate-200 dark:border-[#22242B] flex flex-wrap items-center justify-between gap-2">
                   <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#7C8189]">
                     Workflow Actions:
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
                     {detailShipment.status === "PENDING" && (
-                      <Button size="sm" variant="solid" onClick={() => handleDispatch(detailShipment.id)}>
+                      <Button size="sm" variant="primary" onClick={() => handleDispatch(detailShipment.id)}>
                         <Send className="w-3.5 h-3.5" /> Mark Dispatched
                       </Button>
                     )}
                     {["PENDING", "IN_TRANSIT"].includes(detailShipment.status) && (
-                      <Button size="sm" variant="solid" onClick={() => handleOutForDelivery(detailShipment.id)}>
+                      <Button size="sm" variant="primary" onClick={() => handleOutForDelivery(detailShipment.id)}>
                         <Truck className="w-3.5 h-3.5" /> Out for Delivery
                       </Button>
                     )}
                     {detailShipment.status !== "DELIVERED" && detailShipment.status !== "CANCELLED" && (
-                      <Button size="sm" variant="solid" onClick={() => handleDeliver(detailShipment.id)}>
+                      <Button size="sm" variant="primary" onClick={() => handleDeliver(detailShipment.id)}>
                         <CheckCircle2 className="w-3.5 h-3.5" /> Confirm Delivery
                       </Button>
                     )}
@@ -661,33 +661,33 @@ export default function ShipmentsPage() {
 
                 {/* Visual Timeline Section */}
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-1.5">
-                    <Navigation className="w-4 h-4 text-slate-900"/>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] mb-4 flex items-center gap-1.5">
+                    <Navigation className="w-4 h-4 text-[#11120D] dark:text-[#D8CFBC]"/>
                     Tracking Journey Timeline ({detailShipment.events?.length || 0} Checkpoints)
                   </h4>
 
-                  <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                  <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200 dark:before:bg-[#22242B]">
                     {(detailShipment.events || []).map((ev, idx) => (<motion.div key={ev.id || idx} className="relative group" initial={{ opacity: 0, y: prefersReducedMotion ? 0 : DISTANCE.normal }} animate={{ opacity: 1, y: 0 }} transition={{
                     duration: prefersReducedMotion ? 0 : DURATION.normal,
                     delay: prefersReducedMotion ? 0 : idx * STAGGER.timeline,
                 }}>
                         {/* Timeline Node */}
                         <div className={`absolute -left-6 top-1 w-5 h-5 rounded-full border-2 flex items-center justify-center ${ev.status === "DELIVERED"
-                    ? "bg-slate-950 border-zinc-950 text-white"
+                    ? "bg-[#D8CFBC] border-[#C5BBA4] text-[#11120D] dark:bg-[#D8CFBC] dark:border-[#D8CFBC] dark:text-[#11120D]"
                     : ev.status === "CANCELLED"
-                        ? "bg-slate-200 border-zinc-400 text-slate-700"
+                        ? "bg-slate-200 border-zinc-400 text-slate-700 dark:bg-[#18191E] dark:border-[#22242B] dark:text-[#9BA3AF]"
                         : ev.status === "OUT_FOR_DELIVERY"
-                            ? "bg-slate-800 border-zinc-800 text-white"
+                            ? "bg-[#D8CFBC] border-[#C5BBA4] text-[#11120D] dark:bg-[#D8CFBC] dark:border-[#D8CFBC] dark:text-[#11120D]"
                             : ev.status === "IN_TRANSIT"
-                                ? "bg-zinc-600 border-zinc-600 text-white"
-                                : "bg-slate-100 border-slate-300 text-slate-500"}`}>
+                                ? "bg-[#D8CFBC] border-[#C5BBA4] text-[#11120D] dark:bg-[#D8CFBC] dark:border-[#D8CFBC] dark:text-[#11120D]"
+                                : "bg-slate-100 border-slate-300 text-slate-500 dark:bg-[#18191E] dark:border-[#22242B] dark:text-[#7C8189]"}`}>
                           <div className="w-1.5 h-1.5 rounded-full bg-current"/>
                         </div>
 
                         {/* Timeline Card */}
-                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs">
+                        <div className="bg-slate-50 dark:bg-[#121316] border border-slate-200 dark:border-[#22242B] rounded-lg p-3 text-xs">
                           <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="font-semibold text-slate-900 flex items-center gap-1.5">
+                            <span className="font-semibold text-slate-900 dark:text-[#F4F5F7] flex items-center gap-1.5">
                               <MapPin className="w-3.5 h-3.5 text-slate-400"/>
                               {ev.location}
                             </span>
@@ -700,7 +700,7 @@ export default function ShipmentsPage() {
                 })}
                             </span>
                           </div>
-                          <p className="text-slate-700">{ev.description}</p>
+                          <p className="text-slate-700 dark:text-[#CBD5E1]">{ev.description}</p>
                           <div className="mt-1.5 flex items-center gap-2">
                             <StatusBadge status={ev.status} type="shipment" />
                           </div>
@@ -711,7 +711,7 @@ export default function ShipmentsPage() {
 
                 {/* Add Custom Transit Checkpoint Form */}
                 {detailShipment.status !== "DELIVERED" &&
-                detailShipment.status !== "CANCELLED" && (<form onSubmit={handleAddCheckpoint} className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                detailShipment.status !== "CANCELLED" && (<form onSubmit={handleAddCheckpoint} className="p-4 bg-slate-50 dark:bg-[#121316] border border-slate-200 dark:border-[#22242B] rounded-lg space-y-3">
                       <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                         + Log Real-Time Checkpoint Scan
                       </h5>
@@ -720,7 +720,7 @@ export default function ShipmentsPage() {
                         <Input placeholder="Checkpoint scan details..." value={newCheckpointDesc} onChange={(e) => setNewCheckpointDesc(e.target.value)} className="bg-white border-slate-300 text-xs h-8 text-slate-800" required/>
                       </div>
                       <div className="text-right">
-                        <Button type="submit" size="sm" variant="solid" isLoading={loggingCheckpoint}>
+                        <Button type="submit" size="sm" variant="primary" isLoading={loggingCheckpoint}>
                           {loggingCheckpoint ? "Logging..." : "Log Checkpoint Scan"}
                         </Button>
                       </div>

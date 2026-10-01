@@ -4,11 +4,11 @@ export const badgeVariants = {
   default:
     "bg-slate-100 dark:bg-[#1E2026] text-slate-700 dark:text-[#D8CFBC] border-slate-200/80 dark:border-[#2E313C]",
   brand:
-    "bg-[#090A0C] text-[#FFFBF4] dark:bg-[#D8CFBC] dark:text-[#090A0C] border-[#090A0C] dark:border-[#D8CFBC]",
+    "bg-[#D8CFBC] text-[#11120D] border-[#C5BBA4] dark:bg-[#D8CFBC] dark:text-[#11120D] dark:border-[#D8CFBC] font-semibold",
   bone:
-    "bg-[#D8CFBC]/25 text-[#090A0C] dark:text-[#D8CFBC] border-[#D8CFBC]/50 dark:border-[#D8CFBC]/30",
+    "bg-[#D8CFBC] text-[#11120D] border-[#C5BBA4] dark:bg-[#D8CFBC] dark:text-[#11120D] dark:border-[#D8CFBC] font-semibold",
   success:
-    "bg-[#090A0C] text-[#FFFBF4] dark:bg-[#D8CFBC] dark:text-[#090A0C] border-[#090A0C] dark:border-[#D8CFBC]",
+    "bg-[#D8CFBC] text-[#11120D] border-[#C5BBA4] dark:bg-[#D8CFBC] dark:text-[#11120D] dark:border-[#D8CFBC] font-semibold",
   warning:
     "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30",
   danger:
@@ -19,9 +19,9 @@ export const badgeVariants = {
 
 const dotColors = {
   default: "bg-slate-400 dark:bg-slate-500",
-  brand: "bg-[#D8CFBC] dark:bg-[#090A0C]",
-  bone: "bg-[#090A0C] dark:bg-[#D8CFBC]",
-  success: "bg-[#D8CFBC] dark:bg-[#090A0C]",
+  brand: "bg-[#11120D] dark:bg-[#11120D]",
+  bone: "bg-[#11120D] dark:bg-[#11120D]",
+  success: "bg-[#11120D] dark:bg-[#11120D]",
   warning: "bg-amber-500 dark:bg-amber-400",
   danger: "bg-rose-500 dark:bg-rose-400",
   info: "bg-sky-500 dark:bg-[#38BDF8]",

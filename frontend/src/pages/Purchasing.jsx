@@ -414,7 +414,7 @@ export default function PurchasingPage() {
                               {po.status === "DRAFT" && (
                                 <>
                                   <Button
-                                    variant="solid"
+                                    variant="primary"
                                     size="xs"
                                     onClick={() => handleIssuePO(po.id)}
                                     disabled={isActing}
@@ -439,7 +439,7 @@ export default function PurchasingPage() {
                               {po.status === "ISSUED" && (
                                 <>
                                   <Button
-                                    variant="solid"
+                                    variant="primary"
                                     size="xs"
                                     onClick={() => handleReceivePO(po.id)}
                                     disabled={isActing}
@@ -827,7 +827,7 @@ export default function PurchasingPage() {
                         Cancel PO
                       </Button>
                       <Button
-                        variant="solid"
+                        variant="primary"
                         size="sm"
                         onClick={() => handleIssuePO(detailPO.id)}
                         disabled={actionLoading === detailPO.id}
@@ -850,7 +850,7 @@ export default function PurchasingPage() {
                         Cancel PO
                       </Button>
                       <Button
-                        variant="solid"
+                        variant="primary"
                         size="sm"
                         onClick={() => handleReceivePO(detailPO.id)}
                         disabled={actionLoading === detailPO.id}

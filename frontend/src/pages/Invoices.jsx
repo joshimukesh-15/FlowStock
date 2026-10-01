@@ -450,7 +450,7 @@ export default function InvoicesPage() {
                             {inv.balance_due > 0 && inv.status !== "VOID" && (
                               <Button
                                 size="xs"
-                                variant="solid"
+                                variant="primary"
                                 onClick={() => openPaymentDialog(inv)}
                                 title="Record Remittance Payment"
                               >
@@ -779,7 +779,7 @@ export default function InvoicesPage() {
                   <Button type="button" variant="outline" size="sm" onClick={() => setPaymentModalOpen(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit" variant="solid" size="sm" isLoading={recordingPayment} disabled={payAmount <= 0}>
+                  <Button type="submit" variant="primary" size="sm" isLoading={recordingPayment} disabled={payAmount <= 0}>
                     {recordingPayment ? "Recording..." : "Record & Apply Payment"}
                   </Button>
                 </div>
@@ -803,10 +803,10 @@ export default function InvoicesPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Button size="sm" variant="outline" onClick={() => window.print()}>
-                      Print / Export
+                       Print / Export
                     </Button>
                     {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
-                      <Button size="sm" variant="solid" onClick={() => openPaymentDialog(viewInvoice)}>
+                      <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)}>
                         <CreditCard className="w-3.5 h-3.5"/> Record Payment
                       </Button>
                     )}
@@ -1089,7 +1089,7 @@ export default function InvoicesPage() {
                         Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
                       </h4>
                       {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
-                        <Button size="sm" variant="solid" onClick={() => openPaymentDialog(viewInvoice)}>
+                        <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)}>
                           <CreditCard className="w-3.5 h-3.5" /> Add Payment
                         </Button>
                       )}
@@ -1102,7 +1102,7 @@ export default function InvoicesPage() {
                         description="This invoice is currently pending payment. Record the transaction reference and payment method to reconcile the balance."
                         action={
                           viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" ? (
-                            <Button size="sm" variant="solid" onClick={() => openPaymentDialog(viewInvoice)} className="mt-2">
+                            <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)} className="mt-2">
                               <CreditCard className="w-3.5 h-3.5" /> Record Payment Remittance
                             </Button>
                           ) : null

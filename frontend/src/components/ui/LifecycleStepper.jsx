@@ -12,13 +12,13 @@ export const LifecycleStepper = ({ title = "Lifecycle Status", steps, currentSte
                 ? steps[currentStepIndex]?.label
                 : "Draft review";
     const announcement = statusAnnouncement || defaultStatusAnnouncement;
-    return (<div className={`p-4 bg-slate-50 dark:bg-[#191B15]/60 border border-slate-200 dark:border-[#33372B] rounded-xl ${className}`}>
+    return (<div className={`p-4 bg-slate-50 dark:bg-[#121316] border border-slate-200 dark:border-[#22242B] rounded-xl ${className}`}>
       {/* Header & Status announcement */}
       <div className="flex items-center justify-between mb-4">
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF]">
           {title}
         </span>
-        {isCancelled ? (<span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-200 dark:bg-[#23261E] text-slate-900 dark:text-[#F4F5F7] border border-slate-300 dark:border-[#3A404F]">
+        {isCancelled ? (<span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-200 dark:bg-[#18191E] text-slate-900 dark:text-[#F4F5F7] border border-slate-300 dark:border-[#22242B]">
             <Ban className="w-3 h-3"/> Cancelled
           </span>) : (announcement && (<span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium">
               {announcement}
@@ -34,8 +34,8 @@ export const LifecycleStepper = ({ title = "Lifecycle Status", steps, currentSte
             const Icon = step.icon;
             return (<li key={step.key} className="relative flex-1 flex flex-col items-center group" aria-current={isCurrent ? "step" : undefined}>
                 {/* Connecting horizontal line to next step */}
-                {idx < steps.length - 1 && (<div className="absolute top-4 left-1/2 w-full h-[2px] bg-slate-200 dark:bg-[#23261E] -z-0" aria-hidden="true">
-                    <motion.div className="h-full bg-slate-900 dark:bg-slate-100 origin-left" initial={{ scaleX: SCALE.progressStart }} animate={{
+                {idx < steps.length - 1 && (<div className="absolute top-4 left-1/2 w-full h-[2px] bg-slate-200 dark:bg-[#22242B] -z-0" aria-hidden="true">
+                    <motion.div className="h-full bg-[#C5BBA4] dark:bg-[#D8CFBC] origin-left" initial={{ scaleX: SCALE.progressStart }} animate={{
                         scaleX: !isCancelled && currentStepIndex > idx ? SCALE.progressEnd : SCALE.progressStart,
                     }} transition={{
                         duration: prefersReducedMotion ? 0 : DURATION.complex,
@@ -46,10 +46,10 @@ export const LifecycleStepper = ({ title = "Lifecycle Status", steps, currentSte
                 {/* Step Node Icon Badge */}
                 <div className="relative z-10 flex items-center justify-center">
                   <motion.div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-colors ${isCompleted
-                    ? "bg-slate-900 dark:bg-slate-100 border-zinc-900 dark:border-slate-100 text-white dark:text-slate-900"
+                    ? "bg-[#D8CFBC] border-[#C5BBA4] text-[#11120D] dark:bg-[#D8CFBC] dark:border-[#D8CFBC] dark:text-[#11120D] shadow-xs"
                     : isCurrent
-                        ? "bg-white dark:bg-[#191B15] border-zinc-900 dark:border-slate-100 text-slate-900 dark:text-[#F4F5F7] shadow-sm"
-                        : "bg-white dark:bg-[#191B15] border-slate-300 dark:border-[#3A404F] text-slate-400 dark:text-[#7C8189]"}`} initial={{ scale: prefersReducedMotion ? SCALE.resting : SCALE.hidden, opacity: 0 }} animate={{ scale: SCALE.resting, opacity: 1 }} transition={{
+                        ? "bg-white dark:bg-[#18191E] border-[#C5BBA4] dark:border-[#D8CFBC] text-[#11120D] dark:text-[#D8CFBC] ring-2 ring-[#D8CFBC]/40 shadow-xs"
+                        : "bg-white dark:bg-[#18191E] border-slate-200 dark:border-[#22242B] text-slate-400 dark:text-[#7C8189]"}`} initial={{ scale: prefersReducedMotion ? SCALE.resting : SCALE.hidden, opacity: 0 }} animate={{ scale: SCALE.resting, opacity: 1 }} transition={{
                     duration: prefersReducedMotion ? 0 : DURATION.normal,
                     ease: EASING.standard,
                     delay: prefersReducedMotion ? 0 : idx * STAGGER.steps,
@@ -61,9 +61,9 @@ export const LifecycleStepper = ({ title = "Lifecycle Status", steps, currentSte
                 {/* Step text labels */}
                 <div className="mt-2 text-center">
                   <div className={`text-xs font-medium transition-colors ${isCurrent
-                    ? "text-slate-900 dark:text-[#F4F5F7] font-semibold"
+                    ? "text-[#11120D] dark:text-[#D8CFBC] font-bold"
                     : isCompleted
-                        ? "text-slate-800 dark:text-[#CBD5E1]"
+                        ? "text-slate-800 dark:text-[#CBD5E1] font-semibold"
                         : "text-slate-400 dark:text-[#7C8189]"}`}>
                     {step.label}
                   </div>
@@ -77,7 +77,7 @@ export const LifecycleStepper = ({ title = "Lifecycle Status", steps, currentSte
       </nav>
 
       {/* Cancelled notice banner */}
-      {isCancelled && cancelledMessage && (<div className="mt-3.5 p-2.5 rounded-lg bg-slate-100 dark:bg-[#23261E]/50 border border-slate-300 dark:border-[#3A404F] flex items-center gap-2 text-xs text-slate-800 dark:text-[#E2E8F0]">
+      {isCancelled && cancelledMessage && (<div className="mt-3.5 p-2.5 rounded-lg bg-slate-100 dark:bg-[#18191E] border border-slate-300 dark:border-[#22242B] flex items-center gap-2 text-xs text-slate-800 dark:text-[#E2E8F0]">
           <Ban className="w-4 h-4 text-slate-700 dark:text-[#CBD5E1] shrink-0"/>
           <span>{cancelledMessage}</span>
         </div>)}

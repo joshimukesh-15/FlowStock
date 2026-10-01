@@ -39,7 +39,7 @@ export const Button = React.forwardRef((
     citrus:
       "bg-[#E4FD97] hover:bg-[#d5f57a] active:bg-[#c3e65c] text-[#11120D] font-semibold border border-[#d5f57a] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_12px_rgba(228,253,151,0.3)] hover:shadow-[0_4px_18px_rgba(228,253,151,0.45)]",
     solid:
-      "bg-[#11120D] hover:bg-black active:bg-[#191B15] text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-[#11120D] font-medium border border-[#11120D] dark:border-white shadow-2xs",
+      "bg-[#D8CFBC] hover:bg-[#FFFBF4] active:bg-[#C5BBA4] text-[#11120D] font-semibold border border-[#FFFBF4] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_16px_rgba(216,207,188,0.30)] hover:shadow-[0_4px_22px_rgba(216,207,188,0.45)]",
     dark:
       "bg-[#11120D] hover:bg-black active:bg-[#191B15] text-white dark:bg-white dark:hover:bg-slate-100 dark:active:bg-slate-200 dark:text-[#11120D] font-medium border border-[#11120D] dark:border-white shadow-2xs",
     secondary:

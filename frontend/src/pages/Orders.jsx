@@ -399,7 +399,7 @@ export default function OrdersPage() {
                               {o.status === "DRAFT" && (
                                 <>
                                   <Button
-                                    variant="solid"
+                                    variant="primary"
                                     size="xs"
                                     onClick={() => handleConfirmOrder(o.id)}
                                     disabled={isActing}
@@ -424,7 +424,7 @@ export default function OrdersPage() {
                               {o.status === "CONFIRMED" && (
                                 <>
                                   <Button
-                                    variant="solid"
+                                    variant="primary"
                                     size="xs"
                                     onClick={() => handleFulfillOrder(o.id)}
                                     disabled={isActing}
@@ -799,7 +799,7 @@ export default function OrdersPage() {
                         Cancel Order
                       </Button>
                       <Button
-                        variant="solid"
+                        variant="primary"
                         size="sm"
                         onClick={() => handleConfirmOrder(detailOrder.id)}
                         disabled={actionLoading === detailOrder.id}
@@ -822,7 +822,7 @@ export default function OrdersPage() {
                         Cancel Order
                       </Button>
                       <Button
-                        variant="solid"
+                        variant="primary"
                         size="sm"
                         onClick={() => handleFulfillOrder(detailOrder.id)}
                         disabled={actionLoading === detailOrder.id}
