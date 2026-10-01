@@ -6,7 +6,6 @@ import {
   Truck,
   Ban,
   Clock,
-  ArrowRight,
 } from "lucide-react";
 
 export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
@@ -92,13 +91,6 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
   };
 
   const StatusIcon = config.icon;
-
-  const arrowColor =
-    isReceived || isTransit
-      ? "text-[#090A0C] dark:text-[#D8CFBC]"
-      : isCancelled
-      ? "text-rose-500"
-      : "text-slate-300 dark:text-[#3A3D47]";
 
   const originDotClass =
     isReceived || isTransit
@@ -225,11 +217,6 @@ export const WarehouseTransferVisualizer = ({ transfer, className = "" }) => {
                   <Truck className="w-3 h-3" />
                 </div>
               )}
-
-              {/* Directional Terminal Arrow (Matches rail color on delivery, no negative margin) */}
-              <ArrowRight
-                className={`absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${arrowColor}`}
-              />
             </div>
 
             {/* Route Detail Subtitle */}
