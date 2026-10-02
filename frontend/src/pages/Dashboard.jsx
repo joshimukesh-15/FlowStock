@@ -158,7 +158,7 @@ export default function HomePage() {
 
     return (<motion.div variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible" className="max-w-7xl mx-auto space-y-3 pb-12">
       {/* Header Bar */}
-      <PageHeader title="Operations Cockpit" subtitle={`Real-time telemetry for ${currentOrg?.name || "Acme Logistics"}`} actions={<div className="flex items-center gap-2.5">
+      <PageHeader title="Operations Cockpit" subtitle={`Real-time telemetry for ${currentOrg?.name || "Samsung Electronics"}`} actions={<div className="flex items-center gap-2.5">
             <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-mono">
               Synced {lastChecked || "now"}
             </span>

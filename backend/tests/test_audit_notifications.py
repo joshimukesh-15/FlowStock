@@ -103,51 +103,52 @@ async def test_audit_and_notifications_multi_tenant_isolation(async_client: Asyn
     orgs_resp = await async_client.get("/api/v1/organizations")
     assert orgs_resp.status_code == 200
     orgs = orgs_resp.json()
-    acme = next((o for o in orgs if o["slug"] == "acme"), None)
-    apex = next((o for o in orgs if o["slug"] == "apex"), None)
-    assert acme is not None and apex is not None
+    samsung = next((o for o in orgs if o["slug"] == "samsung"), None)
+    semi = next((o for o in orgs if o["slug"] == "samsung-semi"), None)
+    assert samsung is not None and semi is not None
 
-    # Acme notifications
-    acme_notifs_resp = await async_client.get(
-        "/api/v1/notifications", headers={"X-Organization-Id": acme["id"]}
+    # Samsung Electronics notifications
+    samsung_notifs_resp = await async_client.get(
+        "/api/v1/notifications", headers={"X-Organization-Id": samsung["id"]}
     )
-    assert acme_notifs_resp.status_code == 200
-    acme_notifs = acme_notifs_resp.json()
-    assert len(acme_notifs) >= 1
-    acme_notif_ids = {n["id"] for n in acme_notifs}
+    assert samsung_notifs_resp.status_code == 200
+    samsung_notifs = samsung_notifs_resp.json()
+    assert len(samsung_notifs) >= 1
+    samsung_notif_ids = {n["id"] for n in samsung_notifs}
 
-    # Apex notifications
-    apex_notifs_resp = await async_client.get(
-        "/api/v1/notifications", headers={"X-Organization-Id": apex["id"]}
+    # Samsung Semiconductor notifications
+    semi_notifs_resp = await async_client.get(
+        "/api/v1/notifications", headers={"X-Organization-Id": semi["id"]}
     )
-    assert apex_notifs_resp.status_code == 200
-    apex_notifs = apex_notifs_resp.json()
-    apex_notif_ids = {n["id"] for n in apex_notifs}
+    assert semi_notifs_resp.status_code == 200
+    semi_notifs = semi_notifs_resp.json()
+    assert len(semi_notifs) >= 1
+    semi_notif_ids = {n["id"] for n in semi_notifs}
 
     # Verify no intersection of notification IDs
-    assert acme_notif_ids.isdisjoint(apex_notif_ids)
+    assert samsung_notif_ids.isdisjoint(semi_notif_ids)
 
     # Cross-tenant read modification should return 404
-    sample_acme_notif_id = next(iter(acme_notif_ids))
+    sample_samsung_notif_id = next(iter(samsung_notif_ids))
     cross_tenant_patch = await async_client.patch(
-        f"/api/v1/notifications/{sample_acme_notif_id}/read",
-        headers={"X-Organization-Id": apex["id"]},
+        f"/api/v1/notifications/{sample_samsung_notif_id}/read",
+        headers={"X-Organization-Id": semi["id"]},
     )
     assert cross_tenant_patch.status_code == 404
 
     # Audit log isolation
-    acme_audits_resp = await async_client.get(
-        "/api/v1/audit", headers={"X-Organization-Id": acme["id"]}
+    samsung_audits_resp = await async_client.get(
+        "/api/v1/audit", headers={"X-Organization-Id": samsung["id"]}
     )
-    assert acme_audits_resp.status_code == 200
-    acme_audits = acme_audits_resp.json()
-    acme_audit_ids = {a["id"] for a in acme_audits}
+    assert samsung_audits_resp.status_code == 200
+    samsung_audits = samsung_audits_resp.json()
+    samsung_audit_ids = {a["id"] for a in samsung_audits}
 
-    apex_audits_resp = await async_client.get(
-        "/api/v1/audit", headers={"X-Organization-Id": apex["id"]}
+    semi_audits_resp = await async_client.get(
+        "/api/v1/audit", headers={"X-Organization-Id": semi["id"]}
     )
-    assert apex_audits_resp.status_code == 200
-    apex_audits = apex_audits_resp.json()
-    apex_audit_ids = {a["id"] for a in apex_audits}
+    assert semi_audits_resp.status_code == 200
+    semi_audits = semi_audits_resp.json()
+    semi_audit_ids = {a["id"] for a in semi_audits}
 
-    assert acme_audit_ids.isdisjoint(apex_audit_ids)
+    assert samsung_audit_ids.isdisjoint(semi_audit_ids)

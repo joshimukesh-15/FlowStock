@@ -153,7 +153,7 @@ try {
 Write-Header 'Step 5: Database Initialization and Demo Seeding'
 
 $env:PYTHONPATH = 'backend'
-Write-Step 'Verifying database tables and seeding demo organizations (Acme and Apex)...'
+Write-Step 'Verifying database tables and seeding demo organizations (Samsung Electronics and Samsung Semiconductor)...'
 & $VENV_PYTHON -m app.core.seed
 Write-Step 'Database schema verified and pre-seeded successfully.'
 
@@ -174,7 +174,7 @@ Write-Host '   Frontend Web Cockpit:  http://localhost:3000' -ForegroundColor Wh
 Write-Host '   Backend API & Health:  http://127.0.0.1:8000/api/v1/health' -ForegroundColor White
 Write-Host '   Interactive API Docs:  http://127.0.0.1:8000/docs' -ForegroundColor White
 Write-Host ''
-Write-Host 'Pre-seeded Tenants and Demo Users:' -ForegroundColor Yellow
-Write-Host '   Acme Logistics Ltd: alice@acme.com (Admin) | ramesh@acme.com (Warehouse) | vikram@acme.com (Sales) | pooja@acme.com (Viewer)' -ForegroundColor White
-Write-Host '   Apex Global Ind:    sunil@apex.com (Admin) | bob@apex.com (Warehouse)    | kavita@apex.com (Sales) | deepak@apex.com (Viewer)' -ForegroundColor White
+Write-Host 'Pre-seeded Tenants and Demo Users (Password: admin123):' -ForegroundColor Yellow
+Write-Host '   Samsung Electronics Ltd:   alice@samsung.com (Admin)      | ramesh@samsung.com (Warehouse) | vikram@samsung.com (Sales) | pooja@samsung.com (Viewer)' -ForegroundColor White
+Write-Host '   Samsung Semiconductor Ltd: sunil@samsung-semi.com (Admin) | bob@samsung-semi.com (Warehouse) | kavita@samsung-semi.com (Sales) | deepak@samsung-semi.com (Viewer)' -ForegroundColor White
 Write-Host '==============================================================================' -ForegroundColor Cyan

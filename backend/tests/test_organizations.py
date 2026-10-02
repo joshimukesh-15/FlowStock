@@ -12,8 +12,8 @@ async def test_list_organizations_seeded(async_client: AsyncClient):
     data = response.json()
     assert len(data) >= 2
     slugs = [org["slug"] for org in data]
-    assert "acme" in slugs
-    assert "apex" in slugs
+    assert "samsung" in slugs
+    assert "samsung-semi" in slugs
 
 
 @pytest.mark.asyncio
@@ -43,8 +43,8 @@ async def test_create_organization_and_auto_admin(async_client: AsyncClient):
 async def test_duplicate_slug_rejected(async_client: AsyncClient):
     """Verify organization slug uniqueness is enforced."""
     dup_payload = {
-        "name": "Acme Duplicate",
-        "slug": "acme",
+        "name": "Samsung Duplicate",
+        "slug": "samsung",
         "currency": "USD",
     }
     response = await async_client.post("/api/v1/organizations", json=dup_payload)

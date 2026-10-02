@@ -63,16 +63,16 @@ Write-Host "   Frontend Cockpit:      http://localhost:3000" -ForegroundColor Wh
 Write-Host "   Backend API & Health:  http://127.0.0.1:8000/api/v1/health" -ForegroundColor White
 Write-Host "   Swagger API Docs:      http://127.0.0.1:8000/docs" -ForegroundColor White
 Write-Host ""
-Write-Host "Demo Credentials (Pre-seeded across all 4 RBAC roles):" -ForegroundColor Yellow
-Write-Host "   Tenant: Acme Logistics Ltd" -ForegroundColor Cyan
-Write-Host "     - Admin:             alice@acme.com" -ForegroundColor White
-Write-Host "     - Warehouse Manager: ramesh@acme.com" -ForegroundColor White
-Write-Host "     - Sales Rep:         vikram@acme.com" -ForegroundColor White
-Write-Host "     - Auditor/Viewer:    pooja@acme.com" -ForegroundColor White
+Write-Host "Demo Credentials (Pre-seeded across all 4 RBAC roles | Password: admin123):" -ForegroundColor Yellow
+Write-Host "   Tenant: Samsung Electronics Ltd" -ForegroundColor Cyan
+Write-Host "     - Admin:             alice@samsung.com" -ForegroundColor White
+Write-Host "     - Warehouse Manager: ramesh@samsung.com" -ForegroundColor White
+Write-Host "     - Sales Rep:         vikram@samsung.com" -ForegroundColor White
+Write-Host "     - Auditor/Viewer:    pooja@samsung.com" -ForegroundColor White
 Write-Host ""
-Write-Host "   Tenant: Apex Global Industries" -ForegroundColor Cyan
-Write-Host "     - Admin:             sunil@apex.com" -ForegroundColor White
-Write-Host "     - Warehouse Manager: bob@apex.com" -ForegroundColor White
-Write-Host "     - Sales Rep:         kavita@apex.com" -ForegroundColor White
-Write-Host "     - Auditor/Viewer:    deepak@apex.com" -ForegroundColor White
+Write-Host "   Tenant: Samsung Semiconductor Ltd" -ForegroundColor Cyan
+Write-Host "     - Admin:             sunil@samsung-semi.com" -ForegroundColor White
+Write-Host "     - Warehouse Manager: bob@samsung-semi.com" -ForegroundColor White
+Write-Host "     - Sales Rep:         kavita@samsung-semi.com" -ForegroundColor White
+Write-Host "     - Auditor/Viewer:    deepak@samsung-semi.com" -ForegroundColor White
 Write-Host "==============================================================================" -ForegroundColor Cyan

@@ -11,14 +11,14 @@ async def test_list_inventory_summaries_seeded(async_client: AsyncClient):
     summaries = resp.json()
     assert len(summaries) >= 3
 
-    # Check Pallet Jack
-    plt = next(s for s in summaries if s["product"]["sku"] == "SKU-PLT-01")
+    # Check Galaxy S24 Ultra
+    plt = next(s for s in summaries if s["product"]["sku"] == "SMS-S24U-512")
     assert plt["on_hand_quantity"] >= 25
     assert plt["is_low_stock"] is False
-    assert plt["total_cost_value"] == plt["on_hand_quantity"] * 240.0
+    assert plt["total_cost_value"] == plt["on_hand_quantity"] * 105000.0
 
-    # Check Stretch Film (Low Stock Alert: 15 on hand <= 50 reorder point)
-    flm = next(s for s in summaries if s["product"]["sku"] == "SKU-FLM-03")
+    # Check Galaxy Buds3 Pro (Low Stock Alert: 15 on hand <= 50 reorder point)
+    flm = next(s for s in summaries if s["product"]["sku"] == "SMS-BUDS-3P")
     assert flm["on_hand_quantity"] == 15
     assert flm["is_low_stock"] is True
 
@@ -26,9 +26,9 @@ async def test_list_inventory_summaries_seeded(async_client: AsyncClient):
 @pytest.mark.asyncio
 async def test_record_movement_in_and_out(async_client: AsyncClient):
     """Verify append-only ledger increases and decreases stock dynamically."""
-    # Get Pallet Jack ID
+    # Get Pallet Jack ID -> Galaxy S24 Ultra ID
     inv_resp = await async_client.get("/api/v1/inventory")
-    plt = next(s for s in inv_resp.json() if s["product"]["sku"] == "SKU-PLT-01")
+    plt = next(s for s in inv_resp.json() if s["product"]["sku"] == "SMS-S24U-512")
     initial_stock = plt["on_hand_quantity"]
     prod_id = plt["product"]["id"]
 
@@ -83,7 +83,7 @@ async def test_record_movement_in_and_out(async_client: AsyncClient):
 async def test_negative_stock_prevented(async_client: AsyncClient):
     """Verify attempting to dispatch more stock than available fails with HTTP 400."""
     inv_resp = await async_client.get("/api/v1/inventory")
-    flm = next(s for s in inv_resp.json() if s["product"]["sku"] == "SKU-FLM-03")
+    flm = next(s for s in inv_resp.json() if s["product"]["sku"] == "SMS-BUDS-3P")
     current_stock = flm["on_hand_quantity"]
     prod_id = flm["product"]["id"]
 
@@ -108,7 +108,7 @@ async def test_negative_stock_prevented(async_client: AsyncClient):
 async def test_adjustment_sets_exact_stock_count(async_client: AsyncClient):
     """Verify stock count adjustment updates ledger with exact differential."""
     inv_resp = await async_client.get("/api/v1/inventory")
-    bin_item = next(s for s in inv_resp.json() if s["product"]["sku"] == "SKU-BIN-02")
+    bin_item = next(s for s in inv_resp.json() if s["product"]["sku"] == "SMS-ACC-45W")
     prod_id = bin_item["product"]["id"]
 
     # Adjust stock count to exactly 42 units
@@ -134,19 +134,19 @@ async def test_inventory_multi_tenant_isolation(async_client: AsyncClient):
     """Verify Organization B sees only its own inventory and cannot view Org A stock."""
     orgs_resp = await async_client.get("/api/v1/organizations")
     orgs = orgs_resp.json()
-    acme_id = next(o["id"] for o in orgs if o["slug"] == "acme")
-    apex_id = next(o["id"] for o in orgs if o["slug"] == "apex")
+    samsung_id = next(o["id"] for o in orgs if o["slug"] == "samsung")
+    semi_id = next(o["id"] for o in orgs if o["slug"] == "samsung-semi")
 
-    # Acme inventory query
-    acme_inv = await async_client.get("/api/v1/inventory", headers={"X-Organization-Id": acme_id})
-    assert acme_inv.status_code == 200
-    acme_skus = [item["product"]["sku"] for item in acme_inv.json()]
-    assert "SKU-PLT-01" in acme_skus
-    assert "APX-CF-101" not in acme_skus
+    # Samsung Electronics inventory query
+    samsung_inv = await async_client.get("/api/v1/inventory", headers={"X-Organization-Id": samsung_id})
+    assert samsung_inv.status_code == 200
+    samsung_skus = [item["product"]["sku"] for item in samsung_inv.json()]
+    assert "SMS-S24U-512" in samsung_skus
+    assert "SMS-SSD-2TB" not in samsung_skus
 
-    # Apex inventory query
-    apex_inv = await async_client.get("/api/v1/inventory", headers={"X-Organization-Id": apex_id})
-    assert apex_inv.status_code == 200
-    apex_skus = [item["product"]["sku"] for item in apex_inv.json()]
-    assert "APX-CF-101" in apex_skus
-    assert "SKU-PLT-01" not in apex_skus  # Completely isolated
+    # Samsung Semiconductor inventory query
+    semi_inv = await async_client.get("/api/v1/inventory", headers={"X-Organization-Id": semi_id})
+    assert semi_inv.status_code == 200
+    semi_skus = [item["product"]["sku"] for item in semi_inv.json()]
+    assert "SMS-SSD-2TB" in semi_skus
+    assert "SMS-S24U-512" not in semi_skus  # Completely isolated

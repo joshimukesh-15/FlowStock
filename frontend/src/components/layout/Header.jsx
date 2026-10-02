@@ -642,8 +642,8 @@ export const Header = () => {
           )}
 
           <form onSubmit={handleCreateSubmit} className="space-y-3.5">
-            <Input label="Organization Name" placeholder="e.g. Apex Industrial Supplies" value={newOrgName} onChange={handleNameChange} required/>
-            <Input label="Identifier Slug" placeholder="e.g. apex-industrial" value={newOrgSlug} onChange={(e) => setNewOrgSlug(e.target.value)} required/>
+            <Input label="Organization Name" placeholder="e.g. Samsung Semiconductor Ltd" value={newOrgName} onChange={handleNameChange} required/>
+            <Input label="Identifier Slug" placeholder="e.g. samsung-semi" value={newOrgSlug} onChange={(e) => setNewOrgSlug(e.target.value)} required/>
             <div>
               <label className="block text-xs font-medium text-slate-700 dark:text-[#CBD5E1] mb-1">
                 Default Currency

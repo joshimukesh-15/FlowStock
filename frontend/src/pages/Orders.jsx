@@ -696,7 +696,7 @@ export default function OrdersPage() {
                   <div>
                     <span className="text-slate-500 block">Fulfillment Facility</span>
                     <span className="font-semibold text-slate-900">
-                      {detailOrder.warehouse?.name || "Acme Central DC"}
+                      {detailOrder.warehouse?.name || "Samsung Central DC"}
                     </span>
                     <span className="text-slate-500 font-mono block">
                       {detailOrder.warehouse?.code || "WH-MAIN"}

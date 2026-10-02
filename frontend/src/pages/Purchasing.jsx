@@ -383,7 +383,7 @@ export default function PurchasingPage() {
                           <td className="py-3.5 px-4 text-xs text-slate-500">
                             <div>
                               <span className="text-slate-700 font-medium">
-                                {po.destination_warehouse?.name || "Acme Central DC"}
+                                {po.destination_warehouse?.name || "Samsung Central DC"}
                               </span>
                               <span className="font-mono text-[10px] text-slate-400 block">
                                 {po.destination_warehouse?.code || "WH-MAIN"}
@@ -725,7 +725,7 @@ export default function PurchasingPage() {
                   <div>
                     <span className="text-slate-500 block">Receiving Destination Depot</span>
                     <span className="font-semibold text-slate-900">
-                      {detailPO.destination_warehouse?.name || "Acme Central DC"}
+                      {detailPO.destination_warehouse?.name || "Samsung Central DC"}
                     </span>
                     <span className="text-slate-500 font-mono block">
                       {detailPO.destination_warehouse?.code || "WH-MAIN"}

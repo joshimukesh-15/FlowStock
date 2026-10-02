@@ -37,7 +37,7 @@ class AuditLog(TenantScopedModel):
     entity_name: Mapped[Optional[str]] = mapped_column(
         String(150),
         nullable=True,
-    )  # e.g., SO-3F2383, INV-ACME-01
+    )  # e.g., SO-3F2383, INV-SMS-01
     details: Mapped[Optional[str]] = mapped_column(
         Text,
         nullable=True,

@@ -6,13 +6,13 @@ from httpx import AsyncClient
 @pytest.mark.asyncio
 async def test_list_customers_and_create(async_client: AsyncClient):
     """Verify seeded customers and creating new customer."""
-    # List seeded customers for Acme
+    # List seeded customers for Samsung
     resp = await async_client.get("/api/v1/customers")
     assert resp.status_code == 200
     customers = resp.json()
     assert len(customers) >= 1
     names = [c["name"] for c in customers]
-    assert any("Summit" in n for n in names)
+    assert any("Reliance" in n for n in names)
 
     # Create new customer with unique email
     from uuid import uuid4
@@ -54,7 +54,7 @@ async def test_sales_order_lifecycle_and_reservation(async_client: AsyncClient):
 
     prod_resp = await async_client.get("/api/v1/products")
     products = prod_resp.json()
-    p_bin = next(p for p in products if p["sku"] == "SKU-BIN-02")
+    p_bin = next(p for p in products if p["sku"] == "SMS-ACC-45W")
 
     # Get initial stock of Storage Bin
     inv_resp = await async_client.get("/api/v1/inventory")
@@ -124,9 +124,9 @@ async def test_insufficient_stock_blocks_order_confirmation(async_client: AsyncC
     customer_id = cust_resp.json()[0]["id"]
 
     prod_resp = await async_client.get("/api/v1/products")
-    p_plt = next(p for p in prod_resp.json() if p["sku"] == "SKU-PLT-01")
+    p_plt = next(p for p in prod_resp.json() if p["sku"] == "SMS-S24U-512")
 
-    # Create order requesting 9999 pallet jacks
+    # Create order requesting 9999 units
     excessive_order = await async_client.post(
         "/api/v1/orders",
         json={
@@ -156,7 +156,7 @@ async def test_cancel_order_releases_reservation(async_client: AsyncClient):
     customer_id = cust_resp.json()[0]["id"]
 
     prod_resp = await async_client.get("/api/v1/products")
-    p_flm = next(p for p in prod_resp.json() if p["sku"] == "SKU-FLM-03")
+    p_flm = next(p for p in prod_resp.json() if p["sku"] == "SMS-BUDS-3P")
 
     # Create and confirm order
     order_res = await async_client.post(
@@ -179,23 +179,23 @@ async def test_cancel_order_releases_reservation(async_client: AsyncClient):
 async def test_orders_multi_tenant_isolation(async_client: AsyncClient):
     """Verify Organization B cannot view or manipulate Organization A customers or orders."""
     orgs = (await async_client.get("/api/v1/organizations")).json()
-    acme_id = next(o["id"] for o in orgs if o["slug"] == "acme")
-    apex_id = next(o["id"] for o in orgs if o["slug"] == "apex")
+    samsung_id = next(o["id"] for o in orgs if o["slug"] == "samsung")
+    semi_id = next(o["id"] for o in orgs if o["slug"] == "samsung-semi")
 
-    # Acme orders
-    acme_orders = (await async_client.get("/api/v1/orders", headers={"X-Organization-Id": acme_id})).json()
-    assert len(acme_orders) >= 1
-    acme_order_id = acme_orders[0]["id"]
+    # Samsung Electronics orders
+    samsung_orders = (await async_client.get("/api/v1/orders", headers={"X-Organization-Id": samsung_id})).json()
+    assert len(samsung_orders) >= 1
+    samsung_order_id = samsung_orders[0]["id"]
 
-    # Apex trying to read Acme order
-    apex_attempt = await async_client.get(
-        f"/api/v1/orders/{acme_order_id}",
-        headers={"X-Organization-Id": apex_id},
+    # Samsung Semiconductor trying to read Samsung Electronics order
+    semi_attempt = await async_client.get(
+        f"/api/v1/orders/{samsung_order_id}",
+        headers={"X-Organization-Id": semi_id},
     )
-    assert apex_attempt.status_code == 404
+    assert semi_attempt.status_code == 404
 
-    # Apex customer list should NOT contain Acme customer
-    apex_customers = (await async_client.get("/api/v1/customers", headers={"X-Organization-Id": apex_id})).json()
-    apex_emails = [c["email"] for c in apex_customers]
-    assert "procurement@summiteng.in" not in apex_emails
-    assert "sourcing@bluetokai.in" in apex_emails
+    # Samsung Semiconductor customer list should NOT contain Samsung Electronics customer
+    semi_customers = (await async_client.get("/api/v1/customers", headers={"X-Organization-Id": semi_id})).json()
+    semi_emails = [c["email"] for c in semi_customers]
+    assert "b2b.procurement@reliancedigital.in" not in semi_emails
+    assert "procurement@lenovo.in" in semi_emails

@@ -236,39 +236,39 @@ async def test_invoicing_multi_tenant_isolation(async_client: AsyncClient):
     """Verify Organization B cannot access or record payments against Organization A invoices."""
     orgs_resp = await async_client.get("/api/v1/organizations")
     orgs = orgs_resp.json()
-    acme_id = next(o["id"] for o in orgs if o["slug"] == "acme")
-    apex_id = next(o["id"] for o in orgs if o["slug"] == "apex")
+    samsung_id = next(o["id"] for o in orgs if o["slug"] == "samsung")
+    semi_id = next(o["id"] for o in orgs if o["slug"] == "samsung-semi")
 
-    # Acme invoices
-    acme_resp = await async_client.get("/api/v1/invoices", headers={"X-Organization-Id": acme_id})
-    assert acme_resp.status_code == 200
-    acme_invoices = acme_resp.json()
-    assert len(acme_invoices) > 0
-    acme_inv_id = acme_invoices[0]["id"]
-    acme_inv_nums = [i["invoice_number"] for i in acme_invoices]
+    # Samsung Electronics invoices
+    samsung_resp = await async_client.get("/api/v1/invoices", headers={"X-Organization-Id": samsung_id})
+    assert samsung_resp.status_code == 200
+    samsung_invoices = samsung_resp.json()
+    assert len(samsung_invoices) > 0
+    samsung_inv_id = samsung_invoices[0]["id"]
+    samsung_inv_nums = [i["invoice_number"] for i in samsung_invoices]
 
-    # Apex attempts to access Acme invoice by ID
-    apex_get_resp = await async_client.get(
-        f"/api/v1/invoices/{acme_inv_id}", headers={"X-Organization-Id": apex_id}
+    # Samsung Semiconductor attempts to access Samsung Electronics invoice by ID
+    semi_get_resp = await async_client.get(
+        f"/api/v1/invoices/{samsung_inv_id}", headers={"X-Organization-Id": semi_id}
     )
-    assert apex_get_resp.status_code == 404
+    assert semi_get_resp.status_code == 404
 
-    # Apex attempts to pay Acme invoice
-    apex_pay_resp = await async_client.post(
+    # Samsung Semiconductor attempts to pay Samsung Electronics invoice
+    semi_pay_resp = await async_client.post(
         "/api/v1/payments",
         json={
-            "invoice_id": acme_inv_id,
+            "invoice_id": samsung_inv_id,
             "amount": 100.00,
             "payment_method": "UPI",
             "reference": "UPI-HACK-ATTEMPT",
         },
-        headers={"X-Organization-Id": apex_id},
+        headers={"X-Organization-Id": semi_id},
     )
-    assert apex_pay_resp.status_code == 404
+    assert semi_pay_resp.status_code == 404
 
-    # Apex list invoices does not contain any Acme invoices
-    apex_list_resp = await async_client.get("/api/v1/invoices", headers={"X-Organization-Id": apex_id})
-    assert apex_list_resp.status_code == 200
-    apex_invoices = apex_list_resp.json()
-    for inv in apex_invoices:
-        assert inv["invoice_number"] not in acme_inv_nums
+    # Samsung Semiconductor list invoices does not contain any Samsung Electronics invoices
+    semi_list_resp = await async_client.get("/api/v1/invoices", headers={"X-Organization-Id": semi_id})
+    assert semi_list_resp.status_code == 200
+    semi_invoices = semi_list_resp.json()
+    for inv in semi_invoices:
+        assert inv["invoice_number"] not in samsung_inv_nums

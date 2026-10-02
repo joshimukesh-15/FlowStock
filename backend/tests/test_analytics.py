@@ -5,12 +5,12 @@ from httpx import AsyncClient
 
 @pytest.mark.asyncio
 async def test_dashboard_summary_happy_path(async_client: AsyncClient):
-    """Verify Acme Logistics executive dashboard metrics return real calculated data across modules."""
+    """Verify Samsung Electronics executive dashboard metrics return real calculated data across modules."""
     resp = await async_client.get("/api/v1/analytics/dashboard")
     assert resp.status_code == 200
     data = resp.json()
 
-    assert data["organization_name"] == "Acme Logistics Ltd"
+    assert data["organization_name"] == "Samsung Electronics Ltd"
     assert data["currency"] == "INR"
 
     # Inventory metrics verification
@@ -47,7 +47,7 @@ async def test_dashboard_summary_happy_path(async_client: AsyncClient):
     warehouses = data["warehouses"]
     assert len(warehouses) >= 2
     wh_names = [w["name"] for w in warehouses]
-    assert "Acme Central DC" in wh_names
+    assert "Samsung Noida Mega Plant & Central DC" in wh_names
     for wh in warehouses:
         assert 0.0 <= wh["pct_of_total_stock"] <= 100.0
 
@@ -69,33 +69,33 @@ async def test_dashboard_multitenant_isolation(async_client: AsyncClient):
     assert orgs_resp.status_code == 200
     orgs = orgs_resp.json()
 
-    acme = next((o for o in orgs if o["slug"] == "acme"), None)
-    apex = next((o for o in orgs if o["slug"] == "apex"), None)
-    assert acme is not None and apex is not None
+    samsung = next((o for o in orgs if o["slug"] == "samsung"), None)
+    semi = next((o for o in orgs if o["slug"] == "samsung-semi"), None)
+    assert samsung is not None and semi is not None
 
-    acme_dash_resp = await async_client.get(
-        "/api/v1/analytics/dashboard", headers={"X-Organization-Id": acme["id"]}
+    samsung_dash_resp = await async_client.get(
+        "/api/v1/analytics/dashboard", headers={"X-Organization-Id": samsung["id"]}
     )
-    assert acme_dash_resp.status_code == 200
-    acme_dash = acme_dash_resp.json()
+    assert samsung_dash_resp.status_code == 200
+    samsung_dash = samsung_dash_resp.json()
 
-    apex_dash_resp = await async_client.get(
-        "/api/v1/analytics/dashboard", headers={"X-Organization-Id": apex["id"]}
+    semi_dash_resp = await async_client.get(
+        "/api/v1/analytics/dashboard", headers={"X-Organization-Id": semi["id"]}
     )
-    assert apex_dash_resp.status_code == 200
-    apex_dash = apex_dash_resp.json()
+    assert semi_dash_resp.status_code == 200
+    semi_dash = semi_dash_resp.json()
 
     # Verify tenant names
-    assert acme_dash["organization_name"] == "Acme Logistics Ltd"
-    assert apex_dash["organization_name"] == "Apex Wholesalers"
+    assert samsung_dash["organization_name"] == "Samsung Electronics Ltd"
+    assert semi_dash["organization_name"] == "Samsung Semiconductor Ltd"
 
     # Verify warehouses are strictly isolated
-    acme_wh_names = {w["name"] for w in acme_dash["warehouses"]}
-    apex_wh_names = {w["name"] for w in apex_dash["warehouses"]}
-    assert "Acme Central DC" in acme_wh_names
-    assert "Acme Central DC" not in apex_wh_names
-    assert "Apex Metro Hub" in apex_wh_names
-    assert "Apex Metro Hub" not in acme_wh_names
+    samsung_wh_names = {w["name"] for w in samsung_dash["warehouses"]}
+    semi_wh_names = {w["name"] for w in semi_dash["warehouses"]}
+    assert "Samsung Noida Mega Plant & Central DC" in samsung_wh_names
+    assert "Samsung Noida Mega Plant & Central DC" not in semi_wh_names
+    assert "Samsung Giheung Fab & Global Depot" in semi_wh_names
+    assert "Samsung Giheung Fab & Global Depot" not in samsung_wh_names
 
 
 @pytest.mark.asyncio

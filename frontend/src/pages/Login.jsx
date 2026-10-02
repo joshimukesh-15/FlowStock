@@ -261,7 +261,7 @@ export default function LoginPage() {
                         <Building2 className={iconClass} />
                         <input
                           type="text"
-                          placeholder="Acme Ltd"
+                          placeholder="Samsung Electronics Ltd"
                           value={orgName}
                           onChange={(e) => {
                             setOrgName(e.target.value);
@@ -293,7 +293,7 @@ export default function LoginPage() {
                         <KeyRound className={iconClass} />
                         <input
                           type="text"
-                          placeholder="acme-ltd"
+                          placeholder="samsung-electronics"
                           value={orgSlug}
                           onChange={(e) =>
                             setOrgSlug(
@@ -363,7 +363,7 @@ export default function LoginPage() {
                     </span>
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">
-                    alice@acme.local
+                    alice@samsung.com
                   </span>
                   <span className="text-[10px] text-slate-400 dark:text-[#808594]">
                     Pass: <code className="font-mono">admin123</code>
@@ -373,7 +373,7 @@ export default function LoginPage() {
                   type="button"
                   whileTap={{ scale: 0.94 }}
                   onClick={() => {
-                    setEmail("alice@acme.local");
+                    setEmail("alice@samsung.com");
                     setPassword("admin123");
                     setError("");
                     setAutoFilled(true);

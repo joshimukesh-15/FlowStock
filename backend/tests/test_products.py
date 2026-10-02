@@ -13,7 +13,7 @@ async def test_list_seeded_products_and_categories(async_client: AsyncClient):
     categories = cat_resp.json()
     assert len(categories) >= 2
     cat_names = [c["name"] for c in categories]
-    assert "Warehouse Equipment" in cat_names
+    assert "Smartphones & Foldables" in cat_names
 
     # List products
     prod_resp = await async_client.get("/api/v1/products")
@@ -21,7 +21,7 @@ async def test_list_seeded_products_and_categories(async_client: AsyncClient):
     products = prod_resp.json()
     assert len(products) >= 3
     skus = [p["sku"] for p in products]
-    assert "SKU-PLT-01" in skus
+    assert "SMS-S24U-512" in skus
 
 
 @pytest.mark.asyncio
@@ -71,14 +71,14 @@ async def test_create_and_update_product(async_client: AsyncClient):
 async def test_search_and_filter_products(async_client: AsyncClient):
     """Verify keyword search and category filtering work correctly."""
     # Search by SKU
-    resp = await async_client.get("/api/v1/products?search=SKU-BIN-02")
+    resp = await async_client.get("/api/v1/products?search=SMS-ACC-45W")
     assert resp.status_code == 200
     items = resp.json()
     assert len(items) == 1
-    assert items[0]["sku"] == "SKU-BIN-02"
+    assert items[0]["sku"] == "SMS-ACC-45W"
 
     # Search by name keyword
-    resp_name = await async_client.get("/api/v1/products?search=pallet")
+    resp_name = await async_client.get("/api/v1/products?search=Galaxy")
     assert resp_name.status_code == 200
     items_name = resp_name.json()
     assert len(items_name) >= 2
@@ -89,7 +89,7 @@ async def test_duplicate_sku_rejected_in_same_org(async_client: AsyncClient):
     """Verify duplicate SKU creation fails with HTTP 400."""
     payload = {
         "name": "Duplicate Item",
-        "sku": "SKU-PLT-01",  # Already exists in Acme
+        "sku": "SMS-S24U-512",  # Already exists in Samsung Electronics
         "unit": "pcs",
         "price": 100.0,
     }
@@ -104,23 +104,23 @@ async def test_multi_tenant_product_isolation(async_client: AsyncClient):
     # Get all organizations
     orgs_resp = await async_client.get("/api/v1/organizations")
     orgs = orgs_resp.json()
-    acme_id = next(o["id"] for o in orgs if o["slug"] == "acme")
-    apex_id = next(o["id"] for o in orgs if o["slug"] == "apex")
+    samsung_id = next(o["id"] for o in orgs if o["slug"] == "samsung")
+    semi_id = next(o["id"] for o in orgs if o["slug"] == "samsung-semi")
 
-    # Acme query with explicit header
-    acme_products_resp = await async_client.get(
+    # Samsung Electronics query with explicit header
+    samsung_products_resp = await async_client.get(
         "/api/v1/products",
-        headers={"X-Organization-Id": acme_id},
+        headers={"X-Organization-Id": samsung_id},
     )
-    acme_skus = [p["sku"] for p in acme_products_resp.json()]
-    assert "SKU-PLT-01" in acme_skus
-    assert "APX-CF-101" not in acme_skus
+    samsung_skus = [p["sku"] for p in samsung_products_resp.json()]
+    assert "SMS-S24U-512" in samsung_skus
+    assert "SMS-SSD-2TB" not in samsung_skus
 
-    # Apex query with explicit header
-    apex_products_resp = await async_client.get(
+    # Samsung Semiconductor query with explicit header
+    semi_products_resp = await async_client.get(
         "/api/v1/products",
-        headers={"X-Organization-Id": apex_id},
+        headers={"X-Organization-Id": semi_id},
     )
-    apex_skus = [p["sku"] for p in apex_products_resp.json()]
-    assert "APX-CF-101" in apex_skus
-    assert "SKU-PLT-01" not in apex_skus  # Provably isolated!
+    semi_skus = [p["sku"] for p in semi_products_resp.json()]
+    assert "SMS-SSD-2TB" in semi_skus
+    assert "SMS-S24U-512" not in semi_skus  # Provably isolated!

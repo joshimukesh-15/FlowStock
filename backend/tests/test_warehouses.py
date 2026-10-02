@@ -12,8 +12,8 @@ async def test_list_warehouses_seeded(async_client: AsyncClient):
     warehouses = resp.json()
     assert len(warehouses) >= 2
     codes = [w["code"] for w in warehouses]
-    assert "WH-ACME-01" in codes
-    assert "WH-ACME-02" in codes
+    assert "WH-SMS-01" in codes
+    assert "WH-SMS-02" in codes
 
 
 @pytest.mark.asyncio
@@ -39,13 +39,13 @@ async def test_create_warehouse_and_duplicate_code_rejected(async_client: AsyncC
 @pytest.mark.asyncio
 async def test_transfer_state_machine_lifecycle(async_client: AsyncClient):
     """Verify REQUESTED -> IN_TRANSIT (source deducts) -> RECEIVED (dest adds)."""
-    # Get Warehouses and Pallet Jack
+    # Get Warehouses and S24 Ultra
     wh_resp = await async_client.get("/api/v1/warehouses")
     warehouses = wh_resp.json()
-    wh_main = next(w for w in warehouses if w["code"] == "WH-ACME-01")
-    wh_east = next(w for w in warehouses if w["code"] == "WH-ACME-02")
+    wh_main = next(w for w in warehouses if w["code"] == "WH-SMS-01")
+    wh_east = next(w for w in warehouses if w["code"] == "WH-SMS-02")
 
-    prod_resp = await async_client.get("/api/v1/products?search=SKU-PLT-01")
+    prod_resp = await async_client.get("/api/v1/products?search=SMS-S24U-512")
     product = prod_resp.json()[0]
     prod_id = product["id"]
 
@@ -101,19 +101,19 @@ async def test_warehouse_multi_tenant_isolation(async_client: AsyncClient):
     """Verify Organization B cannot view or touch Organization A warehouses."""
     orgs_resp = await async_client.get("/api/v1/organizations")
     orgs = orgs_resp.json()
-    acme_id = next(o["id"] for o in orgs if o["slug"] == "acme")
-    apex_id = next(o["id"] for o in orgs if o["slug"] == "apex")
+    samsung_id = next(o["id"] for o in orgs if o["slug"] == "samsung")
+    semi_id = next(o["id"] for o in orgs if o["slug"] == "samsung-semi")
 
-    # Acme query
-    acme_whs = await async_client.get("/api/v1/warehouses", headers={"X-Organization-Id": acme_id})
-    assert acme_whs.status_code == 200
-    acme_codes = [w["code"] for w in acme_whs.json()]
-    assert "WH-ACME-01" in acme_codes
-    assert "WH-APX-01" not in acme_codes
+    # Samsung Electronics query
+    samsung_whs = await async_client.get("/api/v1/warehouses", headers={"X-Organization-Id": samsung_id})
+    assert samsung_whs.status_code == 200
+    samsung_codes = [w["code"] for w in samsung_whs.json()]
+    assert "WH-SMS-01" in samsung_codes
+    assert "WH-SEMI-01" not in samsung_codes
 
-    # Apex query
-    apex_whs = await async_client.get("/api/v1/warehouses", headers={"X-Organization-Id": apex_id})
-    assert apex_whs.status_code == 200
-    apex_codes = [w["code"] for w in apex_whs.json()]
-    assert "WH-APX-01" in apex_codes
-    assert "WH-ACME-01" not in apex_codes
+    # Samsung Semiconductor query
+    semi_whs = await async_client.get("/api/v1/warehouses", headers={"X-Organization-Id": semi_id})
+    assert semi_whs.status_code == 200
+    semi_codes = [w["code"] for w in semi_whs.json()]
+    assert "WH-SEMI-01" in semi_codes
+    assert "WH-SMS-01" not in semi_codes

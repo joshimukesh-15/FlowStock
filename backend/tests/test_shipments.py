@@ -175,26 +175,26 @@ async def test_shipments_multi_tenant_isolation(async_client: AsyncClient):
     """Verify Organization B cannot access or modify Organization A shipments."""
     orgs_resp = await async_client.get("/api/v1/organizations")
     orgs = orgs_resp.json()
-    acme_id = next(o["id"] for o in orgs if o["slug"] == "acme")
-    apex_id = next(o["id"] for o in orgs if o["slug"] == "apex")
+    samsung_id = next(o["id"] for o in orgs if o["slug"] == "samsung")
+    semi_id = next(o["id"] for o in orgs if o["slug"] == "samsung-semi")
 
-    # Acme shipments
-    acme_resp = await async_client.get("/api/v1/shipments", headers={"X-Organization-Id": acme_id})
-    assert acme_resp.status_code == 200
-    acme_shipments = acme_resp.json()
-    assert len(acme_shipments) > 0
-    acme_shp_id = acme_shipments[0]["id"]
-    acme_shp_nums = [s["shipment_number"] for s in acme_shipments]
+    # Samsung Electronics shipments
+    samsung_resp = await async_client.get("/api/v1/shipments", headers={"X-Organization-Id": samsung_id})
+    assert samsung_resp.status_code == 200
+    samsung_shipments = samsung_resp.json()
+    assert len(samsung_shipments) > 0
+    samsung_shp_id = samsung_shipments[0]["id"]
+    samsung_shp_nums = [s["shipment_number"] for s in samsung_shipments]
 
-    # Apex attempts to access Acme shipment by ID
-    apex_get_resp = await async_client.get(
-        f"/api/v1/shipments/{acme_shp_id}", headers={"X-Organization-Id": apex_id}
+    # Samsung Semiconductor attempts to access Samsung Electronics shipment by ID
+    semi_get_resp = await async_client.get(
+        f"/api/v1/shipments/{samsung_shp_id}", headers={"X-Organization-Id": semi_id}
     )
-    assert apex_get_resp.status_code == 404
+    assert semi_get_resp.status_code == 404
 
-    # Apex list shipments does not contain any Acme shipments
-    apex_list_resp = await async_client.get("/api/v1/shipments", headers={"X-Organization-Id": apex_id})
-    assert apex_list_resp.status_code == 200
-    apex_shipments = apex_list_resp.json()
-    for s in apex_shipments:
-        assert s["shipment_number"] not in acme_shp_nums
+    # Samsung Semiconductor list shipments does not contain any Samsung Electronics shipments
+    semi_list_resp = await async_client.get("/api/v1/shipments", headers={"X-Organization-Id": semi_id})
+    assert semi_list_resp.status_code == 200
+    semi_shipments = semi_list_resp.json()
+    for s in semi_shipments:
+        assert s["shipment_number"] not in samsung_shp_nums

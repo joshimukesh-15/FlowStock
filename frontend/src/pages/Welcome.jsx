@@ -136,7 +136,7 @@ function OperationsPanel() {
   ];
   const orders = [
     { id: "ORD-8821", customer: "Nexus Retail Ltd", items: 14, status: "Dispatched", amount: "₹84,200" },
-    { id: "ORD-8820", customer: "Apex Stores", items: 6, status: "Confirmed", amount: "₹31,500" },
+    { id: "ORD-8820", customer: "Reliance Retail Ltd", items: 6, status: "Confirmed", amount: "₹31,500" },
     { id: "ORD-8819", customer: "Meridian Corp", items: 22, status: "Fulfilled", amount: "₹1,12,000" },
   ];
   const bars = [40, 65, 52, 80, 70, 88, 60, 95, 72, 85, 68, 90];
@@ -401,7 +401,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
                   <label className={labelClass}>Company Name</label>
                   <div className="relative">
                     <Building2 className={iconClass} />
-                    <input type="text" placeholder="Acme Ltd" value={orgName}
+                    <input type="text" placeholder="Samsung Electronics Ltd" value={orgName}
                       onChange={e => {
                         setOrgName(e.target.value);
                         const auto = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -415,7 +415,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
                   <label className={labelClass}>Workspace ID</label>
                   <div className="relative">
                     <KeyRound className={iconClass} />
-                    <input type="text" placeholder="acme-ltd" value={orgSlug}
+                    <input type="text" placeholder="samsung-electronics" value={orgSlug}
                       onChange={e => setOrgSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
                       required className={inputClass} />
                   </div>
@@ -454,11 +454,11 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
                   <Zap className="w-3 h-3 text-amber-500" />
                   <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-400">Demo</span>
                 </div>
-                <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">alice@acme.local</span>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">alice@samsung.com</span>
                 <span className="text-[10px] text-slate-400 dark:text-[#808594]">Pass: <code className="font-mono">admin123</code></span>
               </div>
               <button type="button"
-                onClick={() => { setEmail("alice@acme.local"); setPassword("admin123"); setError(""); }}
+                onClick={() => { setEmail("alice@samsung.com"); setPassword("admin123"); setError(""); }}
                 className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer shadow-xs border border-[#FFFBF4]">
                 Auto Fill
               </button>

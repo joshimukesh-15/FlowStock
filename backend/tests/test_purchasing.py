@@ -7,13 +7,13 @@ from httpx import AsyncClient
 @pytest.mark.asyncio
 async def test_list_suppliers_and_create(async_client: AsyncClient):
     """Verify seeded suppliers and creating new supplier."""
-    # List seeded suppliers for Acme
+    # List seeded suppliers for Samsung
     resp = await async_client.get("/api/v1/suppliers")
     assert resp.status_code == 200
     suppliers = resp.json()
     assert len(suppliers) >= 1
     names = [s["name"] for s in suppliers]
-    assert any("Tata Steel" in n or "Kaveri" in n for n in names)
+    assert any("Qualcomm" in n or "Corning" in n for n in names)
 
     # Create new supplier with unique email
     unique_email = f"vendor_{uuid4().hex[:6]}@godrej-ind.in"
@@ -56,7 +56,7 @@ async def test_po_draft_to_issue_lifecycle(async_client: AsyncClient):
     warehouse_id = wh_resp.json()[0]["id"]
 
     prod_resp = await async_client.get("/api/v1/products")
-    p_plt = next(p for p in prod_resp.json() if p["sku"] == "SKU-PLT-01")
+    p_plt = next(p for p in prod_resp.json() if p["sku"] == "SMS-S24U-512")
 
     # Create PO in DRAFT
     create_resp = await async_client.post(
@@ -96,7 +96,7 @@ async def test_po_receive_credits_inventory_ledger(async_client: AsyncClient):
     warehouse_id = wh_resp.json()[0]["id"]
 
     prod_resp = await async_client.get("/api/v1/products")
-    p_bin = next(p for p in prod_resp.json() if p["sku"] == "SKU-BIN-02")
+    p_bin = next(p for p in prod_resp.json() if p["sku"] == "SMS-ACC-45W")
 
     # Get initial stock before receiving
     inv_before = await async_client.get("/api/v1/inventory")
@@ -153,7 +153,7 @@ async def test_cancel_po_does_not_affect_inventory(async_client: AsyncClient):
     warehouse_id = wh_resp.json()[0]["id"]
 
     prod_resp = await async_client.get("/api/v1/products")
-    p_flm = next(p for p in prod_resp.json() if p["sku"] == "SKU-FLM-03")
+    p_flm = next(p for p in prod_resp.json() if p["sku"] == "SMS-BUDS-3P")
 
     create_resp = await async_client.post(
         "/api/v1/purchase-orders",
@@ -174,23 +174,23 @@ async def test_cancel_po_does_not_affect_inventory(async_client: AsyncClient):
 async def test_purchasing_multi_tenant_isolation(async_client: AsyncClient):
     """Verify Organization B cannot see or manipulate Organization A suppliers or POs."""
     orgs = (await async_client.get("/api/v1/organizations")).json()
-    acme_id = next(o["id"] for o in orgs if o["slug"] == "acme")
-    apex_id = next(o["id"] for o in orgs if o["slug"] == "apex")
+    samsung_id = next(o["id"] for o in orgs if o["slug"] == "samsung")
+    semi_id = next(o["id"] for o in orgs if o["slug"] == "samsung-semi")
 
-    # Acme POs
-    acme_pos = (await async_client.get("/api/v1/purchase-orders", headers={"X-Organization-Id": acme_id})).json()
-    assert len(acme_pos) >= 1
-    acme_po_id = acme_pos[0]["id"]
+    # Samsung Electronics POs
+    samsung_pos = (await async_client.get("/api/v1/purchase-orders", headers={"X-Organization-Id": samsung_id})).json()
+    assert len(samsung_pos) >= 1
+    samsung_po_id = samsung_pos[0]["id"]
 
-    # Apex trying to access Acme PO
-    apex_attempt = await async_client.get(
-        f"/api/v1/purchase-orders/{acme_po_id}",
-        headers={"X-Organization-Id": apex_id},
+    # Samsung Semiconductor trying to access Samsung Electronics PO
+    semi_attempt = await async_client.get(
+        f"/api/v1/purchase-orders/{samsung_po_id}",
+        headers={"X-Organization-Id": semi_id},
     )
-    assert apex_attempt.status_code == 404
+    assert semi_attempt.status_code == 404
 
-    # Apex supplier list should NOT contain Acme suppliers
-    apex_suppliers = (await async_client.get("/api/v1/suppliers", headers={"X-Organization-Id": apex_id})).json()
-    apex_emails = [s["email"] for s in apex_suppliers]
-    assert "orders@tatasteel-fab.in" not in apex_emails
-    assert "estate@coorgcoffee.in" in apex_emails
+    # Samsung Semiconductor supplier list should NOT contain Samsung Electronics suppliers
+    semi_suppliers = (await async_client.get("/api/v1/suppliers", headers={"X-Organization-Id": semi_id})).json()
+    semi_emails = [s["email"] for s in semi_suppliers]
+    assert "snapdragon.supply@qualcomm.com" not in semi_emails
+    assert "euv.systems@asml.com" in semi_emails

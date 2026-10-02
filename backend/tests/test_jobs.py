@@ -100,30 +100,30 @@ async def test_jobs_multi_tenant_isolation(async_client: AsyncClient):
     orgs_resp = await async_client.get("/api/v1/organizations")
     assert orgs_resp.status_code == 200
     orgs = orgs_resp.json()
-    acme = next((o for o in orgs if o["slug"] == "acme"), None)
-    apex = next((o for o in orgs if o["slug"] == "apex"), None)
-    assert acme is not None and apex is not None
+    samsung = next((o for o in orgs if o["slug"] == "samsung"), None)
+    semi = next((o for o in orgs if o["slug"] == "samsung-semi"), None)
+    assert samsung is not None and semi is not None
 
-    # Run a job under Acme
-    acme_run = await async_client.post(
+    # Run a job under Samsung Electronics
+    samsung_run = await async_client.post(
         "/api/v1/jobs/daily_digest/run",
-        headers={"X-Organization-Id": acme["id"]},
+        headers={"X-Organization-Id": samsung["id"]},
     )
-    assert acme_run.status_code == 200
-    acme_job_id = acme_run.json()["job_execution"]["id"]
+    assert samsung_run.status_code == 200
+    samsung_job_id = samsung_run.json()["job_execution"]["id"]
 
-    # Fetch Acme jobs
-    acme_jobs_resp = await async_client.get(
-        "/api/v1/jobs", headers={"X-Organization-Id": acme["id"]}
+    # Fetch Samsung Electronics jobs
+    samsung_jobs_resp = await async_client.get(
+        "/api/v1/jobs", headers={"X-Organization-Id": samsung["id"]}
     )
-    assert acme_jobs_resp.status_code == 200
-    acme_job_ids = {j["id"] for j in acme_jobs_resp.json()}
-    assert acme_job_id in acme_job_ids
+    assert samsung_jobs_resp.status_code == 200
+    samsung_job_ids = {j["id"] for j in samsung_jobs_resp.json()}
+    assert samsung_job_id in samsung_job_ids
 
-    # Fetch Apex jobs
-    apex_jobs_resp = await async_client.get(
-        "/api/v1/jobs", headers={"X-Organization-Id": apex["id"]}
+    # Fetch Samsung Semiconductor jobs
+    semi_jobs_resp = await async_client.get(
+        "/api/v1/jobs", headers={"X-Organization-Id": semi["id"]}
     )
-    assert apex_jobs_resp.status_code == 200
-    apex_job_ids = {j["id"] for j in apex_jobs_resp.json()}
-    assert acme_job_id not in apex_job_ids
+    assert semi_jobs_resp.status_code == 200
+    semi_job_ids = {j["id"] for j in semi_jobs_resp.json()}
+    assert samsung_job_id not in semi_job_ids

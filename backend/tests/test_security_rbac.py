@@ -9,13 +9,13 @@ from app.core.config import Settings
 @pytest.mark.asyncio
 async def test_rbac_admin_full_access(async_client: AsyncClient):
     """Verify that an admin user has full operational and administrative permissions."""
-    # 1. Fetch Acme org and its seeded admin user
+    # 1. Fetch Samsung Electronics org and its seeded admin user
     orgs_resp = await async_client.get("/api/v1/organizations")
-    acme_org = next(o for o in orgs_resp.json() if o["slug"] == "acme")
-    admin_user = next(u for u in acme_org["users"] if u["role"] == "admin")
+    samsung_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung")
+    admin_user = next(u for u in samsung_org["users"] if u["role"] == "admin")
 
     headers = {
-        "X-Organization-Id": acme_org["id"],
+        "X-Organization-Id": samsung_org["id"],
         "X-User-Id": admin_user["id"],
     }
 
@@ -34,8 +34,8 @@ async def test_rbac_admin_full_access(async_client: AsyncClient):
 
     # 4. Admin can add a user to the organization
     new_user_resp = await async_client.post(
-        f"/api/v1/organizations/{acme_org['id']}/users",
-        json={"name": "Test Provisioned", "email": f"sec_{uuid4().hex[:6]}@acme.local", "role": "viewer"},
+        f"/api/v1/organizations/{samsung_org['id']}/users",
+        json={"name": "Test Provisioned", "email": f"sec_{uuid4().hex[:6]}@samsung.local", "role": "viewer"},
         headers=headers,
     )
     assert new_user_resp.status_code == 201
@@ -48,11 +48,11 @@ async def test_rbac_warehouse_manager_allowed_and_restricted(async_client: Async
     but is strictly rejected (HTTP 403) from administrative and financial actions.
     """
     orgs_resp = await async_client.get("/api/v1/organizations")
-    acme_org = next(o for o in orgs_resp.json() if o["slug"] == "acme")
-    wh_user = next(u for u in acme_org["users"] if u["role"] == "warehouse_manager")
+    samsung_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung")
+    wh_user = next(u for u in samsung_org["users"] if u["role"] == "warehouse_manager")
 
     headers = {
-        "X-Organization-Id": acme_org["id"],
+        "X-Organization-Id": samsung_org["id"],
         "X-User-Id": wh_user["id"],
     }
 
@@ -75,8 +75,8 @@ async def test_rbac_warehouse_manager_allowed_and_restricted(async_client: Async
 
     # RESTRICTED 3: Cannot add users to organization
     user_resp = await async_client.post(
-        f"/api/v1/organizations/{acme_org['id']}/users",
-        json={"name": "Unauthorized User", "email": "denied@acme.local", "role": "viewer"},
+        f"/api/v1/organizations/{samsung_org['id']}/users",
+        json={"name": "Unauthorized User", "email": "denied@samsung.local", "role": "viewer"},
         headers=headers,
     )
     assert user_resp.status_code == 403
@@ -102,11 +102,11 @@ async def test_rbac_sales_rep_allowed_and_restricted(async_client: AsyncClient):
     but is strictly rejected (HTTP 403) from inventory movements and warehouse creation.
     """
     orgs_resp = await async_client.get("/api/v1/organizations")
-    acme_org = next(o for o in orgs_resp.json() if o["slug"] == "acme")
-    sales_user = next(u for u in acme_org["users"] if u["role"] == "sales_rep")
+    samsung_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung")
+    sales_user = next(u for u in samsung_org["users"] if u["role"] == "sales_rep")
 
     headers = {
-        "X-Organization-Id": acme_org["id"],
+        "X-Organization-Id": samsung_org["id"],
         "X-User-Id": sales_user["id"],
     }
 
@@ -157,11 +157,11 @@ async def test_rbac_viewer_read_only_enforced(async_client: AsyncClient):
     but is strictly rejected (HTTP 403) on ALL mutating operations.
     """
     orgs_resp = await async_client.get("/api/v1/organizations")
-    acme_org = next(o for o in orgs_resp.json() if o["slug"] == "acme")
-    viewer_user = next(u for u in acme_org["users"] if u["role"] == "viewer")
+    samsung_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung")
+    viewer_user = next(u for u in samsung_org["users"] if u["role"] == "viewer")
 
     headers = {
-        "X-Organization-Id": acme_org["id"],
+        "X-Organization-Id": samsung_org["id"],
         "X-User-Id": viewer_user["id"],
     }
 
@@ -205,15 +205,15 @@ async def test_cross_tenant_user_masquerading_blocked(async_client: AsyncClient)
     of Organization B (Anti-Masquerading Enforcement).
     """
     orgs_resp = await async_client.get("/api/v1/organizations")
-    acme_org = next(o for o in orgs_resp.json() if o["slug"] == "acme")
-    apex_org = next(o for o in orgs_resp.json() if o["slug"] == "apex")
+    samsung_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung")
+    semi_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung-semi")
 
-    acme_admin = next(u for u in acme_org["users"] if u["role"] == "admin")
+    samsung_admin = next(u for u in samsung_org["users"] if u["role"] == "admin")
 
-    # Acme user maliciously requests Apex tenant data using their own User ID
+    # Samsung Electronics user maliciously requests Samsung Semiconductor tenant data using their own User ID
     spoofed_headers = {
-        "X-Organization-Id": apex_org["id"],
-        "X-User-Id": acme_admin["id"],
+        "X-Organization-Id": semi_org["id"],
+        "X-User-Id": samsung_admin["id"],
     }
 
     resp = await async_client.get("/api/v1/products", headers=spoofed_headers)
@@ -228,34 +228,34 @@ async def test_tenant_isolation_reverified_across_modules(async_client: AsyncCli
     and inaccessible to Organization B across all modules.
     """
     orgs_resp = await async_client.get("/api/v1/organizations")
-    acme_org = next(o for o in orgs_resp.json() if o["slug"] == "acme")
-    apex_org = next(o for o in orgs_resp.json() if o["slug"] == "apex")
+    samsung_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung")
+    semi_org = next(o for o in orgs_resp.json() if o["slug"] == "samsung-semi")
 
-    acme_headers = {"X-Organization-Id": acme_org["id"]}
-    apex_headers = {"X-Organization-Id": apex_org["id"]}
+    samsung_headers = {"X-Organization-Id": samsung_org["id"]}
+    semi_headers = {"X-Organization-Id": semi_org["id"]}
 
     # 1. Product Isolation
-    acme_prods = (await async_client.get("/api/v1/products", headers=acme_headers)).json()
-    assert len(acme_prods) > 0
-    acme_prod_id = acme_prods[0]["id"]
+    samsung_prods = (await async_client.get("/api/v1/products", headers=samsung_headers)).json()
+    assert len(samsung_prods) > 0
+    samsung_prod_id = samsung_prods[0]["id"]
 
-    apex_prod_get = await async_client.get(f"/api/v1/products/{acme_prod_id}", headers=apex_headers)
-    assert apex_prod_get.status_code == 404
+    semi_prod_get = await async_client.get(f"/api/v1/products/{samsung_prod_id}", headers=semi_headers)
+    assert semi_prod_get.status_code == 404
 
     # 2. Warehouse Isolation
-    acme_whs = (await async_client.get("/api/v1/warehouses", headers=acme_headers)).json()
-    assert len(acme_whs) > 0
-    acme_wh_id = acme_whs[0]["id"]
+    samsung_whs = (await async_client.get("/api/v1/warehouses", headers=samsung_headers)).json()
+    assert len(samsung_whs) > 0
+    samsung_wh_id = samsung_whs[0]["id"]
 
-    apex_wh_get = await async_client.get(f"/api/v1/warehouses/{acme_wh_id}", headers=apex_headers)
-    assert apex_wh_get.status_code == 404
+    semi_wh_get = await async_client.get(f"/api/v1/warehouses/{samsung_wh_id}", headers=semi_headers)
+    assert semi_wh_get.status_code == 404
 
     # 3. Customer Isolation
-    acme_custs = (await async_client.get("/api/v1/customers", headers=acme_headers)).json()
-    if acme_custs:
-        acme_cust_id = acme_custs[0]["id"]
-        apex_cust_get = await async_client.get(f"/api/v1/customers/{acme_cust_id}", headers=apex_headers)
-        assert apex_cust_get.status_code == 404
+    samsung_custs = (await async_client.get("/api/v1/customers", headers=samsung_headers)).json()
+    if samsung_custs:
+        samsung_cust_id = samsung_custs[0]["id"]
+        semi_cust_get = await async_client.get(f"/api/v1/customers/{samsung_cust_id}", headers=semi_headers)
+        assert semi_cust_get.status_code == 404
 
 
 def test_production_config_rejects_dev_secret_key():

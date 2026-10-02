@@ -16,7 +16,7 @@ async def get_current_tenant_id(
     x_organization_id: Optional[str] = Header(None, alias="X-Organization-Id"),
     db: AsyncSession = Depends(get_db),
 ) -> UUID:
-    """Extract and validate tenant ID from HTTP header, with fallback to primary Acme tenant."""
+    """Extract and validate tenant ID from HTTP header, with fallback to primary Samsung Electronics tenant."""
     if x_organization_id:
         try:
             tenant_uuid = UUID(x_organization_id)
@@ -26,10 +26,10 @@ async def get_current_tenant_id(
         except (ValueError, TypeError):
             pass
 
-    # Prefer 'acme' demo tenant as standard default
-    acme = await organization_repo.get_by_slug(db, "acme")
-    if acme:
-        return acme.id
+    # Prefer 'samsung' demo tenant as standard default
+    samsung = await organization_repo.get_by_slug(db, "samsung")
+    if samsung:
+        return samsung.id
 
     # Fallback to first available
     orgs = await organization_repo.list_all(db)

@@ -148,21 +148,21 @@ npm install
 
 FlowStock includes two fully pre-seeded organizations with 4 distinct enterprise roles each:
 
-### Tenant 1: Acme Logistics Ltd (Slug: `acme`)
+### Tenant 1: Samsung Electronics Ltd (Slug: `samsung`)
 | Name | Role | Email | Permissions |
 |---|---|---|---|
-| **Alice Admin** | `admin` | `alice@acme.com` | Full administrative access, user provisioning, settlement, voiding |
-| **Ramesh Warehouse** | `warehouse_manager` | `ramesh@acme.com` | Inventory ledger adjustments, transfers, PO receiving, order fulfillment |
-| **Vikram Sales** | `sales_rep` | `vikram@acme.com` | Customer creation, sales order drafting & confirmation, invoice creation |
-| **Pooja Auditor** | `viewer` | `pooja@acme.com` | Read-only inspection across all cockpit views |
+| **Alice Admin** | `admin` | `alice@samsung.com` | Full administrative access, user provisioning, settlement, voiding |
+| **Ramesh Warehouse** | `warehouse_manager` | `ramesh@samsung.com` | Inventory ledger adjustments, transfers, PO receiving, order fulfillment |
+| **Vikram Sales** | `sales_rep` | `vikram@samsung.com` | Customer creation, sales order drafting & confirmation, invoice creation |
+| **Pooja Auditor** | `viewer` | `pooja@samsung.com` | Read-only inspection across all cockpit views |
 
-### Tenant 2: Apex Global Industries (Slug: `apex`)
+### Tenant 2: Samsung Semiconductor Ltd (Slug: `samsung-semi`)
 | Name | Role | Email | Permissions |
 |---|---|---|---|
-| **Sunil Admin** | `admin` | `sunil@apex.com` | Full administrative authority for Apex organization |
-| **Bob Manager** | `warehouse_manager` | `bob@apex.com` | Warehouse operations, stock movements, dispatches |
-| **Kavita Sales** | `sales_rep` | `kavita@apex.com` | Sales order creation, customer relations, invoicing |
-| **Deepak Auditor** | `viewer` | `deepak@apex.com` | Read-only inspection across Apex operations |
+| **Sunil Admin** | `admin` | `sunil@samsung-semi.com` | Full administrative authority for Samsung Semiconductor organization |
+| **Bob Manager** | `warehouse_manager` | `bob@samsung-semi.com` | Semiconductor warehouse operations, stock movements, dispatches |
+| **Kavita Sales** | `sales_rep` | `kavita@samsung-semi.com` | Sales order creation, OEM customer relations, invoicing |
+| **Deepak Auditor** | `viewer` | `deepak@samsung-semi.com` | Read-only inspection across semiconductor operations |
 
 *Demo Password (all accounts):* `admin123` (or switch instantly using the in-app role selector in the header).
 

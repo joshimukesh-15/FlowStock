@@ -176,7 +176,7 @@ export default function AuditPage() {
 
             {/* Search Input */}
             <form onSubmit={handleSearch} className="flex gap-2">
-              <SearchBar placeholder="Search by action, entity name (e.g. SO-3F2383, INV-ACME-01), operator, or details..." value={searchTerm} onChange={setSearchTerm} className="flex-1"/>
+              <SearchBar placeholder="Search by action, entity name (e.g. SO-3F2383, INV-SMS-01), operator, or details..." value={searchTerm} onChange={setSearchTerm} className="flex-1"/>
               <Button type="submit" size="sm" variant="primary" className="text-xs gap-1.5">
                 <Filter className="w-3.5 h-3.5"/>
                 Filter
