@@ -6,7 +6,7 @@ import {
   Search,
   ShoppingCart,
   Truck,
-  Sparkles,
+  Compass,
   Layers,
   Receipt,
   Warehouse,
@@ -26,7 +26,7 @@ const TYPE_ICONS = {
   "Purchase order": FileText,
   Shipment: Truck,
   Invoice: Receipt,
-  Navigation: Sparkles,
+  Navigation: Compass,
 };
 
 const QUICK_LINKS = [
@@ -248,7 +248,7 @@ export const GlobalSearch = ({ onOpen }) => {
                 )}
                 {activeItems.map((item, idx) => {
                   const isSelected = idx === selectedIndex;
-                  const Icon = item.icon || TYPE_ICONS[item.type] || Sparkles;
+                  const Icon = item.icon || TYPE_ICONS[item.type] || Compass;
 
                   return (
                     <div

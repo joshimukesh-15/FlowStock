@@ -11,7 +11,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { StatCard } from "@/components/ui/StatCard";
 import { KpiGrid } from "@/components/ui/KpiGrid";
 import { StatRow, StatCol } from "@/components/ui/StatRow";
-import { RefreshCw, TrendingUp, AlertTriangle, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, Sparkles, } from "lucide-react";
+import { RefreshCw, TrendingUp, AlertTriangle, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, } from "lucide-react";
 import { fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJobApi, fetchDemandForecast, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useRealtime } from "@/context/WebSocketContext";
@@ -128,7 +128,7 @@ export default function HomePage() {
         {
             id: "forecasting",
             label: "Demand Forecasting",
-            icon: Sparkles,
+            icon: TrendingUp,
             count: (forecast?.critical_count ?? 0) > 0 ? `${forecast?.critical_count} critical` : undefined,
         },
         {

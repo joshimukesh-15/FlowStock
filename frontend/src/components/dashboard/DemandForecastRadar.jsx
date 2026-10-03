@@ -17,7 +17,6 @@ import {
   ShieldAlert,
   Calendar,
   Layers,
-  Sparkles,
   RefreshCw,
 } from "lucide-react";
 
@@ -123,7 +122,7 @@ export function DemandForecastRadar({
           <div className="space-y-0.5">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] flex items-center gap-2">
               <span className="p-1 rounded bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border border-[#D8CFBC]/40">
-                <Sparkles className="w-3.5 h-3.5" />
+                <TrendingUp className="w-3.5 h-3.5" />
               </span>
               <span>Demand Forecasting & Smart Replenishment</span>
             </CardTitle>
