@@ -74,23 +74,25 @@ export function DemandForecastRadar({
         );
       case "WARNING":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-orange-500/10 text-orange-500 border border-orange-500/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
             Warning ({days ? `${days}d` : "Low"})
           </span>
         );
       case "HEALTHY":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
+            style={{ background: "rgba(182,255,46,0.10)", color: "#5a8c00", borderColor: "rgba(182,255,46,0.35)" }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#B6FF2E" }} />
             Optimal ({days ? `${days}d` : "Safe"})
           </span>
         );
       case "OVERSTOCKED":
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-violet-500/10 text-violet-400 border border-violet-500/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
             Overstocked ({days ? `${days}d` : "Surplus"})
           </span>
         );
@@ -102,12 +104,17 @@ export function DemandForecastRadar({
       case "CRITICAL":
         return "bg-rose-500";
       case "WARNING":
-        return "bg-amber-500";
+        return "bg-orange-500";
       case "HEALTHY":
-        return "bg-emerald-500";
+        return ""; // uses inline style for brand lime
       default:
-        return "bg-sky-400";
+        return "bg-violet-500";
     }
+  };
+
+  const getRunwayBarStyle = (risk) => {
+    if (risk === "HEALTHY") return { background: "#B6FF2E" };
+    return {};
   };
 
   return (
@@ -159,11 +166,11 @@ export function DemandForecastRadar({
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg border border-amber-500/20 bg-amber-500/5 min-w-0">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-amber-500 block truncate">
+          <div className="p-2.5 rounded-lg border border-orange-500/20 bg-orange-500/5 min-w-0">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-orange-500 block truncate">
               Warnings (7-14d)
             </span>
-            <span className="text-lg font-bold tabular-nums text-amber-600 dark:text-amber-400 truncate block">
+            <span className="text-lg font-bold tabular-nums text-orange-600 dark:text-orange-400 truncate block">
               {forecast?.warning_count ?? 0} <span className="text-xs font-normal text-slate-400">SKUs</span>
             </span>
           </div>
@@ -330,7 +337,7 @@ export function DemandForecastRadar({
                         <div className="w-full h-1.5 bg-slate-200 dark:bg-[#22242B] rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all ${getRunwayBarColor(item.stockout_risk)}`}
-                            style={{ width: `${runwayPct}%` }}
+                            style={{ width: `${runwayPct}%`, ...getRunwayBarStyle(item.stockout_risk) }}
                           />
                         </div>
                       </td>
