@@ -74,15 +74,19 @@ export function DemandForecastRadar({
         );
       case "WARNING":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-orange-500/10 text-orange-500 border border-orange-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+          <span
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
+            style={{ background: "rgba(217,151,6,0.10)", color: "#b45309", borderColor: "rgba(217,151,6,0.30)" }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#d97706" }} />
             Warning ({days ? `${days}d` : "Low"})
           </span>
         );
       case "HEALTHY":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
-            style={{ background: "rgba(182,255,46,0.10)", color: "#5a8c00", borderColor: "rgba(182,255,46,0.35)" }}
+          <span
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
+            style={{ background: "rgba(182,255,46,0.12)", color: "#4a6e00", borderColor: "rgba(182,255,46,0.35)" }}
           >
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#B6FF2E" }} />
             Optimal ({days ? `${days}d` : "Safe"})
@@ -91,31 +95,28 @@ export function DemandForecastRadar({
       case "OVERSTOCKED":
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-violet-500/10 text-violet-400 border border-violet-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+          <span
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
+            style={{ background: "rgba(86,84,73,0.18)", color: "#D8CFBC", borderColor: "rgba(86,84,73,0.45)" }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#565449" }} />
             Overstocked ({days ? `${days}d` : "Surplus"})
           </span>
         );
     }
   };
 
-  const getRunwayBarColor = (risk) => {
+  const getRunwayBarStyle = (risk) => {
     switch (risk) {
-      case "CRITICAL":
-        return "bg-rose-500";
-      case "WARNING":
-        return "bg-orange-500";
-      case "HEALTHY":
-        return ""; // uses inline style for brand lime
-      default:
-        return "bg-violet-500";
+      case "CRITICAL":  return { background: "#ef4444" };
+      case "WARNING":   return { background: "#d97706" };
+      case "HEALTHY":   return { background: "#B6FF2E" };
+      default:          return { background: "#565449" }; // Olive Drab for overstocked
     }
   };
 
-  const getRunwayBarStyle = (risk) => {
-    if (risk === "HEALTHY") return { background: "#B6FF2E" };
-    return {};
-  };
+  // kept for className compat — actual color now in getRunwayBarStyle
+  const getRunwayBarColor = () => "";
 
   return (
     <Card spotlight className={`flex flex-col border border-slate-200 dark:border-[#22242B] bg-white dark:bg-[#11120D] ${className}`}>
@@ -157,6 +158,7 @@ export function DemandForecastRadar({
 
         {/* 4-KPI Bento Summary Row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+          {/* Critical — rose */}
           <div className="p-2.5 rounded-lg border border-rose-500/20 bg-rose-500/5 min-w-0">
             <span className="text-[10px] font-mono uppercase tracking-wider text-rose-500 block truncate">
               Critical Risk (&lt;7d)
@@ -166,29 +168,44 @@ export function DemandForecastRadar({
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg border border-orange-500/20 bg-orange-500/5 min-w-0">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-orange-500 block truncate">
+          {/* Warnings — amber-gold */}
+          <div
+            className="p-2.5 rounded-lg border min-w-0"
+            style={{ borderColor: "rgba(217,151,6,0.30)", background: "rgba(217,151,6,0.07)" }}
+          >
+            <span className="text-[10px] font-mono uppercase tracking-wider block truncate" style={{ color: "#d97706" }}>
               Warnings (7-14d)
             </span>
-            <span className="text-lg font-bold tabular-nums text-orange-600 dark:text-orange-400 truncate block">
+            <span className="text-lg font-bold tabular-nums truncate block" style={{ color: "#b45309" }}>
               {forecast?.warning_count ?? 0} <span className="text-xs font-normal text-slate-400">SKUs</span>
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E]/60 min-w-0">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189] block truncate">
+          {/* Avg Runway — Olive Drab earthy neutral */}
+          <div
+            className="p-2.5 rounded-lg border min-w-0"
+            style={{ borderColor: "rgba(86,84,73,0.35)", background: "rgba(86,84,73,0.08)" }}
+          >
+            <span className="text-[10px] font-mono uppercase tracking-wider block truncate" style={{ color: "#D8CFBC" }}>
               Avg Inventory Runway
             </span>
-            <span className="text-lg font-bold tabular-nums text-slate-900 dark:text-white truncate block">
+            <span className="text-lg font-bold tabular-nums text-slate-900 dark:text-[#FFFBF4] truncate block">
               {forecast?.avg_days_of_inventory ?? 0} <span className="text-xs font-normal text-slate-400">Days</span>
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E]/60 min-w-0">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189] block truncate">
+          {/* Replenishment Cost — Olive Drab earthy neutral */}
+          <div
+            className="p-2.5 rounded-lg border min-w-0"
+            style={{ borderColor: "rgba(86,84,73,0.35)", background: "rgba(86,84,73,0.08)" }}
+          >
+            <span className="text-[10px] font-mono uppercase tracking-wider block truncate" style={{ color: "#D8CFBC" }}>
               Replenishment Cost
             </span>
-            <span className="text-lg font-bold tabular-nums text-slate-900 dark:text-white truncate block" title={formatINR(forecast?.total_reorder_capital_required ?? 0)}>
+            <span
+              className="text-lg font-bold tabular-nums text-slate-900 dark:text-[#FFFBF4] truncate block"
+              title={formatINR(forecast?.total_reorder_capital_required ?? 0)}
+            >
               {formatINR(forecast?.total_reorder_capital_required ?? 0, { autoDecimals: true })}
             </span>
           </div>
