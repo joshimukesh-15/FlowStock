@@ -23,6 +23,7 @@ import {
   ShieldCheck,
   Zap,
   ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Modal } from "@/components/ui/Modal";
@@ -690,8 +691,8 @@ export default function WelcomePage() {
         </div>
       </section>
 
-      {/* 3. WHO WE ARE & WHAT WE SERVE */}
-      <section id="who-we-are" className="py-28 border-t border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#090A0C] transition-colors relative">
+      {/* 3. WHO WE ARE & WHAT WE SERVE (MICROSOFT DYNAMICS 365 STYLE WITH SUITED ENTERPRISE PHOTOGRAPHY & RIGHT-TO-LEFT SCROLL ANIMATION) */}
+      <section id="who-we-are" className="py-28 border-t border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#090A0C] transition-colors relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.2em] font-semibold text-sky-700 dark:text-[#38BDF8] bg-sky-500/10 border border-sky-500/20 dark:border-[#38BDF8]/30 mb-4">
@@ -705,59 +706,136 @@ export default function WelcomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="capabilities">
-            {/* Card 1 */}
-            <div className="group relative p-6 rounded-2xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-2xs hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs group-hover:border-[#38BDF8]/40 transition-colors">
-                  <Boxes className="w-5 h-5 text-slate-800 dark:text-[#38BDF8]" />
+          {/* Cards Grid with Right-to-Left Scroll Entrance Animation */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch" id="capabilities">
+            {[
+              {
+                tag: "FINANCIAL-GRADE LEDGER",
+                title: "Append-Only Stock Ledger & Real-Time Valuation",
+                description:
+                  "Continuous double-entry stock bookkeeping eliminates phantom inventory and manual audit reconciliations. Every receipt, transfer, and pick creates an immutable ledger entry with dynamic valuation and runway telemetry.",
+                image: "/assets/enterprise/flowstock-ledger-audit.jpg",
+                imageAlt: "Financial controller auditing inventory ledger and valuation charts",
+                cta: "Explore ledger architecture",
+                targetSection: "platform",
+                badge: "SOC 2 Ready",
+              },
+              {
+                tag: "MULTI-NODE LOGISTICS",
+                title: "Multi-Facility Logistics & Carrier Mesh",
+                description:
+                  "Route inventory seamlessly between regional distribution centers and transit hubs. Manage consignment dispatches with nationwide carrier meshes (Blue Dart, Delhivery, DTDC) with automated manifest reconciliation.",
+                image: "/assets/enterprise/flowstock-logistics-mesh.jpg",
+                imageAlt: "Corporate operations leaders reviewing warehouse routing mesh",
+                cta: "View logistics mesh",
+                targetSection: "platform",
+                badge: "5+ Carrier APIs",
+              },
+              {
+                tag: "ENTERPRISE COMMERCE",
+                title: "Direct B2B Order-to-Cash & Automated GST Engine",
+                description:
+                  "Reserve stock instantly on PO confirmation, generate 100% GST-compliant tax invoices with automatic tax rate breakdown, and track accounts receivable aging curves with real-time financial velocity analytics.",
+                image: "/assets/enterprise/flowstock-b2b-finance.jpg",
+                imageAlt: "Enterprise account executives reviewing automated invoices and contracts",
+                cta: "Inspect order engine",
+                targetSection: "workflow",
+                badge: "GST Compliant",
+              },
+            ].map((card, idx) => (
+              <motion.div
+                key={card.title}
+                custom={idx}
+                variants={{
+                  hidden: { opacity: 0, x: 120 },
+                  visible: (i) => ({
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      type: "spring",
+                      stiffness: 65,
+                      damping: 18,
+                      mass: 0.8,
+                      delay: i * 0.16,
+                    },
+                  }),
+                }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.2 }}
+                className="group flex flex-col rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 overflow-hidden"
+              >
+                {/* Photo Header */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-[#18191E] border-b border-slate-200/80 dark:border-[#22242B]">
+                  <img
+                    src={card.image}
+                    alt={card.imageAlt}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
+                  <div className="absolute top-3.5 left-3.5">
+                    <span className="px-2.5 py-1 rounded-md bg-black/75 dark:bg-[#090A0C]/85 backdrop-blur-md text-[10px] font-mono font-semibold text-white tracking-wider uppercase border border-white/15 shadow-xs">
+                      {card.tag}
+                    </span>
+                  </div>
                 </div>
-                <h3 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] mb-2 tracking-tight">Append-Only Stock Ledger</h3>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed">
-                  Every inbound delivery, outbound customer fulfillment, and warehouse transfer records an immutable transaction. Real-time on-hand stock is dynamically calculated with zero balance desyncs.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#22242B] text-[11px] text-slate-500 dark:text-[#808594] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
-                <span>Mathematical Consistency & Zero Race Conditions</span>
-              </div>
-            </div>
 
-            {/* Card 2 */}
-            <div className="group relative p-6 rounded-2xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-2xs hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs group-hover:border-[#38BDF8]/40 transition-colors">
-                  <Truck className="w-5 h-5 text-slate-800 dark:text-[#38BDF8]" />
-                </div>
-                <h3 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] mb-2 tracking-tight">Multi-Facility Logistics & Transfers</h3>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed">
-                  Route stock between distribution centers, manage consignment dispatches with nationwide carriers (Blue Dart, Delhivery, DTDC), and record live checkpoint timelines with full transit custody.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#22242B] text-[11px] text-slate-500 dark:text-[#808594] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
-                <span>Automated Manifests & Multi-Warehouse Routing</span>
-              </div>
-            </div>
+                {/* Card Body */}
+                <div className="p-6 sm:p-7 flex flex-col flex-1 justify-between">
+                  <div>
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-slate-950 dark:text-[#F4F5F7] mb-2.5 leading-snug group-hover:text-sky-600 dark:group-hover:text-[#38BDF8] transition-colors">
+                      {card.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed mb-6">
+                      {card.description}
+                    </p>
+                  </div>
 
-            {/* Card 3 */}
-            <div className="group relative p-6 rounded-2xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-2xs hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#38BDF8] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B] flex items-center justify-center text-slate-900 dark:text-white mb-5 shadow-2xs group-hover:border-[#38BDF8]/40 transition-colors">
-                  <ReceiptText className="w-5 h-5 text-slate-800 dark:text-[#38BDF8]" />
+                  <div className="pt-4 border-t border-slate-200/70 dark:border-[#22242B] flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection(card.targetSection)}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1b365d] hover:bg-[#12243e] dark:bg-[#234273] dark:hover:bg-[#2c5391] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all cursor-pointer group/btn"
+                    >
+                      <span>{card.cta}</span>
+                      <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                    </button>
+                    <span className="text-[11px] font-mono text-slate-500 dark:text-[#808594] font-medium hidden sm:inline">
+                      {card.badge}
+                    </span>
+                  </div>
                 </div>
-                <h3 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] mb-2 tracking-tight">B2B Sales & Automated Accounts</h3>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed">
-                  Reserve stock on order confirmation, issue GST-compliant tax invoices, track supplier procurement PO cycles, and monitor receivables aging with real-time financial velocity analytics.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-[#22242B] text-[11px] text-slate-500 dark:text-[#808594] font-mono flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
-                <span>Direct Order-to-Cash & Automated GST Invoicing</span>
-              </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Microsoft Dynamics 365 Style Bottom Controls */}
+          <div className="mt-10 flex items-center justify-between pt-6 border-t border-slate-200/70 dark:border-[#22242B]">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-mono font-medium text-slate-600 dark:text-[#A0A5B2] bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B]">
+                Certified Financial-Grade Ledger Architecture
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => scrollToSection("platform")}
+                className="w-9 h-9 rounded-full border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#18191E] text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-500 flex items-center justify-center transition-all shadow-xs cursor-pointer"
+                aria-label="Previous capability"
+                title="Previous capability"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection("workflow")}
+                className="w-9 h-9 rounded-full border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#18191E] text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-500 flex items-center justify-center transition-all shadow-xs cursor-pointer"
+                aria-label="Next capability"
+                title="Next capability"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
