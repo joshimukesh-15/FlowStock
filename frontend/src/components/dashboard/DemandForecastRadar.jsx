@@ -67,7 +67,7 @@ export function DemandForecastRadar({
     switch (risk) {
       case "CRITICAL":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-rose-500/10 text-rose-500 border border-rose-500/20">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
             Critical ({days ? `${days}d` : "Depleted"})
           </span>
@@ -75,20 +75,18 @@ export function DemandForecastRadar({
       case "WARNING":
         return (
           <span
-            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
-            style={{ background: "rgba(217,151,6,0.10)", color: "#b45309", borderColor: "rgba(217,151,6,0.30)" }}
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/25"
           >
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#d97706" }} />
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
             Warning ({days ? `${days}d` : "Low"})
           </span>
         );
       case "HEALTHY":
         return (
           <span
-            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
-            style={{ background: "rgba(182,255,46,0.12)", color: "#4a6e00", borderColor: "rgba(182,255,46,0.35)" }}
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#D8CFBC]/25 text-[#434035] dark:text-[#D8CFBC] border border-[#C5BBA4] dark:border-[#D8CFBC]/30"
           >
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#B6FF2E" }} />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#565449] dark:bg-[#D8CFBC]" />
             Optimal ({days ? `${days}d` : "Safe"})
           </span>
         );
@@ -96,10 +94,9 @@ export function DemandForecastRadar({
       default:
         return (
           <span
-            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border"
-            style={{ background: "rgba(86,84,73,0.18)", color: "#D8CFBC", borderColor: "rgba(86,84,73,0.45)" }}
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#565449]/15 text-[#565449] dark:text-[#CBD5E1] border border-[#565449]/30"
           >
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#565449" }} />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#565449]" />
             Overstocked ({days ? `${days}d` : "Surplus"})
           </span>
         );
@@ -109,8 +106,8 @@ export function DemandForecastRadar({
   const getRunwayBarStyle = (risk) => {
     switch (risk) {
       case "CRITICAL":  return { background: "#ef4444" };
-      case "WARNING":   return { background: "#d97706" };
-      case "HEALTHY":   return { background: "#B6FF2E" };
+      case "WARNING":   return { background: "#f59e0b" };
+      case "HEALTHY":   return { background: "#D8CFBC" }; // Bone neutral
       default:          return { background: "#565449" }; // Olive Drab for overstocked
     }
   };
@@ -125,7 +122,7 @@ export function DemandForecastRadar({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="space-y-0.5">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9BA3AF] flex items-center gap-2">
-              <span className="p-1 rounded bg-[#B6FF2E]/10 text-emerald-600 dark:text-[#B6FF2E]">
+              <span className="p-1 rounded bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border border-[#D8CFBC]/40">
                 <Sparkles className="w-3.5 h-3.5" />
               </span>
               <span>Demand Forecasting & Smart Replenishment</span>
@@ -225,7 +222,7 @@ export function DemandForecastRadar({
               onClick={() => setFilterRisk(f.id)}
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
                 filterRisk === f.id
-                  ? "bg-[#B6FF2E] text-[#11120D] font-bold shadow-xs"
+                  ? "bg-[#D8CFBC] text-[#11120D] font-bold shadow-xs border border-[#C5BBA4] dark:border-[#D8CFBC]"
                   : "bg-slate-100 hover:bg-slate-200 dark:bg-[#1E211A] dark:hover:bg-[#2B2E25] text-slate-600 dark:text-[#9BA3AF]"
               }`}
             >
@@ -244,17 +241,17 @@ export function DemandForecastRadar({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="p-3 bg-emerald-500/10 border-b border-emerald-500/20 text-xs text-emerald-600 dark:text-emerald-400 flex items-center justify-between gap-2 px-4"
+              className="p-3 bg-[#D8CFBC]/20 border-b border-[#D8CFBC]/40 text-xs text-[#565449] dark:text-[#D8CFBC] flex items-center justify-between gap-2 px-4"
             >
               <div className="flex items-center gap-2 min-w-0">
-                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500" />
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-[#565449] dark:text-[#D8CFBC]" />
                 <span className="truncate">
                   Drafted Purchase Order <strong>{draftSuccess.poNumber}</strong> with {draftSuccess.supplierName} for{" "}
                   <strong>{draftSuccess.quantity} units</strong> ({formatINR(draftSuccess.totalCost)})
                 </span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <Link to="/purchasing" className="font-semibold underline hover:text-emerald-300">
+                <Link to="/purchasing" className="font-semibold underline hover:text-[#11120D] dark:hover:text-white">
                   View in POs →
                 </Link>
                 <button onClick={() => setDraftSuccess(null)} className="text-slate-400 hover:text-white px-1">
@@ -421,7 +418,7 @@ export function DemandForecastRadar({
           </div>
         ) : (
           <div className="p-8 text-center flex flex-col items-center justify-center space-y-2 text-slate-400 dark:text-[#7C8189]">
-            <CheckCircle2 className="w-8 h-8 text-emerald-500" />
+            <CheckCircle2 className="w-8 h-8 text-[#565449] dark:text-[#D8CFBC]" />
             <p className="text-xs font-medium text-slate-700 dark:text-[#CBD5E1]">
               No inventory items match filter &quot;{filterRisk}&quot;.
             </p>

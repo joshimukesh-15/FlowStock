@@ -42,17 +42,6 @@ export default function HomePage() {
 
     const handleTabChange = (newTab) => {
         if (newTab === activeTab) return;
-
-        // MNC-grade scroll anchoring:
-        // If the user has scrolled past the tab section, smoothly keep the tab header at the top
-        // If the tab bar is already in view, keep scroll completely still!
-        if (tabSectionRef.current) {
-            const rect = tabSectionRef.current.getBoundingClientRect();
-            if (rect.top < 48) {
-                tabSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        }
-
         setActiveTab(newTab);
     };
     const { currentOrg } = useTenant();
@@ -263,8 +252,8 @@ export default function HomePage() {
       </motion.div>
 
       {/* Secondary Tabbed Section */}
-      <motion.div ref={tabSectionRef} variants={itemVariants} className="space-y-3 pt-1 scroll-mt-2">
-        <div className="sticky top-0 z-20 -mx-3.5 sm:-mx-5 lg:-mx-6 px-3.5 sm:px-5 lg:px-6 py-2.5 bg-[#FFFBF4]/90 dark:bg-[#090A0C]/90 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 dark:border-[#22242B] transition-colors">
+      <motion.div ref={tabSectionRef} variants={itemVariants} className="space-y-3 pt-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-200 dark:border-[#22242B]">
           <Tabs tabs={dashboardTabs} activeTab={activeTab} onChange={handleTabChange} variant="pill" size="sm"/>
           <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-mono hidden sm:inline">
             Section: {activeTab.toUpperCase()}
