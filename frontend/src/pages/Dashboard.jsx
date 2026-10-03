@@ -205,13 +205,13 @@ export default function HomePage() {
       ) : (
         <KpiGrid>
           <StatCard title="Invoiced revenue" value={summary ? summary.financials.total_invoiced : 0} prefix="₹" formatINR trend={{ value: 14.8, label: "vs 30d" }} icon={IndianRupee} subText={<span className="flex items-center justify-between w-full">
-                <span>
+                <span className="truncate pr-1">
                   Collected:{" "}
-                  <strong className="text-slate-800 dark:text-[#E2E8F0] tabular-nums font-mono">
-                    {formatINR(summary?.financials.total_collected || 0)}
+                  <strong className="text-slate-800 dark:text-[#E2E8F0] tabular-nums font-mono" title={formatINR(summary?.financials.total_collected || 0)}>
+                    {formatINR(summary?.financials.total_collected || 0, { autoDecimals: true })}
                   </strong>
                 </span>
-                <span className="font-semibold tabular-nums">
+                <span className="font-semibold tabular-nums shrink-0">
                   {summary?.financials.collection_rate_pct || 0}%
                 </span>
               </span>} progress={summary?.financials.collection_rate_pct || 0} progressLabel="Invoice collection rate"/>
@@ -229,13 +229,13 @@ export default function HomePage() {
               </span>}/>
 
           <StatCard title="Inventory valuation" value={summary ? summary.inventory.total_cost_valuation : 0} prefix="₹" formatINR trend={{ value: 8.6, label: "turnover" }} icon={Boxes} subText={<span className="flex items-center justify-between w-full">
-                <span>
+                <span className="truncate pr-1">
                   Retail:{" "}
-                  <strong className="text-slate-800 dark:text-[#E2E8F0] tabular-nums font-mono">
-                    {formatINR(summary?.inventory.total_retail_valuation || 0)}
+                  <strong className="text-slate-800 dark:text-[#E2E8F0] tabular-nums font-mono" title={formatINR(summary?.inventory.total_retail_valuation || 0)}>
+                    {formatINR(summary?.inventory.total_retail_valuation || 0, { autoDecimals: true })}
                   </strong>
                 </span>
-                <span className="text-slate-500 dark:text-[#9BA3AF] tabular-nums">
+                <span className="text-slate-500 dark:text-[#9BA3AF] tabular-nums shrink-0">
                   {(summary?.inventory.total_units_on_hand || 0).toLocaleString("en-IN")} units
                 </span>
               </span>}/>
@@ -389,8 +389,8 @@ export default function HomePage() {
                           <span className="truncate max-w-[140px]">{wh.location || "Central Facility"}</span>
                           <span>
                             Capital:{" "}
-                            <strong className="text-slate-800 dark:text-[#E2E8F0] tabular-nums font-mono">
-                              {formatINR(wh.cost_valuation)}
+                            <strong className="text-slate-800 dark:text-[#E2E8F0] tabular-nums font-mono" title={formatINR(wh.cost_valuation)}>
+                              {formatINR(wh.cost_valuation, { autoDecimals: true })}
                             </strong>
                           </span>
                         </div>
@@ -444,8 +444,8 @@ export default function HomePage() {
                             <td className="py-2 px-3 text-right font-medium text-slate-800 dark:text-[#E2E8F0] tabular-nums">
                               {item.units_sold.toLocaleString("en-IN")}
                             </td>
-                            <td className="py-2 px-3 text-right font-semibold text-slate-900 dark:text-[#F4F5F7] tabular-nums font-mono">
-                              {formatINR(item.total_revenue)}
+                            <td className="py-2 px-3 text-right font-semibold text-slate-900 dark:text-[#F4F5F7] tabular-nums font-mono whitespace-nowrap" title={formatINR(item.total_revenue)}>
+                              {formatINR(item.total_revenue, { autoDecimals: true })}
                             </td>
                             <td className="py-2 px-3 text-right text-slate-600 dark:text-[#9BA3AF] font-mono tabular-nums">
                               {item.current_stock}
@@ -525,7 +525,7 @@ export default function HomePage() {
               </CardHeader>
               <CardContent className="p-3.5 pt-0 space-y-3">
                 <StatRow columns={3}>
-                  <StatCol label="Committed Spend" value={summary ? formatINR(summary.purchasing.committed_spend) : "₹0.00"}/>
+                  <StatCol label="Committed Spend" value={summary ? formatINR(summary.purchasing.committed_spend, { autoDecimals: true }) : "₹0"}/>
                   <StatCol label="Active POs" value={summary?.purchasing.active_po_count || 0}/>
                   <StatCol label="Lifetime POs" value={summary?.purchasing.total_purchase_orders || 0}/>
                 </StatRow>

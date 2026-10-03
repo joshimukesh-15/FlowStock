@@ -324,7 +324,6 @@ export default function InvoicesPage() {
           title="Total Invoiced"
           value={totalInvoiced}
           prefix="₹"
-          decimals={2}
           formatINR={true}
           icon={FileText}
           subText="Gross billable revenue"
@@ -333,7 +332,6 @@ export default function InvoicesPage() {
           title="Total Collected"
           value={totalCollected}
           prefix="₹"
-          decimals={2}
           formatINR={true}
           icon={ArrowDownLeft}
           subText="Received in bank / UPI"
@@ -342,7 +340,6 @@ export default function InvoicesPage() {
           title="Outstanding Receivables"
           value={totalOutstanding}
           prefix="₹"
-          decimals={2}
           formatINR={true}
           icon={IndianRupee}
           subText="Balance awaiting payment"

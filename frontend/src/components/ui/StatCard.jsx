@@ -7,8 +7,9 @@ export function StatCard({
   value,
   prefix,
   suffix,
-  decimals = 0,
+  decimals,
   formatINR = false,
+  autoDecimals = true,
   trend,
   badge,
   subText,
@@ -16,14 +17,16 @@ export function StatCard({
   icon: Icon,
   className = "",
 }) {
+  const resolvedDecimals = decimals !== undefined ? decimals : 0;
+
   return (
     <div
       className={cn(
-        "relative rounded-xl border border-slate-200/90 dark:border-[#33372B] bg-white dark:bg-[#191B15] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs hover:border-slate-300 dark:hover:border-[#565449] transition-colors duration-150 overflow-hidden group",
+        "relative min-w-0 rounded-xl border border-slate-200/90 dark:border-[#33372B] bg-white dark:bg-[#191B15] p-3.5 sm:p-4 flex flex-col justify-between shadow-xs hover:border-slate-300 dark:hover:border-[#565449] transition-colors duration-150 overflow-hidden group",
         className
       )}
     >
-      <div>
+      <div className="min-w-0">
         {/* Header: Title + Icon / Badge */}
         <div className="flex items-center justify-between gap-2">
           <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF] truncate group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
@@ -40,18 +43,19 @@ export function StatCard({
         </div>
 
         {/* Value + Trend */}
-        <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">
-          <div className="text-xl sm:text-2xl font-bold tracking-tight tabular-nums font-mono text-slate-900 dark:text-[#F4F5F7]">
+        <div className="mt-2 flex items-baseline justify-between gap-1.5 min-w-0">
+          <div className="min-w-0 flex-1 text-lg sm:text-xl lg:text-lg xl:text-xl 2xl:text-2xl font-bold tracking-tight tabular-nums font-mono text-slate-900 dark:text-[#F4F5F7] truncate">
             {typeof value === "number" ? (
               <AnimatedCounter
                 value={value}
                 prefix={prefix}
                 suffix={suffix}
-                decimals={decimals}
+                decimals={resolvedDecimals}
+                autoDecimals={autoDecimals && decimals === undefined}
                 formatINR={formatINR}
               />
             ) : (
-              <span>
+              <span title={String(value)}>
                 {prefix}
                 {value}
                 {suffix}
@@ -60,18 +64,20 @@ export function StatCard({
           </div>
 
           {trend && (
-            <KpiTrend
-              changePct={trend.value}
-              invertColors={trend.invertColors}
-              comparisonText={trend.label}
-            />
+            <div className="shrink-0">
+              <KpiTrend
+                changePct={trend.value}
+                invertColors={trend.invertColors}
+                comparisonText={trend.label}
+              />
+            </div>
           )}
         </div>
       </div>
 
       {/* Subtext */}
       {subText && (
-        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-[#2B2E25] text-xs text-slate-500 dark:text-[#9BA3AF]">
+        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-[#2B2E25] text-xs text-slate-500 dark:text-[#9BA3AF] truncate">
           {subText}
         </div>
       )}

@@ -286,7 +286,6 @@ export default function OrdersPage() {
           value={totalRevenue}
           prefix="₹"
           formatINR
-          decimals={2}
           icon={IndianRupee}
           subText="Delivered order realizations"
         />

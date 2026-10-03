@@ -10,11 +10,26 @@ import { DURATION } from "../../motion/tokens";
  * - Animates strictly to the real backend value.
  * - Instantly displays final value without animation when prefers-reduced-motion is active.
  */
-export const AnimatedCounter = ({ value, prefix = "", suffix = "", decimals = 0, formatINR = false, className = "", }) => {
+export const AnimatedCounter = ({
+    value,
+    prefix = "",
+    suffix = "",
+    decimals = 0,
+    formatINR = false,
+    autoDecimals = false,
+    subtleDecimals = true,
+    className = "",
+    title,
+}) => {
     const prefersReducedMotion = useReducedMotion();
     const [displayValue, setDisplayValue] = useState(() => prefersReducedMotion ? value : 0);
     const previousValueRef = useRef(prefersReducedMotion ? value : 0);
     const animationFrameRef = useRef(null);
+
+    const effectiveDecimals = autoDecimals
+        ? (Math.abs(value) >= 1000 || value % 1 === 0 ? 0 : (decimals || 2))
+        : decimals;
+
     useEffect(() => {
         // If reduced motion is preferred, jump directly to target value
         if (prefersReducedMotion) {
@@ -48,22 +63,41 @@ export const AnimatedCounter = ({ value, prefix = "", suffix = "", decimals = 0,
             }
         };
     }, [value, prefersReducedMotion]);
+
     // Format numerical value
-    const formattedNumber = (() => {
+    const formattedContent = (() => {
         if (formatINR) {
-            const parts = displayValue.toFixed(decimals).split(".");
+            const parts = displayValue.toFixed(effectiveDecimals).split(".");
             const intPart = parseInt(parts[0], 10) || 0;
             const formattedInt = intPart.toLocaleString("en-IN");
-            return parts[1] !== undefined ? `${formattedInt}.${parts[1]}` : formattedInt;
+            if (parts[1] !== undefined && effectiveDecimals > 0) {
+                if (subtleDecimals) {
+                    return (
+                        <>
+                            <span>{formattedInt}</span>
+                            <span className="text-[0.75em] font-medium opacity-75">.{parts[1]}</span>
+                        </>
+                    );
+                }
+                return `${formattedInt}.${parts[1]}`;
+            }
+            return formattedInt;
         }
         return displayValue.toLocaleString("en-IN", {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals,
+            minimumFractionDigits: effectiveDecimals,
+            maximumFractionDigits: effectiveDecimals,
         });
     })();
-    return (<span className={className}>
-      {prefix}
-      {formattedNumber}
-      {suffix}
-    </span>);
+
+    const defaultTitle = formatINR && typeof value === "number"
+        ? `₹${Number(value).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+        : undefined;
+
+    return (
+        <span className={className} title={title ?? defaultTitle}>
+            {prefix}
+            {formattedContent}
+            {suffix}
+        </span>
+    );
 };

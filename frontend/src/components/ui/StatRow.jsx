@@ -17,8 +17,8 @@ export function StatRow({ items, children, columns = 4, className = "", }) {
     </div>);
 }
 export function StatCol({ label, value, subtext, badge, icon: Icon, progress, className = "", onClick, }) {
-    return (<div onClick={onClick} className={cn("p-3.5 sm:p-4 flex flex-col justify-between transition-colors", onClick && "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50", className)}>
-      <div>
+    return (<div onClick={onClick} className={cn("min-w-0 p-3.5 sm:p-4 flex flex-col justify-between transition-colors", onClick && "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50", className)}>
+      <div className="min-w-0">
         <div className="flex items-center justify-between gap-1.5">
           <div className="flex items-center gap-1.5 min-w-0">
             {Icon && <Icon className="w-3.5 h-3.5 text-slate-400 dark:text-[#7C8189] shrink-0"/>}
@@ -29,7 +29,7 @@ export function StatCol({ label, value, subtext, badge, icon: Icon, progress, cl
           {badge}
         </div>
 
-        <div className="mt-1.5 text-lg sm:text-xl font-semibold tracking-tight tabular-nums font-mono text-slate-950 dark:text-[#F4F5F7]">
+        <div className="mt-1.5 text-lg sm:text-xl font-semibold tracking-tight tabular-nums font-mono text-slate-950 dark:text-[#F4F5F7] truncate block" title={typeof value === "string" || typeof value === "number" ? String(value) : undefined}>
           {value}
         </div>
       </div>

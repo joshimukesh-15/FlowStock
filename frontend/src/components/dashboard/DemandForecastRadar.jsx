@@ -150,39 +150,39 @@ export function DemandForecastRadar({
 
         {/* 4-KPI Bento Summary Row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-          <div className="p-2.5 rounded-lg border border-rose-500/20 bg-rose-500/5">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-rose-500 block">
+          <div className="p-2.5 rounded-lg border border-rose-500/20 bg-rose-500/5 min-w-0">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-rose-500 block truncate">
               Critical Risk (&lt;7d)
             </span>
-            <span className="text-lg font-bold tabular-nums text-rose-600 dark:text-rose-400">
+            <span className="text-lg font-bold tabular-nums text-rose-600 dark:text-rose-400 truncate block">
               {forecast?.critical_count ?? 0} <span className="text-xs font-normal text-slate-400">SKUs</span>
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg border border-amber-500/20 bg-amber-500/5">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-amber-500 block">
+          <div className="p-2.5 rounded-lg border border-amber-500/20 bg-amber-500/5 min-w-0">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-amber-500 block truncate">
               Warnings (7-14d)
             </span>
-            <span className="text-lg font-bold tabular-nums text-amber-600 dark:text-amber-400">
+            <span className="text-lg font-bold tabular-nums text-amber-600 dark:text-amber-400 truncate block">
               {forecast?.warning_count ?? 0} <span className="text-xs font-normal text-slate-400">SKUs</span>
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E]/60">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189] block">
+          <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E]/60 min-w-0">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189] block truncate">
               Avg Inventory Runway
             </span>
-            <span className="text-lg font-bold tabular-nums text-slate-900 dark:text-white">
+            <span className="text-lg font-bold tabular-nums text-slate-900 dark:text-white truncate block">
               {forecast?.avg_days_of_inventory ?? 0} <span className="text-xs font-normal text-slate-400">Days</span>
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E]/60">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189] block">
+          <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E]/60 min-w-0">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189] block truncate">
               Replenishment Cost
             </span>
-            <span className="text-lg font-bold tabular-nums text-slate-900 dark:text-white truncate block">
-              {formatINR(forecast?.total_reorder_capital_required ?? 0)}
+            <span className="text-lg font-bold tabular-nums text-slate-900 dark:text-white truncate block" title={formatINR(forecast?.total_reorder_capital_required ?? 0)}>
+              {formatINR(forecast?.total_reorder_capital_required ?? 0, { autoDecimals: true })}
             </span>
           </div>
         </div>
@@ -357,8 +357,8 @@ export function DemandForecastRadar({
                             <span className="font-semibold text-slate-900 dark:text-[#F4F5F7]">
                               +{item.suggested_reorder_qty} units
                             </span>
-                            <span className="text-[10px] text-slate-400 dark:text-[#7C8189] block">
-                              {formatINR(item.projected_reorder_cost)}
+                            <span className="text-[10px] text-slate-400 dark:text-[#7C8189] block truncate font-mono" title={formatINR(item.projected_reorder_cost)}>
+                              {formatINR(item.projected_reorder_cost, { autoDecimals: true })}
                             </span>
                           </>
                         ) : (

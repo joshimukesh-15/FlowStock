@@ -179,7 +179,6 @@ export default function InventoryPage() {
           value={totalValuation}
           prefix="₹"
           formatINR
-          decimals={2}
           icon={DollarSign}
           subText="Current inventory valuation"
         />

@@ -304,7 +304,6 @@ export default function ShipmentsPage() {
           value={totalFreightSpend}
           prefix="₹"
           formatINR
-          decimals={2}
           icon={IndianRupee}
           subText="Logistics expenditure"
         />

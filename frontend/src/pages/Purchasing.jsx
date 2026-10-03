@@ -299,7 +299,6 @@ export default function PurchasingPage() {
           value={totalProcuredAmount}
           prefix="₹"
           formatINR
-          decimals={2}
           icon={IndianRupee}
           subText="Fulfilled purchase expenditures"
         />
