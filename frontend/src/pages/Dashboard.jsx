@@ -447,9 +447,6 @@ export default function HomePage() {
                   </div>)}
               </CardContent>
             </Card>
-
-            {/* Algorithmic Demand Forecasting & Replenishment Runway */}
-            <DemandForecastRadar forecast={forecast} onRefresh={loadData} />
           </div>)}
 
         {/* Tab 1.5: Dedicated Demand Forecasting Tab */}
