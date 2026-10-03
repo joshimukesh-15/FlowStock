@@ -32,188 +32,84 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-/* ── Inventory Ledger Panel ── */
-function InventoryPanel() {
-  const rows = [
-    { name: "Raw Denim 32x30", sku: "RD-3230", qty: 148, status: "ok", value: "₹2,96,000" },
-    { name: "Merino Tee M/White", sku: "MT-MWH", qty: 34, status: "low", value: "₹61,200" },
-    { name: "Canvas Sneaker 42", sku: "CS-42BK", qty: 212, status: "ok", value: "₹5,30,000" },
-    { name: "Linen Shirt XL/Blue", sku: "LS-XLBL", qty: 7, status: "critical", value: "₹21,000" },
-    { name: "Oxford Chino 34x32", sku: "OC-3432", qty: 89, status: "ok", value: "₹2,22,500" },
-  ];
-  const badge = { ok: ["#166534", "#DCFCE7", "In Stock"], low: ["#92400E", "#FEF3C7", "Low"], critical: ["#991B1B", "#FEE2E2", "Critical"] };
-  return (
-    <div className="w-full h-full bg-[#090A0C] rounded-xl overflow-hidden flex flex-col select-none">
-      {/* Header bar */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#22242B]">
-        <div className="flex items-center gap-2">
-          <span className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#38BDF8]">Inventory Ledger</span>
-          <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#38BDF8]/10 text-[#38BDF8] border border-[#38BDF8]/20">490 SKUs</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="h-6 w-28 rounded bg-[#121316] border border-[#22242B]" />
-          <div className="h-6 w-16 rounded bg-[#38BDF8] opacity-90" />
-        </div>
-      </div>
-      {/* Table */}
-      <div className="flex-1 overflow-hidden">
-        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2 border-b border-[#22242B]">
-          {["PRODUCT", "QTY", "STATUS", "VALUE"].map(h => (
-            <span key={h} className="text-[9px] font-mono uppercase tracking-[0.14em] text-[#4B5563]">{h}</span>
-          ))}
-        </div>
-        {rows.map((r, i) => (
-          <div key={i} className={`grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 border-b border-[#22242B]/50 ${i % 2 === 0 ? "" : "bg-[#0D0E11]/50"}`}>
-            <div>
-              <div className="text-[11px] text-[#E5E7EB] font-medium leading-tight truncate">{r.name}</div>
-              <div className="text-[9px] font-mono text-[#4B5563] mt-0.5">{r.sku}</div>
-            </div>
-            <div className="text-[11px] font-mono tabular-nums text-[#D1D5DB] self-center">{r.qty}</div>
-            <div className="self-center">
-              <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold" style={{ background: badge[r.status][1] + "22", color: badge[r.status][1], border: `1px solid ${badge[r.status][1]}33` }}>
-                {badge[r.status][2]}
-              </span>
-            </div>
-            <div className="text-[11px] font-mono tabular-nums text-[#38BDF8] self-center text-right">{r.value}</div>
-          </div>
-        ))}
-      </div>
-      {/* Footer metric */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-t border-[#22242B] bg-[#0D0E11]">
-        <span className="text-[9px] font-mono uppercase tracking-[0.14em] text-[#4B5563]">Total Portfolio Value</span>
-        <span className="text-[13px] font-mono font-bold tabular-nums text-[#38BDF8]">₹24,68,450</span>
-      </div>
-    </div>
-  );
-}
-
-/* ── Products / SKU Catalog Panel ── */
-function ProductsPanel() {
-  const products = [
-    { name: "Raw Denim Jeans", cat: "Bottoms", sku: "RD-3230", stock: 148, price: "₹2,000" },
-    { name: "Merino Wool Tee", cat: "Tops", sku: "MT-MWH", stock: 34, price: "₹1,800" },
-    { name: "Canvas Sneakers", cat: "Footwear", sku: "CS-42BK", stock: 212, price: "₹2,500" },
-    { name: "Linen Shirt", cat: "Tops", sku: "LS-XLBL", stock: 7, price: "₹3,000" },
-    { name: "Oxford Chinos", cat: "Bottoms", sku: "OC-3432", stock: 89, price: "₹2,500" },
-    { name: "Leather Wallet", cat: "Accessories", sku: "LW-BRN", stock: 55, price: "₹1,200" },
-  ];
-  return (
-    <div className="w-full h-full bg-[#090A0C] rounded-xl overflow-hidden flex flex-col select-none">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#22242B]">
-        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#38BDF8]">SKU Catalog</span>
-        <div className="flex items-center gap-1.5">
-          <span className="text-[9px] font-mono text-[#4B5563]">6 of 490 shown</span>
-          <div className="h-5 w-20 rounded bg-[#38BDF8] opacity-90" />
-        </div>
-      </div>
-      {/* Grid */}
-      <div className="flex-1 p-3 grid grid-cols-3 gap-2 overflow-hidden">
-        {products.map((p, i) => (
-          <div key={i} className="rounded-lg border border-[#22242B] bg-[#121316] p-2.5 flex flex-col gap-1.5 hover:border-[#38BDF8]/30 transition-colors">
-            <div className="flex items-start justify-between">
-              <span className="text-[8px] font-mono uppercase tracking-[0.12em] text-[#38BDF8]">{p.cat}</span>
-              <span className={`w-1.5 h-1.5 rounded-full mt-0.5 ${p.stock > 20 ? "bg-emerald-500" : "bg-amber-500"}`} />
-            </div>
-            <div className="text-[10px] font-semibold text-[#E5E7EB] leading-tight">{p.name}</div>
-            <div className="text-[9px] font-mono text-[#4B5563]">{p.sku}</div>
-            <div className="flex items-center justify-between mt-auto pt-1 border-t border-[#22242B]">
-              <span className="text-[9px] font-mono tabular-nums text-[#9CA3AF]">{p.stock} units</span>
-              <span className="text-[10px] font-mono font-bold tabular-nums text-[#38BDF8]">{p.price}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ── Operations & Financial Velocity Panel ── */
-function OperationsPanel() {
-  const kpis = [
-    { label: "Invoiced Revenue", value: "₹18.4L", delta: "+12.3%", up: true },
-    { label: "Active Orders", value: "247", delta: "+8", up: true },
-    { label: "Receivables", value: "₹4.2L", delta: "-2.1%", up: false },
-  ];
-  const orders = [
-    { id: "ORD-8821", customer: "Nexus Retail Ltd", items: 14, status: "Dispatched", amount: "₹84,200" },
-    { id: "ORD-8820", customer: "Reliance Retail Ltd", items: 6, status: "Confirmed", amount: "₹31,500" },
-    { id: "ORD-8819", customer: "Meridian Corp", items: 22, status: "Fulfilled", amount: "₹1,12,000" },
-  ];
-  const bars = [40, 65, 52, 80, 70, 88, 60, 95, 72, 85, 68, 90];
-  const statusColor = { Dispatched: "#38BDF8", Confirmed: "#A78BFA", Fulfilled: "#34D399" };
-  return (
-    <div className="w-full h-full bg-[#090A0C] rounded-xl overflow-hidden flex flex-col select-none">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#22242B]">
-        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#38BDF8]">Executive Cockpit</span>
-        <span className="text-[9px] font-mono text-[#4B5563] border border-[#22242B] px-2 py-0.5 rounded">Live · Oct 2026</span>
-      </div>
-      {/* KPIs */}
-      <div className="grid grid-cols-3 divide-x divide-[#22242B] border-b border-[#22242B]">
-        {kpis.map((k, i) => (
-          <div key={i} className="px-3 py-3">
-            <div className="text-[8px] font-mono uppercase tracking-[0.12em] text-[#4B5563] mb-1">{k.label}</div>
-            <div className="text-[15px] font-mono font-bold tabular-nums text-[#F4F5F7]">{k.value}</div>
-            <div className={`text-[9px] font-mono mt-0.5 ${k.up ? "text-emerald-400" : "text-red-400"}`}>{k.delta}</div>
-          </div>
-        ))}
-      </div>
-      {/* Mini bar chart */}
-      <div className="px-4 py-2.5 border-b border-[#22242B]">
-        <div className="text-[8px] font-mono uppercase tracking-[0.12em] text-[#4B5563] mb-2">Order Velocity — Last 12 Days</div>
-        <div className="flex items-end gap-1 h-10">
-          {bars.map((h, i) => (
-            <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}%`, background: i === bars.length - 1 ? "#38BDF8" : "#38BDF8" + "40" }} />
-          ))}
-        </div>
-      </div>
-      {/* Recent orders */}
-      <div className="flex-1 overflow-hidden">
-        {orders.map((o, i) => (
-          <div key={i} className={`flex items-center gap-3 px-4 py-2 ${i < orders.length - 1 ? "border-b border-[#22242B]/60" : ""}`}>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[9px] font-mono text-[#4B5563]">{o.id}</span>
-                <span className="text-[9px] font-mono" style={{ color: statusColor[o.status] }}>· {o.status}</span>
-              </div>
-              <div className="text-[10px] text-[#D1D5DB] font-medium truncate">{o.customer}</div>
-            </div>
-            <div className="text-right shrink-0">
-              <div className="text-[10px] font-mono font-bold tabular-nums text-[#38BDF8]">{o.amount}</div>
-              <div className="text-[9px] font-mono text-[#4B5563]">{o.items} items</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ── High-Performance Responsive Feature Row ── */
+/* ── High-Performance Responsive Feature Row with Right-to-Left Scroll Animation ── */
 function FeatureRow({
   tag,
   title,
   description,
   bullets,
-  panel,
+  image,
+  imageAlt,
+  badgeText,
   reverse = false,
 }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-20">
-      {/* Panel Column */}
-      <div
-        className={`rounded-2xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#0D0E11] shadow-sm hover:shadow-lg dark:hover:shadow-black/50 transition-all duration-300 p-1.5 sm:p-2 ${
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-24 overflow-hidden">
+      {/* Photo Column with Right-to-Left Spring Animation on Scroll */}
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, x: reverse ? -80 : 80 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+              type: "spring",
+              stiffness: 70,
+              damping: 18,
+              mass: 0.8,
+            },
+          },
+        }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.25 }}
+        className={`rounded-3xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 p-2 sm:p-2.5 group ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
-        <div className="rounded-xl overflow-hidden border border-slate-200/80 dark:border-[#22242B] relative aspect-[16/10]">
-          {panel}
-        </div>
-      </div>
+        <div className="rounded-2xl overflow-hidden border border-slate-200/70 dark:border-[#22242B] relative aspect-[16/10] bg-slate-100 dark:bg-[#18191E]">
+          <img
+            src={image}
+            alt={imageAlt || title}
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
-      {/* Text Column */}
-      <div className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}>
+          {badgeText && (
+            <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
+              <span className="px-3 py-1.5 rounded-lg bg-black/75 dark:bg-[#090A0C]/85 backdrop-blur-md text-[10px] font-mono font-semibold text-white dark:text-[#F4F5F7] border border-white/20 dark:border-[#22242B] shadow-sm flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                {badgeText}
+              </span>
+              <span className="text-[9px] font-mono text-slate-300 uppercase tracking-widest hidden sm:inline">
+                Live Operations
+              </span>
+            </div>
+          )}
+        </div>
+      </motion.div>
+
+      {/* Text Column with Left-to-Right Spring Animation on Scroll */}
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, x: reverse ? 50 : -50 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+              type: "spring",
+              stiffness: 70,
+              damping: 18,
+              mass: 0.8,
+            },
+          },
+        }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.25 }}
+        className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}
+      >
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 dark:bg-sky-500/15 border border-sky-500/25 dark:border-[#38BDF8]/30 text-sky-700 dark:text-[#38BDF8] text-[10px] font-mono font-bold tracking-[0.16em] uppercase">
           {tag}
         </div>
@@ -236,7 +132,7 @@ function FeatureRow({
             </li>
           ))}
         </ul>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -707,119 +603,7 @@ export default function WelcomePage() {
         </div>
       </section>
 
-      {/* 3.5. GET TO KNOW FLOWSTOCK ENTERPRISE (MICROSOFT DYNAMICS STYLE 3-CARD SHOWCASE) */}
-      <section id="enterprise-showcase" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.2em] font-semibold text-sky-700 dark:text-[#38BDF8] bg-sky-500/10 border border-sky-500/20 dark:border-[#38BDF8]/30 mb-4 shadow-2xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
-            ENTERPRISE ARCHITECTURE
-          </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-[#F4F5F7] leading-[1.1] mb-4 [text-wrap:balance]">
-            Get to know FlowStock Enterprise
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] leading-relaxed [text-wrap:balance]">
-            Discover how modern supply chain operations unify multi-facility warehousing, deterministic replenishment, financial ledgers, and logistics dispatch.
-          </p>
-        </div>
-
-        {/* 3 Animated Enterprise Showcase Cards (Sliding from Right to Left on Scroll) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {[
-            {
-              tag: "CORE CAPABILITIES",
-              title: "What is FlowStock?",
-              description: "Become more data-driven and agile with an immutable double-entry stock ledger, automated safety buffers, and sub-millisecond inventory availability.",
-              image: "/assets/enterprise/flowstock-ops-leader.jpg",
-              alt: "FlowStock Supply Chain Operations Control Room",
-              ctaText: "Explore FlowStock Core",
-              action: () => scrollToSection("platform"),
-            },
-            {
-              tag: "INTERACTIVE DEMO",
-              title: "Take a guided tour",
-              description: "Get a closer look at how warehouse managers simulate stock allocations, track inter-facility consignment transfers, and trigger 1-click PO restocks.",
-              image: "/assets/enterprise/flowstock-executive.jpg",
-              alt: "Executive reviewing supply chain inventory analytics on laptop",
-              ctaText: "Start your guided tour",
-              action: () => (isAuthenticated ? navigate("/dashboard") : openAuth("login")),
-            },
-            {
-              tag: "GOVERNANCE & SCALE",
-              title: "Enterprise team control",
-              description: "Find the right operational posture for your business. Empower distributed procurement, sales, and logistics teams with 4-tier RBAC security and zero data leakage.",
-              image: "/assets/enterprise/flowstock-team.jpg",
-              alt: "Diverse supply chain operations team collaborating over live telemetry",
-              ctaText: "Explore multi-tenant plans",
-              action: () => (isAuthenticated ? navigate("/dashboard") : openAuth("signup")),
-            },
-          ].map((card, idx) => (
-            <motion.div
-              key={card.title}
-              custom={idx}
-              variants={{
-                hidden: { opacity: 0, x: 80 },
-                visible: (i) => ({
-                  opacity: 1,
-                  x: 0,
-                  transition: {
-                    type: "spring",
-                    stiffness: 70,
-                    damping: 18,
-                    mass: 0.8,
-                    delay: i * 0.15,
-                  },
-                }),
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
-              className="group rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 shadow-xs hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 overflow-hidden flex flex-col justify-between"
-            >
-              <div>
-                {/* Photo with subtle hover zoom */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-[#18191E]">
-                  <img
-                    src={card.image}
-                    alt={card.alt}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <span className="absolute top-3.5 left-3.5 text-[9px] font-mono font-bold uppercase tracking-[0.16em] px-2.5 py-1 rounded-md bg-white/90 dark:bg-[#090A0C]/90 backdrop-blur-md text-slate-800 dark:text-[#38BDF8] border border-slate-200/60 dark:border-[#22242B] shadow-2xs">
-                    {card.tag}
-                  </span>
-                </div>
-
-                {/* Content */}
-                <div className="p-6 sm:p-7">
-                  <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-slate-950 dark:text-[#F4F5F7] mb-2.5 group-hover:text-sky-600 dark:group-hover:text-[#38BDF8] transition-colors leading-snug">
-                    {card.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Button Footer */}
-              <div className="p-6 sm:p-7 pt-0 mt-auto">
-                <button
-                  type="button"
-                  onClick={card.action}
-                  className="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E] hover:bg-slate-900 hover:text-white dark:hover:bg-[#38BDF8] dark:hover:text-[#090A0C] dark:hover:border-[#38BDF8] text-xs font-bold text-slate-800 dark:text-[#F4F5F7] flex items-center justify-between transition-all duration-200 cursor-pointer shadow-2xs group-hover:border-slate-300"
-                >
-                  <span>{card.ctaText}</span>
-                  <div className="w-6 h-6 rounded-lg bg-white dark:bg-[#121316] group-hover:bg-slate-800 dark:group-hover:bg-[#090A0C] flex items-center justify-center text-slate-700 dark:text-white transition-colors">
-                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. PLATFORM FEATURES (FULCRUM ALTERNATING ROWS WITH PARALLAX ZOOM) */}
+      {/* 4. PLATFORM FEATURES (FULCRUM ALTERNATING ROWS WITH SUITED BUSINESS PHOTOGRAPHY & SCROLL ANIMATION) */}
       <section id="platform" className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="max-w-2xl mb-16 text-left">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.2em] font-semibold text-sky-700 dark:text-[#38BDF8] bg-sky-500/10 border border-sky-500/20 dark:border-[#38BDF8]/30 mb-4">
@@ -843,7 +627,9 @@ export default function WelcomePage() {
             "Itemized SKU tracking with instant ledger reconciliation",
             "Reorder-required alerts synchronized across warehouse depots"
           ]}
-          panel={<InventoryPanel />}
+          image="/assets/enterprise/flowstock-ops-leader.jpg"
+          imageAlt="FlowStock Supply Chain Operations Control Room"
+          badgeText="Live Reorder Point & Runway Telemetry"
           reverse={false}
         />
 
@@ -857,7 +643,9 @@ export default function WelcomePage() {
             "Real-time stock level monitoring with Active and Clearance states",
             "Rapid SKU lookup and bulk catalog management for high-volume catalogs"
           ]}
-          panel={<ProductsPanel />}
+          image="/assets/enterprise/flowstock-team.jpg"
+          imageAlt="Diverse supply chain operations team collaborating over live telemetry"
+          badgeText="Multi-Channel SKU Master Registry"
           reverse={true}
         />
 
@@ -871,7 +659,9 @@ export default function WelcomePage() {
             "Interactive fulfillment curves and order velocity intelligence",
             "Integrated multi-tenant warehouse overview with double-entry precision"
           ]}
-          panel={<OperationsPanel />}
+          image="/assets/enterprise/flowstock-executive.jpg"
+          imageAlt="Senior executive reviewing supply chain inventory analytics on laptop"
+          badgeText="Executive Revenue & Velocity Cockpit"
           reverse={false}
         />
       </section>
