@@ -55,15 +55,15 @@ function FeatureRow({
             x: 0,
             transition: {
               type: "spring",
-              stiffness: 70,
+              stiffness: 80,
               damping: 18,
-              mass: 0.8,
+              mass: 0.7,
             },
           },
         }}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.25 }}
+        viewport={{ once: false, amount: "some", margin: "100px 0px -40px 0px" }}
         className={`rounded-3xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 p-2 sm:p-2.5 group ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
@@ -100,15 +100,15 @@ function FeatureRow({
             x: 0,
             transition: {
               type: "spring",
-              stiffness: 70,
+              stiffness: 80,
               damping: 18,
-              mass: 0.8,
+              mass: 0.7,
             },
           },
         }}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.25 }}
+        viewport={{ once: false, amount: "some", margin: "100px 0px -40px 0px" }}
         className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}
       >
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 dark:bg-sky-500/15 border border-sky-500/25 dark:border-[#38BDF8]/30 text-sky-700 dark:text-[#38BDF8] text-[10px] font-mono font-bold tracking-[0.16em] uppercase">
@@ -707,7 +707,21 @@ export default function WelcomePage() {
           </div>
 
           {/* Cards Grid with Right-to-Left Scroll Entrance Animation */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch" id="capabilities">
+          <motion.div
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.12,
+                },
+              },
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: "some", margin: "120px 0px -40px 0px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch"
+            id="capabilities"
+          >
             {[
               {
                 tag: "FINANCIAL-GRADE LEDGER",
@@ -742,27 +756,22 @@ export default function WelcomePage() {
                 targetSection: "workflow",
                 badge: "GST Compliant",
               },
-            ].map((card, idx) => (
+            ].map((card) => (
               <motion.div
                 key={card.title}
-                custom={idx}
                 variants={{
-                  hidden: { opacity: 0, x: 120 },
-                  visible: (i) => ({
+                  hidden: { opacity: 0, x: 90 },
+                  visible: {
                     opacity: 1,
                     x: 0,
                     transition: {
                       type: "spring",
-                      stiffness: 65,
+                      stiffness: 85,
                       damping: 18,
-                      mass: 0.8,
-                      delay: i * 0.16,
+                      mass: 0.7,
                     },
-                  }),
+                  },
                 }}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.2 }}
                 className="group flex flex-col rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 overflow-hidden"
               >
                 {/* Photo Header */}
@@ -808,7 +817,7 @@ export default function WelcomePage() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Microsoft Dynamics 365 Style Bottom Controls */}
           <div className="mt-10 flex items-center justify-between pt-6 border-t border-slate-200/70 dark:border-[#22242B]">
