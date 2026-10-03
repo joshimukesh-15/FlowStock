@@ -10,8 +10,6 @@ import {
   X,
   FileText,
   Shield,
-  LogIn,
-  UserPlus,
   Eye,
   EyeOff,
   Mail,
@@ -472,32 +470,19 @@ export default function WelcomePage() {
                 <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             ) : (
-              <>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  onClick={() => (authOpen && authMode === "login" ? closeAuth() : openAuth("login"))}
-                  className={cn(
-                    "h-8 px-3 text-xs gap-1.5 shadow-xs font-semibold",
-                    authOpen && authMode === "login" && "ring-2 ring-[#11120D]/25 dark:ring-white/35"
-                  )}
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Log In</span>
-                </Button>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  onClick={() => (authOpen && authMode === "signup" ? closeAuth() : openAuth("signup"))}
-                  className={cn(
-                    "h-8 px-3 text-xs gap-1.5 shadow-xs font-semibold",
-                    authOpen && authMode === "signup" && "ring-2 ring-[#11120D]/25 dark:ring-white/35"
-                  )}
-                >
-                  <UserPlus className="w-3.5 h-3.5" />
-                  <span>Sign Up</span>
-                </Button>
-              </>
+              <Button
+                size="sm"
+                variant="primary"
+                onClick={() => (authOpen ? closeAuth() : openAuth("login"))}
+                className={cn(
+                  "h-8 px-3.5 text-xs gap-2 shadow-xs font-semibold tracking-tight transition-all",
+                  authOpen && "ring-2 ring-[#11120D]/25 dark:ring-white/35"
+                )}
+                aria-label="Enterprise Authentication"
+              >
+                <ShieldCheck className="w-4 h-4 text-[#11120D] shrink-0" />
+                <span>Sign In</span>
+              </Button>
             )}
           </div>
         </div>
