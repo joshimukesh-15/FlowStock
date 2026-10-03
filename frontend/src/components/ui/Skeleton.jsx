@@ -23,7 +23,12 @@ export const PageSkeleton = ({ className }) => {
         <img 
           src="/assets/flowstock-loader.svg" 
           alt="Loading FlowStock..." 
-          className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" 
+          className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl dark:hidden" 
+        />
+        <img 
+          src="/assets/flowstock-loader-dark.svg" 
+          alt="Loading FlowStock..." 
+          className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl hidden dark:block" 
         />
       </div>
       <div className="flex flex-col items-center space-y-2">

@@ -105,7 +105,12 @@ export default function LoginPage() {
             <img
               src="/assets/flowstock-reveal.svg"
               alt="FlowStock"
-              className="w-7 h-7"
+              className="w-7 h-7 dark:hidden"
+            />
+            <img
+              src="/assets/flowstock-reveal-dark.svg"
+              alt="FlowStock"
+              className="w-7 h-7 hidden dark:block"
             />
           </div>
           <span className="font-display font-bold text-lg tracking-tight text-slate-950 dark:text-white">

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500" role="img" aria-label="Logo">
+  <title>Logo</title>
+  <rect width="500" height="500" fill="#11120D"/>
+  <defs>
+    <linearGradient id="m-base" gradientUnits="userSpaceOnUse" x1="250" y1="252.5" x2="250" y2="375"><stop offset="0" stop-color="#9C9480"/><stop offset="1" stop-color="#6E6A58"/></linearGradient>
+    <linearGradient id="m-quad" gradientUnits="userSpaceOnUse" x1="252.5" y1="125" x2="375" y2="247.5"><stop offset="0" stop-color="#FFFBF4"/><stop offset=".5" stop-color="#FBF3DF"/><stop offset="1" stop-color="#EADFC4"/></linearGradient>
+    <linearGradient id="m-c1" gradientUnits="userSpaceOnUse" x1="132.5" y1="207.5" x2="167.5" y2="247.5"><stop offset="0" stop-color="#C9C0A6"/><stop offset="1" stop-color="#A39C86"/></linearGradient>
+    <linearGradient id="m-c2" gradientUnits="userSpaceOnUse" x1="172.5" y1="172.5" x2="207.5" y2="247.5"><stop offset="0" stop-color="#D9D1B8"/><stop offset="1" stop-color="#B9B096"/></linearGradient>
+    <linearGradient id="m-c3" gradientUnits="userSpaceOnUse" x1="212.5" y1="137.5" x2="247.5" y2="247.5"><stop offset="0" stop-color="#EDE6D2"/><stop offset="1" stop-color="#D4CAAE"/></linearGradient>
+  </defs>
+  <g transform="translate(250 250) scale(.62) translate(-250 -250)">
+    <path fill="url(#m-base)" d="M125.08 254.5A125 125 0 0 0 374.92 254.5Z"/>
+    <path fill="url(#m-c1)" d="M130 210H141.33A22 22 0 0 1 163.33 232V245.5H152A22 22 0 0 1 130 223.5Z"/>
+    <path fill="url(#m-c2)" d="M171.67 175H183A22 22 0 0 1 205 197V245.5H193.67A22 22 0 0 1 171.67 223.5Z"/>
+    <path fill="url(#m-c3)" d="M213.33 140H224.66A22 22 0 0 1 246.66 162V245.5H235.33A22 22 0 0 1 213.33 223.5Z"/>
+    <path fill="url(#m-quad)" d="M254.5 245.5V125.08A125 125 0 0 1 374.92 245.5Z"/>
+  </g>
+</svg>

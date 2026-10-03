@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="120 120 260 260" width="260" height="260" role="img" aria-label="Loading">
+  <title>Loading</title>
+  <style>
+    /* bars pulse in sequence like a live chart; the circle breathes softly */
+    .base,.q{animation:ld-dark-breathe 1.5s ease-in-out infinite}
+    .b1{transform-origin:150px 247.5px;animation:ld-dark-beat 1.5s ease-in-out infinite}
+    .b2{transform-origin:190px 247.5px;animation:ld-dark-beat 1.5s ease-in-out .12s infinite}
+    .b3{transform-origin:230px 247.5px;animation:ld-dark-beat 1.5s ease-in-out .24s infinite}
+    @keyframes ld-dark-beat{0%,100%{transform:scaleY(1)}30%{transform:scaleY(1.14)}}
+    @keyframes ld-dark-breathe{0%,100%{opacity:1}50%{opacity:.88}}
+    @media (prefers-reduced-motion:reduce){.base,.q,.b1,.b2,.b3{animation:none;opacity:.6}}
+  </style>
+  <defs>
+    <linearGradient id="ld-dark-base" gradientUnits="userSpaceOnUse" x1="250" y1="252.5" x2="250" y2="375"><stop offset="0" stop-color="#9C9480"/><stop offset="1" stop-color="#6E6A58"/></linearGradient>
+    <linearGradient id="ld-dark-quad" gradientUnits="userSpaceOnUse" x1="252.5" y1="125" x2="375" y2="247.5"><stop offset="0" stop-color="#FFFBF4"/><stop offset=".5" stop-color="#FBF3DF"/><stop offset="1" stop-color="#EADFC4"/></linearGradient>
+    <linearGradient id="ld-dark-c1" gradientUnits="userSpaceOnUse" x1="132.5" y1="207.5" x2="167.5" y2="247.5"><stop offset="0" stop-color="#C9C0A6"/><stop offset="1" stop-color="#A39C86"/></linearGradient>
+    <linearGradient id="ld-dark-c2" gradientUnits="userSpaceOnUse" x1="172.5" y1="172.5" x2="207.5" y2="247.5"><stop offset="0" stop-color="#D9D1B8"/><stop offset="1" stop-color="#B9B096"/></linearGradient>
+    <linearGradient id="ld-dark-c3" gradientUnits="userSpaceOnUse" x1="212.5" y1="137.5" x2="247.5" y2="247.5"><stop offset="0" stop-color="#EDE6D2"/><stop offset="1" stop-color="#D4CAAE"/></linearGradient>
+  </defs>
+    <path class="base" fill="url(#ld-dark-base)" d="M125.03 252.5A125 125 0 0 0 374.97 252.5Z"/>
+    <path class="b b1" fill="url(#ld-dark-c1)" d="M132.5 207.5H137.5A30 30 0 0 1 167.5 237.5V247.5H162.5A30 30 0 0 1 132.5 217.5Z"/>
+    <path class="b b2" fill="url(#ld-dark-c2)" d="M172.5 172.5H177.5A30 30 0 0 1 207.5 202.5V247.5H202.5A30 30 0 0 1 172.5 217.5Z"/>
+    <path class="b b3" fill="url(#ld-dark-c3)" d="M212.5 137.5H217.5A30 30 0 0 1 247.5 167.5V247.5H242.5A30 30 0 0 1 212.5 217.5Z"/>
+    <path class="q" fill="url(#ld-dark-quad)" d="M252.5 247.5V125.03A125 125 0 0 1 374.97 247.5Z"/>
+</svg>

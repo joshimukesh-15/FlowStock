@@ -1,141 +1,154 @@
+import { useId } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Premium Nature-Leaf Logomark
- * Custom designed with warm beige base, blue gradient leaflets, and refined highlights.
+ * FlowStock Logo Mark — Precision Brand Geometric Mark
+ * 
+ * Geometry: Three bars of equal width and even height-steps growing left-to-right,
+ * completing into a circle quadrant over a semi-circle base.
+ * 
+ * Palette: Warm Neutral Ramp (Smoky Black #11120D, Olive Drab #565449, Bone #D8CFBC, Floral White #FFFBF4)
+ * - Light surface: Contrast up to 18.8:1
+ * - Dark surface: Lifted palette for high contrast against #090A0C / #11120D
+ * 
+ * Variants:
+ * - "auto": Adapts seamlessly between light & dark themes
+ * - "light": Forced light gradient
+ * - "dark": Forced lifted dark gradient
+ * - "mono-dark": Flat Smoky Black (#11120D)
+ * - "mono-light": Flat Floral White (#FFFBF4)
+ * - "currentColor": Fills with currentColor
  */
-export const Logomark = ({ className = "w-6 h-6", ...props }) => {
+export const Logomark = ({
+  className = "w-6 h-6",
+  variant = "auto",
+  ...props
+}) => {
+  const uid = useId().replace(/:/g, "");
+
+  // Base paths
+  const dBase = "M125.03 252.5A125 125 0 0 0 374.97 252.5Z";
+  const dB1 = "M132.5 207.5H137.5A30 30 0 0 1 167.5 237.5V247.5H162.5A30 30 0 0 1 132.5 217.5Z";
+  const dB2 = "M172.5 172.5H177.5A30 30 0 0 1 207.5 202.5V247.5H202.5A30 30 0 0 1 172.5 217.5Z";
+  const dB3 = "M212.5 137.5H217.5A30 30 0 0 1 247.5 167.5V247.5H242.5A30 30 0 0 1 212.5 217.5Z";
+  const dQuad = "M252.5 247.5V125.03A125 125 0 0 1 374.97 247.5Z";
+
+  if (variant === "currentColor" || variant === "mono-dark" || variant === "mono-light") {
+    const fill =
+      variant === "currentColor"
+        ? "currentColor"
+        : variant === "mono-dark"
+        ? "#11120D"
+        : "#FFFBF4";
+
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="120 120 260 260"
+        className={cn("select-none shrink-0 inline-block", className)}
+        role="img"
+        aria-label="FlowStock Logo"
+        {...props}
+      >
+        <path fill={fill} d={dBase} />
+        <path fill={fill} d={dB1} />
+        <path fill={fill} d={dB2} />
+        <path fill={fill} d={dB3} />
+        <path fill={fill} d={dQuad} />
+      </svg>
+    );
+  }
+
+  const lBaseId = `l-base-${uid}`;
+  const lQuadId = `l-quad-${uid}`;
+  const lC1Id = `l-c1-${uid}`;
+  const lC2Id = `l-c2-${uid}`;
+  const lC3Id = `l-c3-${uid}`;
+
+  const dBaseId = `d-base-${uid}`;
+  const dQuadId = `d-quad-${uid}`;
+  const dC1Id = `d-c1-${uid}`;
+  const dC2Id = `d-c2-${uid}`;
+  const dC3Id = `d-c3-${uid}`;
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="95 95 310 310"
+      viewBox="120 120 260 260"
       className={cn("select-none shrink-0 inline-block", className)}
       role="img"
-      aria-label="FlowStock"
+      aria-label="FlowStock Logo"
       {...props}
     >
       <defs>
-        {/* Base Beige / Warm Cream Gradient */}
-        <linearGradient id="fs-base-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#f5e6d3" />
-          <stop offset="100%" stopColor="#d4b896" />
+        {/* Light Mode Gradients */}
+        <linearGradient id={lBaseId} gradientUnits="userSpaceOnUse" x1="250" y1="252.5" x2="250" y2="375">
+          <stop offset="0" stopColor="#3C3B32" />
+          <stop offset="1" stopColor="#11120D" />
+        </linearGradient>
+        <linearGradient id={lQuadId} gradientUnits="userSpaceOnUse" x1="252.5" y1="125" x2="375" y2="247.5">
+          <stop offset="0" stopColor="#FFFBF4" />
+          <stop offset="0.5" stopColor="#EFE8D8" />
+          <stop offset="1" stopColor="#D8CFBC" />
+        </linearGradient>
+        <linearGradient id={lC1Id} gradientUnits="userSpaceOnUse" x1="132.5" y1="207.5" x2="167.5" y2="247.5">
+          <stop offset="0" stopColor="#7A7768" />
+          <stop offset="1" stopColor="#565449" />
+        </linearGradient>
+        <linearGradient id={lC2Id} gradientUnits="userSpaceOnUse" x1="172.5" y1="172.5" x2="207.5" y2="247.5">
+          <stop offset="0" stopColor="#A39C86" />
+          <stop offset="1" stopColor="#857F6C" />
+        </linearGradient>
+        <linearGradient id={lC3Id} gradientUnits="userSpaceOnUse" x1="212.5" y1="137.5" x2="247.5" y2="247.5">
+          <stop offset="0" stopColor="#CFC6AE" />
+          <stop offset="1" stopColor="#B4AC94" />
         </linearGradient>
 
-        {/* Blue Leaf Gradients */}
-        <linearGradient id="fs-leaf-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#a5f3fc" />
-          <stop offset="100%" stopColor="#0284c7" />
+        {/* Dark Mode Gradients (Lifted for contrast against near-black) */}
+        <linearGradient id={dBaseId} gradientUnits="userSpaceOnUse" x1="250" y1="252.5" x2="250" y2="375">
+          <stop offset="0" stopColor="#9C9480" />
+          <stop offset="1" stopColor="#6E6A58" />
         </linearGradient>
-
-        <linearGradient id="fs-leaf-g2" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#0369a1" />
+        <linearGradient id={dQuadId} gradientUnits="userSpaceOnUse" x1="252.5" y1="125" x2="375" y2="247.5">
+          <stop offset="0" stopColor="#FFFBF4" />
+          <stop offset="0.5" stopColor="#FBF3DF" />
+          <stop offset="1" stopColor="#EADFC4" />
         </linearGradient>
-
-        <linearGradient id="fs-leaf-g3" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#0ea5e9" />
-          <stop offset="100%" stopColor="#1d4ed8" />
+        <linearGradient id={dC1Id} gradientUnits="userSpaceOnUse" x1="132.5" y1="207.5" x2="167.5" y2="247.5">
+          <stop offset="0" stopColor="#C9C0A6" />
+          <stop offset="1" stopColor="#A39C86" />
         </linearGradient>
-
-        <linearGradient id="fs-leaf-g4" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#7dd3fc" />
-          <stop offset="50%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#0284c7" />
+        <linearGradient id={dC2Id} gradientUnits="userSpaceOnUse" x1="172.5" y1="172.5" x2="207.5" y2="247.5">
+          <stop offset="0" stopColor="#D9D1B8" />
+          <stop offset="1" stopColor="#B9B096" />
         </linearGradient>
-
-        {/* Refined shadows */}
-        <filter id="fs-shadow-base" x="-10%" y="-10%" width="125%" height="125%">
-          <feDropShadow dx="0" dy="5" stdDeviation="6" floodColor="#031b4e" floodOpacity="0.16" />
-        </filter>
-        <filter id="fs-shadow-leaf" x="-10%" y="-10%" width="125%" height="125%">
-          <feDropShadow dx="-1" dy="3" stdDeviation="3.5" floodColor="#021a38" floodOpacity="0.18" />
-        </filter>
+        <linearGradient id={dC3Id} gradientUnits="userSpaceOnUse" x1="212.5" y1="137.5" x2="247.5" y2="247.5">
+          <stop offset="0" stopColor="#EDE6D2" />
+          <stop offset="1" stopColor="#D4CAAE" />
+        </linearGradient>
       </defs>
 
-      {/* Base Beige / Warm Cream Bottom Half Circle */}
-      <path
-        d="M 125,250 A 125,125 0 0,0 375,250 Z"
-        fill="url(#fs-base-grad)"
-        filter="url(#fs-shadow-base)"
-      />
+      {/* Light Mode Surface Render */}
+      {(variant === "auto" || variant === "light") && (
+        <g className={variant === "auto" ? "dark:hidden" : undefined}>
+          <path fill={`url(#${lBaseId})`} d={dBase} />
+          <path fill={`url(#${lC1Id})`} d={dB1} />
+          <path fill={`url(#${lC2Id})`} d={dB2} />
+          <path fill={`url(#${lC3Id})`} d={dB3} />
+          <path fill={`url(#${lQuadId})`} d={dQuad} />
+        </g>
+      )}
 
-      {/* 1. Smallest / Outer Left leaflet */}
-      <path
-        d="M 125,210 C 145,210 170,215 170,230 L 170,250 C 140,250 125,235 125,210 Z"
-        fill="url(#fs-leaf-g1)"
-        filter="url(#fs-shadow-leaf)"
-      />
-      <path
-        d="M 125,210 C 145,225 170,240 170,250"
-        stroke="#ffffff"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.4"
-      />
-
-      {/* 2. Second leaflet from left */}
-      <path
-        d="M 170,175 C 190,175 210,185 210,205 L 210,250 C 185,250 170,240 170,220 Z"
-        fill="url(#fs-leaf-g2)"
-        filter="url(#fs-shadow-leaf)"
-      />
-      <path
-        d="M 170,175 C 190,200 210,225 210,250"
-        stroke="#ffffff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.4"
-      />
-
-      {/* 3. Third leaflet from left */}
-      <path
-        d="M 210,140 C 230,140 250,150 250,175 L 250,250 C 220,250 210,240 210,220 Z"
-        fill="url(#fs-leaf-g3)"
-        filter="url(#fs-shadow-leaf)"
-      />
-      <path
-        d="M 210,140 C 230,170 250,210 250,250"
-        stroke="#ffffff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.4"
-      />
-
-      {/* 4. Largest right quarter / Main Blue Leaf */}
-      <path
-        d="M 250,125 A 125,125 0 0,1 375,250 L 250,250 Z"
-        fill="url(#fs-leaf-g4)"
-        filter="url(#fs-shadow-leaf)"
-      />
-
-      {/* Curved Leaf Veins/Details on Main Leaf */}
-      <path
-        d="M 250,125 Q 310,185 375,250"
-        stroke="#ffffff"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.45"
-      />
-      <path
-        d="M 250,165 Q 295,205 340,250"
-        stroke="#ffffff"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.3"
-      />
-      <path
-        d="M 250,205 Q 280,225 305,250"
-        stroke="#ffffff"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.25"
-      />
+      {/* Dark Mode Surface Render */}
+      {(variant === "auto" || variant === "dark") && (
+        <g className={variant === "auto" ? "hidden dark:inline" : undefined}>
+          <path fill={`url(#${dBaseId})`} d={dBase} />
+          <path fill={`url(#${dC1Id})`} d={dB1} />
+          <path fill={`url(#${dC2Id})`} d={dB2} />
+          <path fill={`url(#${dC3Id})`} d={dB3} />
+          <path fill={`url(#${dQuadId})`} d={dQuad} />
+        </g>
+      )}
     </svg>
   );
 };

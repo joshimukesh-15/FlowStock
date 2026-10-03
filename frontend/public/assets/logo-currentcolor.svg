@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="120 120 260 260" width="260" height="260" role="img" aria-label="Logo">
+  <title>Logo</title>
+    <path fill="currentColor" d="M125.03 252.5A125 125 0 0 0 374.97 252.5Z"/>
+    <path fill="currentColor" d="M132.5 207.5H137.5A30 30 0 0 1 167.5 237.5V247.5H162.5A30 30 0 0 1 132.5 217.5Z"/>
+    <path fill="currentColor" d="M172.5 172.5H177.5A30 30 0 0 1 207.5 202.5V247.5H202.5A30 30 0 0 1 172.5 217.5Z"/>
+    <path fill="currentColor" d="M212.5 137.5H217.5A30 30 0 0 1 247.5 167.5V247.5H242.5A30 30 0 0 1 212.5 217.5Z"/>
+    <path fill="currentColor" d="M252.5 247.5V125.03A125 125 0 0 1 374.97 247.5Z"/>
+</svg>
