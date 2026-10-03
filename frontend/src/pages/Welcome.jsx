@@ -22,6 +22,7 @@ import {
   Globe,
   ShieldCheck,
   Zap,
+  ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Modal } from "@/components/ui/Modal";
@@ -703,6 +704,118 @@ export default function WelcomePage() {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 3.5. GET TO KNOW FLOWSTOCK ENTERPRISE (MICROSOFT DYNAMICS STYLE 3-CARD SHOWCASE) */}
+      <section id="enterprise-showcase" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.2em] font-semibold text-sky-700 dark:text-[#38BDF8] bg-sky-500/10 border border-sky-500/20 dark:border-[#38BDF8]/30 mb-4 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+            ENTERPRISE ARCHITECTURE
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-[#F4F5F7] leading-[1.1] mb-4 [text-wrap:balance]">
+            Get to know FlowStock Enterprise
+          </h2>
+          <p className="text-base sm:text-lg text-slate-600 dark:text-[#9BA3AF] leading-relaxed [text-wrap:balance]">
+            Discover how modern supply chain operations unify multi-facility warehousing, deterministic replenishment, financial ledgers, and logistics dispatch.
+          </p>
+        </div>
+
+        {/* 3 Animated Enterprise Showcase Cards (Sliding from Right to Left on Scroll) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {[
+            {
+              tag: "CORE CAPABILITIES",
+              title: "What is FlowStock?",
+              description: "Become more data-driven and agile with an immutable double-entry stock ledger, automated safety buffers, and sub-millisecond inventory availability.",
+              image: "/assets/enterprise/flowstock-ops-leader.jpg",
+              alt: "FlowStock Supply Chain Operations Control Room",
+              ctaText: "Explore FlowStock Core",
+              action: () => scrollToSection("platform"),
+            },
+            {
+              tag: "INTERACTIVE DEMO",
+              title: "Take a guided tour",
+              description: "Get a closer look at how warehouse managers simulate stock allocations, track inter-facility consignment transfers, and trigger 1-click PO restocks.",
+              image: "/assets/enterprise/flowstock-executive.jpg",
+              alt: "Executive reviewing supply chain inventory analytics on laptop",
+              ctaText: "Start your guided tour",
+              action: () => (isAuthenticated ? navigate("/dashboard") : openAuth("login")),
+            },
+            {
+              tag: "GOVERNANCE & SCALE",
+              title: "Enterprise team control",
+              description: "Find the right operational posture for your business. Empower distributed procurement, sales, and logistics teams with 4-tier RBAC security and zero data leakage.",
+              image: "/assets/enterprise/flowstock-team.jpg",
+              alt: "Diverse supply chain operations team collaborating over live telemetry",
+              ctaText: "Explore multi-tenant plans",
+              action: () => (isAuthenticated ? navigate("/dashboard") : openAuth("signup")),
+            },
+          ].map((card, idx) => (
+            <motion.div
+              key={card.title}
+              custom={idx}
+              variants={{
+                hidden: { opacity: 0, x: 80 },
+                visible: (i) => ({
+                  opacity: 1,
+                  x: 0,
+                  transition: {
+                    type: "spring",
+                    stiffness: 70,
+                    damping: 18,
+                    mass: 0.8,
+                    delay: i * 0.15,
+                  },
+                }),
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              className="group rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] hover:border-slate-300 dark:hover:border-[#38BDF8]/40 shadow-xs hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+            >
+              <div>
+                {/* Photo with subtle hover zoom */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-[#18191E]">
+                  <img
+                    src={card.image}
+                    alt={card.alt}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="absolute top-3.5 left-3.5 text-[9px] font-mono font-bold uppercase tracking-[0.16em] px-2.5 py-1 rounded-md bg-white/90 dark:bg-[#090A0C]/90 backdrop-blur-md text-slate-800 dark:text-[#38BDF8] border border-slate-200/60 dark:border-[#22242B] shadow-2xs">
+                    {card.tag}
+                  </span>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 sm:p-7">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-slate-950 dark:text-[#F4F5F7] mb-2.5 group-hover:text-sky-600 dark:group-hover:text-[#38BDF8] transition-colors leading-snug">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed">
+                    {card.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Button Footer */}
+              <div className="p-6 sm:p-7 pt-0 mt-auto">
+                <button
+                  type="button"
+                  onClick={card.action}
+                  className="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-[#22242B] bg-slate-50 dark:bg-[#18191E] hover:bg-slate-900 hover:text-white dark:hover:bg-[#38BDF8] dark:hover:text-[#090A0C] dark:hover:border-[#38BDF8] text-xs font-bold text-slate-800 dark:text-[#F4F5F7] flex items-center justify-between transition-all duration-200 cursor-pointer shadow-2xs group-hover:border-slate-300"
+                >
+                  <span>{card.ctaText}</span>
+                  <div className="w-6 h-6 rounded-lg bg-white dark:bg-[#121316] group-hover:bg-slate-800 dark:group-hover:bg-[#090A0C] flex items-center justify-center text-slate-700 dark:text-white transition-colors">
+                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </button>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
