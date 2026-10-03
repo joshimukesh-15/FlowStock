@@ -130,3 +130,61 @@ class DashboardSummaryResponse(BaseModel):
     recent_activities: List[RecentActivityItem]
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class DemandForecastItem(BaseModel):
+    """Predictive telemetry and replenishment runway for an individual SKU."""
+    product_id: UUID
+    name: str
+    sku: str
+    category_name: Optional[str] = None
+    current_stock: int
+    reserved_stock: int
+    available_stock: int
+    daily_velocity: float
+    days_of_inventory: Optional[float] = None
+    stockout_risk: str  # "CRITICAL", "WARNING", "HEALTHY", "OVERSTOCKED"
+    reorder_point: int
+    suggested_reorder_qty: int
+    supplier_lead_time_days: int
+    estimated_stockout_date: Optional[str] = None
+    primary_supplier_id: Optional[UUID] = None
+    primary_supplier_name: Optional[str] = None
+    unit_cost: float
+    projected_reorder_cost: float
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DemandForecastSummary(BaseModel):
+    """Executive roll-up of algorithmic demand forecasting across all inventory."""
+    critical_count: int
+    warning_count: int
+    healthy_count: int
+    overstocked_count: int
+    avg_days_of_inventory: float
+    total_reorder_capital_required: float
+    items: List[DemandForecastItem]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AutoDraftPORequest(BaseModel):
+    """Payload to trigger 1-click automated purchase order draft."""
+    product_id: UUID
+    quantity: Optional[int] = None
+    warehouse_id: Optional[UUID] = None
+    supplier_id: Optional[UUID] = None
+
+
+class AutoDraftPOResponse(BaseModel):
+    """Result of auto-drafting a replenishment purchase order."""
+    po_id: UUID
+    po_number: str
+    supplier_name: str
+    product_name: str
+    quantity: int
+    unit_cost: float
+    total_cost: float
+    status: str
+    message: str

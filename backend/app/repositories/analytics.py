@@ -1,4 +1,6 @@
 """Analytics Database Repository (Tenant-Isolated Real Aggregations)."""
+import math
+from datetime import date, timedelta
 from typing import List, Dict, Any
 from uuid import UUID
 from sqlalchemy import select, func, desc
@@ -9,9 +11,10 @@ from app.models.catalog import Product
 from app.models.inventory import InventoryMovement
 from app.models.invoice import Invoice, Payment
 from app.models.order import SalesOrder, OrderItem
-from app.models.purchase_order import PurchaseOrder
+from app.models.purchase_order import PurchaseOrder, PurchaseOrderItem
 from app.models.shipment import Shipment
 from app.models.warehouse import Warehouse
+from app.models.supplier import Supplier
 
 
 class AnalyticsRepository:
@@ -409,6 +412,199 @@ class AnalyticsRepository:
         # Sort all combined activities descending by timestamp
         activities.sort(key=lambda a: a["timestamp"], reverse=True)
         return activities[:limit]
+
+    async def get_demand_forecast(
+        self, db: AsyncSession, organization_id: UUID
+    ) -> Dict[str, Any]:
+        """Compute real-time sales velocity, days-of-inventory runway, and replenishment risks."""
+        # 1. Fetch catalog products with categories
+        prod_stmt = (
+            select(Product)
+            .options(selectinload(Product.category))
+            .where(Product.organization_id == organization_id)
+            .order_by(Product.name)
+        )
+        prod_res = await db.execute(prod_stmt)
+        products = prod_res.scalars().all()
+
+        # 2. On-hand stock levels from immutable ledger
+        mov_stmt = (
+            select(
+                InventoryMovement.product_id,
+                func.coalesce(func.sum(InventoryMovement.quantity_change), 0).label("stock"),
+            )
+            .where(InventoryMovement.organization_id == organization_id)
+            .group_by(InventoryMovement.product_id)
+        )
+        mov_res = await db.execute(mov_stmt)
+        stock_map = {row[0]: int(row[1]) for row in mov_res.all()}
+
+        # 3. Reserved stock in confirmed sales orders
+        res_stmt = (
+            select(
+                OrderItem.product_id,
+                func.coalesce(func.sum(OrderItem.quantity), 0).label("reserved"),
+            )
+            .join(SalesOrder, SalesOrder.id == OrderItem.order_id)
+            .where(
+                SalesOrder.organization_id == organization_id,
+                SalesOrder.status == "CONFIRMED",
+            )
+            .group_by(OrderItem.product_id)
+        )
+        res_res = await db.execute(res_stmt)
+        reserved_map = {row[0]: int(row[1]) for row in res_res.all()}
+
+        # 4. Outbound order demand velocity
+        sold_stmt = (
+            select(
+                OrderItem.product_id,
+                func.coalesce(func.sum(OrderItem.quantity), 0).label("units_sold"),
+            )
+            .join(SalesOrder, SalesOrder.id == OrderItem.order_id)
+            .where(
+                SalesOrder.organization_id == organization_id,
+                SalesOrder.status != "CANCELLED",
+            )
+            .group_by(OrderItem.product_id)
+        )
+        sold_res = await db.execute(sold_stmt)
+        sold_map = {row[0]: int(row[1]) for row in sold_res.all()}
+
+        # 5. Organization suppliers
+        sup_stmt = (
+            select(Supplier)
+            .where(Supplier.organization_id == organization_id)
+            .order_by(Supplier.name)
+        )
+        sup_res = await db.execute(sup_stmt)
+        suppliers = sup_res.scalars().all()
+        default_supplier = suppliers[0] if suppliers else None
+        supplier_by_id = {s.id: s for s in suppliers}
+
+        # PO item mapping to associate preferred supplier per product
+        po_item_stmt = (
+            select(PurchaseOrderItem.product_id, PurchaseOrder.supplier_id)
+            .join(PurchaseOrder, PurchaseOrder.id == PurchaseOrderItem.purchase_order_id)
+            .where(PurchaseOrder.organization_id == organization_id)
+        )
+        po_item_res = await db.execute(po_item_stmt)
+        product_supplier_map = {row[0]: row[1] for row in po_item_res.all()}
+
+        forecast_items = []
+        critical_count = 0
+        warning_count = 0
+        healthy_count = 0
+        overstocked_count = 0
+        total_reorder_cost = 0.0
+        total_days_sum = 0.0
+        valid_days_count = 0
+
+        today = date.today()
+
+        for p in products:
+            on_hand = max(0, stock_map.get(p.id, 0))
+            reserved = max(0, reserved_map.get(p.id, 0))
+            available = max(0, on_hand - reserved)
+
+            # Daily sales velocity (units / day)
+            units_sold = sold_map.get(p.id, 0)
+            if units_sold > 0:
+                daily_velocity = round(max(0.2, units_sold / 14.0), 2)
+            else:
+                ref_point = p.reorder_point if p.reorder_point and p.reorder_point > 0 else 10
+                daily_velocity = round(max(0.1, ref_point / 15.0), 2)
+
+            # Days of inventory remaining (Runway / DOH)
+            if daily_velocity > 0:
+                days_left = round(available / daily_velocity, 1)
+            else:
+                days_left = 999.0
+
+            # Supplier lead time and dynamic ROP calculation
+            supplier_id = product_supplier_map.get(p.id) or (default_supplier.id if default_supplier else None)
+            supplier_obj = supplier_by_id.get(supplier_id) if supplier_id else default_supplier
+            lead_time = 7  # 7-day average turnaround
+            safety_buffer = max(5, int(daily_velocity * 4))
+            dynamic_rop = int((daily_velocity * lead_time) + safety_buffer)
+            effective_rop = max(p.reorder_point or 0, dynamic_rop)
+
+            # Risk classification
+            if days_left <= 7.0 or available <= (effective_rop // 2):
+                risk = "CRITICAL"
+                critical_count += 1
+            elif days_left <= 15.0 or available <= effective_rop:
+                risk = "WARNING"
+                warning_count += 1
+            elif days_left <= 45.0:
+                risk = "HEALTHY"
+                healthy_count += 1
+            else:
+                risk = "OVERSTOCKED"
+                overstocked_count += 1
+
+            if days_left < 365:
+                total_days_sum += days_left
+                valid_days_count += 1
+
+            # Suggested replenishment quantity (to replenish to 30-day runway)
+            if risk in ("CRITICAL", "WARNING"):
+                target_30d = int(math.ceil(30 * daily_velocity))
+                suggested_qty = max(10, target_30d - available)
+            else:
+                suggested_qty = 0
+
+            cost_price = p.cost_price or p.price or 0.0
+            reorder_cost = round(suggested_qty * cost_price, 2)
+            total_reorder_cost += reorder_cost
+
+            # Stockout date estimate
+            if days_left < 180:
+                est_date = (today + timedelta(days=int(days_left))).isoformat()
+            else:
+                est_date = None
+
+            forecast_items.append({
+                "product_id": p.id,
+                "name": p.name,
+                "sku": p.sku,
+                "category_name": p.category.name if p.category else None,
+                "current_stock": on_hand,
+                "reserved_stock": reserved,
+                "available_stock": available,
+                "daily_velocity": daily_velocity,
+                "days_of_inventory": days_left if days_left < 365 else None,
+                "stockout_risk": risk,
+                "reorder_point": effective_rop,
+                "suggested_reorder_qty": suggested_qty,
+                "supplier_lead_time_days": lead_time,
+                "estimated_stockout_date": est_date,
+                "primary_supplier_id": supplier_obj.id if supplier_obj else None,
+                "primary_supplier_name": supplier_obj.name if supplier_obj else None,
+                "unit_cost": cost_price,
+                "projected_reorder_cost": reorder_cost,
+            })
+
+        # Sort: CRITICAL first, then WARNING, then by days_of_inventory ascending
+        risk_priority = {"CRITICAL": 0, "WARNING": 1, "HEALTHY": 2, "OVERSTOCKED": 3}
+        forecast_items.sort(
+            key=lambda x: (
+                risk_priority.get(x["stockout_risk"], 9),
+                x["days_of_inventory"] if x["days_of_inventory"] is not None else 9999,
+            )
+        )
+
+        avg_days = round(total_days_sum / valid_days_count, 1) if valid_days_count > 0 else 0.0
+
+        return {
+            "critical_count": critical_count,
+            "warning_count": warning_count,
+            "healthy_count": healthy_count,
+            "overstocked_count": overstocked_count,
+            "avg_days_of_inventory": avg_days,
+            "total_reorder_capital_required": round(total_reorder_cost, 2),
+            "items": forecast_items,
+        }
 
 
 analytics_repo = AnalyticsRepository()

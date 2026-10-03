@@ -11,8 +11,8 @@ import { Tabs } from "@/components/ui/Tabs";
 import { StatCard } from "@/components/ui/StatCard";
 import { KpiGrid } from "@/components/ui/KpiGrid";
 import { StatRow, StatCol } from "@/components/ui/StatRow";
-import { RefreshCw, TrendingUp, AlertTriangle, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, } from "lucide-react";
-import { fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJobApi, } from "@/lib/api";
+import { RefreshCw, TrendingUp, AlertTriangle, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, Sparkles, } from "lucide-react";
+import { fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJobApi, fetchDemandForecast, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useRealtime } from "@/context/WebSocketContext";
 import { formatINR } from "@/lib/utils";
@@ -23,9 +23,11 @@ import { PageSkeleton, CardSkeleton } from "@/components/ui/Skeleton";
 import { RevenueVelocityMatrix } from "@/components/dashboard/RevenueVelocityMatrix";
 import { OrderStatusDistribution } from "@/components/dashboard/OrderStatusDistribution";
 import { QuickActionsBar } from "@/components/dashboard/QuickActionsBar";
+import { DemandForecastRadar } from "@/components/dashboard/DemandForecastRadar";
 
 export default function HomePage() {
     const [summary, setSummary] = useState(null);
+    const [forecast, setForecast] = useState(null);
     const prefersReducedMotion = useReducedMotion();
     const itemVariants = slideUpVariants(prefersReducedMotion);
     const [availableJobs, setAvailableJobs] = useState([]);
@@ -59,14 +61,16 @@ export default function HomePage() {
         setLoading(true);
         setError(null);
         try {
-            const [summaryData, jobsData, executionsData] = await Promise.all([
+            const [summaryData, jobsData, executionsData, forecastData] = await Promise.all([
                 fetchDashboardSummary(),
                 fetchAvailableJobs().catch(() => []),
                 fetchJobExecutions(10).catch(() => []),
+                fetchDemandForecast().catch(() => null),
             ]);
             setSummary(summaryData);
             setAvailableJobs(jobsData);
             setJobExecutions(executionsData);
+            setForecast(forecastData);
             setLastChecked(new Date().toLocaleTimeString());
         }
         catch (err) {
@@ -131,6 +135,12 @@ export default function HomePage() {
             label: "Inventory",
             icon: Boxes,
             count: (summary?.inventory.low_stock_count ?? 0) > 0 ? `${summary?.inventory.low_stock_count} alerts` : undefined,
+        },
+        {
+            id: "forecasting",
+            label: "Demand Forecasting",
+            icon: Sparkles,
+            count: (forecast?.critical_count ?? 0) > 0 ? `${forecast?.critical_count} critical` : undefined,
         },
         {
             id: "logistics",
@@ -448,7 +458,17 @@ export default function HomePage() {
                   </div>)}
               </CardContent>
             </Card>
+
+            {/* Algorithmic Demand Forecasting & Replenishment Runway */}
+            <DemandForecastRadar forecast={forecast} onRefresh={loadData} />
           </div>)}
+
+        {/* Tab 1.5: Dedicated Demand Forecasting Tab */}
+        {activeTab === "forecasting" && (
+          <div className="space-y-3">
+            <DemandForecastRadar forecast={forecast} onRefresh={loadData} />
+          </div>
+        )}
 
         {/* Tab 2: Logistics & Supply */}
         {activeTab === "logistics" && (<div className="grid grid-cols-1 md:grid-cols-2 gap-3">

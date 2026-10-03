@@ -867,3 +867,27 @@ export async function logoutApi() {
         // ignore logout network errors
     }
 }
+
+export async function fetchDemandForecast() {
+    return await cachedGet(`${API_BASE_URL}/analytics/demand-forecast`, 20000);
+}
+
+export async function autoDraftPOApi({ productId, quantity, warehouseId, supplierId }) {
+    clearApiCache();
+    const res = await fetch(`${API_BASE_URL}/analytics/demand-forecast/auto-draft-po`, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: quantity || null,
+            warehouse_id: warehouseId || null,
+            supplier_id: supplierId || null,
+        }),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || "Failed to auto-draft purchase order");
+    }
+    return await res.json();
+}
+
