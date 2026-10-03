@@ -119,7 +119,7 @@ export default function LoginPage() {
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm dark:shadow-none dark:ring-1 dark:ring-[#22242B]">
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm dark:shadow-none dark:ring-1 dark:ring-[#22242B] overflow-hidden">
           {/* Tab switcher — always visible at top of card */}
           <div className="px-6 pt-5 pb-0">
             <div className="flex bg-slate-100 dark:bg-[#18191E] rounded-lg p-1 border border-slate-200/80 dark:border-[#262833] relative">
@@ -154,16 +154,26 @@ export default function LoginPage() {
 
           {/* Header text */}
           <div className="px-6 pt-4 pb-1">
-            <h1 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] leading-tight">
-              {mode === "login"
-                ? "Welcome back"
-                : "Get started with FlowStock"}
-            </h1>
-            <p className="text-xs text-slate-500 dark:text-[#808594] mt-0.5">
-              {mode === "login"
-                ? "Sign in to your workspace"
-                : "Create your organization in under a minute"}
-            </p>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={mode}
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 4 }}
+                transition={{ duration: 0.16, ease: "easeOut" }}
+              >
+                <h1 className="font-display text-lg font-bold text-slate-950 dark:text-[#F4F5F7] leading-tight">
+                  {mode === "login"
+                    ? "Welcome back"
+                    : "Get started with FlowStock"}
+                </h1>
+                <p className="text-xs text-slate-500 dark:text-[#808594] mt-0.5">
+                  {mode === "login"
+                    ? "Sign in to your workspace"
+                    : "Create your organization in under a minute"}
+                </p>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Form */}
@@ -174,25 +184,38 @@ export default function LoginPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-3">
-              {mode === "signup" && (
-                <div>
-                  <label className={labelClass}>Full Name</label>
-                  <div className="relative">
-                    <User className={iconClass} />
-                    <input
-                      type="text"
-                      placeholder="Alex Morgan"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      className={inputClass}
-                    />
-                  </div>
-                </div>
-              )}
+            <form onSubmit={handleSubmit} className="flex flex-col">
+              {/* 1. Full Name (expands smoothly when in signup mode) */}
+              <AnimatePresence initial={false}>
+                {mode === "signup" && (
+                  <motion.div
+                    key="login-page-fullname"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pb-3">
+                      <label className={labelClass}>Full Name</label>
+                      <div className="relative">
+                        <User className={iconClass} />
+                        <input
+                          type="text"
+                          placeholder="Alex Morgan"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required={mode === "signup"}
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-              <div>
+              {/* 2. Shared Email Field */}
+              <div className="pb-3">
                 <label className={labelClass}>Email</label>
                 <div className="relative">
                   <Mail className={iconClass} />
@@ -207,7 +230,8 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div>
+              {/* 3. Shared Password Field */}
+              <div className="pb-3">
                 <label className={labelClass}>Password</label>
                 <div className="relative">
                   <Lock className={iconClass} />
@@ -237,172 +261,210 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {mode === "signup" && (
-                <>
-                  {/* Org section divider */}
-                  <div className="flex items-center gap-2 pt-1">
-                    <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-[#808594]">
-                      Organization
-                    </span>
-                    <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
-                  </div>
+              {/* 4. Organization Details (expands smoothly when in signup mode) */}
+              <AnimatePresence initial={false}>
+                {mode === "signup" && (
+                  <motion.div
+                    key="login-page-org-fields"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="space-y-3 pb-3">
+                      {/* Org section divider */}
+                      <div className="flex items-center gap-2 pt-0.5">
+                        <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.16em] text-slate-400 dark:text-[#808594]">
+                          Organization
+                        </span>
+                        <div className="flex-1 h-px bg-slate-200 dark:bg-[#22242B]" />
+                      </div>
 
-                  <div className="grid grid-cols-2 gap-2.5">
-                    {/* Org Name */}
-                    <div>
-                      <label className={labelClass}>Company Name</label>
-                      <div className="relative">
-                        <Building2 className={iconClass} />
-                        <input
-                          type="text"
-                          placeholder="Samsung Electronics Ltd"
-                          value={orgName}
-                          onChange={(e) => {
-                            setOrgName(e.target.value);
-                            const auto = e.target.value
-                              .toLowerCase()
-                              .replace(/[^a-z0-9]+/g, "-")
-                              .replace(/^-|-$/g, "");
-                            if (
-                              !orgSlug ||
-                              orgSlug ===
-                                orgName
+                      <div className="grid grid-cols-2 gap-2.5">
+                        {/* Org Name */}
+                        <div>
+                          <label className={labelClass}>Company Name</label>
+                          <div className="relative">
+                            <Building2 className={iconClass} />
+                            <input
+                              type="text"
+                              placeholder="Samsung Electronics Ltd"
+                              value={orgName}
+                              onChange={(e) => {
+                                setOrgName(e.target.value);
+                                const auto = e.target.value
                                   .toLowerCase()
                                   .replace(/[^a-z0-9]+/g, "-")
-                                  .replace(/^-|-$/g, "")
-                            ) {
-                              setOrgSlug(auto);
-                            }
-                          }}
-                          required
-                          className={inputClass}
+                                  .replace(/^-|-$/g, "");
+                                if (
+                                  !orgSlug ||
+                                  orgSlug ===
+                                    orgName
+                                      .toLowerCase()
+                                      .replace(/[^a-z0-9]+/g, "-")
+                                      .replace(/^-|-$/g, "")
+                                ) {
+                                  setOrgSlug(auto);
+                                }
+                              }}
+                              required={mode === "signup"}
+                              className={inputClass}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Workspace Slug */}
+                        <div>
+                          <label className={labelClass}>Workspace ID</label>
+                          <div className="relative">
+                            <KeyRound className={iconClass} />
+                            <input
+                              type="text"
+                              placeholder="samsung-electronics"
+                              value={orgSlug}
+                              onChange={(e) =>
+                                setOrgSlug(
+                                  e.target.value
+                                    .toLowerCase()
+                                    .replace(/[^a-z0-9-]/g, "")
+                                )
+                              }
+                              required={mode === "signup"}
+                              className={inputClass}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {orgSlug && (
+                        <p className="text-[10px] text-slate-400 dark:text-[#808594] font-mono -mt-1 pl-0.5">
+                          flowstock.app/
+                          <span className="text-sky-600 dark:text-[#38BDF8]">
+                            {orgSlug}
+                          </span>
+                        </p>
+                      )}
+
+                      {/* Currency */}
+                      <div>
+                        <label className={labelClass}>Currency</label>
+                        <Select
+                          value={currency}
+                          onChange={(e) => setCurrency(e.target.value)}
+                          icon={Globe}
+                          buttonClassName="rounded-lg h-10 border-slate-200 dark:border-[#22242B]"
+                          options={[
+                            { value: "INR", label: "INR — Indian Rupee" },
+                            { value: "USD", label: "USD — US Dollar" },
+                            { value: "EUR", label: "EUR — Euro" },
+                            { value: "GBP", label: "GBP — British Pound" },
+                          ]}
                         />
                       </div>
                     </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-                    {/* Workspace Slug */}
-                    <div>
-                      <label className={labelClass}>Workspace ID</label>
-                      <div className="relative">
-                        <KeyRound className={iconClass} />
-                        <input
-                          type="text"
-                          placeholder="samsung-electronics"
-                          value={orgSlug}
-                          onChange={(e) =>
-                            setOrgSlug(
-                              e.target.value
-                                .toLowerCase()
-                                .replace(/[^a-z0-9-]/g, "")
-                            )
-                          }
-                          required
-                          className={inputClass}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {orgSlug && (
-                    <p className="text-[10px] text-slate-400 dark:text-[#808594] font-mono -mt-1 pl-0.5">
-                      flowstock.app/
-                      <span className="text-sky-600 dark:text-[#38BDF8]">
-                        {orgSlug}
-                      </span>
-                    </p>
-                  )}
-
-                  {/* Currency */}
-                  <div>
-                    <label className={labelClass}>Currency</label>
-                    <Select
-                      value={currency}
-                      onChange={(e) => setCurrency(e.target.value)}
-                      icon={Globe}
-                      buttonClassName="rounded-lg h-10 border-slate-200 dark:border-[#22242B]"
-                      options={[
-                        { value: "INR", label: "INR — Indian Rupee" },
-                        { value: "USD", label: "USD — US Dollar" },
-                        { value: "EUR", label: "EUR — Euro" },
-                        { value: "GBP", label: "GBP — British Pound" },
-                      ]}
-                    />
-                  </div>
-                </>
-              )}
-
-              {/* Submit */}
-              <Button
-                type="submit"
-                variant="primary"
-                size="md"
-                isLoading={loading}
-                className="w-full h-10 font-bold text-sm rounded-lg mt-1"
-              >
-                <span>
-                  {mode === "login" ? "Log In" : "Create Account"}
-                </span>
-                <ArrowRight className="w-3.5 h-3.5 ml-1.5 shrink-0" />
-              </Button>
-            </form>
-
-            {/* Demo quick-fill — login mode only */}
-            {mode === "login" && (
-              <div className="mt-3 p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#22242B] bg-slate-50/50 dark:bg-[#090A0C]/70 flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1 mb-0.5">
-                    <Zap className="w-3 h-3 text-amber-500" />
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-400">
-                      Demo
-                    </span>
-                  </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">
-                    alice@samsung.com
-                  </span>
-                  <span className="text-[10px] text-slate-400 dark:text-[#808594]">
-                    Pass: <code className="font-mono">admin123</code>
-                  </span>
-                </div>
-                <motion.button
-                  type="button"
-                  whileTap={{ scale: 0.94 }}
-                  onClick={() => {
-                    setEmail("alice@samsung.com");
-                    setPassword("admin123");
-                    setError("");
-                    setAutoFilled(true);
-                    setTimeout(() => setAutoFilled(false), 1400);
-                  }}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-xs border border-[#FFFBF4] outline-none"
+              {/* 5. Submit Button */}
+              <div className="pt-0.5">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="md"
+                  isLoading={loading}
+                  className="w-full h-10 font-bold text-sm rounded-lg"
                 >
                   <AnimatePresence mode="wait" initial={false}>
-                    {autoFilled ? (
-                      <motion.span
-                        key="check"
-                        initial={{ scale: 0.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.5, opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                        className="inline-flex items-center gap-1"
-                      >
-                        <Check className="w-3 h-3 text-white" strokeWidth={2.5} />
-                        <span>Filled</span>
-                      </motion.span>
-                    ) : (
-                      <motion.span
-                        key="idle"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        Auto Fill
-                      </motion.span>
-                    )}
+                    <motion.span
+                      key={mode}
+                      initial={{ opacity: 0, y: -2 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 2 }}
+                      transition={{ duration: 0.14 }}
+                      className="inline-flex items-center justify-center gap-1.5"
+                    >
+                      <span>
+                        {mode === "login" ? "Log In" : "Create Account"}
+                      </span>
+                      <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+                    </motion.span>
                   </AnimatePresence>
-                </motion.button>
+                </Button>
               </div>
-            )}
+            </form>
+
+            {/* 6. Demo quick-fill — login mode only */}
+            <AnimatePresence initial={false}>
+              {mode === "login" && (
+                <motion.div
+                  key="login-page-demo-tile"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-3">
+                    <div className="p-2.5 rounded-lg border border-dashed border-slate-200 dark:border-[#22242B] bg-slate-50/50 dark:bg-[#090A0C]/70 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <Zap className="w-3 h-3 text-amber-500" />
+                          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-400">
+                            Demo
+                          </span>
+                        </div>
+                        <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block truncate">
+                          alice@samsung.com
+                        </span>
+                        <span className="text-[10px] text-slate-400 dark:text-[#808594]">
+                          Pass: <code className="font-mono">admin123</code>
+                        </span>
+                      </div>
+                      <motion.button
+                        type="button"
+                        whileTap={{ scale: 0.94 }}
+                        onClick={() => {
+                          setEmail("alice@samsung.com");
+                          setPassword("admin123");
+                          setError("");
+                          setAutoFilled(true);
+                          setTimeout(() => setAutoFilled(false), 1400);
+                        }}
+                        className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-xs border border-[#FFFBF4] outline-none"
+                      >
+                        <AnimatePresence mode="wait" initial={false}>
+                          {autoFilled ? (
+                            <motion.span
+                              key="check"
+                              initial={{ scale: 0.5, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0.5, opacity: 0 }}
+                              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                              className="inline-flex items-center gap-1"
+                            >
+                              <Check className="w-3 h-3 text-white" strokeWidth={2.5} />
+                              <span>Filled</span>
+                            </motion.span>
+                          ) : (
+                            <motion.span
+                              key="idle"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                            >
+                              Auto Fill
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Footer toggle */}
