@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getTransition, useReducedMotion, DURATION, EASING } from "@/motion";
-import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, LogOut, } from "lucide-react";
+import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, } from "lucide-react";
 import { Logomark } from "@/components/ui/Logomark";
-import { useAuth } from "@/context/AuthContext";
 const NAV_GROUPS = [
     {
         label: "Core Workspace",
@@ -35,8 +34,6 @@ const NAV_GROUPS = [
 ];
 
 export const Sidebar = () => {
-    const navigate = useNavigate();
-    const { logout } = useAuth();
     const location = useLocation();
     const pathname = location.pathname;
     const prefersReducedMotion = useReducedMotion();
@@ -213,31 +210,6 @@ export const Sidebar = () => {
             </div>
           ))}
         </nav>
-
-        {/* Bottom Sign Out */}
-        <div className="p-2 border-t border-slate-200 dark:border-[#33372B] shrink-0 overflow-hidden">
-          <button
-            onClick={() => {
-              logout();
-              navigate("/");
-            }}
-            className="h-9 w-full flex items-center rounded-lg text-[13px] font-medium text-slate-500 hover:text-red-600 dark:text-[#9BA3AF] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-            title="Sign Out & Return to Landing Page"
-          >
-            <span className="w-8 h-8 shrink-0 flex items-center justify-center">
-              <LogOut className="w-4 h-4 shrink-0" />
-            </span>
-            <span
-              className={`truncate ml-1 text-left transition-[opacity,transform] duration-200 ${
-                collapsed
-                  ? "opacity-0 pointer-events-none -translate-x-1"
-                  : "opacity-100 translate-x-0"
-              }`}
-            >
-              Sign Out
-            </span>
-          </button>
-        </div>
       </aside>
 
       {/* Floating Hover Tooltip for Collapsed Sidebar */}
