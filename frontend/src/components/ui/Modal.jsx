@@ -70,7 +70,7 @@ export const Modal = ({
         >
           {/* Animated Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-xs"
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -82,7 +82,7 @@ export const Modal = ({
           {/* Animated Modal Dialog Content Card */}
           <motion.div
             style={{ transformOrigin: "center" }}
-            className={`relative bg-white dark:bg-[#191B15] border border-slate-200 dark:border-[#33372B] border-t-white/80 dark:border-t-white/15 text-slate-900 dark:text-[#F4F5F7] rounded-2xl w-full ${maxWidthClasses[maxWidth]} shadow-2xl overflow-hidden z-10 ${className}`}
+            className={`relative bg-white dark:bg-[#121316] border border-slate-200 dark:border-[#22242B] text-slate-900 dark:text-[#F4F5F7] rounded-2xl w-full ${maxWidthClasses[maxWidth]} shadow-xl dark:shadow-none dark:ring-1 dark:ring-[#22242B] overflow-hidden z-10 ${className}`}
             initial="hidden"
             animate="visible"
             exit="exit"

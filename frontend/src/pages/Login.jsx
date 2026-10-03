@@ -119,46 +119,36 @@ export default function LoginPage() {
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.6)]">
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm dark:shadow-none dark:ring-1 dark:ring-[#22242B]">
           {/* Tab switcher — always visible at top of card */}
           <div className="px-6 pt-5 pb-0">
-            <div className="flex bg-slate-100 dark:bg-[#090A0C] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#22242B] relative">
-              <button
-                type="button"
-                onClick={() => switchMode("login")}
-                className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
-                  mode === "login"
-                    ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
-                }`}
-              >
-                {mode === "login" && (
-                  <motion.div
-                    layoutId="active-login-tab"
-                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
-                  />
-                )}
-                Log In
-              </button>
-              <button
-                type="button"
-                onClick={() => switchMode("signup")}
-                className={`relative z-10 flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
-                  mode === "signup"
-                    ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
-                }`}
-              >
-                {mode === "signup" && (
-                  <motion.div
-                    layoutId="active-login-tab"
-                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
-                  />
-                )}
-                Create Account
-              </button>
+            <div className="flex bg-slate-100 dark:bg-[#18191E] rounded-lg p-1 border border-slate-200/80 dark:border-[#262833] relative">
+              {["login", "signup"].map((m) => {
+                const active = mode === m;
+                return (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => switchMode(m)}
+                    className={`relative flex-1 py-1.5 text-xs font-bold rounded-md transition-colors duration-150 cursor-pointer select-none text-center ${
+                      active
+                        ? "text-slate-950 dark:text-white"
+                        : "text-slate-500 hover:text-slate-800 dark:text-[#808594] dark:hover:text-[#D8CFBC]"
+                    }`}
+                  >
+                    {active && (
+                      <motion.div
+                        layoutId="active-login-tab-pill"
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                        className="absolute inset-0 bg-white dark:bg-[#262833] rounded-md shadow-xs border border-slate-200/90 dark:border-[#383B47]"
+                      />
+                    )}
+                    <span className="relative z-10 block">
+                      {m === "login" ? "Log In" : "Create Account"}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 

@@ -195,28 +195,33 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
       {/* Tab switcher */}
       <div className="px-6 pt-4 shrink-0">
         <div className="max-w-md mx-auto">
-          <div className="flex bg-slate-100 dark:bg-[#090A0C] rounded-lg p-0.5 border border-slate-200/60 dark:border-[#22242B]">
-            {["login","signup"].map((m) => (
-              <button
-                key={m}
-                type="button"
-                onClick={() => switchMode(m)}
-                className={`relative flex-1 py-1.5 text-xs font-semibold rounded-md transition-colors duration-200 cursor-pointer ${
-                  mode === m
-                    ? "text-slate-900 dark:text-white"
-                    : "text-slate-500 dark:text-[#A0A5B2] hover:text-slate-700 dark:hover:text-white"
-                }`}
-              >
-                {mode === m && (
-                  <motion.div
-                    layoutId="auth-modal-tab"
-                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                    className="absolute inset-0 bg-white dark:bg-[#18191E] dark:border dark:border-[#22242B] rounded-md shadow-sm -z-10"
-                  />
-                )}
-                {m === "login" ? "Log In" : "Create Account"}
-              </button>
-            ))}
+          <div className="flex bg-slate-100 dark:bg-[#18191E] rounded-lg p-1 border border-slate-200/80 dark:border-[#262833] relative">
+            {["login", "signup"].map((m) => {
+              const active = mode === m;
+              return (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => switchMode(m)}
+                  className={`relative flex-1 py-1.5 text-xs font-bold rounded-md transition-colors duration-150 cursor-pointer select-none text-center ${
+                    active
+                      ? "text-slate-950 dark:text-white"
+                      : "text-slate-500 hover:text-slate-800 dark:text-[#808594] dark:hover:text-[#D8CFBC]"
+                  }`}
+                >
+                  {active && (
+                    <motion.div
+                      layoutId="auth-modal-tab-pill"
+                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                      className="absolute inset-0 bg-white dark:bg-[#262833] rounded-md shadow-xs border border-slate-200/90 dark:border-[#383B47]"
+                    />
+                  )}
+                  <span className="relative z-10 block">
+                    {m === "login" ? "Log In" : "Create Account"}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -230,7 +235,15 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
             </div>
           )}
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={mode}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.16 }}
+            >
+              <form onSubmit={handleSubmit} className="space-y-3">
           {mode === "signup" && (
             <div>
               <label className={labelClass}>Full Name</label>
@@ -353,6 +366,8 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
             <ArrowRight className="w-3.5 h-3.5 ml-1.5 shrink-0" />
           </Button>
         </form>
+            </motion.div>
+          </AnimatePresence>
         </div>{/* end max-w-md */}
       </div>
 
@@ -1133,7 +1148,7 @@ export default function WelcomePage() {
         isOpen={authOpen}
         onClose={closeAuth}
         maxWidth="md"
-        className="!bg-white dark:!bg-[#121316] !border-slate-200/90 dark:!border-[#22242B] !shadow-[0_25px_70px_rgba(0,0,0,0.3)] dark:!shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden"
+        className="!bg-white dark:!bg-[#121316] !border-slate-200/90 dark:!border-[#22242B] shadow-2xl dark:shadow-none dark:ring-1 dark:ring-[#22242B] overflow-hidden"
       >
         <AuthModalContent
           mode={authMode}
