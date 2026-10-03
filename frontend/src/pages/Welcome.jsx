@@ -24,6 +24,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useTenant } from "@/context/TenantContext";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
@@ -125,6 +126,7 @@ function FeatureRow({
 /* ── Production Center Auth Modal Content ── */
 function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
   const { login, signup } = useAuth();
+  const { refreshOrganizations } = useTenant();
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -154,6 +156,9 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
         await login(email, password);
       } else {
         await signup({ name, email, password, org_name: orgName, org_slug: orgSlug, currency });
+      }
+      if (refreshOrganizations) {
+        await refreshOrganizations();
       }
       onSuccess();
     } catch (err) {

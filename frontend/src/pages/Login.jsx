@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
+import { useTenant } from "@/context/TenantContext";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
 
@@ -24,6 +25,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { login, signup } = useAuth();
+  const { refreshOrganizations } = useTenant();
 
   const queryMode = searchParams.get("mode");
   const [mode, setMode] = useState(
@@ -72,6 +74,9 @@ export default function LoginPage() {
           org_slug: orgSlug,
           currency,
         });
+      }
+      if (refreshOrganizations) {
+        await refreshOrganizations();
       }
       navigate("/dashboard");
     } catch (err) {

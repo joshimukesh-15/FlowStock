@@ -1,29 +1,43 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { fetchOrganizations, createOrganizationApi, deleteOrganizationApi, clearApiCache } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
+
 const TenantContext = createContext(undefined);
+
 export const TenantProvider = ({ children }) => {
+    const { user: authUser, organization: authOrg, isAuthenticated } = useAuth();
     const [organizations, setOrganizations] = useState([]);
     const [currentOrg, setCurrentOrg] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const loadOrganizations = async () => {
+
+    const loadOrganizations = useCallback(async (targetUserId = null, targetOrgId = null) => {
         try {
             const orgs = await fetchOrganizations();
             setOrganizations(orgs);
             const savedOrgId = typeof window !== "undefined" ? localStorage.getItem("flowstock_org_id") : null;
-            let active = orgs.find((o) => o.id === savedOrgId) || orgs[0] || null;
+            const activeOrgId = targetOrgId || authOrg?.id || savedOrgId;
+            let active = orgs.find((o) => o.id === activeOrgId) || orgs[0] || null;
             setCurrentOrg(active);
+
             if (active && active.users && active.users.length > 0) {
                 const savedUserId = typeof window !== "undefined" ? localStorage.getItem("flowstock_user_id") : null;
-                const matchedUser = active.users.find((u) => u.id === savedUserId) || active.users[0];
+                const activeUserId = targetUserId || authUser?.id || savedUserId;
+                const matchedUser = active.users.find(
+                    (u) => u.id === activeUserId || (authUser?.email && u.email.toLowerCase() === authUser.email.toLowerCase())
+                ) || (authUser || active.users[0]);
+
                 setCurrentUser(matchedUser);
-                if (typeof window !== "undefined") {
+                if (typeof window !== "undefined" && matchedUser) {
                     localStorage.setItem("flowstock_user_id", matchedUser.id);
                     localStorage.setItem("flowstock_user_name", matchedUser.name);
                     localStorage.setItem("flowstock_user_role", matchedUser.role);
                 }
+            } else if (authUser) {
+                setCurrentUser(authUser);
             }
+
             // Persist resolved org info for instant next load
             if (active && typeof window !== "undefined") {
                 localStorage.setItem("flowstock_org_id", active.id);
@@ -37,7 +51,27 @@ export const TenantProvider = ({ children }) => {
         finally {
             setLoading(false);
         }
-    };
+    }, [authUser, authOrg]);
+
+    // Keep currentUser in sync whenever AuthContext user changes (login, logout, session check)
+    useEffect(() => {
+        if (authUser) {
+            setCurrentUser(authUser);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("flowstock_user_id", authUser.id);
+                localStorage.setItem("flowstock_user_name", authUser.name);
+                localStorage.setItem("flowstock_user_role", authUser.role);
+                if (authUser.organization_id) {
+                    localStorage.setItem("flowstock_org_id", authUser.organization_id);
+                }
+            }
+            loadOrganizations(authUser.id, authUser.organization_id);
+        } else if (!isAuthenticated && typeof window !== "undefined" && !localStorage.getItem("flowstock_token")) {
+            setCurrentUser(null);
+            setCurrentOrg(null);
+        }
+    }, [authUser, isAuthenticated, loadOrganizations]);
+
     useEffect(() => {
         // Immediately read localStorage on client mount without causing SSR mismatch
         if (typeof window !== "undefined") {
@@ -55,7 +89,7 @@ export const TenantProvider = ({ children }) => {
             }
         }
         loadOrganizations();
-    }, []);
+    }, [loadOrganizations]);
     const switchOrganization = (orgId) => {
         const found = organizations.find((o) => o.id === orgId);
         if (found) {
