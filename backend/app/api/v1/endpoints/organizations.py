@@ -57,6 +57,25 @@ async def add_user_to_organization(
     return await organization_service.add_user_to_org(db, id, user_in)
 
 
+@router.delete("/{id}/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user_from_organization(
+    id: UUID,
+    user_id: UUID,
+    current_user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a user member from an organization tenant (Admin only)."""
+    if current_user.organization_id != id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cannot delete users from a different organization tenant.",
+        )
+    await organization_service.delete_user_from_org(
+        db, organization_id=id, user_id=user_id, current_user_id=current_user.id
+    )
+    return None
+
+
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_organization(id: UUID, db: AsyncSession = Depends(get_db)):
     """Delete an organization tenant and cascade delete all associated data."""

@@ -53,6 +53,27 @@ class OrganizationService:
     async def list_users(self, db: AsyncSession, organization_id: UUID) -> List[User]:
         return await user_repo.list_by_organization(db, organization_id)
 
+    async def delete_user_from_org(
+        self, db: AsyncSession, organization_id: UUID, user_id: UUID, current_user_id: UUID
+    ) -> None:
+        if str(user_id) == str(current_user_id):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Cannot delete your own active user account.",
+            )
+        user = await user_repo.get_by_id(db, user_id)
+        if not user or user.organization_id != organization_id:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found in this organization.",
+            )
+        success = await user_repo.delete_user(db, id=user_id, organization_id=organization_id)
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found or already deleted.",
+            )
+
     async def delete_organization(self, db: AsyncSession, id: UUID) -> None:
         orgs = await organization_repo.list_all(db)
         if len(orgs) <= 1:

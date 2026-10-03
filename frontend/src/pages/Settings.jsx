@@ -32,10 +32,14 @@ import {
   KeyRound,
   Coins,
   CheckCircle2,
+  Trash2,
+  Loader2,
 } from "lucide-react";
-import { fetchHealth, createOrgUserApi } from "@/lib/api";
+import { fetchHealth, createOrgUserApi, deleteOrgUserApi } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useTheme } from "@/context/ThemeContext";
+import { useToast } from "@/context/ToastContext";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { motion } from "framer-motion";
 import { createStaggerContainer, slideUpVariants, useReducedMotion } from "@/motion";
 
@@ -96,11 +100,14 @@ const Switch = ({ checked, onChange, label }) => (
 export default function SettingsPage() {
   const { currentOrg, currentUser, loading, refreshOrganizations } = useTenant();
   const { theme, setTheme } = useTheme();
+  const { toast } = useToast();
   const prefersReducedMotion = useReducedMotion();
   const containerVariants = createStaggerContainer(0.06, 0, prefersReducedMotion);
   const itemVariants = slideUpVariants(prefersReducedMotion);
   const isAdmin = currentUser?.role === "admin";
   const [activeTab, setActiveTab] = useState("workspace");
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [deletingUser, setDeletingUser] = useState(false);
 
   const SETTINGS_TABS = [
     { id: "workspace", label: "Workspace & Team", icon: Building2 },
@@ -174,6 +181,21 @@ export default function SettingsPage() {
       setProvisionSuccess(false);
     } finally {
       setProvisioning(false);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!currentOrg || !userToDelete) return;
+    setDeletingUser(true);
+    try {
+      await deleteOrgUserApi(currentOrg.id, userToDelete.id);
+      await refreshOrganizations();
+      toast.success(`User "${userToDelete.name}" deleted from database`);
+      setUserToDelete(null);
+    } catch (err) {
+      toast.error(err.message || "Failed to delete user");
+    } finally {
+      setDeletingUser(false);
     }
   };
 
@@ -374,10 +396,33 @@ export default function SettingsPage() {
                               <p className="text-xs font-mono text-slate-400 dark:text-[#9BA3AF] truncate mt-0.5">{u.email}</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2 shrink-0">
+                          <div className="flex items-center gap-2.5 shrink-0">
                             <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-mono tracking-wider uppercase ${roleBadgeClass(u.role)}`}>
                               {roleLabel(u.role)}
                             </span>
+                            {isAdmin && (
+                              isSelf ? (
+                                <button
+                                  type="button"
+                                  disabled
+                                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 dark:text-[#33372B] cursor-not-allowed opacity-30"
+                                  title="Cannot delete your own active session"
+                                  aria-label="Cannot delete self"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => setUserToDelete(u)}
+                                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-600 dark:text-[#808594] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                                  title={`Delete ${u.name} from database`}
+                                  aria-label={`Delete ${u.name}`}
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              )
+                            )}
                           </div>
                         </div>
                       );
@@ -700,6 +745,25 @@ export default function SettingsPage() {
           </form>
         </div>
       </Modal>
+
+      {/* Delete User Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!userToDelete}
+        onClose={() => {
+          if (!deletingUser) setUserToDelete(null);
+        }}
+        onConfirm={handleDeleteUser}
+        title="Delete Team Member"
+        description={
+          userToDelete
+            ? `Are you sure you want to permanently delete "${userToDelete.name}" (${userToDelete.email}) with role ${roleLabel(userToDelete.role)}? This will remove them from the database and revoke all access.`
+            : ""
+        }
+        confirmText={deletingUser ? "Deleting..." : "Delete User"}
+        cancelText="Cancel"
+        variant="danger"
+        isLoading={deletingUser}
+      />
     </motion.div>
   );
 }

@@ -36,5 +36,15 @@ class UserRepository(BaseRepository[User]):
         await db.refresh(db_obj)
         return db_obj
 
+    async def delete_user(self, db: AsyncSession, id: UUID, organization_id: UUID) -> bool:
+        stmt = select(User).where(User.id == id, User.organization_id == organization_id)
+        result = await db.execute(stmt)
+        user = result.scalar_one_or_none()
+        if not user:
+            return False
+        await db.delete(user)
+        await db.commit()
+        return True
+
 
 user_repo = UserRepository()

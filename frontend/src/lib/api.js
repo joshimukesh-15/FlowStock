@@ -92,7 +92,19 @@ export async function createOrgUserApi(orgId, data) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.detail || "Failed to provision user");
     }
+    clearApiCache();
     return await res.json();
+}
+export async function deleteOrgUserApi(orgId, userId) {
+    const res = await fetch(`${API_BASE_URL}/organizations/${orgId}/users/${userId}`, {
+        method: "DELETE",
+        headers: getHeaders(),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || "Failed to delete user");
+    }
+    clearApiCache();
 }
 export async function createOrganizationApi(data) {
     const res = await fetch(`${API_BASE_URL}/organizations`, {
