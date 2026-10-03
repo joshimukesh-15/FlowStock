@@ -18,8 +18,8 @@ export function QuickActionsBar({ summary }) {
       label: "New Order",
       icon: ShoppingCart,
       href: "/orders",
-      color: "hover:border-blue-500/40 hover:bg-blue-50/30 dark:hover:bg-blue-950/20",
-      accent: "text-blue-600 dark:text-blue-400",
+      color: "hover:border-[#565449]/40 hover:bg-[#D8CFBC]/20 dark:hover:bg-[#1E2026]",
+      accent: "text-[#11120D] dark:text-[#D8CFBC]",
     },
     {
       label: "Stock Movement",
@@ -50,7 +50,7 @@ export function QuickActionsBar({ summary }) {
       label: "Tax Invoice",
       icon: ReceiptText,
       href: "/invoices",
-      color: "hover:border-sky-500/40 hover:bg-[#D8CFBC]/15/30 dark:hover:bg-sky-950/20",
+      color: "hover:border-[#565449]/40 hover:bg-[#D8CFBC]/20 dark:hover:bg-[#1E2026]",
       accent: "text-[#565449] dark:text-[#D8CFBC]",
     },
   ];

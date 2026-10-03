@@ -39,7 +39,7 @@
     --color-status-success: #D8CFBC;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #0284c7;
+    --color-status-info: #565449;
 
     /* Brand Tokens */
     --brand-primary: #D8CFBC;
@@ -48,7 +48,7 @@
     --brand-olive-drab: #565449;
     --brand-floral-white: #FFFBF4;
     --brand-citrus: #E4FD97;
-    --brand-azure: #0284c7;
+    --brand-azure: #D8CFBC;
   }
 
   html.dark {
@@ -76,7 +76,7 @@
     --color-status-success: #D8CFBC;
     --color-status-warning: #f5a623;
     --color-status-danger: #ef4444;
-    --color-status-info: #38bdf8;
+    --color-status-info: #D8CFBC;
 
     /* Brand Tokens */
     --brand-primary: #D8CFBC;
@@ -85,7 +85,7 @@
     --brand-olive-drab: #565449;
     --brand-floral-white: #FFFBF4;
     --brand-citrus: #E4FD97;
-    --brand-azure: #38bdf8;
+    --brand-azure: #D8CFBC;
   }
 
   html {

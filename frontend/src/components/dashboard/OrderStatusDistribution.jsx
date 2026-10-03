@@ -52,10 +52,10 @@ export function OrderStatusDistribution({ summary, className = "" }) {
             pct: confirmedPct,
             value: confirmedValue,
             statusLabel: "Reserved",
-            barColor: "bg-sky-500 dark:bg-[#38BDF8]",
+            barColor: "bg-[#565449] dark:bg-[#D8CFBC]",
             textColor: "text-slate-900 dark:text-[#F4F5F7]",
             icon: Clock,
-            iconColor: "text-sky-600 dark:text-[#38BDF8]",
+            iconColor: "text-[#565449] dark:text-[#D8CFBC]",
         },
         {
             id: "draft",
@@ -88,7 +88,7 @@ export function OrderStatusDistribution({ summary, className = "" }) {
       <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#22242B] bg-slate-50/60 dark:bg-[#090A0C]/60 space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-600 dark:text-[#38BDF8] border border-sky-500/25 dark:border-[#38BDF8]/30">
+            <div className="p-1.5 rounded-lg bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border border-[#565449]/25 dark:border-[#D8CFBC]/30">
               <ShoppingCart className="w-3.5 h-3.5"/>
             </div>
             <CardTitle className="text-[13px] font-semibold text-slate-900 dark:text-[#F4F5F7] tracking-tight">
@@ -97,7 +97,7 @@ export function OrderStatusDistribution({ summary, className = "" }) {
           </div>
 
           <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#18191E] border border-slate-200/60 dark:border-[#22242B] text-[11px] font-mono font-medium text-slate-700 dark:text-[#9BA3AF]">
-            <span className="inline-flex rounded-full h-1.5 w-1.5 bg-sky-500 dark:bg-[#38BDF8] shrink-0 animate-pulse"/>
+            <span className="inline-flex rounded-full h-1.5 w-1.5 bg-[#565449] dark:bg-[#D8CFBC] shrink-0 animate-pulse"/>
             <span>{totalOrders} orders</span>
           </div>
         </div>
@@ -106,7 +106,7 @@ export function OrderStatusDistribution({ summary, className = "" }) {
         <div className="w-full h-1.5 bg-slate-100 dark:bg-[#18191E] rounded-full flex gap-0.5 overflow-hidden">
           {totalOrders > 0 ? (<>
               {fulfilledPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("fulfilled")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${fulfilledPct}%` }} transition={{ duration: 0.7, ease: EASING.standard }} className={`h-full bg-emerald-500 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "fulfilled" ? "opacity-30" : "opacity-100"}`} title={`Fulfilled: ${fulfilledCount} orders (${fulfilledPct}%)`}/>)}
-              {confirmedPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("confirmed")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${confirmedPct}%` }} transition={{ duration: 0.7, delay: 0.08, ease: EASING.standard }} className={`h-full bg-sky-500 dark:bg-[#38BDF8] rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "confirmed" ? "opacity-30" : "opacity-100"}`} title={`Confirmed: ${confirmedCount} orders (${confirmedPct}%)`}/>)}
+              {confirmedPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("confirmed")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${confirmedPct}%` }} transition={{ duration: 0.7, delay: 0.08, ease: EASING.standard }} className={`h-full bg-[#565449] dark:bg-[#D8CFBC] rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "confirmed" ? "opacity-30" : "opacity-100"}`} title={`Confirmed: ${confirmedCount} orders (${confirmedPct}%)`}/>)}
               {draftPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("draft")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${draftPct}%` }} transition={{ duration: 0.7, delay: 0.16, ease: EASING.standard }} className={`h-full bg-amber-500 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "draft" ? "opacity-30" : "opacity-100"}`} title={`Draft: ${draftCount} orders (${draftPct}%)`}/>)}
               {cancelledPct > 0 && (<motion.div initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${cancelledPct}%` }} transition={{ duration: 0.7, delay: 0.24, ease: EASING.standard }} className="h-full bg-slate-300 dark:bg-[#22242B] rounded-full opacity-60" title={`Cancelled: ${cancelledCount} orders (${cancelledPct}%)`}/>)}
             </>) : (<div className="w-full h-full bg-slate-200 dark:bg-[#18191E] rounded-full opacity-40"/>)}

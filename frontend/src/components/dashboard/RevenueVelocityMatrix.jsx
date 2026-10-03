@@ -85,13 +85,13 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
       {/* Top Meta Bar */}
       <CardHeader className="py-2.5 px-4 border-b border-slate-100 dark:border-[#22242B] bg-slate-50/60 dark:bg-[#090A0C]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-600 dark:text-[#38BDF8] border border-sky-500/25 dark:border-[#38BDF8]/30">
+          <div className="p-1.5 rounded-lg bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border border-[#565449]/25 dark:border-[#D8CFBC]/30">
             <Zap className="w-3.5 h-3.5"/>
           </div>
           <div>
             <CardTitle className="text-[13px] font-semibold text-slate-900 dark:text-[#F4F5F7] tracking-tight flex items-center gap-2">
               Financial velocity & cash realization
-              <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-[#38BDF8] border border-sky-500/25 dark:border-[#38BDF8]/30">
+              <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border border-[#565449]/25 dark:border-[#D8CFBC]/30">
                 Live
               </span>
             </CardTitle>
@@ -184,13 +184,13 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
             return (<div key={bar.shortDay} onMouseEnter={() => setHoveredBarIndex(idx)} onMouseLeave={() => setHoveredBarIndex(null)} className="relative flex-1 flex flex-col items-center justify-end h-full group cursor-pointer">
                     {/* The Slender Micro Bar */}
                     <motion.div initial={prefersReducedMotion ? false : { height: 0 }} animate={{ height: `${bar.heightPct}%` }} transition={{ duration: 0.5, delay: idx * 0.04 }} className={`w-full max-w-[14px] rounded-t-xs transition-colors duration-150 ${isHovered
-                    ? "bg-[#38BDF8]"
+                    ? "bg-[#565449] dark:bg-[#D8CFBC]"
                     : bar.isToday
-                        ? "bg-sky-600 dark:bg-[#38BDF8]"
+                        ? "bg-[#565449] dark:bg-[#D8CFBC]"
                         : "bg-slate-200 dark:bg-[#22242B] hover:bg-slate-300 dark:hover:bg-[#2E313B]"}`}/>
 
                     {/* Micro Day Label */}
-                    <span className={`text-[9px] font-mono mt-1 transition-colors ${isHovered || bar.isToday ? "font-bold text-sky-600 dark:text-[#38BDF8]" : "text-slate-400 dark:text-[#7C8189]"}`}>
+                    <span className={`text-[9px] font-mono mt-1 transition-colors ${isHovered || bar.isToday ? "font-bold text-[#565449] dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#7C8189]"}`}>
                       {bar.shortDay[0]}
                     </span>
                   </div>);

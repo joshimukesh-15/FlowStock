@@ -434,7 +434,7 @@ export default function SettingsPage() {
                       ) : theme === "light" ? (
                         <Sun className="w-4 h-4 text-amber-500" />
                       ) : (
-                        <Monitor className="w-4 h-4 text-sky-500" />
+                        <Monitor className="w-4 h-4 text-[#565449] dark:text-[#D8CFBC]" />
                       )}
                     </div>
                     <div>

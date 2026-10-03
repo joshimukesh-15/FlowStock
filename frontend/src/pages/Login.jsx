@@ -84,7 +84,7 @@ export default function LoginPage() {
   const inputBase =
     "w-full rounded-lg border bg-white dark:bg-[#18191E] pl-9 pr-3.5 py-2 text-sm transition-colors focus:outline-none focus:ring-2";
   const inputColors =
-    "border-slate-200 dark:border-[#22242B] text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-[#808594] focus:border-sky-500 dark:focus:border-[#38BDF8] focus:ring-sky-500/20 dark:focus:ring-[#38BDF8]/20";
+    "border-slate-200 dark:border-[#22242B] text-slate-900 dark:text-[#F4F5F7] placeholder-slate-400 dark:placeholder-[#808594] focus:border-[#565449] dark:focus:border-[#D8CFBC] focus:ring-[#565449]/20 dark:focus:ring-[#D8CFBC]/25";
   const inputClass = `${inputBase} ${inputColors}`;
 
   const labelClass =
@@ -94,7 +94,7 @@ export default function LoginPage() {
     "absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#808594]";
 
   return (
-    <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#090A0C] flex items-center justify-center px-4 py-8 relative overflow-hidden font-sans selection:bg-[#38BDF8]/20 selection:text-sky-900 dark:selection:text-[#38BDF8]">
+    <div className="min-h-[100dvh] bg-[#FAFBFC] dark:bg-[#090A0C] flex items-center justify-center px-4 py-8 relative overflow-hidden font-sans selection:bg-[#D8CFBC]/40 selection:text-[#11120D] dark:selection:text-[#FFFBF4]">
       <div className="w-full max-w-[400px] relative z-10">
         {/* Logo */}
         <Link
@@ -341,7 +341,7 @@ export default function LoginPage() {
                       {orgSlug && (
                         <p className="text-[10px] text-slate-400 dark:text-[#808594] font-mono -mt-1 pl-0.5">
                           flowstock.app/
-                          <span className="text-sky-600 dark:text-[#38BDF8]">
+                          <span className="text-[#565449] dark:text-[#D8CFBC] font-semibold">
                             {orgSlug}
                           </span>
                         </p>
@@ -478,7 +478,7 @@ export default function LoginPage() {
                 onClick={() =>
                   switchMode(mode === "login" ? "signup" : "login")
                 }
-                className="text-sky-600 dark:text-[#38BDF8] font-semibold hover:underline cursor-pointer"
+                className="text-[#11120D] dark:text-[#D8CFBC] font-semibold underline underline-offset-2 hover:text-[#565449] dark:hover:text-[#FFFBF4] cursor-pointer"
               >
                 {mode === "login" ? "Sign up" : "Log in"}
               </button>
@@ -488,7 +488,7 @@ export default function LoginPage() {
 
         {/* Trust badge */}
         <div className="flex items-center justify-center gap-1.5 mt-5 text-[10px] text-slate-400 dark:text-[#808594]">
-          <ShieldCheck className="w-3.5 h-3.5 text-sky-600 dark:text-[#38BDF8]" />
+          <ShieldCheck className="w-3.5 h-3.5 text-[#565449] dark:text-[#D8CFBC]" />
           <span>Encrypted · SOC 2 Ready · Your data stays yours</span>
         </div>
 
@@ -496,7 +496,7 @@ export default function LoginPage() {
         <div className="mt-3 text-center">
           <Link
             to="/"
-            className="text-[11px] text-slate-400 dark:text-[#808594] hover:text-slate-600 dark:hover:text-[#38BDF8] transition-colors"
+            className="text-[11px] text-slate-400 dark:text-[#808594] hover:text-[#11120D] dark:hover:text-[#D8CFBC] transition-colors"
           >
             ← Back to Home
           </Link>

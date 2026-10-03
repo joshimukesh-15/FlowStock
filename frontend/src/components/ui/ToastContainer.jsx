@@ -48,7 +48,7 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
                 return <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5"/>;
             case "info":
             default:
-                return <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5"/>;
+                return <Info className="w-4 h-4 text-[#565449] dark:text-[#D8CFBC] shrink-0 mt-0.5"/>;
         }
     };
     const getProgressBarColor = () => {
@@ -61,7 +61,7 @@ const ToastCard = ({ toast, onDismiss, reducedMotion }) => {
                 return "bg-amber-500/80";
             case "info":
             default:
-                return "bg-sky-400/80";
+                return "bg-[#565449] dark:bg-[#D8CFBC]";
         }
     };
     const variants = toastVariants(reducedMotion);
