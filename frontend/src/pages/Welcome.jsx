@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -28,11 +28,11 @@ import { useTenant } from "@/context/TenantContext";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
-/* ── High-Performance Responsive Feature Row with Right-to-Left Scroll Animation ── */
+/* ── Feature Row — Image pops up from bottom on scroll, text fades in ── */
 function FeatureRow({
   tag,
   title,
@@ -43,20 +43,25 @@ function FeatureRow({
   badgeText,
   reverse = false,
 }) {
+  const imageRef = useRef(null);
+  const textRef = useRef(null);
+  const imageInView = useInView(imageRef, { once: true, margin: "-50px" });
+  const textInView = useInView(textRef, { once: true, margin: "-50px" });
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-24 overflow-hidden">
-      {/* Photo Column with Right-to-Left Spring Animation on Scroll */}
+    <div
+      className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center my-14 sm:my-24"
+    >
+      {/* Photo Column — slides up from bottom slowly */}
       <motion.div
-        initial={{ opacity: 0, x: reverse ? -70 : 70 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: false, amount: 0.05 }}
+        ref={imageRef}
+        initial={{ opacity: 0, y: 80 }}
+        animate={imageInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 80 }}
         transition={{
-          type: "spring",
-          stiffness: 80,
-          damping: 18,
-          mass: 0.7,
+          duration: 1,
+          ease: [0.16, 1, 0.3, 1],
         }}
-        className={`rounded-3xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 p-2 sm:p-2.5 group ${
+        className={`rounded-3xl overflow-hidden border border-slate-200/90 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-shadow duration-500 p-2 sm:p-2.5 group ${
           reverse ? "lg:order-2" : "lg:order-1"
         }`}
       >
@@ -67,7 +72,7 @@ function FeatureRow({
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-75 transition-opacity duration-500 pointer-events-none" />
 
           {badgeText && (
             <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
@@ -83,16 +88,15 @@ function FeatureRow({
         </div>
       </motion.div>
 
-      {/* Text Column with Left-to-Right Spring Animation on Scroll */}
+      {/* Text Column — fades in and rises */}
       <motion.div
-        initial={{ opacity: 0, x: reverse ? 40 : -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: false, amount: 0.05 }}
+        ref={textRef}
+        initial={{ opacity: 0, y: 40 }}
+        animate={textInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
         transition={{
-          type: "spring",
-          stiffness: 80,
-          damping: 18,
-          mass: 0.7,
+          duration: 0.9,
+          delay: 0.15,
+          ease: [0.16, 1, 0.3, 1],
         }}
         className={`space-y-4 text-left ${reverse ? "lg:order-1" : "lg:order-2"}`}
       >
@@ -485,6 +489,77 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
   );
 }
 
+/* ── Simple Image Header for Cards ── */
+function ParallaxCardHeader({ image, imageAlt, tag }) {
+  return (
+    <div
+      className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-[#18191E] border-b border-slate-200/80 dark:border-[#22242B]"
+    >
+      <img
+        src={image}
+        alt={imageAlt}
+        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+        loading="lazy"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute top-3.5 left-3.5">
+        <span className="px-2.5 py-1 rounded-md bg-black/75 dark:bg-[#090A0C]/85 backdrop-blur-md text-[10px] font-mono font-semibold text-white tracking-wider uppercase border border-white/15 shadow-xs">
+          {tag}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Capability Card Component with useInView (Right-to-Left Slide) ── */
+function CapabilityCard({ card, idx, onNavigate }) {
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, { once: true, margin: "-50px" });
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, x: 100 }}
+      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
+      transition={{
+        duration: 0.9,
+        delay: idx * 0.15,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      className="group flex flex-col rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-shadow duration-500 overflow-hidden"
+    >
+      {/* Photo Header */}
+      <ParallaxCardHeader image={card.image} imageAlt={card.imageAlt} tag={card.tag} />
+
+      {/* Card Body */}
+      <div className="p-6 sm:p-7 flex flex-col flex-1 justify-between">
+        <div>
+          <h3 className="font-display text-lg sm:text-xl font-bold text-slate-950 dark:text-[#F4F5F7] mb-2.5 leading-snug group-hover:text-[#565449] dark:group-hover:text-[#D8CFBC] transition-colors">
+            {card.title}
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed mb-6">
+            {card.description}
+          </p>
+        </div>
+
+        <div className="pt-4 border-t border-slate-200/70 dark:border-[#22242B] flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => onNavigate(card.targetSection)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#565449] hover:bg-[#11120D] dark:bg-[#D8CFBC] dark:hover:bg-[#FFFBF4] dark:text-[#11120D] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all cursor-pointer group/btn"
+          >
+            <span>{card.cta}</span>
+            <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+          </button>
+          <span className="text-[11px] font-mono text-slate-500 dark:text-[#808594] font-medium hidden sm:inline">
+            {card.badge}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function WelcomePage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
@@ -823,62 +898,12 @@ export default function WelcomePage() {
                 badge: "GST Compliant",
               },
             ].map((card, idx) => (
-              <motion.div
+              <CapabilityCard
                 key={card.title}
-                initial={{ opacity: 0, x: 80 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, amount: 0.05 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 80,
-                  damping: 18,
-                  mass: 0.7,
-                  delay: idx * 0.12,
-                }}
-                className="group flex flex-col rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-all duration-300 overflow-hidden"
-              >
-                {/* Photo Header */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-[#18191E] border-b border-slate-200/80 dark:border-[#22242B]">
-                  <img
-                    src={card.image}
-                    alt={card.imageAlt}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-50 group-hover:opacity-70 transition-opacity" />
-                  <div className="absolute top-3.5 left-3.5">
-                    <span className="px-2.5 py-1 rounded-md bg-black/75 dark:bg-[#090A0C]/85 backdrop-blur-md text-[10px] font-mono font-semibold text-white tracking-wider uppercase border border-white/15 shadow-xs">
-                      {card.tag}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card Body */}
-                <div className="p-6 sm:p-7 flex flex-col flex-1 justify-between">
-                  <div>
-                    <h3 className="font-display text-lg sm:text-xl font-bold text-slate-950 dark:text-[#F4F5F7] mb-2.5 leading-snug group-hover:text-[#565449] dark:group-hover:text-[#D8CFBC] transition-colors">
-                      {card.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-[#A0A5B2] leading-relaxed mb-6">
-                      {card.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-200/70 dark:border-[#22242B] flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => scrollToSection(card.targetSection)}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#565449] hover:bg-[#11120D] dark:bg-[#D8CFBC] dark:hover:bg-[#FFFBF4] dark:text-[#11120D] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all cursor-pointer group/btn"
-                    >
-                      <span>{card.cta}</span>
-                      <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                    </button>
-                    <span className="text-[11px] font-mono text-slate-500 dark:text-[#808594] font-medium hidden sm:inline">
-                      {card.badge}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
+                card={card}
+                idx={idx}
+                onNavigate={scrollToSection}
+              />
             ))}
           </div>
 
