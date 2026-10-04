@@ -49,28 +49,14 @@ graph TD
 
 ---
 
-## ⚡ Quickstart (1-Click Automation)
+## ⚡ Quickstart
 
-### Windows (PowerShell)
-Clone the repository and run the setup script:
-```powershell
-powershell -ExecutionPolicy Bypass -File .\setup.ps1
-```
 Launch both the backend and frontend servers in separate windows:
 ```powershell
 .\start.ps1
 ```
 
-### macOS / Linux (POSIX)
-Clone the repository, grant executable permissions, and run setup:
-```bash
-chmod +x setup.sh start.sh
-./setup.sh
-```
-Launch both services:
-```bash
-./start.sh
-```
+For first-time dependency installation and environment setup, see the [Manual Setup Guide](#-manual-setup-guide) below.
 
 ---
 
@@ -306,10 +292,7 @@ Flow-Stock/
 ├── .env.example                   # Environment configuration template
 ├── .gitignore                     # Git ignore rules (secrets, venv, caches)
 ├── Project Architecture.md        # Comprehensive system design blueprint
-├── setup.ps1                      # Windows automated setup script
 ├── start.ps1                      # Windows dual server launcher
-├── setup.sh                       # POSIX automated setup script
-├── start.sh                       # POSIX dual server launcher
 └── README.md                      # Project documentation
 ```
 

@@ -64,3 +64,16 @@ Desktop.ini
 !.vscode/extensions.json
 *.swp
 *.swo
+
+# AI Agent Skills & Lockfiles
+.agents/
+skills-lock.json
+
+# Setup and Helper Scripts
+start.sh
+setup.sh
+setup.ps1
+
+# Extra Documentation & Specs
+REST_AND_FASTAPI_GUIDE.md
+DESIGN.md

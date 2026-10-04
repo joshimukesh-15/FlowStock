@@ -17,15 +17,10 @@ $VENV_UVICORN = Join-Path $PSScriptRoot "backend\venv\Scripts\uvicorn.exe"
 $NODE_MODULES = Join-Path $PSScriptRoot "frontend\node_modules"
 
 if ((-not (Test-Path $VENV_PYTHON)) -or (-not (Test-Path $NODE_MODULES))) {
-    Write-Host "[!] Missing dependencies. Please run the setup script first:" -ForegroundColor Yellow
-    Write-Host "    .\setup.ps1" -ForegroundColor Cyan
-    Write-Host ""
-    $resp = Read-Host "Would you like to run setup.ps1 now? (Y/N)"
-    if ($resp -eq 'Y' -or $resp -eq 'y') {
-        & (Join-Path $PSScriptRoot "setup.ps1")
-    } else {
-        exit 1
-    }
+    Write-Host "[!] Missing dependencies. Please install required dependencies:" -ForegroundColor Yellow
+    Write-Host "    Backend:  python -m venv backend\venv; .\backend\venv\Scripts\pip install -r backend\requirements.txt" -ForegroundColor Cyan
+    Write-Host "    Frontend: cd frontend; npm install" -ForegroundColor Cyan
+    exit 1
 }
 
 # Ensure .env and .env.local exist
