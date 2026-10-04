@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { RefreshButton } from "@/components/ui/RefreshButton";
 import { Tabs } from "@/components/ui/Tabs";
 import { Alert } from "@/components/ui/Alert";
 import { PageSkeleton } from "@/components/ui/Skeleton";
@@ -24,7 +23,7 @@ import {
   Zap,
   Gauge,
   Bell,
-  Rows3,
+  SlidersHorizontal,
   BadgeCheck,
   Sun,
   Moon,
@@ -83,15 +82,15 @@ const Switch = ({ checked, onChange, label }) => (
     aria-checked={checked}
     aria-label={label}
     onClick={onChange}
-    className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] ${
-      checked ? "bg-[#11120D] dark:bg-[#D8CFBC]" : "bg-slate-200 dark:bg-[#33372B]"
+    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-[#565449] dark:focus-visible:ring-[#D8CFBC] ${
+      checked ? "bg-[#11120D] dark:bg-[#D8CFBC]" : "bg-slate-200 dark:bg-[#2A2D35]"
     }`}
   >
     <span
-      className={`inline-block h-4.5 w-4.5 transform rounded-full shadow-sm transition-transform duration-200 ${
+      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition-transform duration-200 ease-in-out ${
         checked
-          ? "translate-x-5.5 bg-[#D8CFBC] dark:bg-[#11120D]"
-          : "translate-x-1 bg-white dark:bg-slate-400"
+          ? "translate-x-5 bg-white dark:bg-[#11120D]"
+          : "translate-x-0 bg-white dark:bg-slate-400"
       }`}
     />
   </button>
@@ -111,7 +110,7 @@ export default function SettingsPage() {
 
   const SETTINGS_TABS = [
     { id: "workspace", label: "Workspace & Team", icon: Building2 },
-    { id: "preferences", label: "Preferences", icon: Rows3 },
+    { id: "preferences", label: "Preferences", icon: SlidersHorizontal },
     { id: "system", label: "System Diagnostics", icon: Gauge },
   ];
 
@@ -123,9 +122,6 @@ export default function SettingsPage() {
   const [provisioning, setProvisioning] = useState(false);
   const [provisionSuccess, setProvisionSuccess] = useState(false);
 
-  const [denseTables, setDenseTables] = useState(() =>
-    typeof window !== "undefined" ? localStorage.getItem("flowstock_dense_tables") === "on" : false
-  );
   const [liveToasts, setLiveToasts] = useState(() =>
     typeof window !== "undefined" ? localStorage.getItem("flowstock_live_toasts") !== "off" : true
   );
@@ -146,11 +142,6 @@ export default function SettingsPage() {
   useEffect(() => {
     loadHealth();
   }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("tables-dense", denseTables);
-    localStorage.setItem("flowstock_dense_tables", denseTables ? "on" : "off");
-  }, [denseTables]);
 
   const toggleLiveToasts = () => {
     const next = !liveToasts;
@@ -455,7 +446,7 @@ export default function SettingsPage() {
             <CardHeader className="p-5 pb-4 border-b border-slate-100 dark:border-[#33372B]/60">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#23261E] border border-slate-200 dark:border-[#33372B] flex items-center justify-center text-slate-700 dark:text-[#D8CFBC] shrink-0">
-                  <Rows3 className="w-4 h-4" />
+                  <SlidersHorizontal className="w-4 h-4" />
                 </div>
                 <div>
                   <CardTitle className="text-base font-bold text-slate-900 dark:text-[#FFFBF4] tracking-tight">
@@ -516,22 +507,6 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {/* Compact Tables */}
-                <div className="p-5 flex items-center justify-between gap-4 hover:bg-slate-50/50 dark:hover:bg-[#1E2019]/40 transition-colors">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-[#23261E] text-slate-700 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#33372B] flex items-center justify-center shrink-0 shadow-2xs">
-                      <Rows3 className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="block text-sm font-semibold text-slate-900 dark:text-[#FFFBF4]">Compact operational tables</span>
-                      <span className="block text-xs text-slate-500 dark:text-[#9BA3AF] mt-0.5">
-                        Reduce row padding across all operational tables for denser data inspection.
-                      </span>
-                    </div>
-                  </div>
-                  <Switch checked={denseTables} onChange={() => setDenseTables(!denseTables)} label="Compact tables" />
-                </div>
-
                 {/* Live Real-Time Toasts */}
                 <div className="p-5 flex items-center justify-between gap-4 hover:bg-slate-50/50 dark:hover:bg-[#1E2019]/40 transition-colors">
                   <div className="flex items-center gap-3.5">
@@ -571,7 +546,6 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
-              <RefreshButton onClick={loadHealth} isRefreshing={checkingHealth} label="Re-check" className="h-8.5 text-xs rounded-xl shadow-2xs" />
             </CardHeader>
 
             <CardContent className="p-5">

@@ -4,11 +4,10 @@ import { useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { WebSocketProvider } from "@/context/WebSocketContext";
-import { ReactLenis } from "@studio-freight/react-lenis";
 
 export const AppShell = ({ children }) => {
     const location = useLocation();
-    const lenisRef = useRef(null);
+    const scrollRef = useRef(null);
 
     useEffect(() => {
         if (location.pathname !== "/" && location.pathname !== "/welcome") {
@@ -18,10 +17,8 @@ export const AppShell = ({ children }) => {
                 // Storage quota exceeded or disabled in private browsing
             }
         }
-        if (lenisRef.current?.lenis) {
-            lenisRef.current.lenis.scrollTo(0, { immediate: true });
-        } else if (lenisRef.current?.wrapper) {
-            lenisRef.current.wrapper.scrollTo(0, 0);
+        if (scrollRef.current) {
+            scrollRef.current.scrollTo(0, 0);
         }
     }, [location.pathname]);
 
@@ -31,18 +28,12 @@ export const AppShell = ({ children }) => {
           <Sidebar />
           <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
             <Header />
-            <ReactLenis
-              ref={lenisRef}
-              options={{
-                lerp: 0.09,
-                smoothWheel: true,
-                wheelMultiplier: 0.95,
-                touchMultiplier: 1.5,
-              }}
+            <main
+              ref={scrollRef}
               className="app-canvas flex-1 overflow-y-auto p-3.5 sm:p-5 lg:p-6 bg-[#FFFBF4] dark:bg-[#090A0C]"
             >
               {children}
-            </ReactLenis>
+            </main>
           </div>
         </div>
       </WebSocketProvider>

@@ -17,12 +17,11 @@ import {
   ShieldAlert,
   Calendar,
   Layers,
-  RefreshCw,
+  Loader2,
 } from "lucide-react";
 
 export function DemandForecastRadar({
   forecast,
-  onRefresh,
   className = "",
 }) {
   const [filterRisk, setFilterRisk] = useState("ALL");
@@ -54,7 +53,6 @@ export function DemandForecastRadar({
         supplierName: res.supplier_name,
         totalCost: res.total_cost,
       });
-      if (onRefresh) onRefresh();
     } catch (err) {
       setDraftError(err.message || "Failed to auto-draft purchase order");
     } finally {
@@ -132,17 +130,6 @@ export function DemandForecastRadar({
           </div>
 
           <div className="flex items-center gap-1.5">
-            {onRefresh && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onRefresh}
-                className="h-7 text-xs px-2 text-slate-500 hover:text-slate-900 dark:text-[#9BA3AF] dark:hover:text-white"
-              >
-                <RefreshCw className="w-3.5 h-3.5 mr-1" />
-                Refresh
-              </Button>
-            )}
             <Link to="/purchasing">
               <Button variant="secondary" size="sm" className="h-7 text-xs px-2.5">
                 <span>Purchasing</span>
@@ -397,7 +384,7 @@ export function DemandForecastRadar({
                             className="h-7 text-[11px] px-2.5 font-bold shadow-xs whitespace-nowrap"
                           >
                             {isDrafting ? (
-                              <RefreshCw className="w-3 h-3 animate-spin" />
+                              <Loader2 className="w-3 h-3 animate-spin" />
                             ) : (
                               <>
                                 <Zap className="w-3 h-3 mr-1 fill-current" />

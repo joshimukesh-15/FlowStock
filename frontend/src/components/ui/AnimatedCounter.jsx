@@ -64,9 +64,22 @@ export const AnimatedCounter = ({
         };
     }, [value, prefersReducedMotion]);
 
-    // Format numerical value
+    // Format numerical value (Microsoft Dynamics 365 Smart Scale)
     const formattedContent = (() => {
         if (formatINR) {
+            const absVal = Math.abs(displayValue);
+            // Crores scale for figures >= 1 Crore (10M+, e.g. 1,000,000,000 -> 100.00 Cr)
+            if (absVal >= 10000000) {
+                const cr = displayValue / 10000000;
+                const crFormatted = Math.abs(cr) >= 100 ? cr.toFixed(1) : cr.toFixed(2);
+                return (
+                    <>
+                        <span>{crFormatted}</span>
+                        <span className="text-[0.75em] font-medium opacity-80 uppercase ml-1 font-sans tracking-wide">Cr</span>
+                    </>
+                );
+            }
+
             const parts = displayValue.toFixed(effectiveDecimals).split(".");
             const intPart = parseInt(parts[0], 10) || 0;
             const formattedInt = intPart.toLocaleString("en-IN");

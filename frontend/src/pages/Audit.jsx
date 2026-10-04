@@ -11,7 +11,6 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Tabs } from "@/components/ui/Tabs";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { RefreshButton } from "@/components/ui/RefreshButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { KpiGrid } from "@/components/ui/KpiGrid";
 import { formatDate } from "@/lib/utils";
@@ -113,7 +112,7 @@ export default function AuditPage() {
 
     return (<motion.div className="max-w-7xl mx-auto space-y-6 pb-12" variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible">
         {/* Header Title */}
-        <PageHeader title="Audit Trails & Compliance Log" subtitle="Immutable chronological record of system transactions, operator modifications, and state transitions." actions={<RefreshButton onClick={loadAudits} label="Refresh Logs" />}/>
+        <PageHeader title="Audit Trails & Compliance Log" subtitle="Immutable chronological record of system transactions, operator modifications, and state transitions." />
 
         {/* Metric Summary Cards */}
         <KpiGrid>

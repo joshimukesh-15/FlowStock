@@ -83,9 +83,9 @@ export function OrderStatusDistribution({ summary, className = "" }) {
             isEfficiencyCard: true,
         },
     ];
-    return (<Card className={`flex flex-col border border-slate-200 dark:border-[#22242B] shadow-xs rounded-xl bg-white dark:bg-[#121316] ${className}`}>
-      {/* Compact Header */}
-      <CardHeader className="py-3 px-4 border-b border-slate-100 dark:border-[#22242B] bg-slate-50/60 dark:bg-[#090A0C]/60 space-y-2">
+    return (<Card className={`flex flex-col border border-slate-200 dark:border-[#22242B] shadow-xs rounded-xl bg-white dark:bg-[#121316] overflow-hidden ${className}`}>
+      {/* Compact Header with Refined MNC Hairline Border */}
+      <CardHeader className="py-3 px-4 border-b border-slate-200/80 dark:border-[#22242B] bg-slate-50/60 dark:bg-[#090A0C]/60 space-y-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border border-[#565449]/25 dark:border-[#D8CFBC]/30">
@@ -102,12 +102,12 @@ export function OrderStatusDistribution({ summary, className = "" }) {
           </div>
         </div>
 
-        {/* Compact Capsule Distribution Bar */}
-        <div className="w-full h-1.5 bg-slate-100 dark:bg-[#18191E] rounded-full flex gap-0.5 overflow-hidden">
+        {/* Subtle, Slim Micro-Distribution Meter (3px height with smooth rounded caps) */}
+        <div className="w-full h-1 bg-slate-200/70 dark:bg-[#1A1C22] rounded-full flex gap-0.5 overflow-hidden">
           {totalOrders > 0 ? (<>
-              {fulfilledPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("fulfilled")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${fulfilledPct}%` }} transition={{ duration: 0.7, ease: EASING.standard }} className={`h-full bg-emerald-500 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "fulfilled" ? "opacity-30" : "opacity-100"}`} title={`Fulfilled: ${fulfilledCount} orders (${fulfilledPct}%)`}/>)}
+              {fulfilledPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("fulfilled")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${fulfilledPct}%` }} transition={{ duration: 0.7, ease: EASING.standard }} className={`h-full bg-emerald-600/80 dark:bg-emerald-500/80 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "fulfilled" ? "opacity-30" : "opacity-100"}`} title={`Fulfilled: ${fulfilledCount} orders (${fulfilledPct}%)`}/>)}
               {confirmedPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("confirmed")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${confirmedPct}%` }} transition={{ duration: 0.7, delay: 0.08, ease: EASING.standard }} className={`h-full bg-[#565449] dark:bg-[#D8CFBC] rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "confirmed" ? "opacity-30" : "opacity-100"}`} title={`Confirmed: ${confirmedCount} orders (${confirmedPct}%)`}/>)}
-              {draftPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("draft")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${draftPct}%` }} transition={{ duration: 0.7, delay: 0.16, ease: EASING.standard }} className={`h-full bg-amber-500 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "draft" ? "opacity-30" : "opacity-100"}`} title={`Draft: ${draftCount} orders (${draftPct}%)`}/>)}
+              {draftPct > 0 && (<motion.div onMouseEnter={() => setHoveredCard("draft")} onMouseLeave={() => setHoveredCard(null)} initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${draftPct}%` }} transition={{ duration: 0.7, delay: 0.16, ease: EASING.standard }} className={`h-full bg-amber-500/80 rounded-full cursor-pointer transition-opacity ${hoveredCard && hoveredCard !== "draft" ? "opacity-30" : "opacity-100"}`} title={`Draft: ${draftCount} orders (${draftPct}%)`}/>)}
               {cancelledPct > 0 && (<motion.div initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${cancelledPct}%` }} transition={{ duration: 0.7, delay: 0.24, ease: EASING.standard }} className="h-full bg-slate-300 dark:bg-[#22242B] rounded-full opacity-60" title={`Cancelled: ${cancelledCount} orders (${cancelledPct}%)`}/>)}
             </>) : (<div className="w-full h-full bg-slate-200 dark:bg-[#18191E] rounded-full opacity-40"/>)}
         </div>
@@ -115,7 +115,7 @@ export function OrderStatusDistribution({ summary, className = "" }) {
 
       {/* 4 Columns Divided by Thin Hairlines (No Nested Cards) */}
       <CardContent className="p-0 flex-1 flex flex-col justify-between">
-        <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 dark:divide-[#22242B]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/80 dark:divide-[#22242B]">
           {stages.map((stage) => {
             const isHovered = hoveredCard === stage.id;
             const Icon = stage.icon;
@@ -149,12 +149,12 @@ export function OrderStatusDistribution({ summary, className = "" }) {
                   </div>
                 </div>
 
-                <div className="mt-2 space-y-1.5">
-                  <div className="text-[11px] font-mono text-slate-400 dark:text-[#7C8189] truncate">
-                    {formatINR(stage.value)}
+                <div className="mt-2.5 space-y-1.5">
+                  <div className="text-[11px] font-mono text-slate-500 dark:text-[#7C8189] truncate" title={formatINR(stage.value)}>
+                    {formatINR(stage.value, { autoDecimals: true, smartScale: true })}
                   </div>
-                  {/* Micro Progress Line */}
-                  <div className="w-full bg-slate-100 dark:bg-[#18191E] h-1 rounded-full overflow-hidden">
+                  {/* Micro Sleek Telemetry Indicator Line */}
+                  <div className="w-full bg-slate-100 dark:bg-[#1A1C22] h-0.5 rounded-full overflow-hidden">
                     <motion.div initial={prefersReducedMotion ? false : { width: 0 }} animate={{ width: `${stage.pct}%` }} transition={{ duration: 0.5, ease: EASING.standard }} className={`h-full ${stage.barColor} rounded-full`}/>
                   </div>
                 </div>
@@ -163,11 +163,11 @@ export function OrderStatusDistribution({ summary, className = "" }) {
         </div>
 
         {/* Compact Footer Strip */}
-        <div className="py-2 px-4 border-t border-slate-100 dark:border-[#22242B] bg-slate-50/40 dark:bg-[#090A0C]/40 flex items-center justify-between text-xs">
+        <div className="py-2 px-4 border-t border-slate-200/80 dark:border-[#22242B] bg-slate-50/40 dark:bg-[#090A0C]/40 flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] text-slate-500 dark:text-[#9BA3AF]">Total Pipeline:</span>
-            <span className="font-semibold font-mono tabular-nums text-slate-900 dark:text-[#F4F5F7] text-xs">
-              {formatINR(activeOrderBookValue)}
+            <span className="font-semibold font-mono tabular-nums text-slate-900 dark:text-[#F4F5F7] text-xs" title={formatINR(activeOrderBookValue)}>
+              {formatINR(activeOrderBookValue, { autoDecimals: true, smartScale: true })}
             </span>
           </div>
 

@@ -46,7 +46,6 @@ import { Tabs } from "@/components/ui/Tabs";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { AnimatedBadge } from "@/components/ui/AnimatedBadge";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { RefreshButton } from "@/components/ui/RefreshButton";
 import { formatDate } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
@@ -295,7 +294,6 @@ export default function WarehousesPage() {
               <WarehouseIcon className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
               Warehouses & Stock Transfers
             </span>} subtitle="Multi-facility inventory nodes, physical stock routing, and inter-depot logistics." actions={<>
-              <RefreshButton onClick={loadData} />
               <Button variant="outline" size="sm" onClick={() => setWarehouseModalOpen(true)}>
                 <Plus className="w-4 h-4 mr-1.5"/>
                 New Warehouse

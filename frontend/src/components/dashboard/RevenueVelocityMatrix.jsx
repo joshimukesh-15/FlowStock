@@ -83,7 +83,7 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
     const activeHoveredBar = hoveredBarIndex !== null ? sparkbars[hoveredBarIndex] : null;
     return (<Card className={`border border-slate-200 dark:border-[#22242B] bg-white dark:bg-[#121316] shadow-xs rounded-xl overflow-hidden ${className}`}>
       {/* Top Meta Bar */}
-      <CardHeader className="py-2.5 px-4 border-b border-slate-100 dark:border-[#22242B] bg-slate-50/60 dark:bg-[#090A0C]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <CardHeader className="py-2.5 px-4 border-b border-slate-200/80 dark:border-[#22242B] bg-slate-50/60 dark:bg-[#090A0C]/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-lg bg-[#D8CFBC]/25 text-[#565449] dark:text-[#D8CFBC] border border-[#565449]/25 dark:border-[#D8CFBC]/30">
             <Zap className="w-3.5 h-3.5"/>
@@ -110,7 +110,7 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
           
           {/* Column 1: Gross Invoiced */}
-          <div className="min-w-0 space-y-1 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-[#22242B] pb-3 sm:pb-0 pr-0 sm:pr-3 lg:pr-4">
+          <div className="min-w-0 space-y-1 border-b sm:border-b-0 sm:border-r border-slate-200/80 dark:border-[#22242B] pb-3 sm:pb-0 pr-0 sm:pr-3 lg:pr-4">
             <div className="flex items-center justify-between gap-1">
               <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF] truncate">
                 Gross invoiced
@@ -128,7 +128,7 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
           </div>
 
           {/* Column 2: Cash Realized */}
-          <div className="min-w-0 space-y-1 border-b sm:border-b-0 lg:border-r border-slate-100 dark:border-[#22242B] pb-3 sm:pb-0 pr-0 lg:pr-4">
+          <div className="min-w-0 space-y-1 border-b sm:border-b-0 lg:border-r border-slate-200/80 dark:border-[#22242B] pb-3 sm:pb-0 pr-0 lg:pr-4">
             <div className="flex items-center justify-between gap-1">
               <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF] truncate">
                 Cash realized
@@ -140,14 +140,14 @@ export function RevenueVelocityMatrix({ summary, className = "" }) {
             <div className="text-lg sm:text-xl lg:text-lg xl:text-xl 2xl:text-2xl font-bold text-slate-900 dark:text-[#F4F5F7] tracking-tight font-mono tabular-nums truncate block">
               <AnimatedCounter value={metrics.collected} prefix="₹" autoDecimals formatINR/>
             </div>
-            {/* Minimalist Progress Line */}
-            <div className="w-full bg-slate-100 dark:bg-[#18191E] h-1.5 rounded-full overflow-hidden">
-              <div className="bg-[#565449] dark:bg-[#D8CFBC] h-full rounded-full transition-all duration-500" style={{ width: `${metrics.efficiency}%` }}/>
+            {/* Minimalist Slim Telemetry Progress Line */}
+            <div className="w-full bg-slate-100 dark:bg-[#18191E] h-1 rounded-full overflow-hidden mt-1.5">
+              <div className="bg-[#565449]/70 dark:bg-[#D8CFBC]/80 h-full rounded-full transition-all duration-500" style={{ width: `${metrics.efficiency}%` }}/>
             </div>
           </div>
 
           {/* Column 3: Daily Run-Rate Velocity */}
-          <div className="min-w-0 space-y-1 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-[#22242B] pb-3 sm:pb-0 pr-0 sm:pr-3 lg:pr-4">
+          <div className="min-w-0 space-y-1 border-b sm:border-b-0 sm:border-r border-slate-200/80 dark:border-[#22242B] pb-3 sm:pb-0 pr-0 sm:pr-3 lg:pr-4">
             <div className="flex items-center justify-between gap-1">
               <span className="text-[12px] font-medium text-slate-500 dark:text-[#9BA3AF] truncate">
                 Run-rate velocity

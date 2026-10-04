@@ -5,13 +5,12 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { RefreshButton } from "@/components/ui/RefreshButton";
 import { Alert } from "@/components/ui/Alert";
 import { Tabs } from "@/components/ui/Tabs";
 import { StatCard } from "@/components/ui/StatCard";
 import { KpiGrid } from "@/components/ui/KpiGrid";
 import { StatRow, StatCol } from "@/components/ui/StatRow";
-import { RefreshCw, TrendingUp, AlertTriangle, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, } from "lucide-react";
+import { Loader2, TrendingUp, AlertTriangle, Package, ShoppingCart, Truck, FileText, Clock, ExternalLink, IndianRupee, CheckCircle2, ChevronRight, Boxes, ArrowUpRight, AlertCircle, Warehouse as WarehouseIcon, Zap, Cpu, } from "lucide-react";
 import { fetchDashboardSummary, fetchAvailableJobs, fetchJobExecutions, triggerJobApi, fetchDemandForecast, } from "@/lib/api";
 import { useTenant } from "@/context/TenantContext";
 import { useRealtime } from "@/context/WebSocketContext";
@@ -161,7 +160,6 @@ export default function HomePage() {
             <span className="text-[11px] text-slate-400 dark:text-[#7C8189] font-mono">
               Synced {lastChecked || "now"}
             </span>
-            <RefreshButton onClick={loadData} isRefreshing={loading} className="h-7 text-xs" />
           </div>}/>
 
       {/* Interactive Quick Actions Bar */}
@@ -452,7 +450,7 @@ export default function HomePage() {
         {/* Tab 1.5: Dedicated Demand Forecasting Tab */}
         {activeTab === "forecasting" && (
           <div className="space-y-3">
-            <DemandForecastRadar forecast={forecast} onRefresh={loadData} />
+            <DemandForecastRadar forecast={forecast} />
           </div>
         )}
 
@@ -609,7 +607,7 @@ export default function HomePage() {
                       >
                         {isRunning ? (
                           <>
-                            <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#D8CFBC]"/>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-[#D8CFBC]"/>
                             <span>Executing...</span>
                           </>
                         ) : (
