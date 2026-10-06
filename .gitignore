@@ -77,3 +77,4 @@ setup.ps1
 # Extra Documentation & Specs
 REST_AND_FASTAPI_GUIDE.md
 DESIGN.md
+*.pdf

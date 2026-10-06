@@ -198,8 +198,8 @@ export default function AuditPage() {
             </span>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
+            <div className="overflow-x-auto touch-pan-x">
+              <table className="w-full min-w-[720px] text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
                 <thead className="bg-slate-50 dark:bg-[#18191E] text-slate-500 dark:text-[#9BA3AF] font-semibold border-b border-slate-100 dark:border-[#22242B] text-[11px] uppercase tracking-wider">
                   <tr>
                     <th className="py-2.5 px-3.5">Timestamp</th>

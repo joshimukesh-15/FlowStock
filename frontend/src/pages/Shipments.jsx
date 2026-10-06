@@ -337,8 +337,8 @@ export default function ShipmentsPage() {
               </div>) : filteredShipments.length === 0 ? (<EmptyState compact icon={Truck} title="No shipments found" description="Shipments matching the selected filters will appear here. Dispatch fulfilled orders to create one." action={<Button size="sm" variant="primary" onClick={() => setCreateModalOpen(true)} className="gap-1.5 text-xs">
                     <Plus className="w-3.5 h-3.5"/>
                     Create Shipment
-                  </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
+                  </Button>}/>) : (<div className="overflow-x-auto touch-pan-x">
+                <table className="w-full min-w-[750px] text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
                   <thead className="bg-slate-50 dark:bg-[#18191E] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#22242B]">
                     <tr>
                       <th className="py-2.5 px-3.5 font-semibold">Shipment #</th>

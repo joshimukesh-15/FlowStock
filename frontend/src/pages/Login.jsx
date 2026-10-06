@@ -60,7 +60,6 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
     try {
       if (mode === "login") {
@@ -75,6 +74,7 @@ export default function LoginPage() {
           currency,
         });
       }
+      setError("");
       if (refreshOrganizations) {
         await refreshOrganizations();
       }
@@ -209,7 +209,7 @@ export default function LoginPage() {
                           type="text"
                           placeholder="Alex Morgan"
                           value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={(e) => { setName(e.target.value); if (error) setError(""); }}
                           required={mode === "signup"}
                           className={inputClass}
                         />
@@ -228,7 +228,7 @@ export default function LoginPage() {
                     type="email"
                     placeholder="name@company.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
                     required
                     className={inputClass}
                   />
@@ -244,7 +244,7 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Min. 6 characters"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => { setPassword(e.target.value); if (error) setError(""); }}
                     required
                     minLength={6}
                     className={`${inputClass} pr-9`}
@@ -382,21 +382,8 @@ export default function LoginPage() {
                   isLoading={loading}
                   className="w-full h-10 font-bold text-sm rounded-lg"
                 >
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.span
-                      key={mode}
-                      initial={{ opacity: 0, y: -2 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 2 }}
-                      transition={{ duration: 0.14 }}
-                      className="inline-flex items-center justify-center gap-1.5"
-                    >
-                      <span>
-                        {mode === "login" ? "Log In" : "Create Account"}
-                      </span>
-                      <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-                    </motion.span>
-                  </AnimatePresence>
+                  <span>{mode === "login" ? "Log In" : "Create Account"}</span>
+                  {!loading && <ArrowRight className="w-3.5 h-3.5 shrink-0" />}
                 </Button>
               </div>
             </form>
@@ -428,9 +415,8 @@ export default function LoginPage() {
                           Pass: <code className="font-mono">admin123</code>
                         </span>
                       </div>
-                      <motion.button
+                      <button
                         type="button"
-                        whileTap={{ scale: 0.94 }}
                         onClick={() => {
                           setEmail("alice@samsung.com");
                           setPassword("admin123");
@@ -438,33 +424,17 @@ export default function LoginPage() {
                           setAutoFilled(true);
                           setTimeout(() => setAutoFilled(false), 1400);
                         }}
-                        className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-xs border border-[#FFFBF4] outline-none"
+                        className="shrink-0 px-2.5 py-1 rounded-md bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] text-[11px] font-bold transition-colors cursor-pointer inline-flex items-center gap-1 shadow-xs border border-[#FFFBF4] outline-none active:translate-y-px"
                       >
-                        <AnimatePresence mode="wait" initial={false}>
-                          {autoFilled ? (
-                            <motion.span
-                              key="check"
-                              initial={{ scale: 0.5, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              exit={{ scale: 0.5, opacity: 0 }}
-                              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                              className="inline-flex items-center gap-1"
-                            >
-                              <Check className="w-3 h-3 text-white" strokeWidth={2.5} />
-                              <span>Filled</span>
-                            </motion.span>
-                          ) : (
-                            <motion.span
-                              key="idle"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                            >
-                              Auto Fill
-                            </motion.span>
-                          )}
-                        </AnimatePresence>
-                      </motion.button>
+                        {autoFilled ? (
+                          <span className="inline-flex items-center gap-1">
+                            <Check className="w-3 h-3 text-[#11120D]" strokeWidth={2.5} />
+                            <span>Filled</span>
+                          </span>
+                        ) : (
+                          <span>Auto Fill</span>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </motion.div>

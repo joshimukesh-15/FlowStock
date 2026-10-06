@@ -153,7 +153,6 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
     try {
       if (mode === "login") {
@@ -161,6 +160,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
       } else {
         await signup({ name, email, password, org_name: orgName, org_slug: orgSlug, currency });
       }
+      setError("");
       if (refreshOrganizations) {
         await refreshOrganizations();
       }
@@ -274,7 +274,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
                         type="text"
                         placeholder="Alex Morgan"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => { setName(e.target.value); if (error) setError(""); }}
                         required={mode === "signup"}
                         className={inputClass}
                       />
@@ -293,7 +293,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
                   type="email"
                   placeholder="name@company.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
                   required
                   className={inputClass}
                 />
@@ -309,7 +309,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
                   type={showPw ? "text" : "password"}
                   placeholder="Min. 6 characters"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => { setPassword(e.target.value); if (error) setError(""); }}
                   required
                   minLength={6}
                   className={`${inputClass} pr-9`}
@@ -450,19 +450,8 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
                 isLoading={loading}
                 className="w-full h-10 font-bold text-sm rounded-lg"
               >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={mode}
-                    initial={{ opacity: 0, y: -2 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 2 }}
-                    transition={{ duration: 0.14 }}
-                    className="inline-flex items-center justify-center gap-1.5"
-                  >
-                    <span>{mode === "login" ? "Log In" : "Create Account"}</span>
-                    <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-                  </motion.span>
-                </AnimatePresence>
+                <span>{mode === "login" ? "Log In" : "Create Account"}</span>
+                {!loading && <ArrowRight className="w-3.5 h-3.5 shrink-0" />}
               </Button>
             </div>
           </form>
@@ -493,7 +482,7 @@ function AuthModalContent({ mode, onModeChange, onClose, onSuccess }) {
 function ParallaxCardHeader({ image, imageAlt, tag }) {
   return (
     <div
-      className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-[#18191E] border-b border-slate-200/80 dark:border-[#22242B]"
+      className="relative aspect-[16/9] sm:aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-[#18191E] border-b border-slate-200/80 dark:border-[#22242B]"
     >
       <img
         src={image}
@@ -519,14 +508,14 @@ function CapabilityCard({ card, idx, onNavigate }) {
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, x: 100 }}
-      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
-        duration: 0.9,
-        delay: idx * 0.15,
+        duration: 0.7,
+        delay: idx * 0.12,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group flex flex-col rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-shadow duration-500 overflow-hidden"
+      className="group flex flex-col w-[85vw] max-w-[340px] md:w-auto shrink-0 md:shrink md:flex-1 snap-center rounded-3xl border border-slate-200/90 dark:border-[#22242B] bg-slate-50/50 hover:bg-white dark:bg-[#121316] dark:hover:bg-[#18191E] shadow-sm hover:shadow-2xl dark:hover:shadow-black/70 transition-shadow duration-500 overflow-hidden"
     >
       {/* Photo Header */}
       <ParallaxCardHeader image={card.image} imageAlt={card.imageAlt} tag={card.tag} />
@@ -589,6 +578,38 @@ export default function WelcomePage() {
     const yOffset = -70;
     const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
     window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  const capabilitiesScrollRef = useRef(null);
+  const [activeCapabilityIdx, setActiveCapabilityIdx] = useState(0);
+
+  const handleCapabilitiesScroll = (e) => {
+    const el = e.currentTarget;
+    const scrollLeft = el.scrollLeft;
+    const card = el.firstElementChild;
+    const cardWidth = card ? card.offsetWidth + 20 : 320;
+    const idx = Math.round(scrollLeft / cardWidth);
+    setActiveCapabilityIdx(Math.min(2, Math.max(0, idx)));
+  };
+
+  const scrollCapability = (direction) => {
+    if (!capabilitiesScrollRef.current) return;
+    const el = capabilitiesScrollRef.current;
+    const card = el.firstElementChild;
+    const cardWidth = card ? card.offsetWidth + 20 : 320;
+    el.scrollBy({
+      left: direction === "next" ? cardWidth : -cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollToCapabilityIndex = (idx) => {
+    if (!capabilitiesScrollRef.current) return;
+    const el = capabilitiesScrollRef.current;
+    const cards = el.children;
+    if (cards[idx]) {
+      cards[idx].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
   };
 
   return (
@@ -861,8 +882,13 @@ export default function WelcomePage() {
             </p>
           </div>
 
-          {/* Cards Grid with Right-to-Left Scroll Entrance Animation */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch" id="capabilities">
+          {/* Horizontal Snap Carousel on Mobile, 3-Col Grid on Desktop */}
+          <div
+            ref={capabilitiesScrollRef}
+            onScroll={handleCapabilitiesScroll}
+            className="flex md:grid md:grid-cols-3 gap-5 md:gap-8 items-stretch overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-smooth touch-pan-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 py-2"
+            id="capabilities"
+          >
             {[
               {
                 tag: "FINANCIAL-GRADE LEDGER",
@@ -907,18 +933,36 @@ export default function WelcomePage() {
             ))}
           </div>
 
-          {/* Microsoft Dynamics 365 Style Bottom Controls */}
-          <div className="mt-10 flex items-center justify-between pt-6 border-t border-slate-200/70 dark:border-[#22242B]">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-mono font-medium text-slate-600 dark:text-[#A0A5B2] bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B]">
+          {/* Microsoft Dynamics 365 Style Bottom Controls with Mobile Carousel Dots */}
+          <div className="mt-8 sm:mt-10 flex items-center justify-between pt-6 border-t border-slate-200/70 dark:border-[#22242B]">
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-[11px] font-mono font-medium text-slate-600 dark:text-[#A0A5B2] bg-slate-100 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B]">
                 Certified Financial-Grade Ledger Architecture
               </span>
+
+              {/* Mobile Slide Dot Indicators */}
+              <div className="flex sm:hidden items-center gap-1.5" aria-label="Slide indicators">
+                {[0, 1, 2].map((i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => scrollToCapabilityIndex(i)}
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      activeCapabilityIdx === i
+                        ? "w-6 bg-slate-900 dark:bg-[#D8CFBC]"
+                        : "w-2 bg-slate-300 dark:bg-[#2E313D] hover:bg-slate-400"
+                    }`}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
             </div>
+
             <div className="flex items-center gap-2.5">
               <button
                 type="button"
-                onClick={() => scrollToSection("platform")}
-                className="w-9 h-9 rounded-full border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#18191E] text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-500 flex items-center justify-center transition-all shadow-xs cursor-pointer"
+                onClick={() => scrollCapability("prev")}
+                className="w-9 h-9 rounded-full border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#18191E] text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-500 flex items-center justify-center transition-all shadow-xs cursor-pointer active:scale-95"
                 aria-label="Previous capability"
                 title="Previous capability"
               >
@@ -926,8 +970,8 @@ export default function WelcomePage() {
               </button>
               <button
                 type="button"
-                onClick={() => scrollToSection("workflow")}
-                className="w-9 h-9 rounded-full border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#18191E] text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-500 flex items-center justify-center transition-all shadow-xs cursor-pointer"
+                onClick={() => scrollCapability("next")}
+                className="w-9 h-9 rounded-full border border-slate-300 dark:border-[#323744] bg-white dark:bg-[#18191E] text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-500 flex items-center justify-center transition-all shadow-xs cursor-pointer active:scale-95"
                 aria-label="Next capability"
                 title="Next capability"
               >

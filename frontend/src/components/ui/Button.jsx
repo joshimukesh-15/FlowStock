@@ -1,5 +1,4 @@
 import React from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
@@ -11,7 +10,7 @@ import { Loader2 } from "lucide-react";
  * - Crisp corporate typography: whitespace-nowrap, tracking-tight, leading-none optical centering
  * - 60fps GPU-accelerated CSS transitions: zero coordinate-tracking overhead
  * - High-contrast accessible palettes with calibrated light/dark mode elevation
- * - Subtle haptic spring feedback on click (whileTap)
+ * - Solid, zero-jitter click feedback
  */
 export const Button = React.forwardRef((
   {
@@ -26,10 +25,9 @@ export const Button = React.forwardRef((
   },
   ref
 ) => {
-  const prefersReducedMotion = useReducedMotion();
 
   const baseStyles =
-    "relative inline-flex items-center justify-center font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#11120D] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed transition-all duration-150 ease-out";
+    "relative inline-flex items-center justify-center font-medium leading-none whitespace-nowrap select-none cursor-pointer tracking-tight outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#11120D] disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed transition-[color,background-color,border-color,box-shadow,opacity] duration-150 ease-out active:translate-y-[0.5px]";
 
   const variants = {
     primary:
@@ -84,20 +82,16 @@ export const Button = React.forwardRef((
     "icon-lg": "w-4 h-4",
   };
 
-  const isInteractive = !disabled && !isLoading;
-  const canAnimate = isInteractive && !prefersReducedMotion;
   const variantClass = variants[variant] || variants.primary;
   const sizeClass = sizes[size] || sizes.md;
   const spinnerSizeClass = spinnerSizes[size] || spinnerSizes.md;
 
   return (
-    <motion.button
+    <button
       ref={ref}
       type={type}
       disabled={disabled || isLoading}
       aria-busy={isLoading}
-      whileTap={canAnimate ? { scale: 0.98 } : undefined}
-      transition={{ type: "spring", stiffness: 500, damping: 30 }}
       className={cn(baseStyles, variantClass, sizeClass, className)}
       {...props}
     >
@@ -107,7 +101,7 @@ export const Button = React.forwardRef((
       <span className="inline-flex items-center justify-center gap-1.5 leading-none shrink-0 pointer-events-none">
         {children}
       </span>
-    </motion.button>
+    </button>
   );
 });
 

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Building2, ChevronDown, Plus, User, Check, X, Bell, CheckCheck, ExternalLink, AlertTriangle, Info, CheckCircle2, AlertCircle, Trash2, LogOut, } from "lucide-react";
+import { Building2, ChevronDown, Plus, User, Check, X, Bell, CheckCheck, ExternalLink, AlertTriangle, Info, CheckCircle2, AlertCircle, Trash2, LogOut, Menu } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -14,7 +14,7 @@ import { fetchNotifications, fetchUnreadNotificationCount, markNotificationRead,
 import { useRealtime } from "@/context/WebSocketContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { popoverVariants, useReducedMotion } from "@/motion";
-export const Header = () => {
+export const Header = ({ onOpenMobileNav }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const { logout } = useAuth();
@@ -251,39 +251,50 @@ export const Header = () => {
         }
     };
     return (<>
-      <header className="h-14 glass-header px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
-        {/* Tenant Selector */}
-        <div className="relative" ref={tenantMenuRef}>
+      <header className="h-14 glass-header px-3 sm:px-4 md:px-6 flex items-center justify-between shrink-0 relative z-30">
+        {/* Left Side: Mobile Menu Button + Tenant Selector */}
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
           <button
-            onClick={toggleDropdown}
-            className="group flex items-center gap-2 text-xs text-slate-800 dark:text-[#F4F5F7] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] border border-slate-200/80 dark:border-[#262833] h-9 px-2.5 rounded-lg transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC]"
-            aria-expanded={dropdownOpen}
-            aria-label="Select organization"
+            type="button"
+            onClick={onOpenMobileNav}
+            className="md:hidden p-1.5 -ml-1 rounded-lg text-slate-600 dark:text-[#A0A5B2] hover:bg-slate-100 dark:hover:bg-[#18191E] hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer shrink-0"
+            aria-label="Open navigation menu"
           >
-            <div className="w-5 h-5 rounded-md bg-white dark:bg-[#22242B] border border-slate-200/80 dark:border-[#2D3039] flex items-center justify-center shrink-0 shadow-2xs">
-              <Building2 className="w-3 h-3 text-slate-600 dark:text-[#D8CFBC]"/>
-            </div>
-            <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] leading-tight truncate max-w-[130px] sm:max-w-[180px]">
-              {currentOrg ? currentOrg.name : "Select Tenant..."}
-            </span>
-            {currentOrg?.currency && (
-              <span suppressHydrationWarning className="text-[10px] text-slate-500 dark:text-[#9BA3AF] font-mono leading-none px-1.5 py-0.5 rounded bg-slate-200/60 dark:bg-[#22242B] border border-slate-300/40 dark:border-[#2D3039] shrink-0">
-                {currentOrg.currency}
-              </span>
-            )}
-            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 dark:text-[#808594] ml-0.5 shrink-0 transition-transform duration-200 ${dropdownOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
+            <Menu className="w-5 h-5" />
           </button>
 
-          {/* Dropdown Menu */}
-          <AnimatePresence>
-            {dropdownOpen && (
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                variants={tenantMenuVariants}
-                className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-[#121316] border border-slate-200 dark:border-[#22242B] rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-left"
-              >
+          {/* Tenant Selector */}
+          <div className="relative" ref={tenantMenuRef}>
+            <button
+              onClick={toggleDropdown}
+              className="group flex items-center gap-1.5 sm:gap-2 text-xs text-slate-800 dark:text-[#F4F5F7] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] border border-slate-200/80 dark:border-[#262833] h-9 px-2 sm:px-2.5 rounded-lg transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC]"
+              aria-expanded={dropdownOpen}
+              aria-label="Select organization"
+            >
+              <div className="w-5 h-5 rounded-md bg-white dark:bg-[#22242B] border border-slate-200/80 dark:border-[#2D3039] flex items-center justify-center shrink-0 shadow-2xs">
+                <Building2 className="w-3 h-3 text-slate-600 dark:text-[#D8CFBC]"/>
+              </div>
+              <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] leading-tight truncate max-w-[90px] sm:max-w-[180px]">
+                {currentOrg ? currentOrg.name : "Select Tenant..."}
+              </span>
+              {currentOrg?.currency && (
+                <span suppressHydrationWarning className="hidden sm:inline-flex text-[10px] text-slate-500 dark:text-[#9BA3AF] font-mono leading-none px-1.5 py-0.5 rounded bg-slate-200/60 dark:bg-[#22242B] border border-slate-300/40 dark:border-[#2D3039] shrink-0">
+                  {currentOrg.currency}
+                </span>
+              )}
+              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 dark:text-[#808594] ml-0.5 shrink-0 transition-transform duration-200 ${dropdownOpen ? "rotate-180 text-slate-700 dark:text-[#D8CFBC]" : ""}`}/>
+            </button>
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {dropdownOpen && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={tenantMenuVariants}
+                  className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-80 bg-white dark:bg-[#121316] border border-slate-200 dark:border-[#22242B] rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-left"
+                >
                 <div className="px-3 py-2 text-[11px] font-mono font-semibold tracking-wider text-slate-500 dark:text-[#9BA3AF] uppercase flex items-center justify-between border-b border-slate-100 dark:border-[#22242B] mb-1.5">
                   <span>Select Active Organization</span>
                   <span className="text-[10px] font-normal text-slate-400 dark:text-[#7C8189] lowercase font-sans">
@@ -371,46 +382,47 @@ export const Header = () => {
             )}
           </AnimatePresence>
         </div>
+      </div>
 
-        {/* Center: Global Search Command Bar (Top MNC Standard) */}
-        <div className="flex-1 max-w-xs sm:max-w-md md:max-w-lg mx-2 sm:mx-6 min-w-0">
-          <GlobalSearch onOpen={closeAllPopovers} />
-        </div>
+      {/* Center: Global Search Command Bar (Top MNC Standard) */}
+      <div className="flex-1 max-w-xs sm:max-w-md md:max-w-lg mx-1.5 sm:mx-4 md:mx-6 min-w-0">
+        <GlobalSearch onOpen={closeAllPopovers} />
+      </div>
 
-        {/* System & User Controls */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Dark / Light Theme Toggle */}
-          <ThemeToggle />
+      {/* System & User Controls */}
+      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        {/* Dark / Light Theme Toggle */}
+        <ThemeToggle />
 
-          {/* Notifications Bell Dropdown */}
-          <div className="relative" ref={notifRef}>
-            <button
-              onClick={toggleNotifDrawer}
-              className={`relative w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200/80 dark:border-[#262833] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#FFFBF4] transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC] ${
-                notifOpen ? "bg-slate-200/70 dark:bg-[#22242B] text-slate-900 dark:text-white" : ""
-              }`}
-              title="Notifications (Esc to close)"
-              aria-expanded={notifOpen}
-              aria-label="Notifications"
-            >
-              <Bell className="w-4 h-4"/>
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-amber-500 text-white font-mono font-bold text-[10px] shadow-xs">
-                  {unreadCount > 9 ? "9+" : unreadCount}
-                </span>
-              )}
-            </button>
+        {/* Notifications Bell Dropdown */}
+        <div className="relative" ref={notifRef}>
+          <button
+            onClick={toggleNotifDrawer}
+            className={`relative w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200/80 dark:border-[#262833] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] text-slate-600 dark:text-[#9BA3AF] hover:text-slate-900 dark:hover:text-[#FFFBF4] transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC] ${
+              notifOpen ? "bg-slate-200/70 dark:bg-[#22242B] text-slate-900 dark:text-white" : ""
+            }`}
+            title="Notifications (Esc to close)"
+            aria-expanded={notifOpen}
+            aria-label="Notifications"
+          >
+            <Bell className="w-4 h-4"/>
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-amber-500 text-white font-mono font-bold text-[10px] shadow-xs">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </button>
 
-            {/* Notifications Popover */}
-            <AnimatePresence>
-              {notifOpen && (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={tenantMenuVariants}
-                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-[#121316] rounded-2xl border border-slate-200 dark:border-[#22242B] shadow-2xl shadow-black/10 dark:shadow-black/50 py-2 z-50 text-xs origin-top-right"
-                >
+          {/* Notifications Popover */}
+          <AnimatePresence>
+            {notifOpen && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={tenantMenuVariants}
+                className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-white dark:bg-[#121316] rounded-2xl border border-slate-200 dark:border-[#22242B] shadow-2xl shadow-black/10 dark:shadow-black/50 py-2 z-50 text-xs origin-top-right"
+              >
                 <div className="px-4 py-3 border-b border-slate-100 dark:border-[#22242B] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-slate-900 dark:text-[#F4F5F7] text-sm">Notifications</span>
@@ -503,7 +515,7 @@ export const Header = () => {
           <div className="relative" ref={userMenuRef}>
             <button
               onClick={toggleUserMenu}
-              className="group flex items-center gap-2 text-xs text-slate-800 dark:text-[#F4F5F7] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] border border-slate-200/80 dark:border-[#262833] h-9 px-2 rounded-lg transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC] text-left outline-none"
+              className="group flex items-center gap-1.5 sm:gap-2 text-xs text-slate-800 dark:text-[#F4F5F7] bg-slate-100/70 dark:bg-[#16171C] hover:bg-slate-100 dark:hover:bg-[#1E2026] border border-slate-200/80 dark:border-[#262833] h-9 px-1.5 sm:px-2 rounded-lg transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 dark:focus-visible:ring-[#D8CFBC] text-left outline-none"
               title="Active operator & role (Esc to close)"
               aria-expanded={userMenuOpen}
               aria-label="User menu"
@@ -515,7 +527,7 @@ export const Header = () => {
                   <User className="w-3.5 h-3.5" />
                 )}
               </div>
-              <div className="flex flex-col text-left min-w-0">
+              <div className="hidden sm:flex flex-col text-left min-w-0">
                 <div className="flex items-center gap-1 leading-none">
                   <span suppressHydrationWarning className="font-semibold text-slate-900 dark:text-[#FFFBF4] truncate max-w-[110px] sm:max-w-[140px]">
                     {currentUser?.name || "Admin Operator"}
@@ -538,7 +550,7 @@ export const Header = () => {
                   animate="visible"
                   exit="exit"
                   variants={tenantMenuVariants}
-                  className="absolute right-0 mt-2 w-72 bg-white dark:bg-[#121316] rounded-2xl border border-slate-200 dark:border-[#22242B] shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-right"
+                  className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-xs sm:w-72 bg-white dark:bg-[#121316] rounded-2xl border border-slate-200 dark:border-[#22242B] shadow-2xl shadow-black/10 dark:shadow-black/50 p-2 z-50 origin-top-right"
                 >
                   <div className="px-3 py-2 border-b border-slate-100 dark:border-[#22242B] flex items-center justify-between mb-1.5">
                     <span className="text-[11px] font-mono font-semibold text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider">

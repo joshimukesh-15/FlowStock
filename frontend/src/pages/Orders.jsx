@@ -311,7 +311,7 @@ export default function OrdersPage() {
         <Card className="">
           <CardHeader className="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-              <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by order # or customer..." className="w-64"/>
+              <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by order # or customer..." className="w-full sm:w-64"/>
 
               {/* Status Filter Tabs with Sliding Indicator */}
               <Tabs tabs={["ALL", "DRAFT", "CONFIRMED", "FULFILLED", "CANCELLED"]} activeTab={statusFilter} onChange={setStatusFilter} layoutId="orders-status-tabs" variant="pill"/>
@@ -329,8 +329,8 @@ export default function OrdersPage() {
               </div>) : filteredOrders.length === 0 ? (<EmptyState compact icon={ShoppingCart} title="No sales orders found" description="Create a sales order to reserve and fulfill stock for your customers." action={<Button size="sm" variant="primary" onClick={() => setOrderModalOpen(true)} className="gap-1.5 text-xs">
                     <Plus className="w-3.5 h-3.5"/>
                     Create Sales Order
-                  </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-700">
+                  </Button>}/>) : (<div className="overflow-x-auto touch-pan-x">
+                <table className="w-full min-w-[700px] text-left text-sm text-slate-700">
                   <thead className="bg-slate-50 text-xs uppercase font-medium text-slate-500 border-b border-slate-200">
                     <tr>
                       <th className="py-3.5 px-4">Order #</th>

@@ -374,8 +374,8 @@ export default function InvoicesPage() {
               </div>) : filteredInvoices.length === 0 ? (<EmptyState compact icon={ReceiptText} title="No invoices found" description="Invoices matching the selected filter criteria will appear here. Bill a fulfilled order to issue an invoice." action={<Button size="sm" variant="primary" onClick={() => setCreateModalOpen(true)} className="gap-1.5 text-xs">
                     <Plus className="w-3.5 h-3.5"/>
                     Create Invoice
-                  </Button>}/>) : (<div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
+                  </Button>}/>) : (<div className="overflow-x-auto touch-pan-x">
+                <table className="w-full min-w-[850px] text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
                   <thead className="bg-slate-50 dark:bg-[#191B15] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#33372B]">
                     <tr>
                       <th className="py-2.5 px-3.5 font-semibold">Invoice #</th>

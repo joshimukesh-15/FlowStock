@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getTransition, useReducedMotion, DURATION, EASING } from "@/motion";
-import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, } from "lucide-react";
+import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, X } from "lucide-react";
 import { Logomark } from "@/components/ui/Logomark";
 const NAV_GROUPS = [
     {
@@ -33,7 +33,7 @@ const NAV_GROUPS = [
     },
 ];
 
-export const Sidebar = () => {
+export const Sidebar = ({ mobileOpen = false, onCloseMobile }) => {
     const location = useLocation();
     const pathname = location.pathname;
     const prefersReducedMotion = useReducedMotion();
@@ -87,7 +87,7 @@ export const Sidebar = () => {
     const isActive = (href) => href === "/" ? pathname === "/" : pathname.startsWith(href) && href !== "#";
     return (<>
       <aside
-        className={`${
+        className={`hidden md:flex ${
           collapsed ? "w-[52px]" : "w-60"
         } bg-white dark:bg-[#121316] text-slate-700 dark:text-[#A0A5B2] flex flex-col shrink-0 border-r border-slate-200 dark:border-[#22242B] select-none transition-[width] duration-200 ease-out relative z-20 overflow-hidden`}
         aria-label="Primary navigation"
@@ -252,6 +252,96 @@ export const Sidebar = () => {
               )}
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Slide-over Drawer & Overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={onCloseMobile}
+              className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-xs md:hidden"
+              aria-hidden="true"
+            />
+
+            {/* Slide-over Drawer Panel */}
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 300 }}
+              className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-white dark:bg-[#121316] text-slate-700 dark:text-[#A0A5B2] flex flex-col border-r border-slate-200 dark:border-[#22242B] shadow-2xl md:hidden overflow-hidden"
+              aria-label="Mobile navigation drawer"
+            >
+              {/* Drawer Brand Header */}
+              <div className="h-14 flex items-center justify-between px-4 border-b border-slate-200 dark:border-[#22242B] shrink-0">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-8 h-8 rounded-lg bg-white dark:bg-[#18191E] border border-slate-200/90 dark:border-[#22242B] shadow-2xs flex items-center justify-center p-0.5">
+                    <Logomark className="w-5 h-5" />
+                  </span>
+                  <div className="flex flex-col text-left">
+                    <span className="font-semibold text-xs text-slate-900 dark:text-[#F4F5F7] tracking-tight leading-none">
+                      FlowStock
+                    </span>
+                    <span className="text-[10px] text-slate-500 dark:text-[#808594] mt-0.5 leading-none">
+                      Operations Ledger
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={onCloseMobile}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-[#F4F5F7] hover:bg-slate-100 dark:hover:bg-[#18191E] transition-colors cursor-pointer"
+                  aria-label="Close navigation"
+                >
+                  <X className="w-4.5 h-4.5" />
+                </button>
+              </div>
+
+              {/* Navigation Links */}
+              <nav className="flex-1 py-3 px-3 overflow-y-auto space-y-4">
+                {NAV_GROUPS.map((group) => (
+                  <div key={group.label} className="space-y-1">
+                    <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-[#7C8189]">
+                      {group.label}
+                    </p>
+                    <ul className="space-y-1">
+                      {group.items.map((item) => {
+                        const Icon = item.icon;
+                        const active = isActive(item.href);
+                        return (
+                          <li key={item.label}>
+                            <Link
+                              to={item.href}
+                              onClick={onCloseMobile}
+                              className={`flex items-center gap-3 h-10 px-3 rounded-xl text-xs font-medium transition-all ${
+                                active
+                                  ? "bg-slate-100 dark:bg-[#1A1C22] text-slate-950 dark:text-[#F4F5F7] font-semibold border border-slate-200/90 dark:border-[#2E313D] shadow-2xs"
+                                  : "text-slate-600 dark:text-[#A0A5B2] hover:bg-slate-50 dark:hover:bg-[#18191E] hover:text-slate-950 dark:hover:text-[#F4F5F7]"
+                              }`}
+                            >
+                              <Icon className={`w-4 h-4 shrink-0 ${active ? "text-slate-950 dark:text-[#D8CFBC]" : "text-slate-400 dark:text-[#808594]"}`} />
+                              <span className="truncate">{item.label}</span>
+                              {active && (
+                                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-slate-900 dark:bg-[#D8CFBC]" />
+                              )}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </nav>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
     </>);

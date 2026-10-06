@@ -190,8 +190,8 @@ export default function InventoryPage() {
             <SearchBar placeholder="Search by SKU, product, category..." value={searchQuery} onChange={setSearchQuery} className="w-full sm:w-64"/>
           </CardHeader>
 
-          <div className="overflow-auto max-h-[60vh] relative custom-scrollbar">
-            <table className="w-full text-left text-xs border-collapse">
+          <div className="overflow-auto max-h-[60vh] relative custom-scrollbar touch-pan-x">
+            <table className="w-full min-w-[750px] text-left text-xs border-collapse">
               <thead className="bg-slate-50 dark:bg-[#121316] border-b border-slate-200 dark:border-[#22242B] text-slate-500 dark:text-[#9BA3AF] font-medium uppercase tracking-wider text-[11px] sticky top-0 z-10 shadow-sm">
                 <tr>
                   <th className="py-2 px-3.5">SKU</th>

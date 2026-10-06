@@ -16,7 +16,7 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
         ? { duration: 0 }
         : { duration: DURATION.normal, ease: EASING.smooth };
     if (variant === "underline") {
-        return (<div role="tablist" className={`flex items-center gap-1 border-b border-slate-200 dark:border-[#22242B] overflow-x-auto no-scrollbar ${className}`}>
+        return (<div role="tablist" className={`flex items-center gap-1 border-b border-slate-200 dark:border-[#22242B] overflow-x-auto no-scrollbar max-w-full touch-pan-x ${className}`}>
         {normalizedTabs.map((tab) => {
                 const isActive = tab.id === activeTab;
                 const Icon = tab.icon;
@@ -37,7 +37,7 @@ export function Tabs({ tabs, activeTab, onChange, layoutId = "active-tab", varia
             })}
       </div>);
     }
-    return (<div role="tablist" className={`inline-flex items-center gap-1.5 bg-slate-100/90 dark:bg-[#121316] p-1.5 rounded-xl border border-slate-200 dark:border-[#22242B] text-xs shadow-2xs overflow-x-auto no-scrollbar ${className}`}>
+    return (<div role="tablist" className={`inline-flex items-center gap-1.5 bg-slate-100/90 dark:bg-[#121316] p-1.5 rounded-xl border border-slate-200 dark:border-[#22242B] text-xs shadow-2xs overflow-x-auto no-scrollbar max-w-full touch-pan-x ${className}`}>
       {normalizedTabs.map((tab) => {
             const isActive = tab.id === activeTab;
             const Icon = tab.icon;

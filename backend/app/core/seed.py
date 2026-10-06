@@ -54,21 +54,9 @@ async def seed_demo_data():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
         try:
-            if "sqlite" in engine.dialect.name:
-                pragma_res = await conn.execute(text("PRAGMA table_info(users)"))
-                cols = [r[1] for r in pragma_res.fetchall()]
-                if "password_hash" not in cols:
-                    await conn.execute(text("ALTER TABLE users ADD COLUMN password_hash VARCHAR(255)"))
-                pragma_wh = await conn.execute(text("PRAGMA table_info(warehouses)"))
-                wh_cols = [r[1] for r in pragma_wh.fetchall()]
-                if wh_cols and "capacity" not in wh_cols:
-                    await conn.execute(text("ALTER TABLE warehouses ADD COLUMN capacity INTEGER DEFAULT 2500"))
-                if wh_cols and "location" not in wh_cols:
-                    await conn.execute(text("ALTER TABLE warehouses ADD COLUMN location VARCHAR(150) DEFAULT 'Default Facility'"))
-            elif "postgresql" in engine.dialect.name:
-                await conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255)"))
-                await conn.execute(text("ALTER TABLE warehouses ADD COLUMN IF NOT EXISTS capacity INTEGER DEFAULT 2500"))
-                await conn.execute(text("ALTER TABLE warehouses ADD COLUMN IF NOT EXISTS location VARCHAR(150) DEFAULT 'Default Facility'"))
+            await conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255)"))
+            await conn.execute(text("ALTER TABLE warehouses ADD COLUMN IF NOT EXISTS capacity INTEGER DEFAULT 2500"))
+            await conn.execute(text("ALTER TABLE warehouses ADD COLUMN IF NOT EXISTS location VARCHAR(150) DEFAULT 'Default Facility'"))
             default_hash = get_password_hash("admin123")
             await conn.execute(
                 text("UPDATE users SET password_hash = :hash WHERE password_hash IS NULL"),

@@ -175,9 +175,9 @@ export default function ProductsPage() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <SearchBar placeholder="Search products by name or SKU..." value={searchTerm} onChange={setSearchTerm} onSubmit={(e) => e?.preventDefault()}/>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <span className="text-xs text-slate-500 dark:text-[#9BA3AF] font-medium shrink-0">Category:</span>
-              <div className="w-52">
+              <div className="flex-1 sm:w-52">
                 <Select
                   size="sm"
                   value={selectedCategory}
@@ -194,8 +194,8 @@ export default function ProductsPage() {
 
         {/* Products Table */}
         <Card spotlight={true} className="overflow-hidden shadow-2xs">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+          <div className="overflow-x-auto touch-pan-x">
+            <table className="w-full min-w-[760px] text-left text-xs border-collapse">
               <thead className="bg-slate-50 dark:bg-[#11120D] border-b border-slate-100 dark:border-[#2B2E25] text-slate-500 dark:text-[#9BA3AF] font-semibold uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-2.5 px-3.5">SKU / Code</th>

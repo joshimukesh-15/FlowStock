@@ -293,8 +293,8 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent className="p-3.5 pt-0 flex-1 flex flex-col">
                   {summary && summary.inventory.low_stock_items.length > 0 ? (<div className="space-y-2 flex-1">
-                      <div className="border border-slate-200 dark:border-[#33372B] rounded-lg overflow-hidden">
-                        <table className="w-full text-left text-xs">
+                      <div className="border border-slate-200 dark:border-[#33372B] rounded-lg overflow-x-auto touch-pan-x">
+                        <table className="w-full min-w-[480px] text-left text-xs">
                           <thead className="bg-slate-50 dark:bg-[#11120D] text-slate-600 dark:text-[#9BA3AF] font-medium border-b border-slate-200 dark:border-[#33372B]">
                             <tr>
                               <th className="py-2 px-3">SKU</th>
@@ -408,8 +408,8 @@ export default function HomePage() {
                 </Link>
               </CardHeader>
               <CardContent className="p-4 pt-0">
-                {summary && summary.top_products.length > 0 ? (<div className="border border-slate-200 dark:border-[#33372B] rounded-lg overflow-hidden">
-                    <table className="w-full text-left text-xs">
+                {summary && summary.top_products.length > 0 ? (<div className="border border-slate-200 dark:border-[#33372B] rounded-lg overflow-x-auto touch-pan-x">
+                    <table className="w-full min-w-[500px] text-left text-xs">
                       <thead className="bg-slate-50 dark:bg-[#11120D] text-slate-600 dark:text-[#9BA3AF] font-medium border-b border-slate-200 dark:border-[#33372B]">
                         <tr>
                           <th className="py-2 px-3 w-10">#</th>

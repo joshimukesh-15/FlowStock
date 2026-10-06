@@ -39,9 +39,13 @@ export const AuthProvider = ({ children }) => {
     setOrganization(null);
   }, []);
 
-  // On mount: check for existing token or HttpOnly cookie session
+  // On mount: check for existing token session
   useEffect(() => {
-    const savedToken = localStorage.getItem("flowstock_token") || "";
+    const savedToken = localStorage.getItem("flowstock_token");
+    if (!savedToken) {
+      setLoading(false);
+      return;
+    }
     fetchMe(savedToken)
       .then((data) => {
         persistSession(data);

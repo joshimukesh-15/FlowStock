@@ -177,17 +177,15 @@ export const GlobalSearch = ({ onOpen }) => {
         <div className="flex items-center gap-2.5 min-w-0">
           <Search className="w-3.5 h-3.5 text-slate-400 dark:text-[#808594] shrink-0 group-hover:text-slate-600 dark:group-hover:text-[#D8CFBC] transition-colors" />
           <span className="truncate text-slate-400 dark:text-[#808594] group-hover:text-slate-600 dark:group-hover:text-[#CBD5E1] transition-colors font-medium">
-            Search products, orders, invoices...
+            <span className="hidden sm:inline">Search products, orders, invoices...</span>
+            <span className="sm:hidden">Search...</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-slate-200/80 dark:border-[#2D3039] bg-white dark:bg-[#22242B] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC] shadow-2xs tracking-tight transition-colors">
+        <div className="hidden sm:flex items-center gap-1.5 shrink-0">
+          <kbd className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-slate-200/80 dark:border-[#2D3039] bg-white dark:bg-[#22242B] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC] shadow-2xs tracking-tight transition-colors">
             <span className="text-[9px] opacity-75">Ctrl</span>
             <span>K</span>
-          </kbd>
-          <kbd className="sm:hidden inline-flex items-center px-1.5 py-0.5 rounded border border-slate-200/80 dark:border-[#2D3039] bg-white dark:bg-[#22242B] font-mono text-[10px] font-semibold text-slate-500 dark:text-[#D8CFBC]">
-            /
           </kbd>
         </div>
       </button>

@@ -500,8 +500,8 @@ export default function WarehousesPage() {
                 <SkeletonAnnouncer label="Loading stock transfers"/>
               </div>) : filteredTransfers.length === 0 ? (<EmptyState compact icon={Package} title="No transfers found" description={filterStatus !== "ALL"
                 ? `No transfers with status ${filterStatus.replace("_", " ")}.`
-                : "Create an inter-warehouse transfer to balance facility stock."}/>) : (<div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
+                : "Create an inter-warehouse transfer to balance facility stock."}/>) : (<div className="overflow-x-auto touch-pan-x">
+                  <table className="w-full min-w-[750px] text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
                     <thead className="bg-slate-50/80 dark:bg-[#121316] text-[11px] uppercase font-mono font-semibold tracking-wider text-slate-500 dark:text-[#808594] border-b border-slate-200/80 dark:border-[#22242B]">
                       <tr>
                         <th className="py-2.5 px-3.5">Transfer #</th>
