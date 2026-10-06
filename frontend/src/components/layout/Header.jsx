@@ -232,8 +232,8 @@ export const Header = ({ onOpenMobileNav }) => {
                 );
             case "SUCCESS":
                 return (
-                  <div className="w-6 h-6 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center shrink-0 mt-0.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <div className="w-6 h-6 rounded-lg bg-[#D8CFBC]/25 dark:bg-[#D8CFBC]/15 border border-[#D8CFBC]/40 dark:border-[#D8CFBC]/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#11120D] dark:text-[#D8CFBC]" />
                   </div>
                 );
             case "DANGER":

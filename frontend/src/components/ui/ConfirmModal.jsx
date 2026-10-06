@@ -117,6 +117,7 @@ export const ConfirmModal = ({
   cancelText = "Cancel",
   variant = "danger",
   isLoading: propLoading,
+  holdToConfirm = false,
 }) => {
   const [internalLoading, setInternalLoading] = useState(false);
   const loading = propLoading !== undefined ? propLoading : internalLoading;
@@ -180,7 +181,7 @@ export const ConfirmModal = ({
             {cancelText}
           </Button>
 
-          {isDanger ? (
+          {isDanger && holdToConfirm ? (
             <HoldToConfirmDangerButton
               isLoading={loading}
               onConfirm={handleConfirm}
@@ -192,7 +193,7 @@ export const ConfirmModal = ({
             <Button
               type="button"
               size="sm"
-              variant={isWarning ? "primary" : "primary"}
+              variant={isDanger ? "danger" : isWarning ? "primary" : "primary"}
               isLoading={loading}
               onClick={handleConfirm}
             >
