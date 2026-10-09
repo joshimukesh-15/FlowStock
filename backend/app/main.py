@@ -1,5 +1,5 @@
-"""FlowStock FastAPI Application Entrypoint."""
 import os
+import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,14 +8,22 @@ from app.api.v1.api import api_router
 from app.core.seed import seed_demo_data
 from app.core.scheduler import start_background_scheduler, stop_background_scheduler
 
+logger = logging.getLogger("flowstock.startup")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
     # Ensure storage paths exist
     os.makedirs(settings.STORAGE_LOCAL_PATH, exist_ok=True)
-    # Seed initial demo organizations and users
-    await seed_demo_data()
+    # Seed initial demo organizations and users (non-fatal if database is temporarily unreachable)
+    try:
+        await seed_demo_data()
+    except Exception as exc:
+        logger.warning(
+            "Initial database seed skipped on startup (%s). Application will continue running.",
+            exc,
+        )
     # Start native async background scheduler
     start_background_scheduler(interval_seconds=300)
     yield

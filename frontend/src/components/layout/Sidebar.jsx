@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getTransition, useReducedMotion, DURATION, EASING } from "@/motion";
 import { LayoutDashboard, Layers, Boxes, Warehouse, Building2, ShoppingCart, Truck, ReceiptText, History, Settings, PanelLeftClose, X } from "lucide-react";
 import { Logomark } from "@/components/ui/Logomark";
+import { usePermissions } from "@/hooks/usePermissions";
+
 const NAV_GROUPS = [
     {
         label: "Core Workspace",
@@ -37,6 +39,12 @@ export const Sidebar = ({ mobileOpen = false, onCloseMobile }) => {
     const location = useLocation();
     const pathname = location.pathname;
     const prefersReducedMotion = useReducedMotion();
+    const { meta, isRouteAllowed } = usePermissions();
+
+    const filteredNavGroups = NAV_GROUPS.map((group) => ({
+        ...group,
+        items: group.items.filter((item) => isRouteAllowed(item.href)),
+    })).filter((group) => group.items.length > 0);
     const [collapsed, setCollapsed] = useState(() => {
         if (typeof window === "undefined")
             return false;
@@ -139,6 +147,18 @@ export const Sidebar = ({ mobileOpen = false, onCloseMobile }) => {
           )}
         </div>
 
+        {/* Active Role Workspace Strip */}
+        {!collapsed && (
+          <div className="px-3 py-1.5 border-b border-slate-100 dark:border-[#1E2026] bg-slate-50/60 dark:bg-[#0E1013] flex items-center justify-between shrink-0">
+            <span className="text-[10px] font-mono font-medium text-slate-500 dark:text-[#9BA3AF] truncate">
+              {meta.badgeLabel}
+            </span>
+            <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189]">
+              {meta.shortLabel}
+            </span>
+          </div>
+        )}
+
         {/* Navigation Groups */}
         <nav
           onScroll={() => setHoveredTooltip(null)}
@@ -146,7 +166,7 @@ export const Sidebar = ({ mobileOpen = false, onCloseMobile }) => {
             collapsed ? "px-1.5" : "px-2"
           }`}
         >
-          {NAV_GROUPS.map((group, groupIdx) => (
+          {filteredNavGroups.map((group, groupIdx) => (
             <div key={group.label} className="mb-2 last:mb-0">
               {collapsed ? (
                 groupIdx > 0 && (
@@ -305,9 +325,19 @@ export const Sidebar = ({ mobileOpen = false, onCloseMobile }) => {
                 </button>
               </div>
 
+              {/* Mobile Role Workspace Strip */}
+              <div className="px-4 py-2 border-b border-slate-100 dark:border-[#1E2026] bg-slate-50/60 dark:bg-[#0E1013] flex items-center justify-between shrink-0">
+                <span className="text-[11px] font-mono font-medium text-slate-600 dark:text-[#A0A5B2] truncate">
+                  {meta.badgeLabel}
+                </span>
+                <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 dark:text-[#7C8189]">
+                  {meta.shortLabel}
+                </span>
+              </div>
+
               {/* Navigation Links */}
               <nav className="flex-1 py-3 px-3 overflow-y-auto space-y-4">
-                {NAV_GROUPS.map((group) => (
+                {filteredNavGroups.map((group) => (
                   <div key={group.label} className="space-y-1">
                     <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-[#7C8189]">
                       {group.label}

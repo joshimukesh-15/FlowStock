@@ -24,9 +24,11 @@ import { formatDate } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
 import { motion } from "framer-motion";
 import { useReducedMotion, pageEnterVariants } from "@/motion";
+import { usePermissions } from "@/hooks/usePermissions";
 
 export default function OrdersPage() {
     const { toast } = useToast();
+    const { can, isReadOnly } = usePermissions();
     const prefersReducedMotion = useReducedMotion();
     const [actionLoading, setActionLoading] = useState(null);
     const [orderIdToCancel, setOrderIdToCancel] = useState(null);
@@ -266,7 +268,7 @@ export default function OrdersPage() {
       <PageHeader title={<span className="flex items-center gap-2.5">
             <ShoppingCart className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
             Sales Orders & Stock Allocation
-          </span>} subtitle="B2B customer order lifecycle, inventory reservation, and dispatch fulfillment." actions={<>
+          </span>} subtitle="B2B customer order lifecycle, inventory reservation, and dispatch fulfillment." actions={can("order:create") ? (<>
             <Button variant="outline" size="sm" onClick={() => setCustomerModalOpen(true)}>
               <Users className="w-4 h-4 mr-1.5"/>
               New Customer
@@ -275,7 +277,7 @@ export default function OrdersPage() {
               <Plus className="w-4 h-4 mr-1.5"/>
               Create Sales Order
             </Button>
-          </>}/>
+          </>) : null}/>
 
       {/* KPI Summary Cards */}
       <KpiGrid>
@@ -326,10 +328,10 @@ export default function OrdersPage() {
             {loading ? (<div className="p-4">
                 <TableSkeleton rows={6} columns={["w-28", "w-40", "w-28", "w-12", "w-28", "w-24", "w-24"]}/>
                 <SkeletonAnnouncer label="Loading sales orders"/>
-              </div>) : filteredOrders.length === 0 ? (<EmptyState compact icon={ShoppingCart} title="No sales orders found" description="Create a sales order to reserve and fulfill stock for your customers." action={<Button size="sm" variant="primary" onClick={() => setOrderModalOpen(true)} className="gap-1.5 text-xs">
+              </div>) : filteredOrders.length === 0 ? (<EmptyState compact icon={ShoppingCart} title="No sales orders found" description="Create a sales order to reserve and fulfill stock for your customers." action={can("order:create") ? (<Button size="sm" variant="primary" onClick={() => setOrderModalOpen(true)} className="gap-1.5 text-xs">
                     <Plus className="w-3.5 h-3.5"/>
                     Create Sales Order
-                  </Button>}/>) : (<div className="overflow-x-auto touch-pan-x">
+                  </Button>) : null}/>) : (<div className="overflow-x-auto touch-pan-x">
                 <table className="w-full min-w-[700px] text-left text-sm text-slate-700">
                   <thead className="bg-slate-50 text-xs uppercase font-medium text-slate-500 border-b border-slate-200">
                     <tr>
@@ -395,51 +397,59 @@ export default function OrdersPage() {
 
                               {o.status === "DRAFT" && (
                                 <>
-                                  <Button
-                                    variant="primary"
-                                    size="xs"
-                                    onClick={() => handleConfirmOrder(o.id)}
-                                    disabled={isActing}
-                                    title="Confirm Order Allocation"
-                                  >
-                                    <PackageCheck className="w-3.5 h-3.5" />
-                                    Confirm
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="xs"
-                                    onClick={() => handleCancelOrder(o.id)}
-                                    disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
-                                    title="Cancel Order"
-                                  >
-                                    Cancel
-                                  </Button>
+                                  {can("order:confirm") && (
+                                    <Button
+                                      variant="primary"
+                                      size="xs"
+                                      onClick={() => handleConfirmOrder(o.id)}
+                                      disabled={isActing}
+                                      title="Confirm Order Allocation"
+                                    >
+                                      <PackageCheck className="w-3.5 h-3.5" />
+                                      Confirm
+                                    </Button>
+                                  )}
+                                  {can("order:cancel") && (
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      onClick={() => handleCancelOrder(o.id)}
+                                      disabled={isActing}
+                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      title="Cancel Order"
+                                    >
+                                      Cancel
+                                    </Button>
+                                  )}
                                 </>
                               )}
 
                               {o.status === "CONFIRMED" && (
                                 <>
-                                  <Button
-                                    variant="primary"
-                                    size="xs"
-                                    onClick={() => handleFulfillOrder(o.id)}
-                                    disabled={isActing}
-                                    title="Fulfill & Dispatch Stock"
-                                  >
-                                    <Truck className="w-3.5 h-3.5" />
-                                    Fulfill
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="xs"
-                                    onClick={() => handleCancelOrder(o.id)}
-                                    disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
-                                    title="Cancel Order"
-                                  >
-                                    Cancel
-                                  </Button>
+                                  {can("order:fulfill") && (
+                                    <Button
+                                      variant="primary"
+                                      size="xs"
+                                      onClick={() => handleFulfillOrder(o.id)}
+                                      disabled={isActing}
+                                      title="Fulfill & Dispatch Stock"
+                                    >
+                                      <Truck className="w-3.5 h-3.5" />
+                                      Fulfill
+                                    </Button>
+                                  )}
+                                  {can("order:cancel") && (
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      onClick={() => handleCancelOrder(o.id)}
+                                      disabled={isActing}
+                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      title="Cancel Order"
+                                    >
+                                      Cancel
+                                    </Button>
+                                  )}
                                 </>
                               )}
                             </div>
@@ -786,47 +796,55 @@ export default function OrdersPage() {
                 <div className="flex items-center gap-2">
                   {detailOrder.status === "DRAFT" && (
                     <>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleCancelOrder(detailOrder.id)}
-                        disabled={actionLoading === detailOrder.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
-                      >
-                        Cancel Order
-                      </Button>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => handleConfirmOrder(detailOrder.id)}
-                        disabled={actionLoading === detailOrder.id}
-                      >
-                        <PackageCheck className="w-3.5 h-3.5" />
-                        Confirm & Reserve Stock
-                      </Button>
+                      {can("order:cancel") && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleCancelOrder(detailOrder.id)}
+                          disabled={actionLoading === detailOrder.id}
+                          className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        >
+                          Cancel Order
+                        </Button>
+                      )}
+                      {can("order:confirm") && (
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => handleConfirmOrder(detailOrder.id)}
+                          disabled={actionLoading === detailOrder.id}
+                        >
+                          <PackageCheck className="w-3.5 h-3.5" />
+                          Confirm & Reserve Stock
+                        </Button>
+                      )}
                     </>
                   )}
 
                   {detailOrder.status === "CONFIRMED" && (
                     <>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleCancelOrder(detailOrder.id)}
-                        disabled={actionLoading === detailOrder.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
-                      >
-                        Cancel Order
-                      </Button>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => handleFulfillOrder(detailOrder.id)}
-                        disabled={actionLoading === detailOrder.id}
-                      >
-                        <Truck className="w-3.5 h-3.5" />
-                        Fulfill & Dispatch
-                      </Button>
+                      {can("order:cancel") && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleCancelOrder(detailOrder.id)}
+                          disabled={actionLoading === detailOrder.id}
+                          className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        >
+                          Cancel Order
+                        </Button>
+                      )}
+                      {can("order:fulfill") && (
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => handleFulfillOrder(detailOrder.id)}
+                          disabled={actionLoading === detailOrder.id}
+                        >
+                          <Truck className="w-3.5 h-3.5" />
+                          Fulfill & Dispatch
+                        </Button>
+                      )}
                     </>
                   )}
                 </div>

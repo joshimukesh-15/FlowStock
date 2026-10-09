@@ -1,6 +1,10 @@
 """Automatic Seed Data for Enterprise Demonstration with Samsung Multi-Tenant Ecosystem."""
+import asyncio
+import logging
 from sqlalchemy import text, select
 from app.core.database import get_active_engine, AsyncSessionLocal
+
+logger = logging.getLogger("flowstock.seed")
 from app.core.security import get_password_hash
 from app.models.base import Base
 from app.models.organization import Organization
@@ -48,8 +52,8 @@ from app.schemas.audit import AuditLogCreate
 from app.schemas.notification import NotificationCreate
 
 
-async def seed_demo_data():
-    """Ensure database schema exists and seed Samsung multi-tenant demo organizations, catalog, warehouses & stock."""
+async def _execute_seed_demo_data():
+    """Internal implementation to seed database schema and demo records."""
     engine = await get_active_engine()
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -1058,6 +1062,29 @@ async def seed_demo_data():
         print("Samsung multi-tenant demo seed complete: Samsung Electronics Ltd & Samsung Semiconductor Ltd.")
 
 
+async def seed_demo_data(max_retries: int = 3, retry_delay: float = 2.0):
+    """Ensure database schema exists and seed demo data with automatic connection retry."""
+    for attempt in range(1, max_retries + 1):
+        try:
+            return await _execute_seed_demo_data()
+        except Exception as exc:
+            if attempt < max_retries:
+                logger.warning(
+                    "Database seed attempt %d/%d encountered connection issue: %s. Retrying in %.1fs...",
+                    attempt,
+                    max_retries,
+                    exc,
+                    retry_delay,
+                )
+                await asyncio.sleep(retry_delay)
+            else:
+                logger.error(
+                    "Database seed failed after %d attempts: %s",
+                    max_retries,
+                    exc,
+                )
+                raise
+
+
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(seed_demo_data())

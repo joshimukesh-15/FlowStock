@@ -31,6 +31,7 @@ import { Select } from "@/components/ui/Select";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Logomark } from "@/components/ui/Logomark";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { HairlineBay } from "@/components/ui/HairlineBay";
 
 /* ── Feature Row — Image pops up from bottom on scroll, text fades in ── */
 function FeatureRow({
@@ -558,6 +559,9 @@ export default function WelcomePage() {
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState("login");
 
+  const openAuth = (mode = "login") => { setAuthMode(mode); setAuthOpen(true); };
+  const closeAuth = () => setAuthOpen(false);
+
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -568,9 +572,6 @@ export default function WelcomePage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [authOpen]);
-
-  const openAuth = (mode = "login") => { setAuthMode(mode); setAuthOpen(true); };
-  const closeAuth = () => setAuthOpen(false);
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -694,69 +695,102 @@ export default function WelcomePage() {
       </header>
 
       {/* 2. HERO SECTION */}
-      <section id="hero" className="relative pt-32 sm:pt-40 pb-20 sm:pb-28 bg-transparent">
-        {/* Hero Content Header */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-          {/* Status Pill */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-slate-200/90 dark:border-[#22242B] bg-white/80 dark:bg-[#121316]/80 backdrop-blur-md text-xs mb-8 shadow-xs">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#565449] dark:bg-[#D8CFBC] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#565449] dark:bg-[#D8CFBC]" />
-            </span>
-            <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#565449] dark:text-[#D8CFBC] font-bold">
-              FINANCIAL-GRADE LEDGER
-            </span>
-            <span className="w-px h-3 bg-slate-200 dark:bg-[#22242B]" />
-            <span className="text-[11px] text-slate-600 dark:text-[#A0A5B2] font-mono tracking-tight hidden sm:inline">
-              ZERO-DRIFT PHYSICAL INVENTORY
-            </span>
-          </div>
+      <section id="hero" className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 bg-transparent overflow-hidden">
+        {/* Subtle radial ambient background glow */}
+        <div className="absolute top-1/4 right-1/4 -translate-y-1/2 w-[600px] h-[400px] bg-[#D8CFBC]/15 dark:bg-[#D8CFBC]/5 rounded-full blur-3xl pointer-events-none -z-10" />
 
-          <h1 className="font-display text-4xl sm:text-6xl lg:text-[4.5rem] font-extrabold tracking-[-0.04em] leading-[1.05] mb-6 text-slate-950 dark:text-[#F4F5F7] [text-wrap:balance]">
-            The financial-grade{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#11120D] via-[#565449] to-[#807D6E] dark:from-[#FFFBF4] dark:via-[#D8CFBC] dark:to-[#807D6E]">
-              inventory ledger
-            </span>{" "}
-            for high-velocity warehouses
-          </h1>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            
+            {/* Left Column: Value Proposition & CTAs (Cols 1-7) */}
+            <div className="lg:col-span-7 flex flex-col items-start text-left">
+              {/* Status Pill */}
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-slate-200/90 dark:border-[#22242B] bg-white/80 dark:bg-[#121316]/80 backdrop-blur-md text-xs mb-6 shadow-xs">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#565449] dark:bg-[#D8CFBC] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#565449] dark:bg-[#D8CFBC]" />
+                </span>
+                <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[#565449] dark:text-[#D8CFBC] font-bold">
+                  FINANCIAL-GRADE LEDGER
+                </span>
+                <span className="w-px h-3 bg-slate-200 dark:bg-[#22242B]" />
+                <span className="text-[11px] text-slate-600 dark:text-[#A0A5B2] font-mono tracking-tight hidden sm:inline">
+                  ZERO-DRIFT PHYSICAL INVENTORY
+                </span>
+              </div>
 
-          <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-[#A0A5B2] max-w-2xl leading-relaxed mb-10 font-normal [text-wrap:balance]">
-            Zero-drift double-entry stock bookkeeping, real-time multi-carrier logistics orchestration, and automated GST tax invoices, engineered for physical supply chains.
-          </p>
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-extrabold tracking-[-0.04em] leading-[1.08] mb-6 text-slate-950 dark:text-[#F4F5F7]">
+                The financial-grade{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#11120D] via-[#565449] to-[#807D6E] dark:from-[#FFFBF4] dark:via-[#D8CFBC] dark:to-[#807D6E]">
+                  inventory ledger
+                </span>{" "}
+                for high-velocity warehouses
+              </h1>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {isAuthenticated ? (
-              <Button
-                size="lg"
-                variant="primary"
-                onClick={() => navigate("/dashboard")}
-                className="h-12 px-7 rounded-xl font-bold text-sm shadow-sm hover:shadow-md"
+              <p className="text-base sm:text-lg text-slate-600 dark:text-[#A0A5B2] max-w-xl leading-relaxed mb-8 font-normal">
+                Zero-drift double-entry stock bookkeeping, real-time multi-carrier logistics orchestration, and automated GST tax invoices, engineered for physical supply chains.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap items-center gap-4 mb-10 w-full sm:w-auto">
+                {isAuthenticated ? (
+                  <Button
+                    size="lg"
+                    variant="primary"
+                    onClick={() => navigate("/dashboard")}
+                    className="h-12 px-7 rounded-xl font-bold text-sm shadow-sm hover:shadow-md"
+                  >
+                    <span>Go to Dashboard</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      size="lg"
+                      variant="primary"
+                      onClick={() => openAuth("signup")}
+                      className="h-12 px-7 rounded-xl font-bold text-sm shadow-sm hover:shadow-md"
+                    >
+                      <span>Get Started Free</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={() => scrollToSection("platform")}
+                      className="h-12 px-7 rounded-xl font-medium text-sm border-slate-200 dark:border-[#22242B] dark:bg-[#121316] dark:hover:bg-[#18191E]"
+                    >
+                      <span>Explore Platform</span>
+                    </Button>
+                  </>
+                )}
+              </div>
+
+              {/* Trust Badges / Telemetry */}
+              <div className="pt-6 border-t border-slate-200/80 dark:border-[#22242B] w-full flex flex-wrap items-center gap-6 text-xs text-slate-500 dark:text-[#808594] font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span>99.98% Inventory Accuracy</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#565449] dark:bg-[#D8CFBC] shrink-0" />
+                  <span>Sub-second Bin Sync</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Interactive Hairline Operations Showcase (Cols 8-12) */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end w-full">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full max-w-[480px]"
               >
-                <span>Go to Dashboard</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            ) : (
-              <>
-                <Button
-                  size="lg"
-                  variant="primary"
-                  onClick={() => openAuth("signup")}
-                  className="h-12 px-7 rounded-xl font-bold text-sm shadow-sm hover:shadow-md"
-                >
-                  <span>Get Started Free</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => scrollToSection("platform")}
-                  className="h-12 px-7 rounded-xl font-medium text-sm border-slate-200 dark:border-[#22242B] dark:bg-[#121316] dark:hover:bg-[#18191E]"
-                >
-                  <span>Explore Platform</span>
-                </Button>
-              </>
-            )}
+                <HairlineBay />
+              </motion.div>
+            </div>
+
           </div>
         </div>
       </section>

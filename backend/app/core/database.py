@@ -10,7 +10,11 @@ engine = create_async_engine(
     echo=False,
     future=True,
     pool_pre_ping=True,
+    pool_recycle=300,
 )
+
+active_engine = engine
+active_dialect = "postgresql"
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,
@@ -21,8 +25,8 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 async def get_active_engine():
-    """Return the active PostgreSQL database engine."""
-    return engine
+    """Return the active database engine."""
+    return active_engine
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:

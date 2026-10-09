@@ -19,10 +19,12 @@ import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TableSkeleton, SkeletonAnnouncer, PageSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Select } from "@/components/ui/Select";
+import { usePermissions } from "@/hooks/usePermissions";
 
 export default function ProductsPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
+    const { can, isReadOnly } = usePermissions();
     const prefersReducedMotion = useReducedMotion();
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
@@ -160,14 +162,18 @@ export default function ProductsPage() {
     return (<motion.div className="max-w-7xl mx-auto space-y-6" variants={pageEnterVariants(prefersReducedMotion)} initial="hidden" animate="visible">
         {/* Title Bar */}
         <PageHeader title="Products & SKU Catalog" badge={currentOrg && <Badge variant="info" className="capitalize">{currentOrg.name}</Badge>} subtitle="Master catalog of stock items, selling rates, and classification" actions={<>
-              <Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)} className="gap-1.5">
-                <Tag className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
-                New Category
-              </Button>
-              <Button size="sm" onClick={handleOpenAdd} className="gap-1.5">
-                <Plus className="w-4 h-4"/>
-                Add Product
-              </Button>
+              {can("category:create") && (
+                <Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)} className="gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-slate-500 dark:text-[#9BA3AF]"/>
+                  New Category
+                </Button>
+              )}
+              {can("product:create") && (
+                <Button size="sm" onClick={handleOpenAdd} className="gap-1.5">
+                  <Plus className="w-4 h-4"/>
+                  Add Product
+                </Button>
+              )}
             </>}/>
 
         {/* Filter & Search Bar */}
@@ -217,10 +223,10 @@ export default function ProductsPage() {
                     </td>
                   </tr>) : safeProducts.length === 0 ? (<tr>
                     <td colSpan={9}>
-                      <EmptyState compact icon={Package} title="No products found" description="Add your first SKU or adjust your category filter to see catalog items." action={<Button size="sm" variant="primary" onClick={handleOpenAdd} className="gap-1.5 text-xs">
+                      <EmptyState compact icon={Package} title="No products found" description="Add your first SKU or adjust your category filter to see catalog items." action={can("product:create") ? (<Button size="sm" variant="primary" onClick={handleOpenAdd} className="gap-1.5 text-xs">
                             <Plus className="w-3.5 h-3.5"/>
                             Add Product SKU
-                          </Button>}/>
+                          </Button>) : null}/>
                     </td>
                   </tr>) : (safeProducts.map((p) => {
             const margin = p.price > 0 ? (((p.price - p.cost_price) / p.price) * 100).toFixed(0) : "0";
@@ -251,26 +257,35 @@ export default function ProductsPage() {
                           <Badge variant="warning">{p.reorder_point} {p.unit}</Badge>
                         </td>
                         <td className="py-2.5 px-3.5 text-right space-x-1 whitespace-nowrap">
-                          <motion.button
-                            type="button"
-                            whileTap={{ scale: 0.90 }}
-                            onClick={() => handleOpenEdit(p)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#18191E] dark:hover:bg-[#22242B] rounded-md text-slate-500 dark:text-[#A0A5B2] hover:text-slate-900 dark:text-white dark:hover:text-[#D8CFBC] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
-                            title="Edit Product"
-                            aria-label={`Edit ${p.name}`}
-                          >
-                            <Edit2 className="w-3.5 h-3.5" />
-                          </motion.button>
-                          <motion.button
-                            type="button"
-                            whileTap={{ scale: 0.90 }}
-                            onClick={() => handleDeleteProduct(p.id, p.name)}
-                            className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#18191E] dark:hover:bg-[#22242B] text-slate-400 dark:text-[#808594] hover:text-rose-500 dark:hover:text-rose-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-                            title="Delete Product"
-                            aria-label={`Delete ${p.name}`}
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </motion.button>
+                          {can("product:edit") && (
+                            <motion.button
+                              type="button"
+                              whileTap={{ scale: 0.90 }}
+                              onClick={() => handleOpenEdit(p)}
+                              className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#18191E] dark:hover:bg-[#22242B] rounded-md text-slate-500 dark:text-[#A0A5B2] hover:text-slate-900 dark:text-white dark:hover:text-[#D8CFBC] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#D8CFBC]"
+                              title="Edit Product"
+                              aria-label={`Edit ${p.name}`}
+                            >
+                              <Edit2 className="w-3.5 h-3.5" />
+                            </motion.button>
+                          )}
+                          {can("product:delete") && (
+                            <motion.button
+                              type="button"
+                              whileTap={{ scale: 0.90 }}
+                              onClick={() => handleDeleteProduct(p.id, p.name)}
+                              className="p-1.5 min-w-[32px] min-h-[32px] inline-flex items-center justify-center hover:bg-slate-100 dark:bg-[#18191E] dark:hover:bg-[#22242B] text-slate-400 dark:text-[#808594] hover:text-rose-500 dark:hover:text-rose-400 rounded-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                              title="Delete Product"
+                              aria-label={`Delete ${p.name}`}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </motion.button>
+                          )}
+                          {!can("product:edit") && !can("product:delete") && (
+                            <span className="text-[10px] font-mono text-slate-400 dark:text-[#7C8189] px-2 py-0.5 rounded bg-slate-100/60 dark:bg-[#18191E] border border-slate-200/60 dark:border-[#22242B]">
+                              View Only
+                            </span>
+                          )}
                         </td>
                       </tr>);
         }))}

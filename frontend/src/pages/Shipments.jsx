@@ -24,6 +24,8 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { motion } from "framer-motion";
 import { useReducedMotion, pageEnterVariants, DISTANCE, DURATION, STAGGER } from "@/motion";
+import { usePermissions } from "@/hooks/usePermissions";
+
 const CARRIERS = [
     "Blue Dart",
     "Delhivery",
@@ -37,6 +39,7 @@ const CARRIERS = [
 export default function ShipmentsPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
+    const { can, isReadOnly } = usePermissions();
     const prefersReducedMotion = useReducedMotion();
     const [shipments, setShipments] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -271,7 +274,7 @@ export default function ShipmentsPage() {
       <PageHeader title={<span className="flex items-center gap-2.5">
             <Truck className="w-7 h-7 text-slate-900 dark:text-[#F4F5F7]"/>
             Shipments & Logistics Tracking
-          </span>} subtitle="Consignment dispatch, carrier manifests, real-time AWB tracking, and checkpoint timelines." actions={<Button onClick={() => {
+          </span>} subtitle="Consignment dispatch, carrier manifests, real-time AWB tracking, and checkpoint timelines." actions={can("shipment:create") ? (<Button onClick={() => {
                 if (eligibleOrdersForShipping.length > 0 && !selectedOrderId) {
                     selectOrderForCreation(eligibleOrdersForShipping[0], eligibleOrdersForShipping[0].id);
                 }
@@ -279,7 +282,7 @@ export default function ShipmentsPage() {
             }}>
               <Plus className="w-4 h-4 mr-2"/>
               Create Shipment
-            </Button>}/>
+            </Button>) : null}/>
 
       {/* KPI Summary Cards */}
       <KpiGrid>
@@ -334,10 +337,10 @@ export default function ShipmentsPage() {
             {loading ? (<div className="p-4">
                 <TableSkeleton rows={5} columns={["w-28", "w-40", "w-48", "w-36", "w-20", "w-24", "w-24"]}/>
                 <SkeletonAnnouncer label="Loading logistics manifests"/>
-              </div>) : filteredShipments.length === 0 ? (<EmptyState compact icon={Truck} title="No shipments found" description="Shipments matching the selected filters will appear here. Dispatch fulfilled orders to create one." action={<Button size="sm" variant="primary" onClick={() => setCreateModalOpen(true)} className="gap-1.5 text-xs">
+              </div>) : filteredShipments.length === 0 ? (<EmptyState compact icon={Truck} title="No shipments found" description="Shipments matching the selected filters will appear here. Dispatch fulfilled orders to create one." action={can("shipment:create") ? (<Button size="sm" variant="primary" onClick={() => setCreateModalOpen(true)} className="gap-1.5 text-xs">
                     <Plus className="w-3.5 h-3.5"/>
                     Create Shipment
-                  </Button>}/>) : (<div className="overflow-x-auto touch-pan-x">
+                  </Button>) : null}/>) : (<div className="overflow-x-auto touch-pan-x">
                 <table className="w-full min-w-[750px] text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
                   <thead className="bg-slate-50 dark:bg-[#18191E] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#22242B]">
                     <tr>
@@ -399,7 +402,7 @@ export default function ShipmentsPage() {
                               <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                               Track
                             </Button>
-                            {s.status === "PENDING" && (
+                            {can("shipment:dispatch") && s.status === "PENDING" && (
                               <Button
                                 size="xs"
                                 variant="primary"
@@ -411,7 +414,7 @@ export default function ShipmentsPage() {
                                 Dispatch
                               </Button>
                             )}
-                            {s.status === "IN_TRANSIT" && (
+                            {can("shipment:dispatch") && s.status === "IN_TRANSIT" && (
                               <Button
                                 size="xs"
                                 variant="primary"
@@ -423,7 +426,7 @@ export default function ShipmentsPage() {
                                 Out
                               </Button>
                             )}
-                            {s.status === "OUT_FOR_DELIVERY" && (
+                            {can("shipment:dispatch") && s.status === "OUT_FOR_DELIVERY" && (
                               <Button
                                 size="xs"
                                 variant="primary"
@@ -631,25 +634,33 @@ export default function ShipmentsPage() {
                     Workflow Actions:
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
-                    {detailShipment.status === "PENDING" && (
-                      <Button size="sm" variant="primary" onClick={() => handleDispatch(detailShipment.id)}>
-                        <Send className="w-3.5 h-3.5" /> Mark Dispatched
-                      </Button>
-                    )}
-                    {["PENDING", "IN_TRANSIT"].includes(detailShipment.status) && (
-                      <Button size="sm" variant="primary" onClick={() => handleOutForDelivery(detailShipment.id)}>
-                        <Truck className="w-3.5 h-3.5" /> Out for Delivery
-                      </Button>
-                    )}
-                    {detailShipment.status !== "DELIVERED" && detailShipment.status !== "CANCELLED" && (
-                      <Button size="sm" variant="primary" onClick={() => handleDeliver(detailShipment.id)}>
-                        <CheckCircle2 className="w-3.5 h-3.5" /> Confirm Delivery
-                      </Button>
-                    )}
-                    {detailShipment.status !== "DELIVERED" && detailShipment.status !== "CANCELLED" && (
-                      <Button size="sm" variant="outline" onClick={() => handleCancel(detailShipment.id)}>
-                        <Ban className="w-3.5 h-3.5" /> Cancel Consignment
-                      </Button>
+                    {can("shipment:dispatch") ? (
+                      <>
+                        {detailShipment.status === "PENDING" && (
+                          <Button size="sm" variant="primary" onClick={() => handleDispatch(detailShipment.id)}>
+                            <Send className="w-3.5 h-3.5" /> Mark Dispatched
+                          </Button>
+                        )}
+                        {["PENDING", "IN_TRANSIT"].includes(detailShipment.status) && (
+                          <Button size="sm" variant="primary" onClick={() => handleOutForDelivery(detailShipment.id)}>
+                            <Truck className="w-3.5 h-3.5" /> Out for Delivery
+                          </Button>
+                        )}
+                        {detailShipment.status !== "DELIVERED" && detailShipment.status !== "CANCELLED" && (
+                          <Button size="sm" variant="primary" onClick={() => handleDeliver(detailShipment.id)}>
+                            <CheckCircle2 className="w-3.5 h-3.5" /> Confirm Delivery
+                          </Button>
+                        )}
+                        {detailShipment.status !== "DELIVERED" && detailShipment.status !== "CANCELLED" && (
+                          <Button size="sm" variant="outline" onClick={() => handleCancel(detailShipment.id)}>
+                            <Ban className="w-3.5 h-3.5" /> Cancel Consignment
+                          </Button>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-xs text-slate-400 dark:text-[#7C8189] font-mono">
+                        Read-only tracking inspection
+                      </span>
                     )}
                   </div>
                 </div>

@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 import { Modal } from "@/components/ui/Modal";
 import { fetchInvoices, fetchOrders, fetchProducts, fetchPurchaseOrders, fetchShipments } from "@/lib/api";
 import { createStaggerContainer, slideUpVariants, useReducedMotion } from "@/motion";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const TYPE_ICONS = {
   Product: Package,
@@ -110,27 +111,31 @@ export const GlobalSearch = ({ onOpen }) => {
     };
   }, [isOpen]);
 
+  const { isRouteAllowed } = usePermissions();
+
   const filteredResults = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) return [];
     return results
-      .filter((item) => `${item.title} ${item.detail} ${item.type}`.toLowerCase().includes(normalizedQuery))
+      .filter((item) => isRouteAllowed(item.to) && `${item.title} ${item.detail} ${item.type}`.toLowerCase().includes(normalizedQuery))
       .slice(0, 8);
-  }, [query, results]);
+  }, [query, results, isRouteAllowed]);
 
   const activeItems = useMemo(() => {
     if (query.trim()) {
       return filteredResults;
     }
-    return QUICK_LINKS.map((link) => ({
-      id: link.path,
-      title: link.label,
-      detail: link.detail,
-      to: link.path,
-      type: link.badge,
-      icon: link.icon,
-    }));
-  }, [query, filteredResults]);
+    return QUICK_LINKS
+      .filter((link) => isRouteAllowed(link.path))
+      .map((link) => ({
+        id: link.path,
+        title: link.label,
+        detail: link.detail,
+        to: link.path,
+        type: link.badge,
+        icon: link.icon,
+      }));
+  }, [query, filteredResults, isRouteAllowed]);
 
   // Reset selectedIndex whenever query changes
   useEffect(() => {

@@ -8,8 +8,10 @@ import {
   Plus,
   Zap,
 } from "lucide-react";
+import { usePermissions } from "@/hooks/usePermissions";
 
 export function QuickActionsBar({ summary }) {
+  const { isRouteAllowed } = usePermissions();
   const lowStockCount = summary?.inventory?.low_stock_count || 0;
   const inTransitCount = summary?.logistics?.in_transit_count || 0;
 
@@ -63,7 +65,7 @@ export function QuickActionsBar({ summary }) {
       </div>
 
       <div className="flex items-center gap-2">
-        {actions.map((act) => {
+        {actions.filter((act) => isRouteAllowed(act.href)).map((act) => {
           const Icon = act.icon;
           return (
             <Link

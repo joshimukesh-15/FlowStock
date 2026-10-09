@@ -78,3 +78,8 @@ setup.ps1
 REST_AND_FASTAPI_GUIDE.md
 DESIGN.md
 *.pdf
+
+# Hairline inspection scratch artifacts
+/bay.js
+/hairline-bay.html
+/hairline-bay*.png

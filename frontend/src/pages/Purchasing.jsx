@@ -24,9 +24,12 @@ import { formatDate } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
 import { motion } from "framer-motion";
 import { useReducedMotion, pageEnterVariants } from "@/motion";
+import { usePermissions } from "@/hooks/usePermissions";
+
 export default function PurchasingPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
+    const { can, isReadOnly } = usePermissions();
     const prefersReducedMotion = useReducedMotion();
     const [purchaseOrders, setPurchaseOrders] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
@@ -280,14 +283,18 @@ export default function PurchasingPage() {
             <Truck className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
             Suppliers & Purchasing
           </span>} subtitle="Vendor purchase orders, inbound goods receiving, and warehouse restocking." actions={<>
-            <Button variant="outline" size="sm" onClick={() => setSupplierModalOpen(true)}>
-              <Building2 className="w-4 h-4 mr-1.5"/>
-              New Supplier
-            </Button>
-            <Button size="sm" onClick={handleOpenCreatePO}>
-              <Plus className="w-4 h-4 mr-1.5"/>
-              Create Purchase Order
-            </Button>
+            {can("purchasing:create") && (
+              <Button variant="outline" size="sm" onClick={() => setSupplierModalOpen(true)}>
+                <Building2 className="w-4 h-4 mr-1.5"/>
+                New Supplier
+              </Button>
+            )}
+            {can("purchasing:create") && (
+              <Button size="sm" onClick={handleOpenCreatePO}>
+                <Plus className="w-4 h-4 mr-1.5"/>
+                Create Purchase Order
+              </Button>
+            )}
           </>}/>
 
       {/* KPI Metrics Cards */}
@@ -339,10 +346,10 @@ export default function PurchasingPage() {
             {loading ? (<div className="p-4">
                 <TableSkeleton rows={5} columns={["w-28", "w-40", "w-32", "w-14", "w-28", "w-24", "w-24"]}/>
                 <SkeletonAnnouncer label="Loading purchase orders"/>
-              </div>) : filteredPOs.length === 0 ? (<EmptyState compact icon={Truck} title="No purchase orders found" description="Create a purchase order to procure goods and replenish warehouse inventory." action={<Button size="sm" variant="primary" onClick={() => setPoModalOpen(true)} className="gap-1.5 text-xs">
+              </div>) : filteredPOs.length === 0 ? (<EmptyState compact icon={Truck} title="No purchase orders found" description="Create a purchase order to procure goods and replenish warehouse inventory." action={can("purchasing:create") ? (<Button size="sm" variant="primary" onClick={() => setPoModalOpen(true)} className="gap-1.5 text-xs">
                     <Plus className="w-3.5 h-3.5"/>
                     Create Purchase Order
-                  </Button>}/>) : (<div className="overflow-x-auto touch-pan-x">
+                  </Button>) : null}/>) : (<div className="overflow-x-auto touch-pan-x">
                 <table className="w-full min-w-[700px] text-left text-sm text-slate-700">
                   <thead className="bg-slate-50 text-xs uppercase font-medium text-slate-500 border-b border-slate-200">
                     <tr>
@@ -410,51 +417,59 @@ export default function PurchasingPage() {
 
                               {po.status === "DRAFT" && (
                                 <>
-                                  <Button
-                                    variant="primary"
-                                    size="xs"
-                                    onClick={() => handleIssuePO(po.id)}
-                                    disabled={isActing}
-                                    title="Issue Purchase Order"
-                                  >
-                                    <Send className="w-3.5 h-3.5" />
-                                    Issue PO
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="xs"
-                                    onClick={() => handleCancelPO(po.id)}
-                                    disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
-                                    title="Cancel PO"
-                                  >
-                                    Cancel
-                                  </Button>
+                                  {can("purchasing:create") && (
+                                    <Button
+                                      variant="primary"
+                                      size="xs"
+                                      onClick={() => handleIssuePO(po.id)}
+                                      disabled={isActing}
+                                      title="Issue Purchase Order"
+                                    >
+                                      <Send className="w-3.5 h-3.5" />
+                                      Issue PO
+                                    </Button>
+                                  )}
+                                  {can("purchasing:create") && (
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      onClick={() => handleCancelPO(po.id)}
+                                      disabled={isActing}
+                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      title="Cancel PO"
+                                    >
+                                      Cancel
+                                    </Button>
+                                  )}
                                 </>
                               )}
 
                               {po.status === "ISSUED" && (
                                 <>
-                                  <Button
-                                    variant="primary"
-                                    size="xs"
-                                    onClick={() => handleReceivePO(po.id)}
-                                    disabled={isActing}
-                                    title="Receive Goods & Restock"
-                                  >
-                                    <PackagePlus className="w-3.5 h-3.5" />
-                                    Receive Goods
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="xs"
-                                    onClick={() => handleCancelPO(po.id)}
-                                    disabled={isActing}
-                                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
-                                    title="Cancel PO"
-                                  >
-                                    Cancel
-                                  </Button>
+                                  {can("purchasing:receive") && (
+                                    <Button
+                                      variant="primary"
+                                      size="xs"
+                                      onClick={() => handleReceivePO(po.id)}
+                                      disabled={isActing}
+                                      title="Receive Goods & Restock"
+                                    >
+                                      <PackagePlus className="w-3.5 h-3.5" />
+                                      Receive Goods
+                                    </Button>
+                                  )}
+                                  {can("purchasing:create") && (
+                                    <Button
+                                      variant="ghost"
+                                      size="xs"
+                                      onClick={() => handleCancelPO(po.id)}
+                                      disabled={isActing}
+                                      className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                      title="Cancel PO"
+                                    >
+                                      Cancel
+                                    </Button>
+                                  )}
                                 </>
                               )}
                             </div>
@@ -814,47 +829,55 @@ export default function PurchasingPage() {
                 <div className="flex items-center gap-2">
                   {detailPO.status === "DRAFT" && (
                     <>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleCancelPO(detailPO.id)}
-                        disabled={actionLoading === detailPO.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
-                      >
-                        Cancel PO
-                      </Button>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => handleIssuePO(detailPO.id)}
-                        disabled={actionLoading === detailPO.id}
-                      >
-                        <Send className="w-3.5 h-3.5" />
-                        Issue PO to Vendor
-                      </Button>
+                      {can("purchasing:create") && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleCancelPO(detailPO.id)}
+                          disabled={actionLoading === detailPO.id}
+                          className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        >
+                          Cancel PO
+                        </Button>
+                      )}
+                      {can("purchasing:create") && (
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => handleIssuePO(detailPO.id)}
+                          disabled={actionLoading === detailPO.id}
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          Issue PO to Vendor
+                        </Button>
+                      )}
                     </>
                   )}
 
                   {detailPO.status === "ISSUED" && (
                     <>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleCancelPO(detailPO.id)}
-                        disabled={actionLoading === detailPO.id}
-                        className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
-                      >
-                        Cancel PO
-                      </Button>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => handleReceivePO(detailPO.id)}
-                        disabled={actionLoading === detailPO.id}
-                      >
-                        <PackagePlus className="w-3.5 h-3.5" />
-                        Receive Goods & Restock
-                      </Button>
+                      {can("purchasing:create") && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleCancelPO(detailPO.id)}
+                          disabled={actionLoading === detailPO.id}
+                          className="text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 text-xs"
+                        >
+                          Cancel PO
+                        </Button>
+                      )}
+                      {can("purchasing:receive") && (
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => handleReceivePO(detailPO.id)}
+                          disabled={actionLoading === detailPO.id}
+                        >
+                          <PackagePlus className="w-3.5 h-3.5" />
+                          Receive Goods & Restock
+                        </Button>
+                      )}
                     </>
                   )}
                 </div>

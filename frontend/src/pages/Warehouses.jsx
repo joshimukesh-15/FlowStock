@@ -49,10 +49,12 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { formatDate } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useReducedMotion, slideUpVariants, pageEnterVariants } from "@/motion";
+import { usePermissions } from "@/hooks/usePermissions";
 
 export default function WarehousesPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
+    const { can, isReadOnly } = usePermissions();
     const prefersReducedMotion = useReducedMotion();
     const itemVariants = slideUpVariants(prefersReducedMotion);
     const [warehouses, setWarehouses] = useState([]);
@@ -294,14 +296,18 @@ export default function WarehousesPage() {
               <WarehouseIcon className="w-6 h-6 text-slate-900 dark:text-[#F4F5F7]"/>
               Warehouses & Stock Transfers
             </span>} subtitle="Multi-facility inventory nodes, physical stock routing, and inter-depot logistics." actions={<>
-              <Button variant="outline" size="sm" onClick={() => setWarehouseModalOpen(true)}>
-                <Plus className="w-4 h-4 mr-1.5"/>
-                New Warehouse
-              </Button>
-              <Button size="sm" onClick={() => setTransferModalOpen(true)} disabled={warehouses.length < 2}>
-                <Truck className="w-4 h-4 mr-1.5"/>
-                Transfer Stock
-              </Button>
+              {can("warehouse:manage") && (
+                <Button variant="outline" size="sm" onClick={() => setWarehouseModalOpen(true)}>
+                  <Plus className="w-4 h-4 mr-1.5"/>
+                  New Warehouse
+                </Button>
+              )}
+              {can("warehouse:transfer") && (
+                <Button size="sm" onClick={() => setTransferModalOpen(true)} disabled={warehouses.length < 2}>
+                  <Truck className="w-4 h-4 mr-1.5"/>
+                  Transfer Stock
+                </Button>
+              )}
             </>}/>
 
         {/* Network Metrics Overview */}
@@ -414,14 +420,16 @@ export default function WarehousesPage() {
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenEdit(wh)}
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18191E] transition-colors cursor-pointer"
-                        title="Configure Facility & Capacity"
-                      >
-                        <Pencil className="w-3.5 h-3.5" />
-                      </button>
+                      {can("warehouse:manage") && (
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEdit(wh)}
+                          className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#18191E] transition-colors cursor-pointer"
+                          title="Configure Facility & Capacity"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                       <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-[#18191E] flex items-center justify-center text-slate-700 dark:text-[#D8CFBC] border border-slate-200 dark:border-[#262833]">
                         <WarehouseIcon className="w-4 h-4" />
                       </div>
@@ -566,7 +574,7 @@ export default function WarehousesPage() {
                                   Visualizer
                                 </Button>
 
-                                {tr.status === "REQUESTED" && (
+                                {can("warehouse:transfer") && tr.status === "REQUESTED" && (
                                   <>
                                     <Button
                                       variant="default"
@@ -590,7 +598,7 @@ export default function WarehousesPage() {
                                   </>
                                 )}
 
-                                {tr.status === "IN_TRANSIT" && (
+                                {can("warehouse:transfer") && tr.status === "IN_TRANSIT" && (
                                   <>
                                     <Button
                                       variant="default"

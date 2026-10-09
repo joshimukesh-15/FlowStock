@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TenantProvider } from './context/TenantContext';
@@ -22,17 +22,28 @@ import LoginPage from './pages/Login';
 
 import { PageSkeleton } from './components/ui/Skeleton';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { AccessDenied } from './components/ui/AccessDenied';
+import { usePermissions } from './hooks/usePermissions';
 import { SWRConfig } from 'swr';
 import { swrConfig } from './lib/swr';
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children, path }) {
     const { isAuthenticated, loading } = useAuth();
+    const location = useLocation();
+    const { role, meta, isRouteAllowed } = usePermissions();
+    const checkPath = path || location.pathname;
+
     if (loading) return (
         <div className="min-h-screen bg-slate-50 dark:bg-[#11120D] flex items-center justify-center">
             <PageSkeleton />
         </div>
     );
     if (!isAuthenticated) return <Navigate to="/" replace />;
+
+    if (!isRouteAllowed(checkPath)) {
+        return <AccessDenied currentPath={checkPath} role={role} meta={meta} />;
+    }
+
     return children;
 }
 
@@ -52,15 +63,13 @@ function AppLayout() {
     const isPublic = PUBLIC_ORDER.includes(location.pathname);
 
     // Track previous pathname so we can compute direction
-    const prevPath = useRef(location.pathname);
-    const directionRef = useRef(0);
+    const [prevPath, setPrevPath] = useState(location.pathname);
+    const [dir, setDir] = useState(0);
 
-    if (prevPath.current !== location.pathname) {
-        directionRef.current = getDirection(prevPath.current, location.pathname);
-        prevPath.current = location.pathname;
+    if (prevPath !== location.pathname) {
+        setPrevPath(location.pathname);
+        setDir(getDirection(prevPath, location.pathname));
     }
-
-    const dir = directionRef.current;
     const dist = prefersReducedMotion ? 0 : 48; // px slide distance
 
     // Public routes: card swipe; app routes: plain fade

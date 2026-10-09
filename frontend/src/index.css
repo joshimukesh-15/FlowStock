@@ -102,6 +102,24 @@
   }
 }
 
+/* FlowStock Custom Hairline Theme Integration */
+[data-hairline] {
+  --hairline-plate: #FFFBF4;
+  --hairline-hi: #11120D;
+  --hairline-edge: #565449;
+  --hairline-mid: #8A8678;
+  --hairline-lo: #D8CFBC;
+}
+
+html.dark [data-hairline],
+.dark [data-hairline] {
+  --hairline-plate: #121316;
+  --hairline-hi: #D8CFBC;
+  --hairline-edge: #A0A5B2;
+  --hairline-mid: #565449;
+  --hairline-lo: #262933;
+}
+
 /* Skeleton shimmering loading placeholder — GPU-accelerated translateX sheen */
 @keyframes shimmer {
   0% {

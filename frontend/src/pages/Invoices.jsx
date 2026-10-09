@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -17,11 +17,13 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Alert } from "@/components/ui/Alert";
 import { KpiGrid } from "@/components/ui/KpiGrid";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { pageEnterVariants, useReducedMotion } from "@/motion";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { Select } from "@/components/ui/Select";
+import { usePermissions } from "@/hooks/usePermissions";
+
 const PAYMENT_METHODS = [
     { label: "Bank Transfer (NEFT / RTGS / IMPS)", value: "BANK_TRANSFER" },
     { label: "UPI (Unified Payments Interface)", value: "UPI" },
@@ -32,6 +34,7 @@ const PAYMENT_METHODS = [
 export default function InvoicesPage() {
     const { currentOrg } = useTenant();
     const { toast } = useToast();
+    const { can, isReadOnly } = usePermissions();
     const prefersReducedMotion = useReducedMotion();
     const [invoices, setInvoices] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -65,6 +68,13 @@ export default function InvoicesPage() {
     // Printable Tax Invoice Modal State
     const [viewInvoice, setViewInvoice] = useState(null);
     const [invoiceModalTab, setInvoiceModalTab] = useState("document");
+    const invoiceModalContentRef = useRef(null);
+
+    useEffect(() => {
+        if (invoiceModalContentRef.current) {
+            invoiceModalContentRef.current.scrollTop = 0;
+        }
+    }, [invoiceModalTab]);
 
     const handleViewInvoice = async (inv) => {
         setViewInvoice(inv);
@@ -304,7 +314,7 @@ export default function InvoicesPage() {
       <PageHeader title={<span className="flex items-center gap-2.5">
             <ReceiptText className="w-7 h-7 text-slate-900 dark:text-[#F4F5F7]"/>
             Invoices & Accounts Receivable
-          </span>} subtitle="B2B GST tax invoices, accounts receivable balances, and payment collections in INR (₹)." actions={<Button onClick={() => {
+          </span>} subtitle="B2B GST tax invoices, accounts receivable balances, and payment collections in INR (₹)." actions={can("invoice:create") ? (<Button onClick={() => {
                 if (eligibleOrdersForInvoice.length > 0 && !selectedOrderId) {
                     setSelectedOrderId(eligibleOrdersForInvoice[0].id);
                 }
@@ -312,7 +322,7 @@ export default function InvoicesPage() {
             }}>
               <Plus className="w-4 h-4 mr-2"/>
               Generate Invoice
-            </Button>}/>
+            </Button>) : null}/>
 
       {/* KPI Summary Cards */}
       <KpiGrid>
@@ -371,10 +381,10 @@ export default function InvoicesPage() {
             {loading ? (<div className="p-4">
                 <TableSkeleton rows={5} columns={["w-28", "w-40", "w-28", "w-28", "w-28", "w-28", "w-24", "w-24", "w-20"]}/>
                 <SkeletonAnnouncer label="Loading accounts receivable invoices"/>
-              </div>) : filteredInvoices.length === 0 ? (<EmptyState compact icon={ReceiptText} title="No invoices found" description="Invoices matching the selected filter criteria will appear here. Bill a fulfilled order to issue an invoice." action={<Button size="sm" variant="primary" onClick={() => setCreateModalOpen(true)} className="gap-1.5 text-xs">
+              </div>) : filteredInvoices.length === 0 ? (<EmptyState compact icon={ReceiptText} title="No invoices found" description="Invoices matching the selected filter criteria will appear here. Bill a fulfilled order to issue an invoice." action={can("invoice:create") ? (<Button size="sm" variant="primary" onClick={() => setCreateModalOpen(true)} className="gap-1.5 text-xs">
                     <Plus className="w-3.5 h-3.5"/>
                     Create Invoice
-                  </Button>}/>) : (<div className="overflow-x-auto touch-pan-x">
+                  </Button>) : null}/>) : (<div className="overflow-x-auto touch-pan-x">
                 <table className="w-full min-w-[850px] text-left text-xs text-slate-700 dark:text-[#CBD5E1]">
                   <thead className="bg-slate-50 dark:bg-[#191B15] text-[11px] text-slate-500 dark:text-[#9BA3AF] uppercase tracking-wider border-b border-slate-100 dark:border-[#33372B]">
                     <tr>
@@ -440,7 +450,7 @@ export default function InvoicesPage() {
                               View
                             </Button>
 
-                            {inv.balance_due > 0 && inv.status !== "VOID" && (
+                            {can("invoice:pay") && inv.balance_due > 0 && inv.status !== "VOID" && (
                               <Button
                                 size="xs"
                                 variant="primary"
@@ -452,7 +462,7 @@ export default function InvoicesPage() {
                               </Button>
                             )}
 
-                            {inv.paid_amount === 0 && inv.status !== "VOID" && (
+                            {can("invoice:void") && inv.paid_amount === 0 && inv.status !== "VOID" && (
                               <Button
                                 size="icon-xs"
                                 variant="ghost"
@@ -783,7 +793,10 @@ export default function InvoicesPage() {
         {/* Modal 3: Printable Tax Invoice Viewer & Payment Ledger Drawer */}
         <Modal isOpen={!!viewInvoice} onClose={() => setViewInvoice(null)} maxWidth="3xl">
           {viewInvoice && (
-            <div className="max-h-[88vh] overflow-y-auto bg-slate-50/30 dark:bg-[#191B15] text-slate-700 dark:text-slate-300 text-xs relative flex flex-col">
+            <div
+              ref={invoiceModalContentRef}
+              className="max-h-[88vh] min-h-[520px] [scrollbar-gutter:stable] overflow-y-auto bg-slate-50/30 dark:bg-[#191B15] text-slate-700 dark:text-slate-300 text-xs relative flex flex-col"
+            >
               {/* Sticky Header with Title, Tabs, Actions */}
               <div className="sticky top-0 z-20 border-b border-slate-200 dark:border-[#2B2E25] bg-white/95 dark:bg-[#191B15]/95 backdrop-blur-md shadow-2xs shrink-0">
                 <div className="flex items-center justify-between px-6 py-3.5">
@@ -834,9 +847,17 @@ export default function InvoicesPage() {
                 </div>
               </div>
 
-              {/* TAB 1: TAX INVOICE DOCUMENT */}
-              {invoiceModalTab === "document" && (
-                <div className="p-6 sm:p-8 space-y-6">
+              {/* TAB CONTENT WITH SMOOTH TRANSITION */}
+              <AnimatePresence mode="wait" initial={false}>
+                {invoiceModalTab === "document" ? (
+                  <motion.div
+                    key="tax-invoice-document"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                    className="p-6 sm:p-8 space-y-6"
+                  >
                   {/* Invoice Meta Banner */}
                   <div className="flex flex-col sm:flex-row justify-between gap-4 pb-6 border-b border-slate-100 dark:border-[#2B2E25]">
                     <div>
@@ -1046,12 +1067,16 @@ export default function InvoicesPage() {
                   </div>
                   {/* Clean bottom spacer so content never gets cut off */}
                   <div className="h-10 shrink-0" />
-                </div>
-              )}
-
-              {/* TAB 2: DEDICATED PAYMENT REMITTANCE LEDGER */}
-              {invoiceModalTab === "payments" && (
-                <div className="p-6 sm:p-8 space-y-5">
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="payment-remittance-ledger"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
+                  className="p-6 sm:p-8 space-y-5"
+                >
                   {/* Financial Summary KPI Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#18191E] border border-slate-200 dark:border-[#22242B]">
@@ -1081,7 +1106,7 @@ export default function InvoicesPage() {
                         <ArrowDownLeft className="w-4 h-4 text-slate-700 dark:text-slate-300"/>
                         Payment Remittance History ({viewInvoice.payments?.length || 0} Transactions)
                       </h4>
-                      {viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
+                      {can("invoice:pay") && viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" && (
                         <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)} className="bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                           <CreditCard className="w-3.5 h-3.5" /> Add Payment
                         </Button>
@@ -1094,7 +1119,7 @@ export default function InvoicesPage() {
                         title="No payment remittance recorded"
                         description="This invoice is currently pending payment. Record the transaction reference and payment method to reconcile the balance."
                         action={
-                          viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" ? (
+                          can("invoice:pay") && viewInvoice.balance_due > 0 && viewInvoice.status !== "VOID" ? (
                             <Button size="sm" variant="primary" onClick={() => openPaymentDialog(viewInvoice)} className="mt-2 bg-[#D8CFBC] hover:bg-[#FFFBF4] text-[#11120D] font-bold border border-[#FFFBF4]">
                               <CreditCard className="w-3.5 h-3.5" /> Record Payment Remittance
                             </Button>
@@ -1143,8 +1168,9 @@ export default function InvoicesPage() {
                   </div>
                   {/* Clean bottom spacer */}
                   <div className="h-10 shrink-0" />
-                </div>
+                </motion.div>
               )}
+              </AnimatePresence>
             </div>
           )}
         </Modal>

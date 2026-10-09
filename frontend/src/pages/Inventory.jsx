@@ -21,9 +21,11 @@ import { FormField } from "@/components/ui/FormField";
 import { KpiGrid } from "@/components/ui/KpiGrid";
 import { formatDate } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
+import { usePermissions } from "@/hooks/usePermissions";
 
 export default function InventoryPage() {
     const { toast } = useToast();
+    const { can, isReadOnly } = usePermissions();
     const prefersReducedMotion = useReducedMotion();
     const itemVariants = slideUpVariants(prefersReducedMotion);
     const [searchQuery, setSearchQuery] = useState("");
@@ -142,10 +144,10 @@ export default function InventoryPage() {
       <PageHeader title={<span className="flex items-center gap-2">
             <Boxes className="w-5 h-5 text-slate-900 dark:text-[#F4F5F7]"/>
             Inventory Ledger & Valuations
-          </span>} subtitle="Perpetual FIFO stock counts, reorder thresholds, and transactional audit trails." actions={<Button size="sm" onClick={() => handleOpenMovementModal()} disabled={safeSummaries.length === 0} className="gap-1.5">
+          </span>} subtitle="Perpetual FIFO stock counts, reorder thresholds, and transactional audit trails." actions={can("inventory:adjust") ? (<Button size="sm" onClick={() => handleOpenMovementModal()} disabled={safeSummaries.length === 0} className="gap-1.5">
               <Plus className="w-4 h-4"/>
               Record Movement
-            </Button>}/>
+            </Button>) : null}/>
 
       {/* Top KPI Cards */}
       <KpiGrid>
@@ -254,15 +256,17 @@ export default function InventoryPage() {
                       </td>
                       <td className="py-2.5 px-3.5 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1.5">
-                          <Button
-                            size="xs"
-                            variant="outline"
-                            onClick={() => handleOpenMovementModal(s)}
-                            title="Adjust Stock Quantity"
-                          >
-                            <Plus className="w-3.5 h-3.5" />
-                            Adjust
-                          </Button>
+                          {can("inventory:adjust") && (
+                            <Button
+                              size="xs"
+                              variant="outline"
+                              onClick={() => handleOpenMovementModal(s)}
+                              title="Adjust Stock Quantity"
+                            >
+                              <Plus className="w-3.5 h-3.5" />
+                              Adjust
+                            </Button>
+                          )}
                           <Button
                             size="xs"
                             variant="outline"
